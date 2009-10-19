@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sytadroid</string>
+    <string name="liveTrafficLite">Trafic en direct allégé</string>
     <string name="liveTraffic">Trafic en direct</string>
     <string name="closedAtNight">Fermetures nocturnes</string>
     <string name="quickStats">Statistiques</string>
+    <string name="trafficCollisions">Accidents</string>
 </resources>

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/liveTrafficLite"
+          android:title="@string/liveTrafficLite" />
     <item android:id="@+id/liveTraffic"
           android:title="@string/liveTraffic" />
     <item android:id="@+id/closedAtNight"
           android:title="@string/closedAtNight" />
     <item android:id="@+id/quickStats"
           android:title="@string/quickStats" />
+    <item android:id="@+id/trafficCollisions"
+          android:title="@string/trafficCollisions" />
 </menu>
