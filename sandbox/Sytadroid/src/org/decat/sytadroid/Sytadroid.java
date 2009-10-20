@@ -7,7 +7,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -25,8 +24,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class Sytadroid extends Activity {
-	private static final String SYTADROID = "Sytadroid";
-	private static final String FILENAME_FOND_IDF = "fond_IDF.jpg";
+	private static final String TAG = "Sytadroid";
+	private static final String FILENAME_BACKGROUND_IDF = "fond_IDF.jpg";
 	private static final String URL_LIVE_TRAFFIC_FOND_IDF = "http://www.sytadin.fr/fonds/fond_IDF.jpg";
 	private static final String URL_LIVE_TRAFFIC = "http://www.sytadin.fr/sys/raster.jsp.html";
 	private static final String URL_QUICK_STATS = "http://www.sytadin.fr/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html";
@@ -35,12 +34,12 @@ public class Sytadroid extends Activity {
 	private static final String URL_TRAFFIC_COLLISIONS_IDF = "http://www.infotrafic.com/route.php?region=IDF&link=accidents.php";
 
 	private class SytadroidWebViewClient extends WebViewClient {
-		private int x;
-		private int y;
+		private transient final int xScroll;
+		private transient final int yScroll;
 
 		public SytadroidWebViewClient(int x, int y) {
-			this.x = x;
-			this.y = y;
+			this.xScroll = x;
+			this.yScroll = y;
 		}
 
 		@Override
@@ -57,7 +56,7 @@ public class Sytadroid extends Activity {
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			resetTitle(view, url, null);
-			webview.scrollTo(x, y);
+			webview.scrollTo(xScroll, yScroll);
 		}
 	}
 
@@ -109,39 +108,56 @@ public class Sytadroid extends Activity {
 	}
 
 	private void loadUrlInWebview(String url, int scale, int x, int y) {
-		Log.i(SYTADROID, "Loading URL '" + url + "'");
+		Log.i(TAG, "Loading URL '" + url + "'");
 		webview.loadUrl(url);
 		webview.setInitialScale(scale);
 		webview.setWebViewClient(new SytadroidWebViewClient(x, y));
 	}
 
 	private void cacheResources() {
-		File file = getFileStreamPath(FILENAME_FOND_IDF);
+		File file = getFileStreamPath(FILENAME_BACKGROUND_IDF);
 
 		if (file.exists()) {
-			Log.i(SYTADROID, "Resources already cached in '" + getFilesDir().getAbsolutePath() + "'");
+			Log.i(TAG, "Resources already cached in '" + getFilesDir().getAbsolutePath() + "'");
 		} else {
+			downloadFile(URL_LIVE_TRAFFIC_FOND_IDF, FILENAME_BACKGROUND_IDF);
+		}
+	}
+
+	private void downloadFile(String url, String filename) {
+		try {
+			Log.i(TAG, "Trying to download '" + url + "' to '" + getFilesDir().getAbsolutePath() + "'");
+			HttpClient client = new DefaultHttpClient();
+			HttpGet get = new HttpGet(url);
+			HttpEntity responseEntity = client.execute(get).getEntity();
+			byte[] bytes = new byte[(int) responseEntity.getContentLength()];
+
+			InputStream content = null;
 			try {
-				Log.i(SYTADROID, "Trying to download and save resources to '" + getFilesDir().getAbsolutePath() + "'");
-				HttpClient client = new DefaultHttpClient();
-				HttpGet get = new HttpGet(URL_LIVE_TRAFFIC_FOND_IDF);
-				HttpResponse response = client.execute(get);
-				HttpEntity responseEntity = response.getEntity();
-				byte[] bytes = new byte[(int) responseEntity.getContentLength()];
-				InputStream content = responseEntity.getContent();
+				content = responseEntity.getContent();
 				int read = 0;
 				while (read < bytes.length) {
 					read = read + content.read(bytes, read, bytes.length);
 				}
-				content.close();
-				FileOutputStream fos = openFileOutput(FILENAME_FOND_IDF, Activity.MODE_WORLD_WRITEABLE);
+			} finally {
+				if (content != null) {
+					content.close();
+				}
+			}
+
+			FileOutputStream fos = null;
+			try {
+				fos = openFileOutput(filename, Activity.MODE_WORLD_WRITEABLE);
 				fos.write(bytes);
 				fos.flush();
-				fos.close();
-				Log.i(SYTADROID, "Successfully downloaded resources");
-			} catch (Exception e) {
-				Log.e(SYTADROID, "Could not download and save resources", e);
+			} finally {
+				if (fos != null) {
+					fos.close();
+				}
 			}
+			Log.i(TAG, "Successfully downloaded resource");
+		} catch (Exception e) {
+			Log.e(TAG, "Could not download and save resources", e);
 		}
 	}
 
