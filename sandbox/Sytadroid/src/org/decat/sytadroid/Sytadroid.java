@@ -1,64 +1,30 @@
 package org.decat.sytadroid;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.decat.sytadroid.net.ResourceDownloader;
+import org.decat.sytadroid.web.SytadroidWebViewClient;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.webkit.WebHistoryItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 public class Sytadroid extends Activity {
-	private static final String TAG = "Sytadroid";
-	private static final String FILENAME_BACKGROUND_IDF = "fond_IDF.jpg";
-	private static final String URL_LIVE_TRAFFIC_FOND_IDF = "http://www.sytadin.fr/fonds/fond_IDF.jpg";
+	public static final String TAG = "SyDr";
+	private static final String FILENAME_IDF_BACKGROUND = "fond_IDF.jpg";
+	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
+	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND = "http://www.sytadin.fr/fonds/fond_IDF.jpg";
+	private static final String URL_LIVE_TRAFFIC_IDF_STATE = "http://www.sytadin.fr/raster/segment_IDF.gif";
 	private static final String URL_LIVE_TRAFFIC = "http://www.sytadin.fr/sys/raster.jsp.html";
 	private static final String URL_QUICK_STATS = "http://www.sytadin.fr/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html";
 	private static final String URL_CLOSED_AT_NIGHT = "http://www.sytadin.fr/opencms/sites/sytadin/sys/fermetures.jsp.html";
-	private static final String URL_TRAFFIC_COLLISIONS_FR = "http://www.infotrafic.com/route.php?region=FRANC&link=accidents.php";
 	private static final String URL_TRAFFIC_COLLISIONS_IDF = "http://www.infotrafic.com/route.php?region=IDF&link=accidents.php";
-
-	private class SytadroidWebViewClient extends WebViewClient {
-		private transient final int xScroll;
-		private transient final int yScroll;
-
-		public SytadroidWebViewClient(int x, int y) {
-			this.xScroll = x;
-			this.yScroll = y;
-		}
-
-		@Override
-		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			view.loadUrl(url);
-			return true;
-		}
-
-		@Override
-		public void onPageStarted(WebView view, String url, Bitmap favicon) {
-			resetTitle(view, url, "Loading...");
-		}
-
-		@Override
-		public void onPageFinished(WebView view, String url) {
-			resetTitle(view, url, null);
-			webview.scrollTo(xScroll, yScroll);
-		}
-	}
 
 	WebView webview;
 
@@ -72,7 +38,7 @@ public class Sytadroid extends Activity {
 		settings.setJavaScriptEnabled(true);
 
 		// Cache resources
-		cacheResources();
+		cacheResources(this);
 
 		// Default view
 		showLiveTrafficLite();
@@ -107,164 +73,46 @@ public class Sytadroid extends Activity {
 		return false;
 	}
 
-	private void loadUrlInWebview(String url, int scale, int x, int y) {
+	private void loadUrlInWebview(String url, int scale, int x, int y, String title) {
+		loadUrlInWebview(url, scale, x, y, title, null);
+	}
+
+	private void loadUrlInWebview(String url, int scale, int x, int y, String title, String lastModified) {
 		Log.i(TAG, "Loading URL '" + url + "'");
 		webview.loadUrl(url);
 		webview.setInitialScale(scale);
-		webview.setWebViewClient(new SytadroidWebViewClient(x, y));
+		webview.setWebViewClient(new SytadroidWebViewClient(this, x, y, title, lastModified));
 	}
 
-	private void cacheResources() {
-		File file = getFileStreamPath(FILENAME_BACKGROUND_IDF);
+	private void cacheResources(ContextWrapper context) {
+		File file = context.getFileStreamPath(FILENAME_IDF_BACKGROUND);
 
 		if (file.exists()) {
 			Log.i(TAG, "Resources already cached in '" + getFilesDir().getAbsolutePath() + "'");
 		} else {
-			downloadFile(URL_LIVE_TRAFFIC_FOND_IDF, FILENAME_BACKGROUND_IDF);
-		}
-	}
-
-	private void downloadFile(String url, String filename) {
-		try {
-			Log.i(TAG, "Trying to download '" + url + "' to '" + getFilesDir().getAbsolutePath() + "'");
-			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet(url);
-			HttpEntity responseEntity = client.execute(get).getEntity();
-			byte[] bytes = new byte[(int) responseEntity.getContentLength()];
-
-			InputStream content = null;
-			try {
-				content = responseEntity.getContent();
-				int read = 0;
-				while (read < bytes.length) {
-					read = read + content.read(bytes, read, bytes.length);
-				}
-			} finally {
-				if (content != null) {
-					content.close();
-				}
-			}
-
-			FileOutputStream fos = null;
-			try {
-				fos = openFileOutput(filename, Activity.MODE_WORLD_WRITEABLE);
-				fos.write(bytes);
-				fos.flush();
-			} finally {
-				if (fos != null) {
-					fos.close();
-				}
-			}
-			Log.i(TAG, "Successfully downloaded resource");
-		} catch (Exception e) {
-			Log.e(TAG, "Could not download and save resources", e);
+			ResourceDownloader.downloadFile(this, URL_LIVE_TRAFFIC_IDF_BACKGROUND, FILENAME_IDF_BACKGROUND);
 		}
 	}
 
 	private void showLiveTrafficLite() {
-		loadUrlInWebview("file:///android_asset/sytadroid.html", 200, 400, 100);
+		String lastModified = ResourceDownloader.downloadFile(this, URL_LIVE_TRAFFIC_IDF_STATE, FILENAME_IDF_TRAFFIC);
+		loadUrlInWebview("file:///android_asset/sytadroid.html", 200, 400, 100, "LLT", lastModified);
 	}
 
 	private void showLiveTraffic() {
-		loadUrlInWebview(URL_LIVE_TRAFFIC, 200, 100, 100);
+		loadUrlInWebview(URL_LIVE_TRAFFIC, 200, 100, 100, "LT");
 	}
 
 	private void showQuickStats() {
-		loadUrlInWebview(URL_QUICK_STATS, 150, 0, 0);
+		loadUrlInWebview(URL_QUICK_STATS, 150, 0, 0, "QS");
 	}
 
 	private void showClosedAtNight() {
-		loadUrlInWebview(URL_CLOSED_AT_NIGHT, 50, 100, 100);
+		loadUrlInWebview(URL_CLOSED_AT_NIGHT, 100, 0, 0, "CAT");
 	}
 
 	private void showTrafficCollisions() {
-		loadUrlInWebview(URL_TRAFFIC_COLLISIONS_IDF, 100, 0, 0);
-	}
-
-	private void resetTitle(WebView view, String url, String title) {
-		if (url == null || title == null) {
-			WebHistoryItem item = view.copyBackForwardList().getCurrentItem();
-			if (item != null) {
-				if (url == null) {
-					url = item.getUrl();
-				}
-				if (title == null) {
-					title = item.getTitle();
-				}
-			}
-		}
-		setTitle(buildUrlTitle(url, title));
-	}
-
-	/**
-	 * Builds and returns the page title, which is some combination of the page
-	 * URL and title.
-	 * 
-	 * @param url
-	 *            The URL of the site being loaded.
-	 * @param title
-	 *            The title of the site being loaded.
-	 * @return The page title.
-	 */
-	private String buildUrlTitle(String url, String title) {
-		String urlTitle = "";
-
-		if (url != null) {
-			String titleUrl = buildTitleUrl(url);
-
-			if (title != null && 0 < title.length()) {
-				if (titleUrl != null && 0 < titleUrl.length()) {
-					urlTitle = titleUrl + ": " + title;
-				} else {
-					urlTitle = title;
-				}
-			} else {
-				if (titleUrl != null) {
-					urlTitle = titleUrl;
-				}
-			}
-		}
-
-		return urlTitle;
-	}
-
-	/**
-	 * @param url
-	 *            The URL to build a title version of the URL from.
-	 * @return The title version of the URL or null if fails. The title version
-	 *         of the URL can be either the URL hostname, or the hostname with
-	 *         an "https://" prefix (for secure URLs), or an empty string if,
-	 *         for example, the URL in question is a file:// URL with no
-	 *         hostname.
-	 */
-	private static String buildTitleUrl(String url) {
-		String titleUrl = null;
-
-		if (url != null) {
-			try {
-				// parse the url string
-				URL urlObj = new URL(url);
-				if (urlObj != null) {
-					titleUrl = "";
-
-					String protocol = urlObj.getProtocol();
-					String host = urlObj.getHost();
-
-					if (host != null && 0 < host.length()) {
-						titleUrl = host;
-						if (protocol != null) {
-							// if a secure site, add an "https://" prefix!
-							if (protocol.equalsIgnoreCase("https")) {
-								titleUrl = protocol + "://" + host;
-							}
-						}
-					}
-				}
-			} catch (MalformedURLException e) {
-			}
-		}
-
-		return titleUrl;
+		loadUrlInWebview(URL_TRAFFIC_COLLISIONS_IDF, 100, 0, 0, "TC");
 	}
 
 }
