@@ -33,7 +33,13 @@ public class SytadroidWebViewClient extends WebViewClient {
 
 	@Override
 	public void onPageFinished(WebView view, String url) {
-		resetTitle(view, title + " - " + lastModified);
+		String formattedTitle = title;
+		if (lastModified != null) {
+			// SimpleDateFormat sdt = new SimpleDateFormat();
+			// formattedTitle += " - " + sdt.format(lastModified);
+			formattedTitle += " - " + lastModified;
+		}
+		resetTitle(view, formattedTitle);
 		view.scrollTo(xScroll, yScroll);
 	}
 

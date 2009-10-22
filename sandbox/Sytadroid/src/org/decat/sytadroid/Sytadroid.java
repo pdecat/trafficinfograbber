@@ -17,6 +17,7 @@ import android.webkit.WebView;
 
 public class Sytadroid extends Activity {
 	public static final String TAG = "SyDr";
+
 	private static final String FILENAME_IDF_BACKGROUND = "fond_IDF.jpg";
 	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
 	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND = "http://www.sytadin.fr/fonds/fond_IDF.jpg";
