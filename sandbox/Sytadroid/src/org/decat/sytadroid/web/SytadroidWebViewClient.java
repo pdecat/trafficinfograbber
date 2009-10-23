@@ -28,7 +28,7 @@ public class SytadroidWebViewClient extends WebViewClient {
 
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
-		resetTitle(view, "Loading " + title + "...");
+		setTitle(view, "Loading " + title + "...");
 	}
 
 	@Override
@@ -39,11 +39,11 @@ public class SytadroidWebViewClient extends WebViewClient {
 			// formattedTitle += " - " + sdt.format(lastModified);
 			formattedTitle += " - " + lastModified;
 		}
-		resetTitle(view, formattedTitle);
+		setTitle(view, formattedTitle);
 		view.scrollTo(xScroll, yScroll);
 	}
 
-	private void resetTitle(WebView view, String title) {
+	private void setTitle(WebView view, String title) {
 		activity.setTitle(title);
 	}
 }

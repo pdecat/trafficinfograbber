@@ -37,6 +37,7 @@ public class Sytadroid extends Activity {
 		webview = (WebView) findViewById(R.id.webview);
 		WebSettings settings = webview.getSettings();
 		settings.setJavaScriptEnabled(true);
+		// settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		// Cache resources
 		cacheResources(this);
@@ -80,9 +81,9 @@ public class Sytadroid extends Activity {
 
 	private void loadUrlInWebview(String url, int scale, int x, int y, String title, String lastModified) {
 		Log.i(TAG, "Loading URL '" + url + "'");
-		webview.loadUrl(url);
 		webview.setInitialScale(scale);
 		webview.setWebViewClient(new SytadroidWebViewClient(this, x, y, title, lastModified));
+		webview.loadUrl(url);
 	}
 
 	private void cacheResources(ContextWrapper context) {
@@ -96,8 +97,15 @@ public class Sytadroid extends Activity {
 	}
 
 	private void showLiveTrafficLite() {
-		String lastModified = ResourceDownloader.downloadFile(this, URL_LIVE_TRAFFIC_IDF_STATE, FILENAME_IDF_TRAFFIC);
-		loadUrlInWebview("file:///android_asset/sytadroid.html", 200, 400, 100, "LLT", lastModified);
+		new JobWithProgressDialog(this) {
+			@Override
+			public void doJob() {
+				// loadUrlInWebview("file:///android_asset/sytadroid.html", 200,
+				// 400, 150, "LLT");
+				String lastModified = ResourceDownloader.downloadFile(Sytadroid.this, URL_LIVE_TRAFFIC_IDF_STATE, FILENAME_IDF_TRAFFIC);
+				loadUrlInWebview("file:///android_asset/sytadroid.html", 200, 400, 150, "LLT", lastModified);
+			}
+		}.start();
 	}
 
 	private void showLiveTraffic() {
