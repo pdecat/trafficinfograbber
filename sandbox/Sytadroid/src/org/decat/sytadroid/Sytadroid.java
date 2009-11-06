@@ -37,7 +37,7 @@ public class Sytadroid extends Activity {
 		webview = (WebView) findViewById(R.id.webview);
 		WebSettings settings = webview.getSettings();
 		settings.setJavaScriptEnabled(true);
-		// settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		// Cache resources
 		cacheResources(this);
@@ -109,7 +109,7 @@ public class Sytadroid extends Activity {
 	}
 
 	private void showLiveTraffic() {
-		loadUrlInWebview(URL_LIVE_TRAFFIC, 200, 100, 100, "LT");
+		loadUrlInWebview(URL_LIVE_TRAFFIC, 200, 400, 200, "LT");
 	}
 
 	private void showQuickStats() {
@@ -117,7 +117,7 @@ public class Sytadroid extends Activity {
 	}
 
 	private void showClosedAtNight() {
-		loadUrlInWebview(URL_CLOSED_AT_NIGHT, 100, 0, 0, "CAT");
+		loadUrlInWebview(URL_CLOSED_AT_NIGHT, 75, 0, 0, "CAT");
 	}
 
 	private void showTrafficCollisions() {
