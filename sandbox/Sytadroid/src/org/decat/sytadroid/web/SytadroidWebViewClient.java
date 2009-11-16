@@ -7,17 +7,13 @@ import android.webkit.WebViewClient;
 
 public class SytadroidWebViewClient extends WebViewClient {
 	private transient final Activity activity;
-	private transient final int xScroll;
-	private transient final int yScroll;
-	private transient final String lastModified;
-	private transient final String title;
+	private transient int xScroll;
+	private transient int yScroll;
+	private transient String lastModified;
+	private transient String title;
 
-	public SytadroidWebViewClient(Activity activity, int x, int y, String title, String lastModified) {
+	public SytadroidWebViewClient(Activity activity) {
 		this.activity = activity;
-		this.xScroll = x;
-		this.yScroll = y;
-		this.title = title;
-		this.lastModified = lastModified;
 	}
 
 	@Override
@@ -45,5 +41,18 @@ public class SytadroidWebViewClient extends WebViewClient {
 
 	private void setTitle(WebView view, String title) {
 		activity.setTitle(title);
+	}
+
+	public void setOffset(int x, int y) {
+		this.xScroll = x;
+		this.yScroll = y;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setLastModified(String lastModified) {
+		this.lastModified = lastModified;
 	}
 }

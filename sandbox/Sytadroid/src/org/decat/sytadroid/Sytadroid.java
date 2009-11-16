@@ -27,7 +27,9 @@ public class Sytadroid extends Activity {
 	private static final String URL_CLOSED_AT_NIGHT = "http://www.sytadin.fr/opencms/sites/sytadin/sys/fermetures.jsp.html";
 	private static final String URL_TRAFFIC_COLLISIONS_IDF = "http://www.infotrafic.com/route.php?region=IDF&link=accidents.php";
 
-	WebView webview;
+	private WebView webview;
+
+	private SytadroidWebViewClient webViewClient;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,8 @@ public class Sytadroid extends Activity {
 		setContentView(R.layout.main);
 
 		webview = (WebView) findViewById(R.id.webview);
+		webViewClient = new SytadroidWebViewClient(this);
+		webview.setWebViewClient(webViewClient);
 		WebSettings settings = webview.getSettings();
 		settings.setJavaScriptEnabled(true);
 		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -82,7 +86,9 @@ public class Sytadroid extends Activity {
 	private void loadUrlInWebview(String url, int scale, int x, int y, String title, String lastModified) {
 		Log.i(TAG, "Loading URL '" + url + "'");
 		webview.setInitialScale(scale);
-		webview.setWebViewClient(new SytadroidWebViewClient(this, x, y, title, lastModified));
+		webViewClient.setOffset(x, y);
+		webViewClient.setTitle(title);
+		webViewClient.setLastModified(lastModified);
 		webview.loadUrl(url);
 	}
 
