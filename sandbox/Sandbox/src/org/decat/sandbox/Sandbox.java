@@ -53,8 +53,8 @@ public class Sandbox extends Activity {
 		}
 
 		private void showToast(String message) {
-			toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
-			toast.setGravity(Gravity.LEFT | Gravity.TOP, 25, 320);
+			toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
 			toast.show();
 		}
 	}
