@@ -7,6 +7,8 @@ import org.decat.sytadroid.web.SytadroidWebViewClient;
 
 import android.app.Activity;
 import android.content.ContextWrapper;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,12 +22,16 @@ public class Sytadroid extends Activity {
 
 	private static final String FILENAME_IDF_BACKGROUND = "fond_IDF.jpg";
 	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
-	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND = "http://www.sytadin.fr/fonds/fond_IDF.jpg";
-	private static final String URL_LIVE_TRAFFIC_IDF_STATE = "http://www.sytadin.fr/raster/segment_IDF.gif";
-	private static final String URL_LIVE_TRAFFIC = "http://www.sytadin.fr/sys/raster.jsp.html";
-	private static final String URL_QUICK_STATS = "http://www.sytadin.fr/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html";
-	private static final String URL_CLOSED_AT_NIGHT = "http://www.sytadin.fr/opencms/sites/sytadin/sys/fermetures.jsp.html";
-	private static final String URL_TRAFFIC_COLLISIONS_IDF = "http://www.infotrafic.com/route.php?region=IDF&link=accidents.php";
+	
+	private static final String URL_SYTADIN = "http://www.sytadin.fr";
+	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND = URL_SYTADIN + "/fonds/" + FILENAME_IDF_BACKGROUND;
+	private static final String URL_LIVE_TRAFFIC_IDF_STATE = URL_SYTADIN + "/raster/" + FILENAME_IDF_TRAFFIC;
+	private static final String URL_LIVE_TRAFFIC = URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_deg.jsp.html";
+	private static final String URL_QUICK_STATS = URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html";
+	private static final String URL_CLOSED_AT_NIGHT = URL_SYTADIN + "/opencms/sites/sytadin/sys/fermetures.jsp.html";
+
+	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
+	private static final String URL_TRAFFIC_COLLISIONS_IDF = URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php";
 
 	private WebView webview;
 
@@ -75,6 +81,9 @@ public class Sytadroid extends Activity {
 		case R.id.trafficCollisions:
 			showTrafficCollisions();
 			return true;
+		case R.id.sytadinWebsite:
+			launchSytadinWebsite();
+			return true;
 		}
 		return false;
 	}
@@ -106,8 +115,6 @@ public class Sytadroid extends Activity {
 		new JobWithProgressDialog(this) {
 			@Override
 			public void doJob() {
-				// loadUrlInWebview("file:///android_asset/sytadroid.html", 200,
-				// 400, 150, "LLT");
 				String lastModified = ResourceDownloader.downloadFile(Sytadroid.this, URL_LIVE_TRAFFIC_IDF_STATE, FILENAME_IDF_TRAFFIC);
 				loadUrlInWebview("file:///android_asset/sytadroid.html", 200, 400, 150, "LLT", lastModified);
 			}
@@ -115,7 +122,7 @@ public class Sytadroid extends Activity {
 	}
 
 	private void showLiveTraffic() {
-		loadUrlInWebview(URL_LIVE_TRAFFIC, 200, 400, 200, "LT");
+		loadUrlInWebview(URL_LIVE_TRAFFIC, 200, 480, 220, "LT");
 	}
 
 	private void showQuickStats() {
@@ -130,4 +137,8 @@ public class Sytadroid extends Activity {
 		loadUrlInWebview(URL_TRAFFIC_COLLISIONS_IDF, 100, 0, 0, "TC");
 	}
 
+	private void launchSytadinWebsite() {
+		Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL_SYTADIN));
+		startActivity(myIntent);
+	}
 }

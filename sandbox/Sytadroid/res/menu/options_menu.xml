@@ -10,4 +10,6 @@
           android:title="@string/quickStats" />
     <item android:id="@+id/trafficCollisions"
           android:title="@string/trafficCollisions" />
+    <item android:id="@+id/sytadinWebsite"
+          android:title="@string/sytadinWebsite" />
 </menu>
