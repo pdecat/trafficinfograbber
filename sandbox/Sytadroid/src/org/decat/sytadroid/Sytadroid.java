@@ -53,7 +53,7 @@ public class Sytadroid extends Activity {
 		cacheResources(this);
 
 		// Default view
-		showLiveTrafficLite();
+		showLiveTraffic();
 	}
 
 	@Override
