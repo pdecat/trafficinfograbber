@@ -1,8 +1,6 @@
 package org.decat.sytadroid;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
 
 import org.decat.sytadroid.net.ResourceDownloader;
 import org.decat.sytadroid.web.SytadroidWebViewClient;
@@ -11,8 +9,6 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -155,19 +151,6 @@ public class Sytadroid extends Activity {
 	@Override
 	public boolean onSearchRequested() {
 		try {
-			// List applications
-			PackageManager pm = this.getPackageManager();
-
-			Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-			mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-			List<ResolveInfo> resolvInfos = pm.queryIntentActivities(mainIntent, 0);
-			Collections.sort(resolvInfos, new ResolveInfo.DisplayNameComparator(pm));
-
-			for (ResolveInfo resolvInfo : resolvInfos) {
-				Log.i(TAG, resolvInfo.activityInfo.applicationInfo.packageName + "/" + resolvInfo.activityInfo.name);
-			}
-
 			Intent myIntent = new Intent();
 			myIntent.setAction(Intent.ACTION_MAIN);
 			myIntent.addCategory(Intent.CATEGORY_LAUNCHER);
