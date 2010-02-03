@@ -1,7 +1,13 @@
 package org.decat.sandbox;
 
+import java.util.Collections;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -72,6 +78,24 @@ public class Sandbox extends Activity {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		return gestureDetector.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean onSearchRequested() {
+		// List installed applications
+		PackageManager pm = this.getPackageManager();
+
+		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+		List<ResolveInfo> resolvInfos = pm.queryIntentActivities(mainIntent, 0);
+		Collections.sort(resolvInfos, new ResolveInfo.DisplayNameComparator(pm));
+
+		for (ResolveInfo resolvInfo : resolvInfos) {
+			Log.i(TAG, resolvInfo.activityInfo.applicationInfo.packageName + "/" + resolvInfo.activityInfo.name);
+		}
+
+		return false;
 	}
 
 }
