@@ -1,13 +1,18 @@
 package org.decat.sytadroid;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
 import org.decat.sytadroid.net.ResourceDownloader;
 import org.decat.sytadroid.web.SytadroidWebViewClient;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +27,7 @@ public class Sytadroid extends Activity {
 
 	private static final String FILENAME_IDF_BACKGROUND = "fond_IDF.jpg";
 	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
-	
+
 	private static final String URL_SYTADIN = "http://www.sytadin.fr";
 	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND = URL_SYTADIN + "/fonds/" + FILENAME_IDF_BACKGROUND;
 	private static final String URL_LIVE_TRAFFIC_IDF_STATE = URL_SYTADIN + "/raster/" + FILENAME_IDF_TRAFFIC;
@@ -138,7 +143,39 @@ public class Sytadroid extends Activity {
 	}
 
 	private void launchSytadinWebsite() {
-		Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL_SYTADIN));
-		startActivity(myIntent);
+		try {
+			Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL_SYTADIN));
+			startActivity(myIntent);
+		} catch (Exception e) {
+			Log.e("Error while launching www.sytadin.fr website", e.getMessage(), e);
+		}
+
+	}
+
+	@Override
+	public boolean onSearchRequested() {
+		try {
+			// List applications
+			PackageManager pm = this.getPackageManager();
+
+			Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+			mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+			List<ResolveInfo> resolvInfos = pm.queryIntentActivities(mainIntent, 0);
+			Collections.sort(resolvInfos, new ResolveInfo.DisplayNameComparator(pm));
+
+			for (ResolveInfo resolvInfo : resolvInfos) {
+				Log.i(TAG, resolvInfo.activityInfo.applicationInfo.packageName + "/" + resolvInfo.activityInfo.name);
+			}
+
+			Intent myIntent = new Intent();
+			myIntent.setAction(Intent.ACTION_MAIN);
+			myIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+			myIntent.setComponent(new ComponentName("com.eklaireur.eklandroid", "com.eklaireur.eklandroid.eklaireur"));
+			startActivity(myIntent);
+		} catch (Exception e) {
+			Log.e("Error while launching Eklaireur", e.getMessage(), e);
+		}
+		return false;
 	}
 }
