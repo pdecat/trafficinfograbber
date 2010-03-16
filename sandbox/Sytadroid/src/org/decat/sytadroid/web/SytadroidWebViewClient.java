@@ -1,7 +1,6 @@
 package org.decat.sytadroid.web;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -23,7 +22,7 @@ public class SytadroidWebViewClient extends WebViewClient {
 	}
 
 	@Override
-	public void onPageStarted(WebView view, String url, Bitmap favicon) {
+	public void onLoadResource(WebView view, String url) {
 		setTitle(view, "Loading " + title + "...");
 	}
 
