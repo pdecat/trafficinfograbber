@@ -19,6 +19,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 public class Sytadroid extends Activity {
+	// Wikango v1.0
+	private static final ComponentName OTHER_COMPONENT_NAME_1 = new ComponentName("com.gpsprevent", "com.gpsprevent.ui.StartupActivity");
+
+	// Eklaireur v2.02
+	private static final ComponentName OTHER_COMPONENT_NAME_2 = new ComponentName("com.eklaireur.eklandroid", "com.eklaireur.eklandroid.eklaireur");
+
+	// Eklaireur v3.11
+	private static final ComponentName OTHER_COMPONENT_NAME_3 = new ComponentName("com.eklaireur.ekldroid", "com.eklaireur.ekldroid.eklaireur");
+
 	public static final String TAG = "SyDr";
 
 	private static final String FILENAME_IDF_BACKGROUND = "fond_IDF.jpg";
@@ -84,6 +93,10 @@ public class Sytadroid extends Activity {
 			return true;
 		case R.id.sytadinWebsite:
 			launchSytadinWebsite();
+			return true;
+		case R.id.about:
+			Intent intent = new Intent("org.openintents.action.SHOW_ABOUT_DIALOG");
+			startActivityForResult(intent, 0);
 			return true;
 		}
 		return false;
@@ -154,7 +167,7 @@ public class Sytadroid extends Activity {
 			Intent myIntent = new Intent();
 			myIntent.setAction(Intent.ACTION_MAIN);
 			myIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-			myIntent.setComponent(new ComponentName("com.eklaireur.eklandroid", "com.eklaireur.eklandroid.eklaireur"));
+			myIntent.setComponent(OTHER_COMPONENT_NAME_1);
 			startActivity(myIntent);
 		} catch (Exception e) {
 			Log.e("Error while launching Eklaireur", e.getMessage(), e);
