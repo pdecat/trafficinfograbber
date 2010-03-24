@@ -30,8 +30,12 @@ public class SytadroidWebViewClient extends WebViewClient {
 	public void onPageFinished(WebView view, String url) {
 		String formattedTitle = title;
 		if (lastModified != null) {
-			// SimpleDateFormat sdt = new SimpleDateFormat();
-			// formattedTitle += " - " + sdt.format(lastModified);
+			/*
+			 * try { SimpleDateFormat sdt = new SimpleDateFormat(); lastModified
+			 * = sdt.format(lastModified); } catch (Exception e) {
+			 * Log.w(Sytadroid.TAG, "Failed to parse last modified date '" +
+			 * lastModified + "'", e); }
+			 */
 			formattedTitle += " - " + lastModified;
 		}
 		setTitle(view, formattedTitle);

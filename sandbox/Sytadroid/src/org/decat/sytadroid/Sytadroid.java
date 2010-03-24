@@ -27,9 +27,9 @@ public class Sytadroid extends Activity {
 	private static final String URL_SYTADIN = "http://www.sytadin.fr";
 	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND = URL_SYTADIN + "/fonds/" + FILENAME_IDF_BACKGROUND;
 	private static final String URL_LIVE_TRAFFIC_IDF_STATE = URL_SYTADIN + "/raster/" + FILENAME_IDF_TRAFFIC;
-	private static final String URL_LIVE_TRAFFIC = URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_deg.jsp.html";
+	private static final String URL_LIVE_TRAFFIC = URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html";
 	private static final String URL_QUICK_STATS = URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html";
-	private static final String URL_CLOSED_AT_NIGHT = URL_SYTADIN + "/opencms/sites/sytadin/sys/fermetures.jsp.html";
+	private static final String URL_CLOSED_AT_NIGHT = URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp";
 
 	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
 	private static final String URL_TRAFFIC_COLLISIONS_IDF = URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php";
@@ -127,7 +127,7 @@ public class Sytadroid extends Activity {
 	}
 
 	private void showQuickStats() {
-		loadUrlInWebview(URL_QUICK_STATS, 150, 0, 0, "QS");
+		loadUrlInWebview(URL_QUICK_STATS, 180, 0, 0, "QS");
 	}
 
 	private void showClosedAtNight() {
