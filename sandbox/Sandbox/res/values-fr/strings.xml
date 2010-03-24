@@ -21,19 +21,11 @@
  **
  */
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.decat.sytadroid"
-      android:versionCode="1"
-      android:versionName="1.0">
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".Sytadroid"
-                  android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-    <uses-sdk android:minSdkVersion="4" />
-	<uses-permission android:name="android.permission.INTERNET" />
-</manifest> 
+<resources>
+    <string name="hello">Bonjour Monde, Sandbox !</string>
+    <string name="app_name">Sandbox</string>
+    <string name="about">À propos</string>
+
+	<!-- Strings for About dialog -->
+	<string name="about_comments">Un simple bac à sable pour dear2dear.</string>
+</resources>
