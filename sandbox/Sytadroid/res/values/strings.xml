@@ -23,18 +23,18 @@
 -->
 <resources>
     <string name="app_name">Sytadroid</string>
-    <string name="liveTrafficLite">Trafic en direct allégé</string>
-    <string name="liveTraffic">Trafic en direct</string>
-    <string name="closedAtNight">Fermetures nocturnes</string>
-    <string name="quickStats">Statistiques</string>
-    <string name="trafficCollisions">Accidents</string>
+    <string name="liveTrafficLite">Live Traffic Live</string>
+    <string name="liveTraffic">Live Traffic</string>
+    <string name="closedAtNight">Closed At Night</string>
+    <string name="quickStats">Quicks statistics</string>
+    <string name="trafficCollisions">Traffic Collisions</string>
     <string name="sytadinWebsite">www.sytadin.fr</string>
 	<string name="about">About</string>
 
 	<!-- Strings for About dialog -->
-	<string name="about_comments">A simple sandbox for dear2dear.</string>
+	<string name="about_comments">A simple traffic information grabber.</string>
 	<string name="about_copyright">Copyright © 2010 pdecat</string>
-	<string name="about_website_label">Sandbox at Google Code</string>
+	<string name="about_website_label">Sytadroid at Google Code</string>
 	<string name="about_website_url">http://code.google.com/p/dear2dear</string>
-	<string name="about_email">pdecat+d2d@gmail.com</string>
+	<string name="about_email">pdecat+d2d-tig@gmail.com</string>
 </resources>

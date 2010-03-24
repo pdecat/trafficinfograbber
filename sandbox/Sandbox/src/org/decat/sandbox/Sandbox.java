@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -41,16 +40,16 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.widget.Toast;
 
 public class Sandbox extends Activity {
+	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 	public static final String TAG = "Sandbox";
+	private Toast toast;
+	private GestureDetector gestureDetector;
 
 	class MyGestureDetector extends SimpleOnGestureListener {
 		private static final int SWIPE_MIN_DISTANCE = 60;
 		private static final int SWIPE_THRESHOLD_VELOCITY = 100;
-		private Toast toast;
-		private Context context;
 
 		public MyGestureDetector() {
-			this.context = Sandbox.this;
 		}
 
 		@Override
@@ -82,14 +81,13 @@ public class Sandbox extends Activity {
 			return false;
 		}
 
-		private void showToast(String message) {
-			toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-			toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
-			toast.show();
-		}
 	}
 
-	private GestureDetector gestureDetector;
+	private void showToast(String message) {
+		toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
+		toast.show();
+	}
 
 	/** Called when the activity is first created. */
 	@Override
@@ -115,8 +113,15 @@ public class Sandbox extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.about:
-			Intent intent = new Intent("org.openintents.action.SHOW_ABOUT_DIALOG");
-			startActivityForResult(intent, 0);
+			try {
+				Intent intent = new Intent(ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG);
+				startActivityForResult(intent, 0);
+			} catch (Exception e) {
+				String message = "Failed to start activity for intent " + ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG;
+				Log.e(Sandbox.TAG, message, e);
+				showToast(message);
+			}
+
 			return true;
 		}
 		return false;

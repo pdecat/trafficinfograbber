@@ -23,9 +23,8 @@
 -->
 <resources>
     <string name="hello">Bonjour Monde, Sandbox !</string>
-    <string name="app_name">Sandbox</string>
     <string name="about">À propos</string>
 
 	<!-- Strings for About dialog -->
-	<string name="about_comments">Un simple bac à sable pour dear2dear.</string>
+	<string name="about_comments">Un simple bac à sable à des fins de test.</string>
 </resources>

@@ -22,10 +22,13 @@
  */
 -->
 <resources>
-    <string name="hello">Bonjour Monde, Sandbox !</string>
-    <string name="app_name">Sandbox</string>
+    <string name="liveTrafficLite">Trafic en direct allégé</string>
+    <string name="liveTraffic">Trafic en direct</string>
+    <string name="closedAtNight">Fermetures nocturnes</string>
+    <string name="quickStats">Statistiques</string>
+    <string name="trafficCollisions">Accidents</string>
     <string name="about">À propos</string>
 
 	<!-- Strings for About dialog -->
-	<string name="about_comments">Un simple bac à sable pour dear2dear.</string>
+	<string name="about_comments">Un simple attrapeur d'information trafic.</string>
 </resources>

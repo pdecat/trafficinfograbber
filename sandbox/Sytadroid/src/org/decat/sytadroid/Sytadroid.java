@@ -12,13 +12,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 public class Sytadroid extends Activity {
+	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
+
 	// Wikango v1.0
 	private static final ComponentName OTHER_COMPONENT_NAME_1 = new ComponentName("com.gpsprevent", "com.gpsprevent.ui.StartupActivity");
 
@@ -46,6 +50,8 @@ public class Sytadroid extends Activity {
 	private WebView webview;
 
 	private SytadroidWebViewClient webViewClient;
+
+	private Toast toast;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,11 +101,23 @@ public class Sytadroid extends Activity {
 			launchSytadinWebsite();
 			return true;
 		case R.id.about:
-			Intent intent = new Intent("org.openintents.action.SHOW_ABOUT_DIALOG");
-			startActivityForResult(intent, 0);
-			return true;
+			try {
+				Intent intent = new Intent(ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG);
+				startActivityForResult(intent, 0);
+				return true;
+			} catch (Exception e) {
+				String message = "Failed to start activity for intent " + ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG;
+				Log.e(Sytadroid.TAG, message, e);
+				showToast(message);
+			}
 		}
 		return false;
+	}
+
+	private void showToast(String message) {
+		toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
+		toast.show();
 	}
 
 	private void loadUrlInWebview(String url, int scale, int x, int y, String title) {
@@ -156,21 +174,26 @@ public class Sytadroid extends Activity {
 			Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL_SYTADIN));
 			startActivity(myIntent);
 		} catch (Exception e) {
-			Log.e("Error while launching www.sytadin.fr website", e.getMessage(), e);
+			String message = "Error while launching www.sytadin.fr website";
+			Log.e(Sytadroid.TAG, message, e);
+			showToast(message);
 		}
 
 	}
 
 	@Override
 	public boolean onSearchRequested() {
+		ComponentName otherComponentName = OTHER_COMPONENT_NAME_1;
 		try {
 			Intent myIntent = new Intent();
 			myIntent.setAction(Intent.ACTION_MAIN);
 			myIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-			myIntent.setComponent(OTHER_COMPONENT_NAME_1);
+			myIntent.setComponent(otherComponentName);
 			startActivity(myIntent);
 		} catch (Exception e) {
-			Log.e("Error while launching Eklaireur", e.getMessage(), e);
+			String message = "Error while launching third party component " + otherComponentName.getPackageName();
+			Log.e(Sytadroid.TAG, message, e);
+			showToast(message);
 		}
 		return false;
 	}
