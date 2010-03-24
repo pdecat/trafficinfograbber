@@ -189,6 +189,7 @@ public class Sytadroid extends Activity {
 			myIntent.setAction(Intent.ACTION_MAIN);
 			myIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 			myIntent.setComponent(otherComponentName);
+			myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(myIntent);
 		} catch (Exception e) {
 			String message = "Error while launching third party component " + otherComponentName.getPackageName();
