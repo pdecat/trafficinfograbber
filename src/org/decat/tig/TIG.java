@@ -30,6 +30,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +43,9 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 public class TIG extends Activity {
+	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
+	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
+
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 
 	// Wikango v1.0
@@ -122,15 +126,8 @@ public class TIG extends Activity {
 			launchSytadinWebsite();
 			return true;
 		case R.id.about:
-			try {
-				Intent intent = new Intent(ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG);
-				startActivityForResult(intent, 0);
-				return true;
-			} catch (Exception e) {
-				String message = "Failed to start activity for intent " + ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG;
-				Log.e(TIG.TAG, message, e);
-				showToast(message);
-			}
+			showAbout();
+			return true;
 		}
 		return false;
 	}
@@ -139,6 +136,46 @@ public class TIG extends Activity {
 		toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
 		toast.show();
+	}
+
+	private void showAbout() {
+		Intent intent = new Intent(ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG);
+		int activityRequest = ACTIVITY_REQUEST_OI_ABOUT_LAUNCH;
+
+		try {
+			PackageManager pm = getPackageManager();
+			if (pm.queryIntentActivities(intent, 0).size() == 0) {
+				String message = "Requires 'OI About' to show about dialog. Searching Android Market for it...";
+				Log.i(TIG.TAG, message);
+				showToast(message);
+				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:org.openintents.about"));
+				activityRequest = ACTIVITY_REQUEST_OI_ABOUT_INSTALL;
+			}
+
+			startActivityForResult(intent, activityRequest);
+		} catch (Exception e) {
+			String message = "Failed to start activity for intent " + intent.toString();
+			Log.e(TIG.TAG, message, e);
+			showToast(message);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO: use this...
+		switch (requestCode) {
+		case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
+			if (resultCode == RESULT_OK) {
+				Log.d(TIG.TAG, "Back from OI About");
+			}
+			break;
+		case ACTIVITY_REQUEST_OI_ABOUT_INSTALL:
+			if (resultCode == RESULT_CANCELED) {
+				Log.d(TIG.TAG, "Back from Android Market");
+				showAbout();
+			}
+			break;
+		}
 	}
 
 	private void loadUrlInWebview(String url, int scale, int x, int y, String title) {
