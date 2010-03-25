@@ -1,3 +1,4 @@
-1
+2
 -
-Version 0.0.1: First private release
+Version 0.0.2: Second public version
+search Market for OI About if not installed
