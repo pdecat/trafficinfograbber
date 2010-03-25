@@ -1,17 +1,17 @@
-package org.decat.sytadroid.web;
+package org.decat.tig.web;
 
 import android.app.Activity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class SytadroidWebViewClient extends WebViewClient {
+public class TIGWebViewClient extends WebViewClient {
 	private transient final Activity activity;
 	private transient int xScroll;
 	private transient int yScroll;
 	private transient String lastModified;
 	private transient String title;
 
-	public SytadroidWebViewClient(Activity activity) {
+	public TIGWebViewClient(Activity activity) {
 		this.activity = activity;
 	}
 
@@ -33,7 +33,7 @@ public class SytadroidWebViewClient extends WebViewClient {
 			/*
 			 * try { SimpleDateFormat sdt = new SimpleDateFormat(); lastModified
 			 * = sdt.format(lastModified); } catch (Exception e) {
-			 * Log.w(Sytadroid.TAG, "Failed to parse last modified date '" +
+			 * Log.w(TIG.TAG, "Failed to parse last modified date '" +
 			 * lastModified + "'", e); }
 			 */
 			formattedTitle += " - " + lastModified;

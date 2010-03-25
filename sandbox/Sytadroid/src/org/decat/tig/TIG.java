@@ -1,9 +1,30 @@
-package org.decat.sytadroid;
+package org.decat.tig;
+
+/*
+ **
+ **       Copyright (C) 2010 Patrick Decat
+ ** 
+ **       This file is part of TrafficInfoGrabber.
+ **
+ **   TrafficInfoGrabber is free software: you can redistribute it and/or modify
+ **   it under the terms of the GNU General Public License as published by
+ **   the Free Software Foundation, either version 3 of the License, or
+ **   (at your option) any later version.
+ **
+ **   TrafficInfoGrabber is distributed in the hope that it will be useful,
+ **   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **   GNU General Public License for more details.
+ **
+ **   You should have received a copy of the GNU General Public License
+ **   along with TrafficInfoGrabber.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ */
 
 import java.io.File;
 
-import org.decat.sytadroid.net.ResourceDownloader;
-import org.decat.sytadroid.web.SytadroidWebViewClient;
+import org.decat.tig.net.ResourceDownloader;
+import org.decat.tig.web.TIGWebViewClient;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -20,7 +41,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-public class Sytadroid extends Activity {
+public class TIG extends Activity {
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 
 	// Wikango v1.0
@@ -32,7 +53,7 @@ public class Sytadroid extends Activity {
 	// Eklaireur v3.11
 	private static final ComponentName OTHER_COMPONENT_NAME_3 = new ComponentName("com.eklaireur.ekldroid", "com.eklaireur.ekldroid.eklaireur");
 
-	public static final String TAG = "SyDr";
+	public static final String TAG = "TIG";
 
 	private static final String FILENAME_IDF_BACKGROUND = "fond_IDF.jpg";
 	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
@@ -49,7 +70,7 @@ public class Sytadroid extends Activity {
 
 	private WebView webview;
 
-	private SytadroidWebViewClient webViewClient;
+	private TIGWebViewClient webViewClient;
 
 	private Toast toast;
 
@@ -59,7 +80,7 @@ public class Sytadroid extends Activity {
 		setContentView(R.layout.main);
 
 		webview = (WebView) findViewById(R.id.webview);
-		webViewClient = new SytadroidWebViewClient(this);
+		webViewClient = new TIGWebViewClient(this);
 		webview.setWebViewClient(webViewClient);
 		WebSettings settings = webview.getSettings();
 		settings.setJavaScriptEnabled(true);
@@ -107,7 +128,7 @@ public class Sytadroid extends Activity {
 				return true;
 			} catch (Exception e) {
 				String message = "Failed to start activity for intent " + ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG;
-				Log.e(Sytadroid.TAG, message, e);
+				Log.e(TIG.TAG, message, e);
 				showToast(message);
 			}
 		}
@@ -147,8 +168,8 @@ public class Sytadroid extends Activity {
 		new JobWithProgressDialog(this) {
 			@Override
 			public void doJob() {
-				String lastModified = ResourceDownloader.downloadFile(Sytadroid.this, URL_LIVE_TRAFFIC_IDF_STATE, FILENAME_IDF_TRAFFIC);
-				loadUrlInWebview("file:///android_asset/sytadroid.html", 200, 400, 150, "LLT", lastModified);
+				String lastModified = ResourceDownloader.downloadFile(TIG.this, URL_LIVE_TRAFFIC_IDF_STATE, FILENAME_IDF_TRAFFIC);
+				loadUrlInWebview("file:///android_asset/tig.html", 200, 400, 150, "LLT", lastModified);
 			}
 		}.start();
 	}
@@ -175,7 +196,7 @@ public class Sytadroid extends Activity {
 			startActivity(myIntent);
 		} catch (Exception e) {
 			String message = "Error while launching www.sytadin.fr website";
-			Log.e(Sytadroid.TAG, message, e);
+			Log.e(TIG.TAG, message, e);
 			showToast(message);
 		}
 
@@ -193,7 +214,7 @@ public class Sytadroid extends Activity {
 			startActivity(myIntent);
 		} catch (Exception e) {
 			String message = "Error while launching third party component " + otherComponentName.getPackageName();
-			Log.e(Sytadroid.TAG, message, e);
+			Log.e(TIG.TAG, message, e);
 			showToast(message);
 		}
 		return false;

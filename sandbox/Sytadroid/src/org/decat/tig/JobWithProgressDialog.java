@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.decat.sytadroid;
+package org.decat.tig;
 
 import android.app.ProgressDialog;
 import android.content.Context;

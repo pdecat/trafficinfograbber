@@ -1,9 +1,9 @@
-package org.decat.sytadroid;
+package org.decat.tig;
 
 import java.text.SimpleDateFormat;
 
 //@TestTargetClass(value = null)
-public class SytadroidTest {
+public class TIGTest {
 
 	public static void testLastModifiedFormat() {
 		SimpleDateFormat sdt = new SimpleDateFormat();

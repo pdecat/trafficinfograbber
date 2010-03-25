@@ -1,4 +1,4 @@
-package org.decat.sytadroid.net;
+package org.decat.tig.net;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,7 +12,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.decat.sytadroid.Sytadroid;
+import org.decat.tig.TIG;
 
 import android.app.Activity;
 import android.content.ContextWrapper;
@@ -24,7 +24,7 @@ public class ResourceDownloader {
 	public static String downloadFile(ContextWrapper context, String url, String filename) {
 		String lastModified = null;
 		try {
-			Log.i(Sytadroid.TAG, "Trying to download '" + url + "' to '" + context.getFilesDir().getAbsolutePath() + "'");
+			Log.i(TIG.TAG, "Trying to download '" + url + "' to '" + context.getFilesDir().getAbsolutePath() + "'");
 			HttpClient client = new DefaultHttpClient();
 			HttpGet get = new HttpGet(url);
 			HttpResponse response = client.execute(get);
@@ -35,9 +35,9 @@ public class ResourceDownloader {
 			readResponse(responseEntity, bytes);
 
 			storeResource(context, filename, bytes);
-			Log.i(Sytadroid.TAG, "Successfully downloaded resource");
+			Log.i(TIG.TAG, "Successfully downloaded resource");
 		} catch (Exception e) {
-			Log.e(Sytadroid.TAG, "Could not download and save resources", e);
+			Log.e(TIG.TAG, "Could not download and save resources", e);
 		}
 		return lastModified;
 	}
@@ -90,7 +90,7 @@ public class ResourceDownloader {
 				date = sdt.parse(value);
 				break;
 			} catch (Exception e) {
-				Log.e(Sytadroid.TAG, "Failed to retrieve and convert 'Last-Modified' header", e);
+				Log.e(TIG.TAG, "Failed to retrieve and convert 'Last-Modified' header", e);
 			}
 		}
 		return date;

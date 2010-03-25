@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>SytadroidTest</name>
+	<name>TrafficInfoGrabberTest</name>
 	<comment></comment>
 	<projects>
-		<project>Sytadroid</project>
+		<project>TrafficInfoGrabber</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
