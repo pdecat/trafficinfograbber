@@ -26,5 +26,5 @@
     <string name="about">À propos</string>
 
 	<!-- Strings for About dialog -->
-	<string name="about_comments">Un simple bac à sable à des fins de test.</string>
+	<string name="about_comments">Un simple bac à sable à des fins de test</string>
 </resources>
