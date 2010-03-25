@@ -1,4 +1,4 @@
-2
+3
 -
-Version 0.0.2: Second public version
-search Market for OI About if not installed
+Version 0.0.3: Third public version
+Fix links and copyrights
