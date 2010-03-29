@@ -31,4 +31,5 @@
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple attrapeur d\'information trafic</string>
+	<string name="about_website_label">TrafficInfoGrabber chez Google Code</string>
 </resources>
