@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="preferencesEditor">dear2dear - Editeur de préférences</string>
+    <string name="preferences">Préférences</string>
+    <string name="about">À propos</string>
+
+	<!-- Strings for About dialog -->
+	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>
+	<string name="about_website_label">dear2dear chez Google Code</string>
+</resources>
