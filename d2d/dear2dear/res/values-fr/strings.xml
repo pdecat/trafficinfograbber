@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- Activities -->
     <string name="preferencesEditor">dear2dear - Editeur de préférences</string>
+
+    <!-- Menu items -->
     <string name="preferences">Préférences</string>
     <string name="about">À propos</string>
+    
+    <!-- Strings for steps -->
+    <string name="q_what">quoi ?</string>
+    <string name="q_to_whom">à qui ?</string>
+    <string name="to">à</string>
+    <string name="q_how">comment ?</string>
+    <string name="by">par</string>
+    
+    <string name="send">Envoyer</string>
+    <string name="sending">Envoi</string>
+    <string name="restart">Redémarrer</string>
 
 	<!-- Strings for About dialog -->
-	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>
+	<string name="about_comments">Un simple notificateur des personnes qui vous sont cheres</string>
 	<string name="about_website_label">dear2dear chez Google Code</string>
 </resources>

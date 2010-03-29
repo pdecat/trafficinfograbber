@@ -75,10 +75,18 @@ public class dear2dear extends Activity {
 	public void onResume() {
 		super.onResume();
 
+		if (NOT_DEFINED.equals(preferences.getString(PreferencesEditor.STR_ACTION_1, NOT_DEFINED))) {
+			showPreferencesEditor();
+		} else {
+			startFromScratch();
+		}
+	}
+
+	private void startFromScratch() {
 		tv.setText(getString(R.string.send) + " " + getString(R.string.q_what));
-		firstStepOption(btn1, preferences.getString(PreferencesEditor.STR_ACTION_1, NOT_DEFINED));
-		firstStepOption(btn2, preferences.getString(PreferencesEditor.STR_ACTION_2, NOT_DEFINED));
-		firstStepOption(btn3, preferences.getString(PreferencesEditor.STR_ACTION_3, NOT_DEFINED));
+		firstStepOption(btn1, preferences.getString(PreferencesEditor.STR_ACTION_1, ""));
+		firstStepOption(btn2, preferences.getString(PreferencesEditor.STR_ACTION_2, ""));
+		firstStepOption(btn3, preferences.getString(PreferencesEditor.STR_ACTION_3, ""));
 	}
 
 	@Override
@@ -92,18 +100,22 @@ public class dear2dear extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.preferences:
-			Intent intent = new Intent();
-			intent.setAction(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_PREFERENCE);
-			intent.setComponent(new ComponentName(this.getPackageName(), PreferencesEditor.class.getName()));
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
+			showPreferencesEditor();
 			return true;
 		case R.id.about:
 			showAbout();
 			return true;
 		}
 		return false;
+	}
+
+	private void showPreferencesEditor() {
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_PREFERENCE);
+		intent.setComponent(new ComponentName(this.getPackageName(), PreferencesEditor.class.getName()));
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 
 	private void showAbout() {
@@ -147,6 +159,7 @@ public class dear2dear extends Activity {
 
 	private void firstStepOption(final Button btn, final String option) {
 		btn.setText(option);
+		btn.setVisibility(View.VISIBLE);
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				firstStepChoice = option;
@@ -160,6 +173,7 @@ public class dear2dear extends Activity {
 
 	private void secondStepOption(final Button btn, final String option) {
 		btn.setText(option);
+		btn.setVisibility(View.VISIBLE);
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				secondStepChoice = option;
@@ -173,6 +187,7 @@ public class dear2dear extends Activity {
 
 	private void thirdStepOption(final Button btn, final String option) {
 		btn.setText(option);
+		btn.setVisibility(View.VISIBLE);
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				thirdStepChoice = option;
@@ -184,10 +199,19 @@ public class dear2dear extends Activity {
 		});
 	}
 
-	private void fourthStepOption(Button btn, String option) {
+	private void fourthStepOption(final Button btn, String option) {
 		btn.setText(option);
+		btn.setVisibility(View.VISIBLE);
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
+				btn.setText(getString(R.string.restart));
+				btn.setVisibility(View.VISIBLE);
+				btn.setOnClickListener(new Button.OnClickListener() {
+					public void onClick(View v) {
+						startFromScratch();
+					}
+				});
+
 				showToast(getString(R.string.sending) + " " + thirdStepChoice + " " + getString(R.string.to) + " " + secondStepChoice);
 				if (getString(R.string.sms).equals(thirdStepChoice)) {
 					SmsManager sm = SmsManager.getDefault();

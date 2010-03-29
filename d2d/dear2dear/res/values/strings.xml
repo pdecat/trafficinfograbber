@@ -19,6 +19,7 @@
     <string name="sending">Sending</string>
     <string name="sms">SMS</string>
     <string name="email">Email</string>
+    <string name="restart">Restart</string>
 
     <!-- Strings for About dialog -->
 	<string name="about_comments">A simple dear notification application</string>
