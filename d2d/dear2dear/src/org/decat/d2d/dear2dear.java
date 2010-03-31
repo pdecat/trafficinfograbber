@@ -82,7 +82,7 @@ public class dear2dear extends Activity {
 		Intent intent = new Intent(this, dear2dear.class);
 		notification.setLatestEventInfo(this, getString(R.string.app_name), getString(R.string.notificationLabel), PendingIntent.getActivity(this.getBaseContext(), 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT));
-		notification.flags |= Notification.FLAG_ONGOING_EVENT;
+		notification.flags |= Notification.FLAG_NO_CLEAR;
 		notificationManager.notify(0, notification);
 	}
 
