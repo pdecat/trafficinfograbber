@@ -44,6 +44,6 @@
     <string name="restart">Redémarrer</string>
 
 	<!-- Strings for About dialog -->
-	<string name="about_comments">Un simple notificateur des personnes qui vous sont cheres</string>
+	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>
 	<string name="about_website_label">dear2dear chez Google Code</string>
 </resources>
