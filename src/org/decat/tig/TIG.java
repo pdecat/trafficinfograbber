@@ -105,10 +105,10 @@ public class TIG extends Activity {
 
 	private void showNotificationShortcut() {
 		NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationLabel), System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationMessage), System.currentTimeMillis());
 		Intent intent = new Intent(this, TIG.class);
-		notification.setLatestEventInfo(this, getString(R.string.app_name), getString(R.string.notificationLabel), PendingIntent.getActivity(this.getBaseContext(), 0, intent,
-				PendingIntent.FLAG_UPDATE_CURRENT));
+		notification.setLatestEventInfo(this, getString(R.string.app_name) + " " + getString(R.string.app_version), getString(R.string.notificationLabel), PendingIntent.getActivity(this
+				.getBaseContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
 		notification.flags |= Notification.FLAG_NO_CLEAR;
 		notificationManager.notify(0, notification);
 	}
