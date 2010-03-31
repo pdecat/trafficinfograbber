@@ -30,7 +30,7 @@
     <string name="preferences">Preferences</string>
     <string name="about">About</string>
 
-	<string name="notificationLabel">Launch</string>
+	<string name="notificationLabel">Launch dear2dear</string>
 	<string name="notificationMessage">Adding a shortcut to launch dear2dear...</string>
     
     <!-- Strings for steps -->
