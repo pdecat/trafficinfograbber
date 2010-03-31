@@ -1,6 +1,9 @@
 package org.decat.d2d;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -69,6 +72,16 @@ public class dear2dear extends Activity {
 		ll.addView(btn3);
 
 		setContentView(ll);
+
+		showNotificationShortcut();
+	}
+
+	private void showNotificationShortcut() {
+		NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification notification = new Notification(R.drawable.icon, "Test d2d", System.currentTimeMillis());
+		Intent intent = new Intent(this, dear2dear.class);
+		notification.setLatestEventInfo(this, getString(R.string.app_name), "Launch", PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+		notificationManager.notify(0, notification);
 	}
 
 	@Override
