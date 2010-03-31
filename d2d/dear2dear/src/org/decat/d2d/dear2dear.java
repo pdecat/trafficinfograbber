@@ -78,9 +78,10 @@ public class dear2dear extends Activity {
 
 	private void showNotificationShortcut() {
 		NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.icon, "Test d2d", System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationLabel), System.currentTimeMillis());
 		Intent intent = new Intent(this, dear2dear.class);
-		notification.setLatestEventInfo(this, getString(R.string.app_name), "Launch", PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+		notification.setLatestEventInfo(this, getString(R.string.app_name), getString(R.string.notificationLabel), PendingIntent.getActivity(this.getBaseContext(), 0, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT));
 		notificationManager.notify(0, notification);
 	}
 

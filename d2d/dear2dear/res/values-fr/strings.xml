@@ -28,6 +28,9 @@
     <!-- Menu items -->
     <string name="preferences">Préférences</string>
     <string name="about">À propos</string>
+
+	<string name="notificationLabel">Lancer</string>
+	<string name="notificationMessage">Ajout d'un raccourci pour lancer dear2dear...</string>
     
     <!-- Strings for steps -->
     <string name="q_what">quoi ?</string>
