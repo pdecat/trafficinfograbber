@@ -29,6 +29,9 @@
     <string name="trafficCollisions">Accidents</string>
     <string name="about">À propos</string>
 
+	<string name="notificationLabel">Lancer TIG</string>
+	<string name="notificationMessage">Ajout d'un raccourci pour lancer TIG...</string>
+
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple attrapeur d\'information trafic</string>
 	<string name="about_website_label">TrafficInfoGrabber chez Google Code</string>

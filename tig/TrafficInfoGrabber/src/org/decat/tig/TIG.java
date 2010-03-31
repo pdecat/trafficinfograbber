@@ -27,7 +27,11 @@ import org.decat.tig.net.ResourceDownloader;
 import org.decat.tig.web.TIGWebViewClient;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -95,6 +99,17 @@ public class TIG extends Activity {
 
 		// Default view
 		showLiveTraffic();
+
+		showNotificationShortcut();
+	}
+
+	private void showNotificationShortcut() {
+		NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationLabel), System.currentTimeMillis());
+		Intent intent = new Intent(this, TIG.class);
+		notification.setLatestEventInfo(this, getString(R.string.app_name), getString(R.string.notificationLabel), PendingIntent.getActivity(this.getBaseContext(), 0, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT));
+		notificationManager.notify(0, notification);
 	}
 
 	@Override
