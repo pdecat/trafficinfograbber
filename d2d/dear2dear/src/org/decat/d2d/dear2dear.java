@@ -41,9 +41,9 @@ public class dear2dear extends Activity {
 
 	private SharedPreferences preferences;
 
-	protected String firstStepChoice;
-	protected String secondStepChoice;
-	protected String thirdStepChoice;
+	protected String messageStepChoice;
+	protected String destinationStepChoice;
+	protected String mediaStepChoice;
 
 	private void showToast(String message) {
 		toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
@@ -95,13 +95,6 @@ public class dear2dear extends Activity {
 		} else {
 			startFromScratch();
 		}
-	}
-
-	private void startFromScratch() {
-		tv.setText(getString(R.string.send) + " " + getString(R.string.q_what));
-		firstStepOption(btn1, preferences.getString(PreferencesEditor.STR_ACTION_1, ""));
-		firstStepOption(btn2, preferences.getString(PreferencesEditor.STR_ACTION_2, ""));
-		firstStepOption(btn3, preferences.getString(PreferencesEditor.STR_ACTION_3, ""));
 	}
 
 	@Override
@@ -172,42 +165,49 @@ public class dear2dear extends Activity {
 		}
 	}
 
-	private void firstStepOption(final Button btn, final String option) {
+	private void startFromScratch() {
+		tv.setText(getString(R.string.send) + " " + getString(R.string.q_to_whom));
+		destinationStepOption(btn1, preferences.getString(PreferencesEditor.STR_DESTINATION_1, NOT_DEFINED));
+		destinationStepOption(btn2, preferences.getString(PreferencesEditor.STR_DESTINATION_2, NOT_DEFINED));
+		destinationStepOption(btn3, preferences.getString(PreferencesEditor.STR_DESTINATION_3, NOT_DEFINED));
+	}
+
+	private void destinationStepOption(final Button btn, final String option) {
 		btn.setText(option);
 		btn.setVisibility(View.VISIBLE);
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				firstStepChoice = option;
-				tv.setText(getString(R.string.send) + " \"" + firstStepChoice + "\" " + getString(R.string.q_to_whom));
-				secondStepOption(btn1, preferences.getString(PreferencesEditor.STR_DESTINATION_1, NOT_DEFINED));
-				secondStepOption(btn2, preferences.getString(PreferencesEditor.STR_DESTINATION_2, NOT_DEFINED));
-				secondStepOption(btn3, preferences.getString(PreferencesEditor.STR_DESTINATION_3, NOT_DEFINED));
+				destinationStepChoice = option;
+				tv.setText(getString(R.string.send) + " \"" + destinationStepChoice + "\" " + getString(R.string.q_what));
+				messageStepOption(btn1, preferences.getString(PreferencesEditor.STR_ACTION_1, ""));
+				messageStepOption(btn2, preferences.getString(PreferencesEditor.STR_ACTION_2, ""));
+				messageStepOption(btn3, preferences.getString(PreferencesEditor.STR_ACTION_3, ""));
 			}
 		});
 	}
 
-	private void secondStepOption(final Button btn, final String option) {
+	private void messageStepOption(final Button btn, final String option) {
 		btn.setText(option);
 		btn.setVisibility(View.VISIBLE);
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				secondStepChoice = option;
-				tv.setText(getString(R.string.send) + " \"" + firstStepChoice + "\"" + " " + getString(R.string.to) + " \"" + secondStepChoice + "\" " + getString(R.string.q_how));
-				thirdStepOption(btn1, getString(R.string.sms));
-				thirdStepOption(btn2, getString(R.string.email));
+				messageStepChoice = option;
+				tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoice + "\" " + getString(R.string.q_how));
+				mediaStepOption(btn1, getString(R.string.sms));
+				mediaStepOption(btn2, getString(R.string.email));
 				btn3.setVisibility(View.INVISIBLE);
 			}
 		});
 	}
 
-	private void thirdStepOption(final Button btn, final String option) {
+	private void mediaStepOption(final Button btn, final String option) {
 		btn.setText(option);
 		btn.setVisibility(View.VISIBLE);
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				thirdStepChoice = option;
-				tv.setText(getString(R.string.send) + " \"" + firstStepChoice + "\"" + " " + getString(R.string.to) + " \"" + secondStepChoice + "\" " + getString(R.string.by) + " \""
-						+ thirdStepChoice + "\"");
+				mediaStepChoice = option;
+				tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoice + "\" " + getString(R.string.by) + " \""
+						+ mediaStepChoice + "\"");
 				fourthStepOption(btn1, getString(R.string.send));
 				btn2.setVisibility(View.INVISIBLE);
 			}
@@ -227,12 +227,12 @@ public class dear2dear extends Activity {
 					}
 				});
 
-				showToast(getString(R.string.sending) + " " + thirdStepChoice + " " + getString(R.string.to) + " " + secondStepChoice);
-				if (getString(R.string.sms).equals(thirdStepChoice)) {
+				showToast(getString(R.string.sending) + " " + mediaStepChoice + " " + getString(R.string.to) + " " + destinationStepChoice);
+				if (getString(R.string.sms).equals(mediaStepChoice)) {
 					SmsManager sm = SmsManager.getDefault();
 
-					sm.sendTextMessage(getDestinationAddress(secondStepChoice), null, firstStepChoice, null, null);
-				} else if (getString(R.string.email).equals(thirdStepChoice)) {
+					sm.sendTextMessage(getDestinationAddress(destinationStepChoice), null, messageStepChoice, null, null);
+				} else if (getString(R.string.email).equals(mediaStepChoice)) {
 					showToast("TODO: Implement email");
 					// TODO: handle email
 				}
