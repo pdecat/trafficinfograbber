@@ -22,13 +22,15 @@
 */
 -->
 <resources>
-    <string name="app_name">TrafficInfoGrabber</string>
-    <string name="liveTrafficLite">Live Traffic Live</string>
-    <string name="liveTraffic">Live Traffic</string>
-    <string name="closedAtNight">Closed At Night</string>
-    <string name="quickStats">Quicks statistics</string>
-    <string name="trafficCollisions">Traffic Collisions</string>
-    <string name="sytadinWebsite">www.sytadin.fr</string>
+	<string name="app_name">TrafficInfoGrabber</string>
+	<string name="app_version">0.0.4-SNAPSHOT</string>
+
+	<string name="liveTrafficLite">Live Traffic Live</string>
+	<string name="liveTraffic">Live Traffic</string>
+	<string name="closedAtNight">Closed At Night</string>
+	<string name="quickStats">Quicks statistics</string>
+	<string name="trafficCollisions">Traffic Collisions</string>
+	<string name="sytadinWebsite">www.sytadin.fr</string>
 	<string name="about">About</string>
 
 	<string name="notificationLabel">Launch TIG</string>

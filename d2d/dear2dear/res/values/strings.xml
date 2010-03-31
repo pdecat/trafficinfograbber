@@ -23,30 +23,31 @@
 -->
 <resources>
 	<!-- Activities -->
-    <string name="app_name">dear2dear</string>
-    <string name="preferencesEditor">dear2dear - Preferences Editor</string>
-    
-    <!-- Menu items -->
-    <string name="preferences">Preferences</string>
-    <string name="about">About</string>
+	<string name="app_name">dear2dear</string>
+	<string name="app_version">0.0.2-SNAPSHOT</string>
+	<string name="preferencesEditor">dear2dear - Preferences Editor</string>
+
+	<!-- Menu items -->
+	<string name="preferences">Preferences</string>
+	<string name="about">About</string>
 
 	<string name="notificationLabel">Launch dear2dear</string>
 	<string name="notificationMessage">Adding a shortcut to launch dear2dear...</string>
-    
-    <!-- Strings for steps -->
-    <string name="q_what">What?</string>
-    <string name="q_to_whom">to Whom?</string>
-    <string name="to">to</string>
-    <string name="q_how">How?</string>
-    <string name="by">by</string>
-    
-    <string name="send">Send</string>
-    <string name="sending">Sending</string>
-    <string name="sms">SMS</string>
-    <string name="email">Email</string>
-    <string name="restart">Restart</string>
 
-    <!-- Strings for About dialog -->
+	<!-- Strings for steps -->
+	<string name="q_what">What?</string>
+	<string name="q_to_whom">to Whom?</string>
+	<string name="to">to</string>
+	<string name="q_how">How?</string>
+	<string name="by">by</string>
+
+	<string name="send">Send</string>
+	<string name="sending">Sending</string>
+	<string name="sms">SMS</string>
+	<string name="email">Email</string>
+	<string name="restart">Restart</string>
+
+	<!-- Strings for About dialog -->
 	<string name="about_comments">A simple dear notification application</string>
 	<string name="about_copyright">Copyright © 2010 Patrick Decat</string>
 	<string name="about_website_label">dear2dear at Google Code</string>
