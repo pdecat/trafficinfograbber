@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.provider.Contacts.People;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -36,7 +37,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.GestureDetector.SimpleOnGestureListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Sandbox extends Activity {
@@ -44,46 +45,9 @@ public class Sandbox extends Activity {
 	public static final String TAG = "Sandbox";
 	private Toast toast;
 	private GestureDetector gestureDetector;
+	private TextView textview;
 
-	class MyGestureDetector extends SimpleOnGestureListener {
-		private static final int SWIPE_MIN_DISTANCE = 60;
-		private static final int SWIPE_THRESHOLD_VELOCITY = 100;
-
-		public MyGestureDetector() {
-		}
-
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			try {
-				if (Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY || Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-					float deltaX = e1.getX() - e2.getX();
-					float deltaY = e1.getY() - e2.getY();
-
-					// Détection de l'axe le plus important du mouvement entre
-					// horizontal et vertical
-					if (Math.abs(deltaX) > Math.abs(deltaY)) {
-						if (-deltaX > SWIPE_MIN_DISTANCE) {
-							showToast("Swipe horizontal gauche -> droite.");
-						} else if (deltaX > SWIPE_MIN_DISTANCE) {
-							showToast("Swipe horizontal droite -> gauche.");
-						}
-					} else {
-						if (deltaY > SWIPE_MIN_DISTANCE) {
-							showToast("Swipe vertical bas -> haut.");
-						} else if (-deltaY > SWIPE_MIN_DISTANCE) {
-							showToast("Swipe vertical haut -> bas.");
-						}
-					}
-				}
-			} catch (Exception e) {
-				Log.e(Sandbox.TAG, "Failed to handle swipe", e);
-			}
-			return false;
-		}
-
-	}
-
-	private void showToast(String message) {
+	void showToast(String message) {
 		toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
 		toast.show();
@@ -94,12 +58,21 @@ public class Sandbox extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		gestureDetector = new GestureDetector(this, new MyGestureDetector());
+		textview = (TextView) findViewById(R.id.textview);
+
+		gestureDetector = new GestureDetector(this, new MyGestureDetector(this));
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		return gestureDetector.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean onSearchRequested() {
+		Log.i(TAG, "onSearchRequested triggered");
+
+		return false;
 	}
 
 	@Override
@@ -112,6 +85,12 @@ public class Sandbox extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.listApplications:
+			listApplications();
+			break;
+		case R.id.showContactDetails:
+			showContactDetails();
+			break;
 		case R.id.about:
 			try {
 				Intent intent = new Intent(ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG);
@@ -121,15 +100,16 @@ public class Sandbox extends Activity {
 				Log.e(Sandbox.TAG, message, e);
 				showToast(message);
 			}
-
-			return true;
+			break;
+		default:
+			return false;
 		}
-		return false;
+		return true;
 	}
 
-	@Override
-	public boolean onSearchRequested() {
+	private void listApplications() {
 		// List installed applications
+		StringBuilder sb = new StringBuilder();
 		PackageManager pm = this.getPackageManager();
 
 		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -139,10 +119,32 @@ public class Sandbox extends Activity {
 		Collections.sort(resolvInfos, new ResolveInfo.DisplayNameComparator(pm));
 
 		for (ResolveInfo resolvInfo : resolvInfos) {
-			Log.i(TAG, resolvInfo.activityInfo.applicationInfo.packageName + "/" + resolvInfo.activityInfo.name);
+			String line = resolvInfo.activityInfo.applicationInfo.packageName + "/" + resolvInfo.activityInfo.name;
+			sb.append(line);
+			sb.append("\n");
+			Log.i(TAG, line);
 		}
-
-		return false;
 	}
 
+	private void showContactDetails() {
+		String[] columns = {
+				People.CONTENT_ITEM_TYPE, People.CONTENT_TYPE, People.DISPLAY_NAME, People.PRIMARY_EMAIL_ID, People.PRIMARY_ORGANIZATION_ID, People.PRIMARY_PHONE_ID, People.CUSTOM_RINGTONE,
+				People.IM_ACCOUNT, People.LABEL, People.LAST_TIME_CONTACTED, People.NAME, People.NOTES, People.NUMBER, People.NUMBER_KEY, People.SEND_TO_VOICEMAIL, People.STARRED,
+				People.TIMES_CONTACTED, People.TYPE,
+		};
+
+		String contactUri = "content://contacts/people/39";
+		StringBuilder sb = new StringBuilder("Contact information for ");
+		sb.append(contactUri);
+		sb.append("\n");
+
+		for (int i = 0; i < columns.length; i++) {
+			String line = columns[i] + "=" + ContactHelper.getContactInformation(this, contactUri, columns[i]);
+			sb.append(line);
+			sb.append("\n");
+			Log.i(TAG, line);
+		}
+
+		textview.setText(sb);
+	}
 }
