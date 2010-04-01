@@ -191,6 +191,8 @@ public class TIG extends Activity {
 				showAbout();
 			}
 			break;
+		default:
+			Log.w(TIG.TAG, "Unknow activity request code " + requestCode);
 		}
 	}
 
