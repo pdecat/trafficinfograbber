@@ -47,6 +47,6 @@ public class ContactHelper {
 	}
 
 	public static String getContactNameFromUriString(Activity activity, String contactUri) {
-		return getContactInformation(activity, contactUri, People.NAME);
+		return getContactInformation(activity, contactUri, People.DISPLAY_NAME);
 	}
 }
