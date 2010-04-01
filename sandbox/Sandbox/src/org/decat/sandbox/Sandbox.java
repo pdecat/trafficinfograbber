@@ -139,10 +139,15 @@ public class Sandbox extends Activity {
 		sb.append("\n");
 
 		for (int i = 0; i < columns.length; i++) {
-			String line = columns[i] + "=" + ContactHelper.getContactInformation(this, contactUri, columns[i]);
-			sb.append(line);
-			sb.append("\n");
-			Log.i(TAG, line);
+			String column = columns[i];
+			try {
+				String line = column + "=" + ContactHelper.getContactInformation(this, contactUri, column);
+				sb.append(line);
+				sb.append("\n");
+				Log.i(TAG, line);
+			} catch (Exception e) {
+				Log.e(TAG, "Failed to retrieve contact information " + column, e);
+			}
 		}
 
 		textview.setText(sb);
