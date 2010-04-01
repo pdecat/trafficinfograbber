@@ -1,4 +1,29 @@
+/*
+ **
+ **       Copyright (C) 2010 Patrick Decat
+ ** 
+ **       This file is part of dear2dear.
+ **
+ **   dear2dear is free software: you can redistribute it and/or modify
+ **   it under the terms of the GNU General Public License as published by
+ **   the Free Software Foundation, either version 3 of the License, or
+ **   (at your option) any later version.
+ **
+ **   dear2dear is distributed in the hope that it will be useful,
+ **   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **   GNU General Public License for more details.
+ **
+ **   You should have received a copy of the GNU General Public License
+ **   along with dear2dear.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ */
+
 package org.decat.d2d;
+
+import java.util.List;
+
+import org.decat.d2d.Preference.PreferenceGroup;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -23,8 +48,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class dear2dear extends Activity {
-	private static final String NOT_DEFINED = "NOT_DEFINED";
-
 	public static final String TAG = "D2D";
 
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
@@ -33,13 +56,13 @@ public class dear2dear extends Activity {
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 
 	private TextView tv;
-	private Button btn1;
-	private Button btn2;
-	private Button btn3;
+
+	private Button buttons[];
 
 	private Toast toast;
 
-	private SharedPreferences preferences;
+	private SharedPreferences sharedPreferences;
+	private PreferencesHelper preferencesHolder;
 
 	protected String messageStepChoice;
 	protected String destinationStepChoice;
@@ -55,7 +78,8 @@ public class dear2dear extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		preferences = getPreferences(Context.MODE_PRIVATE);
+		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+		preferencesHolder = new PreferencesHelper(sharedPreferences);
 
 		LinearLayout ll = new LinearLayout(this);
 		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
@@ -64,12 +88,11 @@ public class dear2dear extends Activity {
 		tv.setTextSize(40);
 		ll.addView(tv);
 
-		btn1 = new Button(this);
-		ll.addView(btn1);
-		btn2 = new Button(this);
-		ll.addView(btn2);
-		btn3 = new Button(this);
-		ll.addView(btn3);
+		buttons = new Button[3];
+		for (int i = 0; i < buttons.length; i++) {
+			buttons[i] = new Button(this);
+			ll.addView(buttons[i]);
+		}
 
 		setContentView(ll);
 
@@ -90,7 +113,10 @@ public class dear2dear extends Activity {
 	public void onResume() {
 		super.onResume();
 
-		if (NOT_DEFINED.equals(preferences.getString(PreferencesEditor.STR_ACTION_1, NOT_DEFINED))) {
+		if (preferencesHolder.getString(preferencesHolder.preferences[0]) == null) {
+			String message = "Please proceed with configuration first...";
+			Log.i(dear2dear.TAG, message);
+			showToast(message);
 			showPreferencesEditor();
 		} else {
 			startFromScratch();
@@ -162,42 +188,61 @@ public class dear2dear extends Activity {
 				showAbout();
 			}
 			break;
+		default:
+			Log.w(dear2dear.TAG, "Unknow activity request code " + requestCode);
 		}
 	}
 
 	private void startFromScratch() {
 		tv.setText(getString(R.string.send) + " " + getString(R.string.q_to_whom));
-		destinationStepOption(btn1, preferences.getString(PreferencesEditor.STR_DESTINATION_1, NOT_DEFINED));
-		destinationStepOption(btn2, preferences.getString(PreferencesEditor.STR_DESTINATION_2, NOT_DEFINED));
-		destinationStepOption(btn3, preferences.getString(PreferencesEditor.STR_DESTINATION_3, NOT_DEFINED));
+		List<Preference> contacts = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_CONTACTS);
+		for (int i = 0; i < 3; i++) {
+			Preference contact = contacts.get(i);
+			String optionValue = preferencesHolder.getString(contact);
+			String optionLabel = ContactHelper.getContactNameFromUriString(this, optionValue);
+			destinationStepOption(buttons[i], optionLabel, optionValue);
+		}
 	}
 
-	private void destinationStepOption(final Button btn, final String option) {
-		btn.setText(option);
-		btn.setVisibility(View.VISIBLE);
-		btn.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View v) {
-				destinationStepChoice = option;
-				tv.setText(getString(R.string.send) + " \"" + destinationStepChoice + "\" " + getString(R.string.q_what));
-				messageStepOption(btn1, preferences.getString(PreferencesEditor.STR_ACTION_1, ""));
-				messageStepOption(btn2, preferences.getString(PreferencesEditor.STR_ACTION_2, ""));
-				messageStepOption(btn3, preferences.getString(PreferencesEditor.STR_ACTION_3, ""));
-			}
-		});
+	private void destinationStepOption(final Button btn, final String optionLabel, final String optionValue) {
+		if (optionValue == null) {
+			btn.setVisibility(View.INVISIBLE);
+		} else {
+			btn.setVisibility(View.VISIBLE);
+			btn.setText(optionLabel);
+			btn.setOnClickListener(new Button.OnClickListener() {
+				public void onClick(View v) {
+					destinationStepChoice = optionValue;
+					tv.setText(getString(R.string.send) + " \"" + destinationStepChoice + "\" " + getString(R.string.q_what));
+
+					List<Preference> messages = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_MESSAGES);
+					for (int i = 0; i < 3; i++) {
+						Preference message = messages.get(i);
+						String optionValue = preferencesHolder.getString(message);
+						String optionLabel = optionValue;
+						messageStepOption(buttons[i], optionLabel, optionValue);
+					}
+				}
+			});
+		}
 	}
 
-	private void messageStepOption(final Button btn, final String option) {
-		btn.setText(option);
-		btn.setVisibility(View.VISIBLE);
-		btn.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View v) {
-				messageStepChoice = option;
-				tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoice + "\" " + getString(R.string.q_how));
-				mediaStepOption(btn1, getString(R.string.sms));
-				mediaStepOption(btn2, getString(R.string.email));
-				btn3.setVisibility(View.INVISIBLE);
-			}
-		});
+	private void messageStepOption(final Button btn, final String optionLabel, final String optionValue) {
+		if (optionValue == null) {
+			btn.setVisibility(View.INVISIBLE);
+		} else {
+			btn.setVisibility(View.VISIBLE);
+			btn.setText(optionLabel);
+			btn.setOnClickListener(new Button.OnClickListener() {
+				public void onClick(View v) {
+					messageStepChoice = optionValue;
+					tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoice + "\" " + getString(R.string.q_how));
+					mediaStepOption(buttons[0], getString(R.string.sms));
+					mediaStepOption(buttons[1], getString(R.string.email));
+					buttons[2].setVisibility(View.INVISIBLE);
+				}
+			});
+		}
 	}
 
 	private void mediaStepOption(final Button btn, final String option) {
@@ -208,8 +253,8 @@ public class dear2dear extends Activity {
 				mediaStepChoice = option;
 				tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoice + "\" " + getString(R.string.by) + " \""
 						+ mediaStepChoice + "\"");
-				fourthStepOption(btn1, getString(R.string.send));
-				btn2.setVisibility(View.INVISIBLE);
+				fourthStepOption(buttons[0], getString(R.string.send));
+				buttons[1].setVisibility(View.INVISIBLE);
 			}
 		});
 	}
@@ -231,24 +276,13 @@ public class dear2dear extends Activity {
 				if (getString(R.string.sms).equals(mediaStepChoice)) {
 					SmsManager sm = SmsManager.getDefault();
 
-					sm.sendTextMessage(getDestinationAddress(destinationStepChoice), null, messageStepChoice, null, null);
+					sm.sendTextMessage(ContactHelper.getContactPhoneNumberFromUriString(dear2dear.this, destinationStepChoice), null, messageStepChoice, null, null);
 				} else if (getString(R.string.email).equals(mediaStepChoice)) {
 					showToast("TODO: Implement email");
 					// TODO: handle email
 				}
 			}
-
-			private String getDestinationAddress(String secondStepChoice) {
-				String destinationAddress = null;
-				if (preferences.getString(PreferencesEditor.STR_DESTINATION_1, NOT_DEFINED).equals(secondStepChoice)) {
-					destinationAddress = preferences.getString(PreferencesEditor.STR_DESTINATION_SMS_1, NOT_DEFINED);
-				} else if (preferences.getString(PreferencesEditor.STR_DESTINATION_2, NOT_DEFINED).equals(secondStepChoice)) {
-					destinationAddress = preferences.getString(PreferencesEditor.STR_DESTINATION_SMS_2, NOT_DEFINED);
-				} else if (preferences.getString(PreferencesEditor.STR_DESTINATION_3, NOT_DEFINED).equals(secondStepChoice)) {
-					destinationAddress = preferences.getString(PreferencesEditor.STR_DESTINATION_SMS_3, NOT_DEFINED);
-				}
-				return destinationAddress;
-			}
 		});
 	}
+
 }

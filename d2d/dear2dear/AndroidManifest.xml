@@ -56,5 +56,6 @@
 	</application>
 
 	<uses-permission android:name="android.permission.SEND_SMS" />
+	<uses-permission android:name="android.permission.READ_CONTACTS" />
 	<uses-sdk android:minSdkVersion="4" />
 </manifest> 

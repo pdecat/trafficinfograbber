@@ -1,74 +1,101 @@
+/*
+ **
+ **       Copyright (C) 2010 Patrick Decat
+ ** 
+ **       This file is part of dear2dear.
+ **
+ **   dear2dear is free software: you can redistribute it and/or modify
+ **   it under the terms of the GNU General Public License as published by
+ **   the Free Software Foundation, either version 3 of the License, or
+ **   (at your option) any later version.
+ **
+ **   dear2dear is distributed in the hope that it will be useful,
+ **   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **   GNU General Public License for more details.
+ **
+ **   You should have received a copy of the GNU General Public License
+ **   along with dear2dear.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ */
+
 package org.decat.d2d;
+
+import org.decat.d2d.Preference.PreferenceType;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Contacts.People;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class PreferencesEditor extends Activity {
-	private SharedPreferences preferences;
+	private PreferencesHelper preferencesHolder;
+	private SharedPreferences sharedPreferences;
+	protected static final int ACTIVITY_REQUEST_CONTACT_PICK = 0;
 
-	// Keys
-	protected static final String STR_ACTION_1 = "ACTION_1";
-	protected static final String STR_ACTION_2 = "ACTION_2";
-	protected static final String STR_ACTION_3 = "ACTION_3";
-
-	protected static final String STR_DESTINATION_1 = "DESTINATION_1";
-	protected static final String STR_DESTINATION_2 = "DESTINATION_2";
-	protected static final String STR_DESTINATION_3 = "DESTINATION_3";
-
-	protected static final String STR_DESTINATION_SMS_1 = "DESTINATION_SMS_1";
-	protected static final String STR_DESTINATION_SMS_2 = "DESTINATION_SMS_2";
-	protected static final String STR_DESTINATION_SMS_3 = "DESTINATION_SMS_3";
-
-	protected static final String STR_DESTINATION_EMAIL_1 = "DESTINATION_EMAIL_1";
-	protected static final String STR_DESTINATION_EMAIL_2 = "DESTINATION_EMAIL_2";
-	protected static final String STR_DESTINATION_EMAIL_3 = "DESTINATION_EMAIL_3";
-
-	private static final String[] STR_OPTIONS = { STR_ACTION_1, STR_ACTION_2, STR_ACTION_3, STR_DESTINATION_1, STR_DESTINATION_2, STR_DESTINATION_3, STR_DESTINATION_SMS_1, STR_DESTINATION_SMS_2,
-			STR_DESTINATION_SMS_3, STR_DESTINATION_EMAIL_1, STR_DESTINATION_EMAIL_2, STR_DESTINATION_EMAIL_3 };
-
-	// Default values
-	private static final String STR_DEFAULT_ACTION_1 = "ACTION 1";
-	private static final String STR_DEFAULT_ACTION_2 = "ACTION 2";
-	private static final String STR_DEFAULT_ACTION_3 = "ACTION 3";
-
-	private static final String STR_DEAR_1 = "DEAR 1";
-	private static final String STR_DEAR_2 = "DEAR 2";
-	private static final String STR_DEAR_3 = "DEAR 3";
-
-	private static final String STR_DEAR_1_ADDR_SMS = "PHONE 1";
-	private static final String STR_DEAR_2_ADDR_SMS = "PHONE 2";
-	private static final String STR_DEAR_3_ADDR_SMS = "PHONE 3";
-
-	private static final String STR_DEAR_1_ADDR_EMAIL = "EMAIL 1";
-	private static final String STR_DEAR_2_ADDR_EMAIL = "EMAIL 2";
-	private static final String STR_DEAR_3_ADDR_EMAIL = "EMAIL 3";
-
-	private static final String[] STR_DEFAULT_VALUES = { STR_DEFAULT_ACTION_1, STR_DEFAULT_ACTION_2, STR_DEFAULT_ACTION_3, STR_DEAR_1, STR_DEAR_2, STR_DEAR_3, STR_DEAR_1_ADDR_SMS,
-			STR_DEAR_2_ADDR_SMS, STR_DEAR_3_ADDR_SMS, STR_DEAR_1_ADDR_EMAIL, STR_DEAR_2_ADDR_EMAIL, STR_DEAR_3_ADDR_EMAIL };
-
-	private EditText[] editTexts = new EditText[STR_OPTIONS.length];
+	private View inputViews[];
+	private String[] tempPreferencesValues;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		preferences = getSharedPreferences(dear2dear.class.getSimpleName(), Context.MODE_PRIVATE);
+		sharedPreferences = getSharedPreferences(dear2dear.class.getSimpleName(), Context.MODE_PRIVATE);
+		preferencesHolder = new PreferencesHelper(sharedPreferences);
 
 		LinearLayout ll = new LinearLayout(this);
 		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
 
 		final TextView tv = new TextView(this);
-		tv.setText("Set 3 actions, dears, phone numbers and emails");
+		tv.setText("Select your messages and contacts");
 		ll.addView(tv);
 
-		for (int i = 0; i < STR_OPTIONS.length; i++) {
-			editTexts[i] = new EditText(this);
-			editTexts[i].setText(preferences.getString(STR_OPTIONS[i], STR_DEFAULT_VALUES[i]));
-			ll.addView(editTexts[i]);
+		Preference[] preferences = preferencesHolder.preferences;
+		tempPreferencesValues = new String[preferences.length];
+		inputViews = new View[preferences.length];
+		for (int i = 0; i < preferences.length; i++) {
+			Preference preference = preferences[i];
+			PreferenceType preferenceType = preference.type;
+			tempPreferencesValues[i] = preferencesHolder.getString(preference);
+			View view = null;
+			switch (preferenceType) {
+			case TYPE_CONTACT:
+				// TODO: Add label
+				Button btn = new Button(this);
+				view = btn;
+				String btnLabel = tempPreferencesValues[i] == null ? "Select " + preference.label : ContactHelper.getContactNameFromUriString(this, tempPreferencesValues[i]);
+				btn.setText(btnLabel);
+				final int btnId = i;
+				btn.setOnClickListener(new Button.OnClickListener() {
+					public void onClick(View v) {
+						Intent intent = new Intent(Intent.ACTION_PICK, People.CONTENT_URI);
+						startActivityForResult(intent, ACTIVITY_REQUEST_CONTACT_PICK + btnId);
+					}
+				});
+				ll.addView(btn);
+
+				Log.d(dear2dear.TAG, "Loaded contact preference " + preference.key);
+				break;
+			case TYPE_STRING:
+				// TODO: Add label
+				EditText editText = new EditText(this);
+				view = editText;
+				editText.setText((CharSequence) tempPreferencesValues[i]);
+				ll.addView(editText);
+				Log.d(dear2dear.TAG, "Loaded string preference " + preference.key);
+				break;
+			default:
+				Log.w(dear2dear.TAG, "Unknow preference type " + preference.key);
+			}
+			inputViews[i] = view;
+			preference.view = view;
 		}
 
 		setContentView(ll);
@@ -77,11 +104,41 @@ public class PreferencesEditor extends Activity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		SharedPreferences.Editor ed = preferences.edit();
+		SharedPreferences.Editor ed = sharedPreferences.edit();
+		Preference[] preferences = preferencesHolder.preferences;
 
-		for (int i = 0; i < STR_OPTIONS.length; i++) {
-			ed.putString(STR_OPTIONS[i], editTexts[i].getText().toString());
+		for (int i = 0; i < preferences.length; i++) {
+			Preference preference = preferences[i];
+			PreferenceType preferenceType = preference.type;
+			switch (preferenceType) {
+			case TYPE_CONTACT:
+				if (tempPreferencesValues[i] != null) {
+					Log.d(dear2dear.TAG, "Stored contact preference " + preference.key);
+					ed.putString(preference.key, tempPreferencesValues[i]);
+				}
+				break;
+			case TYPE_STRING:
+				Log.d(dear2dear.TAG, "Stored string preference " + preference.key);
+				ed.putString(preference.key, ((EditText) preference.view).getText().toString());
+				break;
+			default:
+				Log.w(dear2dear.TAG, "Unknow preference type " + preference.key);
+			}
 		}
 		ed.commit();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			int btnId = requestCode - ACTIVITY_REQUEST_CONTACT_PICK;
+			if (-1 < btnId && btnId < inputViews.length) {
+				Log.d(dear2dear.TAG, "Back from picking contact for view id " + btnId);
+				tempPreferencesValues[btnId] = data.getDataString();
+				((Button) inputViews[btnId]).setText(ContactHelper.getContactNameFromUriString(this, tempPreferencesValues[btnId]));
+			}
+		} else {
+			Log.w(dear2dear.TAG, "Error on activity result=" + resultCode + ", requestCode=" + requestCode);
+		}
 	}
 }

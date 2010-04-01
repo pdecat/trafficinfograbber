@@ -1,0 +1,48 @@
+/*
+ **
+ **       Copyright (C) 2010 Patrick Decat
+ ** 
+ **       This file is part of dear2dear.
+ **
+ **   dear2dear is free software: you can redistribute it and/or modify
+ **   it under the terms of the GNU General Public License as published by
+ **   the Free Software Foundation, either version 3 of the License, or
+ **   (at your option) any later version.
+ **
+ **   dear2dear is distributed in the hope that it will be useful,
+ **   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **   GNU General Public License for more details.
+ **
+ **   You should have received a copy of the GNU General Public License
+ **   along with dear2dear.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ */
+
+package org.decat.d2d;
+
+import android.view.View;
+
+class Preference {
+	enum PreferenceType {
+		TYPE_STRING, TYPE_CONTACT
+	}
+
+	enum PreferenceGroup {
+		GROUP_MESSAGES, GROUP_CONTACTS
+	}
+
+	protected String key;
+	protected PreferenceGroup group;
+	protected PreferenceType type;
+	protected Object label;
+	protected View view;
+
+	public Preference(String key, PreferenceGroup group, PreferenceType type, Object label) {
+		this.key = key;
+		this.group = group;
+		this.type = type;
+		this.label = label;
+		this.view = null;
+	}
+}
