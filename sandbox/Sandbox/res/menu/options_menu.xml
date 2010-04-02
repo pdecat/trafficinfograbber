@@ -24,5 +24,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/listApplications" android:title="@string/listApplications" />
 	<item android:id="@+id/showContactDetails" android:title="@string/showContactDetails" />
+	<item android:id="@+id/selectContact" android:title="@string/selectContact" />
 	<item android:id="@+id/about" android:title="@string/about" />
 </menu>

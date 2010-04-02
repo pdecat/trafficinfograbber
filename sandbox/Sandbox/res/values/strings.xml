@@ -27,8 +27,10 @@
 	
 	<string name="listApplications">List applications</string>
 	<string name="showContactDetails">Show contact details</string>
+	<string name="selectContact">Select contact</string>
 	<string name="about">About</string>
 	
+	<string name="spinner">Spinner</string>
 	<string name="hello">Hello World, Sandbox!</string>
 	
 	<!-- Strings for About dialog -->
