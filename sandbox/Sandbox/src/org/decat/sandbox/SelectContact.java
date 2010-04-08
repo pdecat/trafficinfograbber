@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.Contacts.People;
 import android.view.View;
 import android.widget.SimpleCursorTreeAdapter;
-import android.widget.TextView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
 public class SelectContact extends ExpandableListActivity implements OnChildClickListener {
@@ -79,7 +78,20 @@ public class SelectContact extends ExpandableListActivity implements OnChildClic
 
 	@Override
 	public boolean onChildClick(android.widget.ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		AlertDialog dialog = new AlertDialog.Builder(SelectContact.this).setMessage(((TextView) v).getText().toString()).setPositiveButton("OK", null).create();
+		StringBuilder sb = new StringBuilder("Selected id=");
+		sb.append(id);
+		sb.append(", groupPosition=");
+		sb.append(groupPosition);
+		sb.append(", childPosition=");
+		sb.append(childPosition);
+		sb.append(", group=");
+		Cursor groupCursor = (Cursor) getExpandableListAdapter().getGroup(groupPosition);
+		sb.append(groupCursor.getString(groupCursor.getColumnIndexOrThrow(GROUP_COLUMN)));
+		sb.append(", child=");
+		Cursor childCursor = (Cursor) getExpandableListAdapter().getChild(groupPosition, childPosition);
+		sb.append(childCursor.getString(childCursor.getColumnIndexOrThrow(CHILD_COLUMN)));
+
+		AlertDialog dialog = new AlertDialog.Builder(SelectContact.this).setMessage(sb).setPositiveButton("OK", null).create();
 		dialog.show();
 		return true;
 	}
