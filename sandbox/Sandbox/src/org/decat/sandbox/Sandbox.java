@@ -25,10 +25,10 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Contacts.People;
 import android.util.Log;
@@ -38,13 +38,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 public class Sandbox extends Activity {
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
@@ -149,6 +144,7 @@ public class Sandbox extends Activity {
 		};
 
 		StringBuilder sb = new StringBuilder("Contact information for ");
+		sb.append("\n");
 		sb.append(contactUri);
 		sb.append("\n");
 
@@ -168,33 +164,11 @@ public class Sandbox extends Activity {
 	}
 
 	private void selectContact() {
-		// Load a Spinner and bind it to a data query.
-		String[] PROJECTION = new String[] {
-				People._ID, People.DISPLAY_NAME
-		};
-
-		Spinner s2 = (Spinner) findViewById(R.id.spinner);
-		Cursor cur = managedQuery(People.CONTENT_URI, PROJECTION, null, null, null);
-
-		SimpleCursorAdapter adapter2 = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, cur, new String[] {
-			People.DISPLAY_NAME
-		}, new int[] {
-			android.R.id.text1
-		});
-
-		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		s2.setAdapter(adapter2);
-		s2.setOnItemSelectedListener(new OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				Object item = parent.getItemAtPosition(position);
-				Toast.makeText(Sandbox.this, "You have selected " + item, Toast.LENGTH_SHORT).show();
-				// showContactDetails(item);
-			}
-
-			public void onNothingSelected(AdapterView<?> parent) {
-				Toast.makeText(Sandbox.this, "You have selected nothing", Toast.LENGTH_SHORT).show();
-			}
-		});
-
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_PREFERENCE);
+		intent.setComponent(new ComponentName(this.getPackageName(), SelectContact.class.getName()));
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 }
