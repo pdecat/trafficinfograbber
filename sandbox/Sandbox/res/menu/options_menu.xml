@@ -25,5 +25,6 @@
 	<item android:id="@+id/listApplications" android:title="@string/listApplications" />
 	<item android:id="@+id/showContactDetails" android:title="@string/showContactDetails" />
 	<item android:id="@+id/selectContact" android:title="@string/selectContact" />
+	<item android:id="@+id/selectContactAndNumber" android:title="@string/selectContactAndNumber" />
 	<item android:id="@+id/about" android:title="@string/about" />
 </menu>

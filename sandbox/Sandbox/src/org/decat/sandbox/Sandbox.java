@@ -4,20 +4,20 @@ package org.decat.sandbox;
  **
  **       Copyright (C) 2010 Patrick Decat
  ** 
- **       This file is part of dear2dear.
+ **       This file is part of Sandbox.
  **
- **   dear2dear is free software: you can redistribute it and/or modify
+ **   Sandbox is free software: you can redistribute it and/or modify
  **   it under the terms of the GNU General Public License as published by
  **   the Free Software Foundation, either version 3 of the License, or
  **   (at your option) any later version.
  **
- **   dear2dear is distributed in the hope that it will be useful,
+ **   Sandbox is distributed in the hope that it will be useful,
  **   but WITHOUT ANY WARRANTY; without even the implied warranty of
  **   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  **   GNU General Public License for more details.
  **
  **   You should have received a copy of the GNU General Public License
- **   along with dear2dear.  If not, see <http://www.gnu.org/licenses/>.
+ **   along with Sandbox.  If not, see <http://www.gnu.org/licenses/>.
  **
  */
 
@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -42,16 +42,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Sandbox extends Activity {
+	private static final int REQUEST_CONTACT = 1;
+	private static final int REQUEST_CONTACT_AND_NUMBER = 2;
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 	public static final String TAG = "Sandbox";
-	private Toast toast;
 	private GestureDetector gestureDetector;
 	private TextView textview;
 
-	void showToast(String message) {
-		toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+	public static void showToast(Context context, String message) {
+		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
 		toast.show();
+	}
+
+	void showToast(String message) {
+		showToast(this, message);
 	}
 
 	/** Called when the activity is first created. */
@@ -94,6 +99,9 @@ public class Sandbox extends Activity {
 			break;
 		case R.id.selectContact:
 			selectContact();
+			break;
+		case R.id.selectContactAndNumber:
+			selectContactAndNumber();
 			break;
 		case R.id.about:
 			try {
@@ -164,11 +172,48 @@ public class Sandbox extends Activity {
 	}
 
 	private void selectContact() {
-		Intent intent = new Intent();
-		intent.setAction(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_PREFERENCE);
-		intent.setComponent(new ComponentName(this.getPackageName(), SelectContact.class.getName()));
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
+		Intent intent = new Intent(this, SelectContact.class);
+		startActivityForResult(intent, REQUEST_CONTACT);
+	}
+
+	private void selectContactAndNumber() {
+		Intent intent = new Intent(this, SelectContactAndNumber.class);
+		startActivityForResult(intent, REQUEST_CONTACT_AND_NUMBER);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		StringBuilder sb = new StringBuilder();
+
+		switch (requestCode) {
+		case REQUEST_CONTACT:
+			Log.d(Sandbox.TAG, "Back from picking contact with resultCode=" + resultCode);
+			if (resultCode == RESULT_OK) {
+				sb.append("Result from picking contact:\n\tdataString=");
+				sb.append(data.getDataString());
+				sb.append("\n\tid=");
+				sb.append(data.getLongExtra("id", -1));
+				sb.append("\n\tvalue=");
+				sb.append(data.getStringExtra("value"));
+			}
+			break;
+		case REQUEST_CONTACT_AND_NUMBER:
+			Log.d(Sandbox.TAG, "Back from picking contact and number with resultCode=" + resultCode);
+			if (resultCode == RESULT_OK) {
+				sb.append("Result from picking contact:\n\tdataString=");
+				sb.append(data.getDataString());
+				sb.append("\n\tid=");
+				sb.append(data.getLongExtra("id", -1));
+				sb.append("\n\tgroupValue=");
+				sb.append(data.getStringExtra("group_value"));
+				sb.append("\n\tchildValue=");
+				sb.append(data.getStringExtra("child_value"));
+			}
+			break;
+		default:
+			Log.w(Sandbox.TAG, "Unknow activity request code " + requestCode);
+		}
+
+		textview.setText(sb);
 	}
 }
