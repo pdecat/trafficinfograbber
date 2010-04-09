@@ -211,7 +211,7 @@ public class Sandbox extends Activity {
 			}
 			break;
 		default:
-			Log.w(Sandbox.TAG, "Unknow activity request code " + requestCode);
+			Log.w(Sandbox.TAG, "Unknown activity request code " + requestCode);
 		}
 
 		textview.setText(sb);
