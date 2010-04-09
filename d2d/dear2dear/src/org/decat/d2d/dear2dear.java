@@ -202,7 +202,7 @@ public class dear2dear extends Activity {
 	private void startFromScratch() {
 		tv.setText(getString(R.string.send) + " " + getString(R.string.q_to_whom));
 		List<Preference> contacts = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_CONTACTS);
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < buttons.length; i++) {
 			Preference contact = contacts.get(i);
 			String key = contact.key;
 			String optionValue = sharedPreferences.getString(key, null);
@@ -225,7 +225,7 @@ public class dear2dear extends Activity {
 					tv.setText(getString(R.string.send) + " \"" + destinationStepChoiceLabel + "\" " + getString(R.string.q_what));
 
 					List<Preference> messages = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_MESSAGES);
-					for (int i = 0; i < 3; i++) {
+					for (int i = 0; i < buttons.length; i++) {
 						Preference message = messages.get(i);
 						String key = message.key;
 						String optionValue = sharedPreferences.getString(key, null);
