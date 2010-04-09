@@ -217,7 +217,12 @@ public class dear2dear extends Activity {
 		// Hide restart button
 		restartButton.setVisibility(View.INVISIBLE);
 
-		tv.setText(getString(R.string.send) + " " + getString(R.string.q_to_whom));
+		StringBuffer message = new StringBuffer(getString(R.string.send));
+		message.append(" ");
+		message.append(getString(R.string.q_to_whom));
+		Log.d(dear2dear.TAG, message.toString());
+		tv.setText(message);
+
 		List<Preference> contacts = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_CONTACTS);
 		for (int i = 0; i < buttons.length; i++) {
 			Preference contact = contacts.get(i);
@@ -242,12 +247,19 @@ public class dear2dear extends Activity {
 
 					destinationStepChoiceLabel = optionLabel;
 					destinationStepChoiceValue = optionValue;
-					tv.setText(getString(R.string.send) + " \"" + destinationStepChoiceLabel + "\" " + getString(R.string.q_what));
+
+					StringBuffer message = new StringBuffer(getString(R.string.send));
+					message.append(" ");
+					message.append(destinationStepChoiceLabel);
+					message.append(" ");
+					message.append(getString(R.string.q_what));
+					Log.d(dear2dear.TAG, message.toString());
+					tv.setText(message);
 
 					List<Preference> messages = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_MESSAGES);
 					for (int i = 0; i < buttons.length; i++) {
-						Preference message = messages.get(i);
-						String key = message.key;
+						Preference preference = messages.get(i);
+						String key = preference.key;
 						String optionValue = sharedPreferences.getString(key, null);
 						String optionLabel = optionValue;
 						messageStepOption(buttons[i], optionLabel, optionValue);
@@ -267,7 +279,17 @@ public class dear2dear extends Activity {
 			btn.setOnClickListener(new Button.OnClickListener() {
 				public void onClick(View v) {
 					messageStepChoice = optionValue;
-					tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoiceLabel + "\" " + getString(R.string.q_how));
+					StringBuffer message = new StringBuffer(getString(R.string.send));
+					message.append(" \"");
+					message.append(messageStepChoice);
+					message.append("\" ");
+					message.append(getString(R.string.to));
+					message.append(" ");
+					message.append(destinationStepChoiceLabel);
+					message.append(" ");
+					message.append(getString(R.string.q_how));
+					Log.d(dear2dear.TAG, message.toString());
+					tv.setText(message);
 					mediaStepOption(buttons[0], getString(R.string.sms));
 					mediaStepOption(buttons[1], getString(R.string.email));
 					Log.d(dear2dear.TAG, "Added media steps options");
@@ -283,8 +305,30 @@ public class dear2dear extends Activity {
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				mediaStepChoice = option;
-				tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoiceLabel + "\" " + getString(R.string.by) + " \""
-						+ mediaStepChoice + "\"");
+				StringBuffer message = new StringBuffer(getString(R.string.send));
+				message.append(" \"");
+				message.append(messageStepChoice);
+				message.append("\" ");
+				message.append(getString(R.string.to));
+				message.append(" ");
+				message.append(destinationStepChoiceLabel);
+				message.append(" ");
+				message.append(getString(R.string.by));
+				message.append(" ");
+				message.append(mediaStepChoice);
+				message.append("?");
+				if (getString(R.string.sms).equals(mediaStepChoice)) {
+					String phoneNumber = getPhoneNumberFromUri(destinationStepChoiceValue);
+					message.append(" (");
+					message.append(phoneNumber);
+					message.append(")");
+					Log.d(dear2dear.TAG, message.toString());
+				} else if (getString(R.string.email).equals(mediaStepChoice)) {
+					showToast("TODO: Implement email");
+					// TODO: handle email
+					Log.d(dear2dear.TAG, "TODO: Implement email");
+				}
+				tv.setText(message);
 				fourthStepOption(buttons[0], getString(R.string.send));
 				Log.d(dear2dear.TAG, "Added send step option");
 				buttons[1].setVisibility(View.INVISIBLE);
@@ -332,50 +376,51 @@ public class dear2dear extends Activity {
 				}
 			}
 
-			private String getPhoneNumberFromUri(String contactUri) {
-				String number = null;
-				Cursor cursor = managedQuery(Uri.parse(contactUri), null, null, null, null);
-				int count = cursor.getCount();
-				Log.d(dear2dear.TAG, "count=" + count);
-				if (count < 1) {
-					Log.e(dear2dear.TAG, "No match for" + contactUri);
-				} else if (count > 1) {
-					Log.e(dear2dear.TAG, "Too many matches for" + contactUri);
-				} else {
-					int idColumnIndex = cursor.getColumnIndexOrThrow(People._ID);
-					Log.d(dear2dear.TAG, "idColumnIndex=" + idColumnIndex);
-					int nameColumnIndex = cursor.getColumnIndexOrThrow(People.NAME);
-					Log.d(dear2dear.TAG, "nameColumnIndex=" + nameColumnIndex);
-
-					// Go to the first match
-					cursor.moveToFirst();
-
-					long id = cursor.getLong(idColumnIndex);
-					Log.d(dear2dear.TAG, "id=" + id);
-					String name = cursor.getString(nameColumnIndex);
-					Log.d(dear2dear.TAG, "Found contact " + name);
-
-					// Return a cursor that points to this contact's phone
-					// numbers
-					Uri.Builder builder = People.CONTENT_URI.buildUpon();
-					ContentUris.appendId(builder, id);
-					builder.appendEncodedPath(People.Phones.CONTENT_DIRECTORY);
-					Uri phoneNumbersUri = builder.build();
-
-					Cursor phonesCursor = managedQuery(phoneNumbersUri, new String[] {
-							People.Phones._ID, People.Phones.NUMBER, People.Phones.TYPE
-					}, People.Phones.TYPE + "=" + People.Phones.TYPE_MOBILE, null, null);
-					int phonesCount = phonesCursor.getCount();
-					Log.d(dear2dear.TAG, "phonesCount=" + phonesCount);
-					phonesCursor.moveToFirst();
-					int phoneColumnIndex = phonesCursor.getColumnIndexOrThrow(People.Phones.NUMBER);
-					Log.d(dear2dear.TAG, "phoneColumnIndex=" + phoneColumnIndex);
-					number = phonesCursor.getString(phoneColumnIndex);
-					Log.d(dear2dear.TAG, "Found number " + number);
-				}
-
-				return number;
-			}
 		});
+	}
+
+	private String getPhoneNumberFromUri(String contactUri) {
+		String number = null;
+		Cursor cursor = managedQuery(Uri.parse(contactUri), null, null, null, null);
+		int count = cursor.getCount();
+		Log.d(dear2dear.TAG, "count=" + count);
+		if (count < 1) {
+			Log.e(dear2dear.TAG, "No match for" + contactUri);
+		} else if (count > 1) {
+			Log.e(dear2dear.TAG, "Too many matches for" + contactUri);
+		} else {
+			int idColumnIndex = cursor.getColumnIndexOrThrow(People._ID);
+			Log.d(dear2dear.TAG, "idColumnIndex=" + idColumnIndex);
+			int nameColumnIndex = cursor.getColumnIndexOrThrow(People.NAME);
+			Log.d(dear2dear.TAG, "nameColumnIndex=" + nameColumnIndex);
+
+			// Go to the first match
+			cursor.moveToFirst();
+
+			long id = cursor.getLong(idColumnIndex);
+			Log.d(dear2dear.TAG, "id=" + id);
+			String name = cursor.getString(nameColumnIndex);
+			Log.d(dear2dear.TAG, "Found contact " + name);
+
+			// Return a cursor that points to this contact's phone
+			// numbers
+			Uri.Builder builder = People.CONTENT_URI.buildUpon();
+			ContentUris.appendId(builder, id);
+			builder.appendEncodedPath(People.Phones.CONTENT_DIRECTORY);
+			Uri phoneNumbersUri = builder.build();
+
+			Cursor phonesCursor = managedQuery(phoneNumbersUri, new String[] {
+					People.Phones._ID, People.Phones.NUMBER, People.Phones.TYPE
+			}, People.Phones.TYPE + "=" + People.Phones.TYPE_MOBILE, null, null);
+			int phonesCount = phonesCursor.getCount();
+			Log.d(dear2dear.TAG, "phonesCount=" + phonesCount);
+			phonesCursor.moveToFirst();
+			int phoneColumnIndex = phonesCursor.getColumnIndexOrThrow(People.Phones.NUMBER);
+			Log.d(dear2dear.TAG, "phoneColumnIndex=" + phoneColumnIndex);
+			number = phonesCursor.getString(phoneColumnIndex);
+			Log.d(dear2dear.TAG, "Found number " + number);
+		}
+
+		return number;
 	}
 }
