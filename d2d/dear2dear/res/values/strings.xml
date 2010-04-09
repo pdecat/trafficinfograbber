@@ -26,6 +26,7 @@
 	<string name="app_name">dear2dear</string>
 	<string name="app_version">0.0.2-SNAPSHOT</string>
 	<string name="preferencesEditor">dear2dear - Preferences Editor</string>
+	<string name="contactSelector">dear2dear - Contact Selector</string>
 
 	<!-- Menu items -->
 	<string name="preferences">Preferences</string>

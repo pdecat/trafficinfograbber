@@ -29,13 +29,15 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Contacts.People;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,6 +54,7 @@ public class dear2dear extends Activity {
 
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
+	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
 
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 
@@ -59,19 +62,24 @@ public class dear2dear extends Activity {
 
 	private Button buttons[];
 
-	private Toast toast;
-
 	private SharedPreferences sharedPreferences;
 	private PreferencesHelper preferencesHolder;
 
+	protected String destinationStepChoiceValue;
+	protected String destinationStepChoiceLabel;
+
 	protected String messageStepChoice;
-	protected String destinationStepChoice;
+
 	protected String mediaStepChoice;
 
-	private void showToast(String message) {
-		toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+	public static void showToast(Context context, String message) {
+		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
 		toast.show();
+	}
+
+	private void showToast(String message) {
+		showToast(this, message);
 	}
 
 	/** Called when the activity is first created. */
@@ -113,7 +121,7 @@ public class dear2dear extends Activity {
 	public void onResume() {
 		super.onResume();
 
-		if (preferencesHolder.getString(preferencesHolder.preferences[0]) == null) {
+		if (sharedPreferences.getString(preferencesHolder.preferences[0].key, null) == null) {
 			String message = "Please proceed with configuration first...";
 			Log.i(dear2dear.TAG, message);
 			showToast(message);
@@ -144,12 +152,8 @@ public class dear2dear extends Activity {
 	}
 
 	private void showPreferencesEditor() {
-		Intent intent = new Intent();
-		intent.setAction(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_PREFERENCE);
-		intent.setComponent(new ComponentName(this.getPackageName(), PreferencesEditor.class.getName()));
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
+		Intent intent = new Intent(this, PreferencesEditor.class);
+		startActivityForResult(intent, ACTIVITY_REQUEST_PREFERENCES_EDITOR);
 	}
 
 	private void showAbout() {
@@ -178,9 +182,7 @@ public class dear2dear extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
-			if (resultCode == RESULT_OK) {
-				Log.d(dear2dear.TAG, "Back from OI About");
-			}
+			Log.d(dear2dear.TAG, "Back from OI About");
 			break;
 		case ACTIVITY_REQUEST_OI_ABOUT_INSTALL:
 			if (resultCode == RESULT_CANCELED) {
@@ -188,8 +190,12 @@ public class dear2dear extends Activity {
 				showAbout();
 			}
 			break;
+		case ACTIVITY_REQUEST_PREFERENCES_EDITOR:
+			Log.d(dear2dear.TAG, "Back from preferences editor");
+			break;
+
 		default:
-			Log.w(dear2dear.TAG, "Unknow activity request code " + requestCode);
+			Log.w(dear2dear.TAG, "Unknown activity request code " + requestCode);
 		}
 	}
 
@@ -198,29 +204,34 @@ public class dear2dear extends Activity {
 		List<Preference> contacts = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_CONTACTS);
 		for (int i = 0; i < 3; i++) {
 			Preference contact = contacts.get(i);
-			String optionValue = preferencesHolder.getString(contact);
-			String optionLabel = ContactHelper.getContactNameFromUriString(this, optionValue);
+			String key = contact.key;
+			String optionValue = sharedPreferences.getString(key, null);
+			String optionLabel = sharedPreferences.getString(key + PreferencesHelper.VALUE_SUFFIX, null);
 			destinationStepOption(buttons[i], optionLabel, optionValue);
+			Log.d(dear2dear.TAG, "Added destination step option for " + key);
 		}
 	}
 
 	private void destinationStepOption(final Button btn, final String optionLabel, final String optionValue) {
-		if (optionValue == null) {
+		if (optionLabel == null || optionValue == null) {
 			btn.setVisibility(View.INVISIBLE);
 		} else {
 			btn.setVisibility(View.VISIBLE);
 			btn.setText(optionLabel);
 			btn.setOnClickListener(new Button.OnClickListener() {
 				public void onClick(View v) {
-					destinationStepChoice = optionValue;
-					tv.setText(getString(R.string.send) + " \"" + destinationStepChoice + "\" " + getString(R.string.q_what));
+					destinationStepChoiceLabel = optionLabel;
+					destinationStepChoiceValue = optionValue;
+					tv.setText(getString(R.string.send) + " \"" + destinationStepChoiceLabel + "\" " + getString(R.string.q_what));
 
 					List<Preference> messages = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_MESSAGES);
 					for (int i = 0; i < 3; i++) {
 						Preference message = messages.get(i);
-						String optionValue = preferencesHolder.getString(message);
+						String key = message.key;
+						String optionValue = sharedPreferences.getString(key, null);
 						String optionLabel = optionValue;
 						messageStepOption(buttons[i], optionLabel, optionValue);
+						Log.d(dear2dear.TAG, "Added message step option for " + key);
 					}
 				}
 			});
@@ -228,7 +239,7 @@ public class dear2dear extends Activity {
 	}
 
 	private void messageStepOption(final Button btn, final String optionLabel, final String optionValue) {
-		if (optionValue == null) {
+		if (optionLabel == null || optionValue == null) {
 			btn.setVisibility(View.INVISIBLE);
 		} else {
 			btn.setVisibility(View.VISIBLE);
@@ -236,9 +247,10 @@ public class dear2dear extends Activity {
 			btn.setOnClickListener(new Button.OnClickListener() {
 				public void onClick(View v) {
 					messageStepChoice = optionValue;
-					tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoice + "\" " + getString(R.string.q_how));
+					tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoiceLabel + "\" " + getString(R.string.q_how));
 					mediaStepOption(buttons[0], getString(R.string.sms));
 					mediaStepOption(buttons[1], getString(R.string.email));
+					Log.d(dear2dear.TAG, "Added media steps options");
 					buttons[2].setVisibility(View.INVISIBLE);
 				}
 			});
@@ -251,9 +263,10 @@ public class dear2dear extends Activity {
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				mediaStepChoice = option;
-				tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoice + "\" " + getString(R.string.by) + " \""
+				tv.setText(getString(R.string.send) + " \"" + messageStepChoice + "\"" + " " + getString(R.string.to) + " \"" + destinationStepChoiceLabel + "\" " + getString(R.string.by) + " \""
 						+ mediaStepChoice + "\"");
 				fourthStepOption(buttons[0], getString(R.string.send));
+				Log.d(dear2dear.TAG, "Added send step option");
 				buttons[1].setVisibility(View.INVISIBLE);
 			}
 		});
@@ -268,21 +281,90 @@ public class dear2dear extends Activity {
 				btn.setVisibility(View.VISIBLE);
 				btn.setOnClickListener(new Button.OnClickListener() {
 					public void onClick(View v) {
+						Log.d(dear2dear.TAG, "Restart from scratch");
 						startFromScratch();
 					}
 				});
 
-				showToast(getString(R.string.sending) + " " + mediaStepChoice + " " + getString(R.string.to) + " " + destinationStepChoice);
+				StringBuffer message = new StringBuffer(getString(R.string.sending));
+				message.append(" ");
+				message.append(mediaStepChoice);
+				message.append(" ");
+				message.append(getString(R.string.to));
+				message.append(" ");
+				message.append(destinationStepChoiceLabel);
+				message.append(" ");
+				message.append(getString(R.string.by));
+				message.append(" ");
+				message.append(mediaStepChoice);
+
 				if (getString(R.string.sms).equals(mediaStepChoice)) {
 					SmsManager sm = SmsManager.getDefault();
 
-					sm.sendTextMessage(ContactHelper.getContactPhoneNumberFromUriString(dear2dear.this, destinationStepChoice), null, messageStepChoice, null, null);
+					String phoneNumber = getPhoneNumberFromUri(destinationStepChoiceValue);
+					message.append(" (phoneNumber=");
+					message.append(phoneNumber);
+					message.append(")");
+					Log.d(dear2dear.TAG, message.toString());
+					if (phoneNumber != null) {
+						showToast("TODO: Implement SMS");
+						// sm.sendTextMessage(phoneNumber, null,
+						// messageStepChoice, null, null);
+					} else {
+						showToast("Could not find a phone number for " + destinationStepChoiceLabel);
+					}
+					showToast(message.toString());
 				} else if (getString(R.string.email).equals(mediaStepChoice)) {
 					showToast("TODO: Implement email");
 					// TODO: handle email
+					Log.d(dear2dear.TAG, "TODO: Implement email");
 				}
+			}
+
+			private String getPhoneNumberFromUri(String contactUri) {
+				String number = null;
+				Cursor cursor = managedQuery(Uri.parse(contactUri), null, null, null, null);
+				int count = cursor.getCount();
+				Log.d(dear2dear.TAG, "count=" + count);
+				if (count < 1) {
+					Log.e(dear2dear.TAG, "No match for" + contactUri);
+				} else if (count > 1) {
+					Log.e(dear2dear.TAG, "Too many matches for" + contactUri);
+				} else {
+					int idColumnIndex = cursor.getColumnIndexOrThrow(People._ID);
+					Log.d(dear2dear.TAG, "idColumnIndex=" + idColumnIndex);
+					int nameColumnIndex = cursor.getColumnIndexOrThrow(People.NAME);
+					Log.d(dear2dear.TAG, "nameColumnIndex=" + nameColumnIndex);
+
+					// Go to the first match
+					cursor.moveToFirst();
+
+					long id = cursor.getLong(idColumnIndex);
+					Log.d(dear2dear.TAG, "id=" + id);
+					String name = cursor.getString(nameColumnIndex);
+					Log.d(dear2dear.TAG, "Found contact " + name);
+
+					// Return a cursor that points to this contact's phone
+					// numbers
+					Uri.Builder builder = People.CONTENT_URI.buildUpon();
+					ContentUris.appendId(builder, id);
+					builder.appendEncodedPath(People.Phones.CONTENT_DIRECTORY);
+					Uri phoneNumbersUri = builder.build();
+
+					Cursor phonesCursor = managedQuery(phoneNumbersUri, new String[] {
+							People.Phones._ID, People.Phones.NUMBER, People.Phones.TYPE
+					}, People.Phones.TYPE + "=" + People.Phones.TYPE_MOBILE, null, null);
+					int phonesCount = phonesCursor.getCount();
+					Log.d(dear2dear.TAG, "phonesCount=" + phonesCount);
+					phonesCursor.moveToFirst();
+					int phoneColumnIndex = phonesCursor.getColumnIndexOrThrow(People.Phones.NUMBER);
+					Log.d(dear2dear.TAG, "phoneColumnIndex=" + phoneColumnIndex);
+					number = phonesCursor.getString(phoneColumnIndex);
+					Log.d(dear2dear.TAG, "Found number " + number);
+				}
+
+				return number;
 			}
 		});
 	}
-
 }

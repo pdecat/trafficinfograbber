@@ -25,11 +25,11 @@ import android.view.View;
 
 class Preference {
 	enum PreferenceType {
-		TYPE_STRING, TYPE_CONTACT
+		TYPE_STRING, TYPE_CONTACT, TYPE_CONTACT_VALUE
 	}
 
 	enum PreferenceGroup {
-		GROUP_MESSAGES, GROUP_CONTACTS
+		GROUP_MESSAGES, GROUP_CONTACTS, GROUP_CONTACTS_VALUES
 	}
 
 	protected String key;

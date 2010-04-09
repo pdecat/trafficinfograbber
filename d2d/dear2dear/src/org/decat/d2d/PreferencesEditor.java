@@ -21,6 +21,9 @@
 
 package org.decat.d2d;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.decat.d2d.Preference.PreferenceType;
 
 import android.app.Activity;
@@ -28,7 +31,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Contacts.People;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,18 +39,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class PreferencesEditor extends Activity {
-	private PreferencesHelper preferencesHolder;
-	private SharedPreferences sharedPreferences;
+	public static final String EXTRA_ID = "id";
+	public static final String EXTRA_KEY = "key";
+	public static final String EXTRA_VALUE = "value";
+
 	protected static final int ACTIVITY_REQUEST_CONTACT_PICK = 0;
 
-	private View inputViews[];
-	private String[] tempPreferencesValues;
+	private PreferencesHelper preferencesHelper;
+	private SharedPreferences sharedPreferences;
+
+	private Map<String, View> inputViews;
+	private Map<String, String> preferencesValues;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		sharedPreferences = getSharedPreferences(dear2dear.class.getSimpleName(), Context.MODE_PRIVATE);
-		preferencesHolder = new PreferencesHelper(sharedPreferences);
+		preferencesHelper = new PreferencesHelper(sharedPreferences);
 
 		LinearLayout ll = new LinearLayout(this);
 		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
@@ -57,45 +64,50 @@ public class PreferencesEditor extends Activity {
 		tv.setText("Select your messages and contacts");
 		ll.addView(tv);
 
-		Preference[] preferences = preferencesHolder.preferences;
-		tempPreferencesValues = new String[preferences.length];
-		inputViews = new View[preferences.length];
+		Preference[] preferences = preferencesHelper.preferences;
+		inputViews = new HashMap<String, View>();
+		preferencesValues = new HashMap<String, String>();
 		for (int i = 0; i < preferences.length; i++) {
 			Preference preference = preferences[i];
 			PreferenceType preferenceType = preference.type;
-			tempPreferencesValues[i] = preferencesHolder.getString(preference);
+			final String key = preference.key;
+			String value = sharedPreferences.getString(key, null);
+			preferencesValues.put(key, value);
+			Log.d(dear2dear.TAG, "Loaded contact preference " + key);
 			View view = null;
 			switch (preferenceType) {
+			case TYPE_CONTACT_VALUE:
+				// Do not create any view, handled with next case
+				Log.d(dear2dear.TAG, "No view created for contact value preference " + key);
+				break;
 			case TYPE_CONTACT:
 				// TODO: Add label
 				Button btn = new Button(this);
 				view = btn;
-				String btnLabel = tempPreferencesValues[i] == null ? "Select " + preference.label : ContactHelper.getContactNameFromUriString(this, tempPreferencesValues[i]);
+				String btnLabel = value == null ? "Select " + preference.label : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX);
 				btn.setText(btnLabel);
-				final int btnId = i;
 				btn.setOnClickListener(new Button.OnClickListener() {
 					public void onClick(View v) {
-						Intent intent = new Intent(Intent.ACTION_PICK, People.CONTENT_URI);
-						startActivityForResult(intent, ACTIVITY_REQUEST_CONTACT_PICK + btnId);
+						selectContact(key);
 					}
 				});
 				ll.addView(btn);
 
-				Log.d(dear2dear.TAG, "Loaded contact preference " + preference.key);
+				Log.d(dear2dear.TAG, "Created view for contact preference " + key);
 				break;
 			case TYPE_STRING:
 				// TODO: Add label
 				EditText editText = new EditText(this);
 				view = editText;
-				editText.setText((CharSequence) tempPreferencesValues[i]);
+				editText.setText((CharSequence) value);
 				ll.addView(editText);
-				Log.d(dear2dear.TAG, "Loaded string preference " + preference.key);
+				Log.d(dear2dear.TAG, "Created view for preference " + key);
 				break;
 			default:
-				Log.w(dear2dear.TAG, "Unknow preference type " + preference.key);
+				Log.w(dear2dear.TAG, "Unknown preference type " + key);
 			}
-			inputViews[i] = view;
 			preference.view = view;
+			inputViews.put(key, view);
 		}
 
 		setContentView(ll);
@@ -105,24 +117,26 @@ public class PreferencesEditor extends Activity {
 	public void onPause() {
 		super.onPause();
 		SharedPreferences.Editor ed = sharedPreferences.edit();
-		Preference[] preferences = preferencesHolder.preferences;
+		Preference[] preferences = preferencesHelper.preferences;
 
 		for (int i = 0; i < preferences.length; i++) {
 			Preference preference = preferences[i];
 			PreferenceType preferenceType = preference.type;
+			String key = preference.key;
 			switch (preferenceType) {
+			case TYPE_CONTACT_VALUE:
 			case TYPE_CONTACT:
-				if (tempPreferencesValues[i] != null) {
-					Log.d(dear2dear.TAG, "Stored contact preference " + preference.key);
-					ed.putString(preference.key, tempPreferencesValues[i]);
+				if (preferencesValues.get(key) != null) {
+					Log.d(dear2dear.TAG, "Stored contact preference " + key);
+					ed.putString(key, preferencesValues.get(key));
 				}
 				break;
 			case TYPE_STRING:
-				Log.d(dear2dear.TAG, "Stored string preference " + preference.key);
-				ed.putString(preference.key, ((EditText) preference.view).getText().toString());
+				Log.d(dear2dear.TAG, "Stored string preference " + key);
+				ed.putString(key, ((EditText) preference.view).getText().toString());
 				break;
 			default:
-				Log.w(dear2dear.TAG, "Unknow preference type " + preference.key);
+				Log.w(dear2dear.TAG, "Unknown preference type " + key);
 			}
 		}
 		ed.commit();
@@ -130,15 +144,39 @@ public class PreferencesEditor extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-			int btnId = requestCode - ACTIVITY_REQUEST_CONTACT_PICK;
-			if (-1 < btnId && btnId < inputViews.length) {
-				Log.d(dear2dear.TAG, "Back from picking contact for view id " + btnId);
-				tempPreferencesValues[btnId] = data.getDataString();
-				((Button) inputViews[btnId]).setText(ContactHelper.getContactNameFromUriString(this, tempPreferencesValues[btnId]));
+		StringBuilder sb = new StringBuilder();
+
+		switch (requestCode) {
+		case ACTIVITY_REQUEST_CONTACT_PICK:
+			sb.append("Back from picking contact with resultCode=");
+			sb.append(resultCode);
+			if (resultCode == RESULT_OK) {
+				String dataString = data.getDataString();
+				String key = data.getStringExtra(EXTRA_KEY);
+				String value = data.getStringExtra(EXTRA_VALUE);
+
+				sb.append(", dataString=");
+				sb.append(dataString);
+				sb.append(", id=");
+				sb.append(data.getLongExtra(EXTRA_ID, -1));
+				sb.append(", key=");
+				sb.append(key);
+				sb.append(", value=");
+				sb.append(value);
+				preferencesValues.put(key, dataString);
+				preferencesValues.put(key + PreferencesHelper.VALUE_SUFFIX, value);
+				((Button) inputViews.get(key)).setText(value);
 			}
-		} else {
-			Log.w(dear2dear.TAG, "Error on activity result=" + resultCode + ", requestCode=" + requestCode);
+			Log.d(dear2dear.TAG, sb.toString());
+			break;
+		default:
+			Log.w(dear2dear.TAG, "Unknown activity request code " + requestCode);
 		}
+	}
+
+	private void selectContact(String key) {
+		Intent intent = new Intent(this, ContactSelector.class);
+		intent.putExtra(EXTRA_KEY, key);
+		startActivityForResult(intent, ACTIVITY_REQUEST_CONTACT_PICK);
 	}
 }

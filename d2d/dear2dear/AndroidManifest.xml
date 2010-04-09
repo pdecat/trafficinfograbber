@@ -47,14 +47,10 @@
 		</activity>
 
 		<activity android:name=".PreferencesEditor" android:label="@string/preferencesEditor"
-			android:screenOrientation="portrait">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.PREFERENCE" />
-			</intent-filter>
-		</activity>
-	</application>
+			android:screenOrientation="portrait" />
 
+		<activity android:name=".ContactSelector" android:label="@string/contactSelector" android:screenOrientation="portrait" />
+	</application>
 	<uses-permission android:name="android.permission.SEND_SMS" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
 	<uses-sdk android:minSdkVersion="4" />

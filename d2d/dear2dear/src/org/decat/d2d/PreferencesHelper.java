@@ -30,23 +30,26 @@ import org.decat.d2d.Preference.PreferenceType;
 import android.content.SharedPreferences;
 
 class PreferencesHelper {
+	public static final String VALUE_SUFFIX = "_VALUE";
+
 	public final Preference[] preferences = {
 			new Preference("MESSAGE_1", PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 1"),
 			new Preference("MESSAGE_2", PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 2"),
 			new Preference("MESSAGE_3", PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 3"),
+			// Values must be before keys so they are loaded when the view is
+			// created
+			new Preference("CONTACT_1" + VALUE_SUFFIX, PreferenceGroup.GROUP_CONTACTS_VALUES, PreferenceType.TYPE_CONTACT_VALUE, "Contact value 1"),
+			new Preference("CONTACT_2" + VALUE_SUFFIX, PreferenceGroup.GROUP_CONTACTS_VALUES, PreferenceType.TYPE_CONTACT_VALUE, "Contact value 2"),
+			new Preference("CONTACT_3" + VALUE_SUFFIX, PreferenceGroup.GROUP_CONTACTS_VALUES, PreferenceType.TYPE_CONTACT_VALUE, "Contact value 3"),
 			new Preference("CONTACT_1", PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 1"),
 			new Preference("CONTACT_2", PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 2"),
-			new Preference("CONTACT_3", PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 3")
+			new Preference("CONTACT_3", PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 3"),
 	};
 
 	SharedPreferences sharedPreferences;
 
 	public PreferencesHelper(SharedPreferences sharedPreferences) {
 		this.sharedPreferences = sharedPreferences;
-	}
-
-	public String getString(Preference preference) {
-		return this.sharedPreferences.getString(preference.key, null);
 	}
 
 	public List<Preference> getPreferencesByGroup(PreferenceGroup group) {

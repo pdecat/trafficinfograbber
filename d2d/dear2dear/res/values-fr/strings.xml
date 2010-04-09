@@ -24,13 +24,14 @@
 <resources>
 	<!-- Activities -->
     <string name="preferencesEditor">dear2dear - Editeur de préférences</string>
+	<string name="contactSelector">dear2dear - Sélectionneur de contact</string>
 
     <!-- Menu items -->
     <string name="preferences">Préférences</string>
     <string name="about">À propos</string>
 
 	<string name="notificationLabel">Lancer dear2dear</string>
-	<string name="notificationMessage">Ajout d'un raccourci pour lancer dear2dear...</string>
+	<string name="notificationMessage">Ajout d\'un raccourci pour lancer dear2dear...</string>
     
     <!-- Strings for steps -->
     <string name="q_what">quoi ?</string>
