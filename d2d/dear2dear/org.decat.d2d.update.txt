@@ -1,3 +1,5 @@
-1
+2
 -
+Version 0.0.2: Get contacts information from Contacts provider instead of plain text configuration
+
 Version 0.0.1: first public version
