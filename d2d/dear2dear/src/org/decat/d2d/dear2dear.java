@@ -72,6 +72,8 @@ public class dear2dear extends Activity {
 
 	protected String mediaStepChoice;
 
+	private Button restartButton;
+
 	public static void showToast(Context context, String message) {
 		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
@@ -90,6 +92,7 @@ public class dear2dear extends Activity {
 		preferencesHolder = new PreferencesHelper(sharedPreferences);
 
 		LinearLayout ll = new LinearLayout(this);
+		ll.setGravity(Gravity.FILL_VERTICAL);
 		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
 
 		tv = new TextView(this);
@@ -101,6 +104,17 @@ public class dear2dear extends Activity {
 			buttons[i] = new Button(this);
 			ll.addView(buttons[i]);
 		}
+
+		// Add a restart button
+		restartButton = new Button(this);
+		restartButton.setText(getString(R.string.restart));
+		restartButton.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				Log.d(dear2dear.TAG, "Restart from scratch");
+				startFromScratch();
+			}
+		});
+		ll.addView(restartButton);
 
 		setContentView(ll);
 
@@ -200,6 +214,9 @@ public class dear2dear extends Activity {
 	}
 
 	private void startFromScratch() {
+		// Hide restart button
+		restartButton.setVisibility(View.INVISIBLE);
+
 		tv.setText(getString(R.string.send) + " " + getString(R.string.q_to_whom));
 		List<Preference> contacts = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_CONTACTS);
 		for (int i = 0; i < buttons.length; i++) {
@@ -220,6 +237,9 @@ public class dear2dear extends Activity {
 			btn.setText(optionLabel);
 			btn.setOnClickListener(new Button.OnClickListener() {
 				public void onClick(View v) {
+					// Show restart button
+					restartButton.setVisibility(View.VISIBLE);
+
 					destinationStepChoiceLabel = optionLabel;
 					destinationStepChoiceValue = optionValue;
 					tv.setText(getString(R.string.send) + " \"" + destinationStepChoiceLabel + "\" " + getString(R.string.q_what));
@@ -277,14 +297,7 @@ public class dear2dear extends Activity {
 		btn.setVisibility(View.VISIBLE);
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				btn.setText(getString(R.string.restart));
-				btn.setVisibility(View.VISIBLE);
-				btn.setOnClickListener(new Button.OnClickListener() {
-					public void onClick(View v) {
-						Log.d(dear2dear.TAG, "Restart from scratch");
-						startFromScratch();
-					}
-				});
+				buttons[0].setVisibility(View.INVISIBLE);
 
 				StringBuffer message = new StringBuffer(getString(R.string.sending));
 				message.append(" ");
