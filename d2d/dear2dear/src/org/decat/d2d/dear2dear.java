@@ -307,9 +307,7 @@ public class dear2dear extends Activity {
 					message.append(")");
 					Log.d(dear2dear.TAG, message.toString());
 					if (phoneNumber != null) {
-						showToast("TODO: Implement SMS");
-						// sm.sendTextMessage(phoneNumber, null,
-						// messageStepChoice, null, null);
+						sm.sendTextMessage(phoneNumber, null, messageStepChoice, null, null);
 					} else {
 						showToast("Could not find a phone number for " + destinationStepChoiceLabel);
 					}
