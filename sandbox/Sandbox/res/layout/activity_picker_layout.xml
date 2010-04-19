@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
  **
@@ -21,11 +21,10 @@
  **
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/listApplications" android:title="@string/listApplications" />
-	<item android:id="@+id/showContactDetails" android:title="@string/showContactDetails" />
-	<item android:id="@+id/selectContact" android:title="@string/selectContact" />
-	<item android:id="@+id/selectContactAndNumber" android:title="@string/selectContactAndNumber" />
-	<item android:id="@+id/selectActivity" android:title="@string/selectActivity" />
-	<item android:id="@+id/about" android:title="@string/about" />
-</menu>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:minHeight="?android:attr/listPreferredItemHeight" android:paddingLeft="2dip" android:gravity="center_vertical">
+	<ImageView android:id="@+id/icon" android:layout_width="@android:dimen/app_icon_size" android:layout_height="@android:dimen/app_icon_size"
+		android:scaleType="fitCenter" />
+	<TextView android:id="@+id/title" android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceLarge" android:paddingLeft="6dip" />
+</LinearLayout>

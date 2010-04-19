@@ -29,6 +29,7 @@
 	<string name="showContactDetails">Show contact details</string>
 	<string name="selectContact">Select contact</string>
 	<string name="selectContactAndNumber">Select contact and number</string>
+	<string name="selectActivity">Select activity</string>
 	<string name="about">About</string>
 	
 	<string name="spinner">Spinner</string>

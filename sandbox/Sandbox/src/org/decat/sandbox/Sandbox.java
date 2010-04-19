@@ -44,6 +44,7 @@ import android.widget.Toast;
 public class Sandbox extends Activity {
 	private static final int REQUEST_CONTACT = 1;
 	private static final int REQUEST_CONTACT_AND_NUMBER = 2;
+	private static final int REQUEST_ACTIVITY = 3;
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 	public static final String TAG = "Sandbox";
 	private GestureDetector gestureDetector;
@@ -102,6 +103,9 @@ public class Sandbox extends Activity {
 			break;
 		case R.id.selectContactAndNumber:
 			selectContactAndNumber();
+			break;
+		case R.id.selectActivity:
+			selectActivity();
 			break;
 		case R.id.about:
 			try {
@@ -181,6 +185,11 @@ public class Sandbox extends Activity {
 		startActivityForResult(intent, REQUEST_CONTACT_AND_NUMBER);
 	}
 
+	private void selectActivity() {
+		Intent intent = new Intent(this, SelectActivity.class);
+		startActivityForResult(intent, REQUEST_ACTIVITY);
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		StringBuilder sb = new StringBuilder();
@@ -208,6 +217,17 @@ public class Sandbox extends Activity {
 				sb.append(data.getStringExtra("group_value"));
 				sb.append("\n\tchildValue=");
 				sb.append(data.getStringExtra("child_value"));
+			}
+			break;
+		case REQUEST_ACTIVITY:
+			Log.d(Sandbox.TAG, "Back from picking activity with resultCode=" + resultCode);
+			if (resultCode == RESULT_OK) {
+				sb.append("Result from picking contact:\n\tdataString=");
+				sb.append(data.getDataString());
+				sb.append("\n\tid=");
+				sb.append(data.getLongExtra("id", -1));
+				sb.append("\n\tvalue=");
+				sb.append(data.getStringExtra("value"));
 			}
 			break;
 		default:
