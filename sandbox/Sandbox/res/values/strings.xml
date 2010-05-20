@@ -25,6 +25,7 @@
 	<string name="app_name">Sandbox</string>
 	<string name="app_version">0.0.1-SNAPSHOT</string>
 	
+	<string name="storeSms">Store SMS</string>
 	<string name="listApplications">List applications</string>
 	<string name="showContactDetails">Show contact details</string>
 	<string name="selectContact">Select contact</string>

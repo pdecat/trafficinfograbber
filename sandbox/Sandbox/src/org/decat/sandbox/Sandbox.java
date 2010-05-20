@@ -25,10 +25,13 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Contacts.People;
 import android.util.Log;
@@ -92,6 +95,9 @@ public class Sandbox extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.storeSms:
+			storeSms();
+			break;
 		case R.id.listApplications:
 			listApplications();
 			break;
@@ -121,6 +127,38 @@ public class Sandbox extends Activity {
 			return false;
 		}
 		return true;
+	}
+
+	private void storeSms() {
+		// Store a test SMS
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			Uri uri = Uri.parse("content://sms/");
+			ContentResolver cr = getContentResolver();
+			ContentValues cv = new ContentValues();
+			cv.put("thread_id", 0);
+			cv.put("body", "Test body");
+			// cv.put("subject", "Test subject");
+			// cv.put("person", 0);
+			cv.put("address", "0123456789");
+			cv.put("status", -1);
+			cv.put("read", "1");
+			cv.put("service_center", "9876543210");
+			cv.put("date", System.currentTimeMillis());
+
+			sb.append("SMS to store:\n");
+			sb.append(cv.toString());
+
+			cr.insert(uri, cv);
+			sb.append("\n\nResult: success");
+		} catch (Exception e) {
+			sb.append("\n\nResult: failure");
+			Log.e(Sandbox.TAG, "Failed to store SMS", e);
+		}
+
+		Log.i(TAG, sb.toString());
+		textview.setText(sb);
 	}
 
 	private void listApplications() {
