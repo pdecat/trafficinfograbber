@@ -29,7 +29,9 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -357,18 +359,7 @@ public class dear2dear extends Activity {
 				message.append(mediaStepChoice);
 
 				if (getString(R.string.sms).equals(mediaStepChoice)) {
-					SmsManager sm = SmsManager.getDefault();
-
-					String phoneNumber = getPhoneNumberFromUri(destinationStepChoiceValue);
-					message.append(" (phoneNumber=");
-					message.append(phoneNumber);
-					message.append(")");
-					Log.d(dear2dear.TAG, message.toString());
-					if (phoneNumber != null) {
-						sm.sendTextMessage(phoneNumber, null, messageStepChoice, null, null);
-					} else {
-						showToast("Could not find a phone number for " + destinationStepChoiceLabel);
-					}
+					sendSms(message);
 					showToast(message.toString());
 				} else if (getString(R.string.email).equals(mediaStepChoice)) {
 					showToast("TODO: Implement email");
@@ -423,5 +414,46 @@ public class dear2dear extends Activity {
 		}
 
 		return number;
+	}
+
+	private void sendSms(StringBuffer message) {
+		String phoneNumber = getPhoneNumberFromUri(destinationStepChoiceValue);
+		message.append(" (phoneNumber=");
+		message.append(phoneNumber);
+		message.append(")");
+		Log.d(dear2dear.TAG, message.toString());
+
+		if (phoneNumber != null) {
+			SmsManager.getDefault().sendTextMessage(phoneNumber, null, messageStepChoice, null, null);
+
+			// Store the SMS into the standard Google SMS app
+			StringBuilder sb = new StringBuilder();
+
+			try {
+				Uri uri = Uri.parse("content://sms/");
+				ContentResolver cr = getContentResolver();
+				ContentValues cv = new ContentValues();
+				cv.put("thread_id", 0);
+				cv.put("body", messageStepChoice);
+				cv.put("address", phoneNumber);
+				cv.put("status", -1);
+				cv.put("read", "1");
+				cv.put("date", System.currentTimeMillis());
+
+				sb.append("SMS to store:\n");
+				sb.append(cv.toString());
+
+				cr.insert(uri, cv);
+				sb.append("\n\nResult: success");
+			} catch (Exception e) {
+				sb.append("\n\nResult: failure");
+				Log.e(TAG, "Failed to store SMS", e);
+			}
+
+			Log.i(TAG, sb.toString());
+
+		} else {
+			showToast("Could not find a phone number for " + destinationStepChoiceLabel);
+		}
 	}
 }

@@ -52,6 +52,8 @@
 		<activity android:name=".ContactSelector" android:label="@string/contactSelector" android:screenOrientation="portrait" />
 	</application>
 	<uses-permission android:name="android.permission.SEND_SMS" />
+	<uses-permission android:name="android.permission.READ_SMS" />
+	<uses-permission android:name="android.permission.WRITE_SMS" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
 	<uses-sdk android:minSdkVersion="4" />
 </manifest> 
