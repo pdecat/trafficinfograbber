@@ -65,7 +65,7 @@ public class dear2dear extends Activity {
 	private Button buttons[];
 
 	private SharedPreferences sharedPreferences;
-	private PreferencesHelper preferencesHolder;
+	private PreferencesHelper preferencesHelper;
 
 	protected String destinationStepChoiceValue;
 	protected String destinationStepChoiceLabel;
@@ -91,8 +91,13 @@ public class dear2dear extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-		preferencesHolder = new PreferencesHelper(sharedPreferences);
+		preferencesHelper = new PreferencesHelper(sharedPreferences);
 
+		// Check cached names against contacts IDs stored in preferences (issue
+		// #11)
+		checkCachedNamesAgainstContactIds();
+
+		// Create layout
 		LinearLayout ll = new LinearLayout(this);
 		ll.setGravity(Gravity.FILL_VERTICAL);
 		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
@@ -123,6 +128,45 @@ public class dear2dear extends Activity {
 		showNotificationShortcut();
 	}
 
+	/**
+	 * Check cached names against contacts IDs stored in preferences (issue #11)
+	 */
+	private void checkCachedNamesAgainstContactIds() {
+		boolean cacheValid = true;
+		StringBuilder sb = new StringBuilder();
+
+		List<Preference> contacts = preferencesHelper.getPreferencesByGroup(PreferenceGroup.GROUP_CONTACTS);
+		for (int i = 0; i < contacts.size(); i++) {
+			Preference contact = contacts.get(i);
+			String key = contact.key;
+			String contactUri = sharedPreferences.getString(key, null);
+			String cachedName = sharedPreferences.getString(key + PreferencesHelper.VALUE_SUFFIX, null);
+			String currentName = getNameFromUri(contactUri);
+			sb.append("\nContact information for ");
+			sb.append(key);
+			if (cachedName == null || currentName == null || !currentName.equals(cachedName)) {
+				cacheValid = false;
+				sb.append(" is invalid! (contactUri=");
+			} else {
+				sb.append(" is correct (contactUri=");
+			}
+			sb.append(contactUri);
+			sb.append(", cachedName=");
+			sb.append(cachedName);
+			sb.append(", currentName=");
+			sb.append(currentName);
+			sb.append(")\n");
+		}
+
+		if (!cacheValid) {
+			// TODO: launch preferences editor and emphasize invalid contacts
+			showToast(sb.toString());
+			Log.w(dear2dear.TAG, sb.toString());
+		} else {
+			Log.i(dear2dear.TAG, sb.toString());
+		}
+	}
+
 	private void showNotificationShortcut() {
 		NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationMessage), System.currentTimeMillis());
@@ -138,7 +182,7 @@ public class dear2dear extends Activity {
 	public void onResume() {
 		super.onResume();
 
-		if (sharedPreferences.getString(preferencesHolder.preferences[0].key, null) == null) {
+		if (sharedPreferences.getString(preferencesHelper.preferences[0].key, null) == null) {
 			String message = "Please proceed with configuration first...";
 			Log.i(dear2dear.TAG, message);
 			showToast(message);
@@ -226,7 +270,7 @@ public class dear2dear extends Activity {
 		Log.d(dear2dear.TAG, message.toString());
 		tv.setText(message);
 
-		List<Preference> contacts = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_CONTACTS);
+		List<Preference> contacts = preferencesHelper.getPreferencesByGroup(PreferenceGroup.GROUP_CONTACTS);
 		for (int i = 0; i < buttons.length; i++) {
 			Preference contact = contacts.get(i);
 			String key = contact.key;
@@ -259,7 +303,7 @@ public class dear2dear extends Activity {
 					Log.d(dear2dear.TAG, message.toString());
 					tv.setText(message);
 
-					List<Preference> messages = preferencesHolder.getPreferencesByGroup(PreferenceGroup.GROUP_MESSAGES);
+					List<Preference> messages = preferencesHelper.getPreferencesByGroup(PreferenceGroup.GROUP_MESSAGES);
 					for (int i = 0; i < buttons.length; i++) {
 						Preference preference = messages.get(i);
 						String key = preference.key;
@@ -414,6 +458,33 @@ public class dear2dear extends Activity {
 		}
 
 		return number;
+	}
+
+	private String getNameFromUri(String contactUri) {
+		String name = null;
+		Cursor cursor = managedQuery(Uri.parse(contactUri), null, null, null, null);
+		int count = cursor.getCount();
+		Log.d(dear2dear.TAG, "count=" + count);
+		if (count < 1) {
+			Log.e(dear2dear.TAG, "No match for" + contactUri);
+		} else if (count > 1) {
+			Log.e(dear2dear.TAG, "Too many matches for" + contactUri);
+		} else {
+			int idColumnIndex = cursor.getColumnIndexOrThrow(People._ID);
+			Log.d(dear2dear.TAG, "idColumnIndex=" + idColumnIndex);
+			int nameColumnIndex = cursor.getColumnIndexOrThrow(People.NAME);
+			Log.d(dear2dear.TAG, "nameColumnIndex=" + nameColumnIndex);
+
+			// Go to the first match
+			cursor.moveToFirst();
+
+			long id = cursor.getLong(idColumnIndex);
+			Log.d(dear2dear.TAG, "id=" + id);
+			name = cursor.getString(nameColumnIndex);
+			Log.d(dear2dear.TAG, "Found contact " + name);
+		}
+
+		return name;
 	}
 
 	private void sendSms(StringBuffer message) {
