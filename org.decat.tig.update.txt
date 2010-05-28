@@ -1,4 +1,6 @@
-3
+4
 -
-Version 0.0.3: Third public version
-Fix links and copyrights
+Version 0.0.4: Fourth public version
+Add preferences to choose an activity to launch when Search button is pressed
+Shorter shortcut notification message
+Other small fixes
