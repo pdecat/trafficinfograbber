@@ -1,6 +1,6 @@
-4
+5
 -
-Version 0.0.4: Fourth public version
+Version 0.0.5:
 Add preferences to choose an activity to launch when Search button is pressed
 Shorter shortcut notification message
 Other small fixes
