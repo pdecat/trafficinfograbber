@@ -40,6 +40,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -74,6 +75,8 @@ public class TIG extends Activity {
 	private SharedPreferences sharedPreferences;
 	private PreferencesHelper preferencesHelper;
 
+	private float zoomFactor;
+
 	private WebView webview;
 
 	private TIGWebViewClient webViewClient;
@@ -83,9 +86,17 @@ public class TIG extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		// Load preferences
 		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 		preferencesHelper = new PreferencesHelper(sharedPreferences);
 
+		// Retrieve screen density
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		zoomFactor = metrics.densityDpi / 160.0f;
+		Log.i(TIG.TAG, "Screen DPI is " + metrics.densityDpi + ", zoom factor is " + zoomFactor);
+
+		// Initialize view
 		webview = (WebView) findViewById(R.id.webview);
 		webViewClient = new TIGWebViewClient(this);
 		webview.setWebViewClient(webViewClient);
@@ -99,6 +110,7 @@ public class TIG extends Activity {
 		// Default view
 		showLiveTraffic();
 
+		// Add shortcut notification
 		showNotificationShortcut();
 	}
 
@@ -214,8 +226,8 @@ public class TIG extends Activity {
 
 	private void loadUrlInWebview(String url, int scale, int x, int y, String title, String lastModified) {
 		Log.i(TAG, "Loading URL '" + url + "'");
-		webview.setInitialScale(scale);
-		webViewClient.setOffset(x, y);
+		webview.setInitialScale((int) (scale * zoomFactor));
+		webViewClient.setOffset((int) (x * zoomFactor), (int) (y * zoomFactor));
 		webViewClient.setTitle(title);
 		webViewClient.setLastModified(lastModified);
 		webview.loadUrl(url);
