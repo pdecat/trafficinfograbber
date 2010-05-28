@@ -214,17 +214,17 @@ public class Sandbox extends Activity {
 	}
 
 	private void selectContact() {
-		Intent intent = new Intent(this, SelectContact.class);
+		Intent intent = new Intent(this, ContactSelector.class);
 		startActivityForResult(intent, REQUEST_CONTACT);
 	}
 
 	private void selectContactAndNumber() {
-		Intent intent = new Intent(this, SelectContactAndNumber.class);
+		Intent intent = new Intent(this, ContactAndNumberSelector.class);
 		startActivityForResult(intent, REQUEST_CONTACT_AND_NUMBER);
 	}
 
 	private void selectActivity() {
-		Intent intent = new Intent(this, SelectActivity.class);
+		Intent intent = new Intent(this, ActivitySelector.class);
 		startActivityForResult(intent, REQUEST_ACTIVITY);
 	}
 

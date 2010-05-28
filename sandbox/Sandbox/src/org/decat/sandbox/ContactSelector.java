@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class SelectContact extends ListActivity implements OnItemClickListener {
+public class ContactSelector extends ListActivity implements OnItemClickListener {
 	private static final String ID_COLUMN = People._ID;
 
 	private static final String DISPLAY_COLUMN = People.DISPLAY_NAME;

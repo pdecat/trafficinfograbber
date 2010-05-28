@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.SimpleCursorTreeAdapter;
 import android.widget.ExpandableListView.OnChildClickListener;
 
-public class SelectContactAndNumber extends ExpandableListActivity implements OnChildClickListener {
+public class ContactAndNumberSelector extends ExpandableListActivity implements OnChildClickListener {
 	public class ExpandableContactsListAdapter extends SimpleCursorTreeAdapter {
 		public ExpandableContactsListAdapter(Cursor cursor, Context context, int groupLayout, int childLayout, String[] groupFrom, int[] groupTo, String[] childrenFrom, int[] childrenTo) {
 			super(context, cursor, groupLayout, groupFrom, groupTo, childLayout, childrenFrom, childrenTo);

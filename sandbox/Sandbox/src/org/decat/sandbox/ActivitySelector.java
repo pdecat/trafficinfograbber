@@ -16,7 +16,7 @@ import android.widget.AdapterView;
 import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class SelectActivity extends ListActivity implements OnItemClickListener {
+public class ActivitySelector extends ListActivity implements OnItemClickListener {
 	private static final String KEY_TITLE = "TITLE";
 	private static final String KEY_RESOLVE_INFO = "RESOLVE_INFO";
 	private static final String FROM[] = new String[] {
