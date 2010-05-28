@@ -24,6 +24,8 @@ package org.decat.tig;
 import java.io.File;
 
 import org.decat.tig.net.ResourceDownloader;
+import org.decat.tig.preferences.PreferencesEditor;
+import org.decat.tig.preferences.PreferencesHelper;
 import org.decat.tig.web.TIGWebViewClient;
 
 import android.app.Activity;
@@ -34,6 +36,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,17 +52,9 @@ import android.widget.Toast;
 public class TIG extends Activity {
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
+	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
 
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
-
-	// Wikango v1.0
-	private static final ComponentName OTHER_COMPONENT_NAME_1 = new ComponentName("com.gpsprevent", "com.gpsprevent.ui.StartupActivity");
-
-	// Eklaireur v2.02
-	private static final ComponentName OTHER_COMPONENT_NAME_2 = new ComponentName("com.eklaireur.eklandroid", "com.eklaireur.eklandroid.eklaireur");
-
-	// Eklaireur v3.11
-	private static final ComponentName OTHER_COMPONENT_NAME_3 = new ComponentName("com.eklaireur.ekldroid", "com.eklaireur.ekldroid.eklaireur");
 
 	public static final String TAG = "TIG";
 
@@ -76,16 +71,20 @@ public class TIG extends Activity {
 	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
 	private static final String URL_TRAFFIC_COLLISIONS_IDF = URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php";
 
+	private SharedPreferences sharedPreferences;
+	private PreferencesHelper preferencesHelper;
+
 	private WebView webview;
 
 	private TIGWebViewClient webViewClient;
-
-	private Toast toast;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+		preferencesHelper = new PreferencesHelper(sharedPreferences);
 
 		webview = (WebView) findViewById(R.id.webview);
 		webViewClient = new TIGWebViewClient(this);
@@ -142,6 +141,9 @@ public class TIG extends Activity {
 		case R.id.sytadinWebsite:
 			launchSytadinWebsite();
 			return true;
+		case R.id.preferences:
+			showPreferencesEditor();
+			return true;
 		case R.id.about:
 			showAbout();
 			return true;
@@ -149,10 +151,19 @@ public class TIG extends Activity {
 		return false;
 	}
 
-	private void showToast(String message) {
-		toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+	public static void showToast(Context context, String message) {
+		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
 		toast.show();
+	}
+
+	private void showToast(String message) {
+		showToast(this, message);
+	}
+
+	private void showPreferencesEditor() {
+		Intent intent = new Intent(this, PreferencesEditor.class);
+		startActivityForResult(intent, ACTIVITY_REQUEST_PREFERENCES_EDITOR);
 	}
 
 	private void showAbout() {
@@ -260,17 +271,25 @@ public class TIG extends Activity {
 
 	@Override
 	public boolean onSearchRequested() {
-		ComponentName otherComponentName = OTHER_COMPONENT_NAME_1;
-		try {
-			Intent myIntent = new Intent();
-			myIntent.setAction(Intent.ACTION_MAIN);
-			myIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-			myIntent.setComponent(otherComponentName);
-			myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(myIntent);
-		} catch (Exception e) {
-			String message = "Error while launching third party component " + otherComponentName.getPackageName();
-			Log.e(TIG.TAG, message, e);
+		String otherActivity = sharedPreferences.getString("OTHER_ACTIVITY", null);
+		if (otherActivity != null) {
+			String[] otherActivitySplitted = otherActivity.split("/");
+			ComponentName otherComponentName = new ComponentName(otherActivitySplitted[0], otherActivitySplitted[1]);
+			try {
+				Intent myIntent = new Intent();
+				myIntent.setAction(Intent.ACTION_MAIN);
+				myIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+				myIntent.setComponent(otherComponentName);
+				myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(myIntent);
+			} catch (Exception e) {
+				String message = "Error while launching third party activity " + otherComponentName.getPackageName();
+				Log.e(TIG.TAG, message, e);
+				showToast(message);
+			}
+		} else {
+			String message = "No third party activity set in preferences...";
+			Log.w(TIG.TAG, message);
 			showToast(message);
 		}
 		return false;
