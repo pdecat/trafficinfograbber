@@ -32,6 +32,7 @@
 	<string name="preferences">Preferences</string>
 	<string name="about">About</string>
 
+	<!-- Notifications -->
 	<string name="notificationLabel">Launch dear2dear</string>
 	<string name="notificationMessage">Shortcut to launch dear2dear...</string>
 
