@@ -25,16 +25,23 @@
 	<string name="app_name">TrafficInfoGrabber</string>
 	<string name="app_version">0.0.4-SNAPSHOT</string>
 
+	<!-- Activities -->
+	<string name="preferencesEditor">TIG - Preferences Editor</string>
+	<string name="activitySelector">TIG - Activity Selector</string>
+
+	<!-- Menu items -->
 	<string name="liveTrafficLite">Live Traffic Live</string>
 	<string name="liveTraffic">Live Traffic</string>
 	<string name="closedAtNight">Closed At Night</string>
-	<string name="quickStats">Quicks statistics</string>
+	<string name="quickStats">Quick statistics</string>
 	<string name="trafficCollisions">Traffic Collisions</string>
 	<string name="sytadinWebsite">www.sytadin.fr</string>
+	<string name="preferences">Preferences</string>
 	<string name="about">About</string>
 
+	<!-- Notifications -->
 	<string name="notificationLabel">Launch TIG</string>
-	<string name="notificationMessage">Adding a shortcut to launch TIG...</string>
+	<string name="notificationMessage">Shortcut to launch TIG...</string>
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">A simple traffic information grabber</string>
