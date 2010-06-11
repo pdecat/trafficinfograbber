@@ -29,7 +29,7 @@ import org.decat.d2d.Preference.PreferenceType;
 
 import android.content.SharedPreferences;
 
-class PreferencesHelper {
+public class PreferencesHelper {
 	public static final String VALUE_SUFFIX = "_VALUE";
 
 	public final Preference[] preferences = {
