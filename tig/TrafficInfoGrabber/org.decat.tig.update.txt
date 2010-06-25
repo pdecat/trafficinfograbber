@@ -1,6 +1,9 @@
-5
+6
 -
+Version 0.0.6:
+ Add preference for notification shortcut and lame icons
+
 Version 0.0.5:
-Add preferences to choose an activity to launch when Search button is pressed
-Shorter shortcut notification message
-Other small fixes
+ Add preferences to choose an activity to launch when Search button is pressed
+ Shorter shortcut notification message
+ Other small fixes
