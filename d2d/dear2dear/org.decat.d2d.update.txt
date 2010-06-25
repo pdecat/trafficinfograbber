@@ -1,5 +1,10 @@
-2
+3
 -
-Version 0.0.2: Get contacts information from Contacts provider instead of plain text configuration
+Version 0.0.3:
+ Add preference for notification shortcut and lame icons 
 
-Version 0.0.1: first public version
+Version 0.0.2:
+ Get contacts information from Contacts provider instead of plain text configuration
+
+Version 0.0.1:
+ first public version
