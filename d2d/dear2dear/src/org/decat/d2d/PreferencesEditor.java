@@ -79,6 +79,7 @@ public class PreferencesEditor extends Activity {
 			View view = null;
 			switch (preferenceType) {
 			case TYPE_CONTACT_VALUE:
+				value = sharedPreferences.getString(key, null);
 				// Do not create any view, handled with next case
 				Log.d(dear2dear.TAG, "No view created for contact value preference " + key);
 				break;
