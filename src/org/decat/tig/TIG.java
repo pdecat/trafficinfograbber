@@ -81,6 +81,8 @@ public class TIG extends Activity {
 
 	private TIGWebViewClient webViewClient;
 
+	private boolean notificationShortcut = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -109,20 +111,37 @@ public class TIG extends Activity {
 
 		// Default view
 		showLiveTraffic();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 
 		// Add shortcut notification
 		showNotificationShortcut();
 	}
 
 	private void showNotificationShortcut() {
-		NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationMessage), System.currentTimeMillis());
-		Intent intent = new Intent(this, TIG.class);
-		notification.setLatestEventInfo(this, getString(R.string.app_name) + " " + getString(R.string.app_version), getString(R.string.notificationLabel), PendingIntent.getActivity(this
-				.getBaseContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-		notification.flags |= Notification.FLAG_ONGOING_EVENT;
-		notification.flags |= Notification.FLAG_NO_CLEAR;
-		notificationManager.notify(0, notification);
+		// Get current value
+		boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT, true);
+
+		if (value != notificationShortcut) {
+			NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+			if (value) {
+				Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationMessage), System.currentTimeMillis());
+				Intent intent = new Intent(this, TIG.class);
+				notification.setLatestEventInfo(this, getString(R.string.app_name) + " " + getString(R.string.app_version), getString(R.string.notificationLabel),
+						PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+				notification.flags |= Notification.FLAG_ONGOING_EVENT;
+				notification.flags |= Notification.FLAG_NO_CLEAR;
+				notificationManager.notify(0, notification);
+			} else {
+				notificationManager.cancel(0);
+			}
+		}
+
+		// Store new value
+		notificationShortcut = value;
 	}
 
 	@Override

@@ -32,11 +32,16 @@ import android.content.SharedPreferences;
 public class PreferencesHelper {
 	public static final String VALUE_SUFFIX = "_VALUE";
 
+	public static final String OTHER_ACTIVITY = "OTHER_ACTIVITY";
+
+	public static final String NOTIFICATION_SHORTCUT = "NOTIFICATION_SHORTCUT";
+
 	public final Preference[] preferences = {
 			// Values must be before keys so they are loaded when the view is
 			// created
-			new Preference("OTHER_ACTIVITY" + VALUE_SUFFIX, PreferenceGroup.GROUP_ACTIVITIES_VALUES, PreferenceType.TYPE_ACTIVITY_VALUE, "Activity value"),
-			new Preference("OTHER_ACTIVITY", PreferenceGroup.GROUP_ACTIVITIES, PreferenceType.TYPE_ACTIVITY, "Activity to launch on Search"),
+			new Preference(OTHER_ACTIVITY + VALUE_SUFFIX, PreferenceGroup.GROUP_ACTIVITIES_VALUES, PreferenceType.TYPE_ACTIVITY_VALUE, "Activity value"),
+			new Preference(OTHER_ACTIVITY, PreferenceGroup.GROUP_ACTIVITIES, PreferenceType.TYPE_ACTIVITY, "Activity to launch on Search"),
+			new Preference(NOTIFICATION_SHORTCUT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN, "Notification shortcut"),
 	};
 
 	SharedPreferences sharedPreferences;
