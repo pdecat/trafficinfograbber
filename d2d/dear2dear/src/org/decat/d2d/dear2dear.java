@@ -76,6 +76,8 @@ public class dear2dear extends Activity {
 
 	private Button restartButton;
 
+	private boolean notificationShortcut = false;
+
 	public static void showToast(Context context, String message) {
 		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
@@ -124,8 +126,6 @@ public class dear2dear extends Activity {
 		ll.addView(restartButton);
 
 		setContentView(ll);
-
-		showNotificationShortcut();
 	}
 
 	/**
@@ -168,19 +168,33 @@ public class dear2dear extends Activity {
 	}
 
 	private void showNotificationShortcut() {
-		NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationMessage), System.currentTimeMillis());
-		Intent intent = new Intent(this, dear2dear.class);
-		notification.setLatestEventInfo(this, getString(R.string.app_name) + " " + getString(R.string.app_version), getString(R.string.notificationLabel), PendingIntent.getActivity(this
-				.getBaseContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-		notification.flags |= Notification.FLAG_ONGOING_EVENT;
-		notification.flags |= Notification.FLAG_NO_CLEAR;
-		notificationManager.notify(0, notification);
+		// Get current value
+		boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT, true);
+
+		if (value != notificationShortcut) {
+			NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+			if (value) {
+				Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationMessage), System.currentTimeMillis());
+				Intent intent = new Intent(this, dear2dear.class);
+				notification.setLatestEventInfo(this, getString(R.string.app_name) + " " + getString(R.string.app_version), getString(R.string.notificationLabel),
+						PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+				notification.flags |= Notification.FLAG_ONGOING_EVENT;
+				notification.flags |= Notification.FLAG_NO_CLEAR;
+				notificationManager.notify(0, notification);
+			} else {
+				notificationManager.cancel(0);
+			}
+		}
+
+		// Store new value
+		notificationShortcut = value;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		showNotificationShortcut();
 
 		if (sharedPreferences.getString(preferencesHelper.preferences[0].key, null) == null) {
 			String message = "Please proceed with configuration first...";
@@ -462,26 +476,28 @@ public class dear2dear extends Activity {
 
 	private String getNameFromUri(String contactUri) {
 		String name = null;
-		Cursor cursor = managedQuery(Uri.parse(contactUri), null, null, null, null);
-		int count = cursor.getCount();
-		Log.d(dear2dear.TAG, "count=" + count);
-		if (count < 1) {
-			Log.e(dear2dear.TAG, "No match for" + contactUri);
-		} else if (count > 1) {
-			Log.e(dear2dear.TAG, "Too many matches for" + contactUri);
-		} else {
-			int idColumnIndex = cursor.getColumnIndexOrThrow(People._ID);
-			Log.d(dear2dear.TAG, "idColumnIndex=" + idColumnIndex);
-			int nameColumnIndex = cursor.getColumnIndexOrThrow(People.NAME);
-			Log.d(dear2dear.TAG, "nameColumnIndex=" + nameColumnIndex);
+		if (contactUri != null) {
+			Cursor cursor = managedQuery(Uri.parse(contactUri), null, null, null, null);
+			int count = cursor.getCount();
+			Log.d(dear2dear.TAG, "count=" + count);
+			if (count < 1) {
+				Log.e(dear2dear.TAG, "No match for" + contactUri);
+			} else if (count > 1) {
+				Log.e(dear2dear.TAG, "Too many matches for" + contactUri);
+			} else {
+				int idColumnIndex = cursor.getColumnIndexOrThrow(People._ID);
+				Log.d(dear2dear.TAG, "idColumnIndex=" + idColumnIndex);
+				int nameColumnIndex = cursor.getColumnIndexOrThrow(People.NAME);
+				Log.d(dear2dear.TAG, "nameColumnIndex=" + nameColumnIndex);
 
-			// Go to the first match
-			cursor.moveToFirst();
+				// Go to the first match
+				cursor.moveToFirst();
 
-			long id = cursor.getLong(idColumnIndex);
-			Log.d(dear2dear.TAG, "id=" + id);
-			name = cursor.getString(nameColumnIndex);
-			Log.d(dear2dear.TAG, "Found contact " + name);
+				long id = cursor.getLong(idColumnIndex);
+				Log.d(dear2dear.TAG, "id=" + id);
+				name = cursor.getString(nameColumnIndex);
+				Log.d(dear2dear.TAG, "Found contact " + name);
+			}
 		}
 
 		return name;

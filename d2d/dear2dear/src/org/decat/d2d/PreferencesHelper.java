@@ -32,18 +32,33 @@ import android.content.SharedPreferences;
 public class PreferencesHelper {
 	public static final String VALUE_SUFFIX = "_VALUE";
 
+	public static final String MESSAGE_1 = "MESSAGE_1";
+
+	public static final String MESSAGE_2 = "MESSAGE_2";
+
+	public static final String MESSAGE_3 = "MESSAGE_3";
+
+	public static final String CONTACT_1 = "CONTACT_1";
+
+	public static final String CONTACT_2 = "CONTACT_2";
+
+	public static final String CONTACT_3 = "CONTACT_3";
+
+	public static final String NOTIFICATION_SHORTCUT = "NOTIFICATION_SHORTCUT";
+
 	public final Preference[] preferences = {
-			new Preference("MESSAGE_1", PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 1"),
-			new Preference("MESSAGE_2", PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 2"),
-			new Preference("MESSAGE_3", PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 3"),
+			new Preference(MESSAGE_1, PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 1"),
+			new Preference(MESSAGE_2, PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 2"),
+			new Preference(MESSAGE_3, PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 3"),
 			// Values must be before keys so they are loaded when the view is
 			// created
-			new Preference("CONTACT_1" + VALUE_SUFFIX, PreferenceGroup.GROUP_CONTACTS_VALUES, PreferenceType.TYPE_CONTACT_VALUE, "Contact value 1"),
-			new Preference("CONTACT_2" + VALUE_SUFFIX, PreferenceGroup.GROUP_CONTACTS_VALUES, PreferenceType.TYPE_CONTACT_VALUE, "Contact value 2"),
-			new Preference("CONTACT_3" + VALUE_SUFFIX, PreferenceGroup.GROUP_CONTACTS_VALUES, PreferenceType.TYPE_CONTACT_VALUE, "Contact value 3"),
-			new Preference("CONTACT_1", PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 1"),
-			new Preference("CONTACT_2", PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 2"),
-			new Preference("CONTACT_3", PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 3"),
+			new Preference(CONTACT_1 + VALUE_SUFFIX, PreferenceGroup.GROUP_CONTACTS_VALUES, PreferenceType.TYPE_CONTACT_VALUE, "Contact value 1"),
+			new Preference(CONTACT_2 + VALUE_SUFFIX, PreferenceGroup.GROUP_CONTACTS_VALUES, PreferenceType.TYPE_CONTACT_VALUE, "Contact value 2"),
+			new Preference(CONTACT_3 + VALUE_SUFFIX, PreferenceGroup.GROUP_CONTACTS_VALUES, PreferenceType.TYPE_CONTACT_VALUE, "Contact value 3"),
+			new Preference(CONTACT_1, PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 1"),
+			new Preference(CONTACT_2, PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 2"),
+			new Preference(CONTACT_3, PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 3"),
+			new Preference(NOTIFICATION_SHORTCUT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN, "Notification shortcut"),
 	};
 
 	SharedPreferences sharedPreferences;

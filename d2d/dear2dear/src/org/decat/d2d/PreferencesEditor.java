@@ -31,9 +31,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,7 +51,7 @@ public class PreferencesEditor extends Activity {
 	private SharedPreferences sharedPreferences;
 
 	private Map<String, View> inputViews;
-	private Map<String, String> preferencesValues;
+	private HashMap<String, Object> preferencesValues;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,25 +68,27 @@ public class PreferencesEditor extends Activity {
 
 		Preference[] preferences = preferencesHelper.preferences;
 		inputViews = new HashMap<String, View>();
-		preferencesValues = new HashMap<String, String>();
+		preferencesValues = new HashMap<String, Object>();
 		for (int i = 0; i < preferences.length; i++) {
 			Preference preference = preferences[i];
 			PreferenceType preferenceType = preference.type;
 			final String key = preference.key;
-			String value = sharedPreferences.getString(key, null);
-			preferencesValues.put(key, value);
-			Log.d(dear2dear.TAG, "Loaded contact preference " + key);
+			Log.d(dear2dear.TAG, "Loading preference " + key);
+
+			Object value = null;
 			View view = null;
 			switch (preferenceType) {
 			case TYPE_CONTACT_VALUE:
 				// Do not create any view, handled with next case
 				Log.d(dear2dear.TAG, "No view created for contact value preference " + key);
 				break;
+
 			case TYPE_CONTACT:
 				// TODO: Add label
 				Button btn = new Button(this);
 				view = btn;
-				String btnLabel = value == null ? "Select " + preference.label : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX);
+				value = sharedPreferences.getString(key, null);
+				String btnLabel = (String) (value == null ? "Select " + preference.label : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX));
 				btn.setText(btnLabel);
 				btn.setOnClickListener(new Button.OnClickListener() {
 					public void onClick(View v) {
@@ -93,19 +97,34 @@ public class PreferencesEditor extends Activity {
 				});
 				ll.addView(btn);
 
-				Log.d(dear2dear.TAG, "Created view for contact preference " + key);
+				Log.d(dear2dear.TAG, "Created button view for contact preference " + key);
 				break;
+
 			case TYPE_STRING:
 				// TODO: Add label
 				EditText editText = new EditText(this);
 				view = editText;
+				value = sharedPreferences.getString(key, null);
 				editText.setText((CharSequence) value);
 				ll.addView(editText);
-				Log.d(dear2dear.TAG, "Created view for preference " + key);
+				Log.d(dear2dear.TAG, "Created edittext view for preference " + key);
 				break;
+
+			case TYPE_BOOLEAN:
+				CheckBox checkBox = new CheckBox(this);
+				view = checkBox;
+				checkBox.setText((CharSequence) preference.label);
+				value = sharedPreferences.getBoolean(key, true);
+				checkBox.setChecked((Boolean) value);
+				ll.addView(checkBox);
+				Log.d(dear2dear.TAG, "Created checkbox view for preference " + key);
+				break;
+
 			default:
 				Log.w(dear2dear.TAG, "Unknown preference type " + key);
 			}
+
+			preferencesValues.put(key, value);
 			preference.view = view;
 			inputViews.put(key, view);
 		}
@@ -123,18 +142,28 @@ public class PreferencesEditor extends Activity {
 			Preference preference = preferences[i];
 			PreferenceType preferenceType = preference.type;
 			String key = preference.key;
+
 			switch (preferenceType) {
 			case TYPE_CONTACT_VALUE:
 			case TYPE_CONTACT:
-				if (preferencesValues.get(key) != null) {
+				Object value = preferencesValues.get(key);
+				if (value != null) {
 					Log.d(dear2dear.TAG, "Stored contact preference " + key);
-					ed.putString(key, preferencesValues.get(key));
+					ed.putString(key, (String) value);
 				}
 				break;
+
 			case TYPE_STRING:
 				Log.d(dear2dear.TAG, "Stored string preference " + key);
-				ed.putString(key, ((EditText) preference.view).getText().toString());
+				Editable text = ((EditText) preference.view).getText();
+				ed.putString(key, text.toString());
 				break;
+
+			case TYPE_BOOLEAN:
+				Log.d(dear2dear.TAG, "Stored boolean preference " + key);
+				ed.putBoolean(key, ((CheckBox) preference.view).isChecked());
+				break;
+
 			default:
 				Log.w(dear2dear.TAG, "Unknown preference type " + key);
 			}
@@ -163,6 +192,8 @@ public class PreferencesEditor extends Activity {
 				sb.append(key);
 				sb.append(", value=");
 				sb.append(value);
+
+				// Store returned contact information in preference values
 				preferencesValues.put(key, dataString);
 				preferencesValues.put(key + PreferencesHelper.VALUE_SUFFIX, value);
 				((Button) inputViews.get(key)).setText(value);
