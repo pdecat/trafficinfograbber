@@ -194,6 +194,7 @@ public class dear2dear extends Activity {
 	public void onResume() {
 		super.onResume();
 
+		// Add shortcut notification
 		showNotificationShortcut();
 
 		if (sharedPreferences.getString(preferencesHelper.preferences[0].key, null) == null) {
