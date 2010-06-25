@@ -35,6 +35,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,7 +50,7 @@ public class PreferencesEditor extends Activity {
 	private SharedPreferences sharedPreferences;
 
 	private Map<String, View> inputViews;
-	private Map<String, String> preferencesValues;
+	private HashMap<String, Object> preferencesValues;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,17 +67,18 @@ public class PreferencesEditor extends Activity {
 
 		Preference[] preferences = preferencesHelper.preferences;
 		inputViews = new HashMap<String, View>();
-		preferencesValues = new HashMap<String, String>();
+		preferencesValues = new HashMap<String, Object>();
 		for (int i = 0; i < preferences.length; i++) {
 			Preference preference = preferences[i];
 			PreferenceType preferenceType = preference.type;
 			final String key = preference.key;
-			String value = sharedPreferences.getString(key, null);
-			preferencesValues.put(key, value);
-			Log.d(TIG.TAG, "Loaded contact preference " + key);
+			Log.d(TIG.TAG, "Loading preference " + key);
+
+			Object value = null;
 			View view = null;
 			switch (preferenceType) {
 			case TYPE_ACTIVITY_VALUE:
+				value = sharedPreferences.getString(key, null);
 				// Do not create any view, handled with next case
 				Log.d(TIG.TAG, "No view created for contact value preference " + key);
 				break;
@@ -84,7 +86,8 @@ public class PreferencesEditor extends Activity {
 				// TODO: Add label
 				Button btn = new Button(this);
 				view = btn;
-				String btnLabel = value == null ? "Select " + preference.label : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX);
+				value = sharedPreferences.getString(key, null);
+				String btnLabel = (String) (value == null ? "Select " + preference.label : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX));
 				btn.setText(btnLabel);
 				btn.setOnClickListener(new Button.OnClickListener() {
 					public void onClick(View v) {
@@ -93,11 +96,23 @@ public class PreferencesEditor extends Activity {
 				});
 				ll.addView(btn);
 
-				Log.d(TIG.TAG, "Created view for activity preference " + key);
+				Log.d(TIG.TAG, "Created button view for activity preference " + key);
+				break;
+
+			case TYPE_BOOLEAN:
+				CheckBox checkBox = new CheckBox(this);
+				view = checkBox;
+				checkBox.setText((CharSequence) preference.label);
+				value = sharedPreferences.getBoolean(key, true);
+				checkBox.setChecked((Boolean) value);
+				ll.addView(checkBox);
+				Log.d(TIG.TAG, "Created checkbox view for preference " + key);
 				break;
 			default:
 				Log.w(TIG.TAG, "Unknown preference type " + key);
 			}
+
+			preferencesValues.put(key, value);
 			preference.view = view;
 			inputViews.put(key, view);
 		}
@@ -115,14 +130,22 @@ public class PreferencesEditor extends Activity {
 			Preference preference = preferences[i];
 			PreferenceType preferenceType = preference.type;
 			String key = preference.key;
+
 			switch (preferenceType) {
 			case TYPE_ACTIVITY_VALUE:
 			case TYPE_ACTIVITY:
-				if (preferencesValues.get(key) != null) {
-					Log.d(TIG.TAG, "Stored contact preference " + key);
-					ed.putString(key, preferencesValues.get(key));
+				Object value = preferencesValues.get(key);
+				if (value != null) {
+					Log.d(TIG.TAG, "Stored activity preference " + key);
+					ed.putString(key, (String) value);
 				}
 				break;
+
+			case TYPE_BOOLEAN:
+				Log.d(TIG.TAG, "Stored boolean preference " + key);
+				ed.putBoolean(key, ((CheckBox) preference.view).isChecked());
+				break;
+
 			default:
 				Log.w(TIG.TAG, "Unknown preference type " + key);
 			}
