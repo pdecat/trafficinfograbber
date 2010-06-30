@@ -46,6 +46,8 @@ public class PreferencesHelper {
 
 	public static final String NOTIFICATION_SHORTCUT = "NOTIFICATION_SHORTCUT";
 
+	public static final String NOTIFICATION_SHORTCUT_ON_BOOT = "NOTIFICATION_SHORTCUT_ON_BOOT";
+
 	public final Preference[] preferences = {
 			new Preference(MESSAGE_1, PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 1"),
 			new Preference(MESSAGE_2, PreferenceGroup.GROUP_MESSAGES, PreferenceType.TYPE_STRING, "Message 2"),
@@ -59,6 +61,7 @@ public class PreferencesHelper {
 			new Preference(CONTACT_2, PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 2"),
 			new Preference(CONTACT_3, PreferenceGroup.GROUP_CONTACTS, PreferenceType.TYPE_CONTACT, "Contact 3"),
 			new Preference(NOTIFICATION_SHORTCUT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN, "Notification shortcut"),
+			new Preference(NOTIFICATION_SHORTCUT_ON_BOOT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN, "Notification shortcut on boot"),
 	};
 
 	SharedPreferences sharedPreferences;

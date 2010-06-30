@@ -50,10 +50,19 @@
 			android:screenOrientation="portrait" />
 
 		<activity android:name=".ContactSelector" android:label="@string/contactSelector" android:screenOrientation="portrait" />
+	
+		<receiver android:name=".BootCompletedReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
 	</application>
+	
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.SEND_SMS" />
 	<uses-permission android:name="android.permission.READ_SMS" />
 	<uses-permission android:name="android.permission.WRITE_SMS" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
+	
 	<uses-sdk android:minSdkVersion="4" />
 </manifest> 
