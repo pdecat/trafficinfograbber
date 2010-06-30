@@ -36,12 +36,15 @@ public class PreferencesHelper {
 
 	public static final String NOTIFICATION_SHORTCUT = "NOTIFICATION_SHORTCUT";
 
+	public static final String NOTIFICATION_SHORTCUT_ON_BOOT = "NOTIFICATION_SHORTCUT_ON_BOOT";
+
 	public final Preference[] preferences = {
 			// Values must be before keys so they are loaded when the view is
 			// created
 			new Preference(OTHER_ACTIVITY + VALUE_SUFFIX, PreferenceGroup.GROUP_ACTIVITIES_VALUES, PreferenceType.TYPE_ACTIVITY_VALUE, "Activity value"),
 			new Preference(OTHER_ACTIVITY, PreferenceGroup.GROUP_ACTIVITIES, PreferenceType.TYPE_ACTIVITY, "Activity to launch on Search"),
 			new Preference(NOTIFICATION_SHORTCUT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN, "Notification shortcut"),
+			new Preference(NOTIFICATION_SHORTCUT_ON_BOOT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN, "Notification shortcut on boot"),
 	};
 
 	SharedPreferences sharedPreferences;

@@ -73,7 +73,6 @@ public class TIG extends Activity {
 	private static final String URL_TRAFFIC_COLLISIONS_IDF = URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php";
 
 	private SharedPreferences sharedPreferences;
-	private PreferencesHelper preferencesHelper;
 
 	private float zoomFactor;
 
@@ -81,7 +80,7 @@ public class TIG extends Activity {
 
 	private TIGWebViewClient webViewClient;
 
-	private boolean notificationShortcut = false;
+	private static boolean notificationShortcut = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,7 +89,6 @@ public class TIG extends Activity {
 
 		// Load preferences
 		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-		preferencesHelper = new PreferencesHelper(sharedPreferences);
 
 		// Retrieve screen density
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -117,21 +115,24 @@ public class TIG extends Activity {
 	public void onResume() {
 		super.onResume();
 
-		// Add shortcut notification
-		showNotificationShortcut();
+		// Update notification shortcut state
+		updateNotificationShortcut(this);
 	}
 
-	private void showNotificationShortcut() {
+	public static void updateNotificationShortcut(Context context) {
+		// Get shared preferences
+		SharedPreferences sharedPreferences = context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
+
 		// Get current value
 		boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT, true);
 
 		if (value != notificationShortcut) {
-			NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 			if (value) {
-				Notification notification = new Notification(R.drawable.icon, getString(R.string.notificationMessage), System.currentTimeMillis());
-				Intent intent = new Intent(this, TIG.class);
-				notification.setLatestEventInfo(this, getString(R.string.app_name) + " " + getString(R.string.app_version), getString(R.string.notificationLabel),
-						PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+				Notification notification = new Notification(R.drawable.icon, context.getString(R.string.notificationMessage), System.currentTimeMillis());
+				Intent intent = new Intent(context, TIG.class);
+				notification.setLatestEventInfo(context, context.getString(R.string.app_name) + " " + context.getString(R.string.app_version), context.getString(R.string.notificationLabel),
+						PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
 				notification.flags |= Notification.FLAG_ONGOING_EVENT;
 				notification.flags |= Notification.FLAG_NO_CLEAR;
 				notificationManager.notify(0, notification);
