@@ -1,5 +1,8 @@
-6
+7
 -
+Version 0.0.7:
+ Issue 12: Setup notification shortcuts on boot, enabled with a preference
+
 Version 0.0.6:
  Add preference for notification shortcut and lame icons
 
