@@ -171,8 +171,10 @@ public class TIG extends Activity {
 			showTrafficCollisions();
 			return true;
 		case R.id.sytadinWebsite:
-			launchSytadinWebsite();
+			launchWebsite(URL_SYTADIN);
 			return true;
+		case R.id.infotraficWebsite:
+			launchWebsite(URL_INFOTRAFIC);
 		case R.id.preferences:
 			showPreferencesEditor();
 			return true;
@@ -289,12 +291,12 @@ public class TIG extends Activity {
 		loadUrlInWebview(URL_TRAFFIC_COLLISIONS_IDF, 100, 0, 0, "TC");
 	}
 
-	private void launchSytadinWebsite() {
+	private void launchWebsite(String url) {
 		try {
-			Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL_SYTADIN));
+			Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 			startActivity(myIntent);
 		} catch (Exception e) {
-			String message = "Error while launching www.sytadin.fr website";
+			String message = "Error while launching " + url + " website";
 			Log.e(TIG.TAG, message, e);
 			showToast(message);
 		}
