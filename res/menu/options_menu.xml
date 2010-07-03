@@ -34,6 +34,8 @@
           android:title="@string/trafficCollisions" />
     <item android:id="@+id/sytadinWebsite"
           android:title="@string/sytadinWebsite" />
+    <item android:id="@+id/infotraficWebsite"
+          android:title="@string/infotraficWebsite" />
 
     <item android:id="@+id/preferences"
           android:title="@string/preferences" />
