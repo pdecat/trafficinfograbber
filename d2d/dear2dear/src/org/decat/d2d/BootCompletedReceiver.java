@@ -31,17 +31,19 @@ public class BootCompletedReceiver extends android.content.BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.i(dear2dear.TAG, "Boot completed intent received.");
+		if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+			Log.i(dear2dear.TAG, "Boot completed intent received.");
 
-		// Get shared preferences
-		SharedPreferences sharedPreferences = context.getSharedPreferences(dear2dear.class.getSimpleName(), Context.MODE_PRIVATE);
+			// Get shared preferences
+			SharedPreferences sharedPreferences = context.getSharedPreferences(dear2dear.class.getSimpleName(), Context.MODE_PRIVATE);
 
-		// Get current value
-		boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT_ON_BOOT, true);
+			// Get current value
+			boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT_ON_BOOT, true);
 
-		if (value != notificationShortcutOnBoot) {
-			// Update notification shortcut state
-			dear2dear.updateNotificationShortcut(context);
+			if (value != notificationShortcutOnBoot) {
+				// Update notification shortcut state
+				dear2dear.updateNotificationShortcut(context);
+			}
 		}
 	}
 }
