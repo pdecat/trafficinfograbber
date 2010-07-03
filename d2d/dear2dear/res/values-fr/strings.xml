@@ -45,6 +45,9 @@
     <string name="sending">Envoi</string>
     <string name="restart">Redémarrer</string>
 
+	<!-- Strings for Contact Selector -->
+	<string name="showOnlyFavoriteContactsText">Afficher uniquement les contacts favoris</string>
+	
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>
 	<string name="about_website_label">dear2dear chez Google Code</string>

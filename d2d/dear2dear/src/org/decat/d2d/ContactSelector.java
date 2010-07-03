@@ -6,12 +6,17 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Contacts.People;
+import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
-public class ContactSelector extends ListActivity implements OnItemClickListener {
+public class ContactSelector extends ListActivity implements OnItemClickListener, OnClickListener {
 	private static final String ID_COLUMN = People._ID;
 
 	private static final String DISPLAY_COLUMN = People.DISPLAY_NAME;
@@ -30,18 +35,51 @@ public class ContactSelector extends ListActivity implements OnItemClickListener
 
 	private String key;
 
+	private CheckBox checkBox;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// Create layout
+		LinearLayout ll = new LinearLayout(this);
+		ll.setGravity(Gravity.FILL_VERTICAL);
+		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+		checkBox = new CheckBox(this);
+		checkBox.setText(this.getString(R.string.showOnlyFavoriteContactsText));
+		checkBox.setChecked(true);
+		ll.addView(checkBox);
+
+		// Register this activity as the check box' click listener
+		checkBox.setOnClickListener(this);
+
+		// Add the required list view
+		ListView listView = new ListView(this);
+		listView.setId(android.R.id.list);
+		ll.addView(listView);
+
+		// Register this activity as the list view's item click listener
+		getListView().setOnItemClickListener(this);
+
+		// Set this activity's layout
+		setContentView(ll);
+
 		// Get the key of the preference being edited
 		key = getIntent().getExtras().getString(PreferencesEditor.EXTRA_KEY);
 
-		// Query for people
-		Cursor cursor = managedQuery(People.CONTENT_URI, PROJECTION, People.STARRED + "=1", null, DISPLAY_COLUMN);
+		// Setup the list adapter
+		setupListAdapter();
+	}
 
-		// Register this as an item click listener
-		getListView().setOnItemClickListener(this);
+	private void setupListAdapter() {
+		// Query for people
+		Cursor cursor;
+		if (checkBox.isChecked()) {
+			cursor = managedQuery(People.CONTENT_URI, PROJECTION, People.STARRED + "=1", null, DISPLAY_COLUMN);
+		} else {
+			cursor = managedQuery(People.CONTENT_URI, PROJECTION, null, null, DISPLAY_COLUMN);
+		}
 
 		// Set up our adapter
 		setListAdapter(new SimpleCursorAdapter(this, android.R.layout.activity_list_item, cursor, FROM_COLUMN, TO_LAYOUT_FIELD));
@@ -71,5 +109,10 @@ public class ContactSelector extends ListActivity implements OnItemClickListener
 
 		// Finish this activity
 		finish();
+	}
+
+	public void onClick(View v) {
+		// Refresh the list adapter
+		setupListAdapter();
 	}
 }
