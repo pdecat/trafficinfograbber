@@ -34,17 +34,19 @@ public class BootCompletedReceiver extends android.content.BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.i(TIG.TAG, "Boot completed intent received.");
+		if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+			Log.i(TIG.TAG, "Boot completed intent received.");
 
-		// Get shared preferences
-		SharedPreferences sharedPreferences = context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
+			// Get shared preferences
+			SharedPreferences sharedPreferences = context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
 
-		// Get current value
-		boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT_ON_BOOT, true);
+			// Get current value
+			boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT_ON_BOOT, true);
 
-		if (value != notificationShortcutOnBoot) {
-			// Update notification shortcut state
-			TIG.updateNotificationShortcut(context);
+			if (value != notificationShortcutOnBoot) {
+				// Update notification shortcut state
+				TIG.updateNotificationShortcut(context);
+			}
 		}
 	}
 }
