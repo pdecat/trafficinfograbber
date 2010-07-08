@@ -101,6 +101,7 @@ public class TIG extends Activity {
 		webViewClient = new TIGWebViewClient(this);
 		webview.setWebViewClient(webViewClient);
 		WebSettings settings = webview.getSettings();
+		settings.setBuiltInZoomControls(true);
 		settings.setJavaScriptEnabled(true);
 		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
