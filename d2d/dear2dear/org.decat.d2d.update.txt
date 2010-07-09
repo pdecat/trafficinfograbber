@@ -1,5 +1,9 @@
-4
+5
 -
+Version 0.0.5:
+ Add favorites filter check box to the contact selector
+ Fix email address link in About view 
+
 Version 0.0.4:
  Issue 12: Setup notification shortcuts on boot, enabled with a preference
 
