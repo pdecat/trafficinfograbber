@@ -23,7 +23,7 @@
 -->
 <resources>
 	<string name="app_name">TrafficInfoGrabber</string>
-	<string name="app_version">0.0.8</string>
+	<string name="app_version">0.0.-SNAPSHOT</string>
 
 	<!-- Activities -->
 	<string name="preferencesEditor">TIG - Preferences Editor</string>
