@@ -1,5 +1,9 @@
-7
+8
 -
+Version 0.0.8:
+ Enable built-in zoom controls
+ Fix email address link in About view 
+
 Version 0.0.7:
  Issue 12: Setup notification shortcuts on boot, enabled with a preference
 
