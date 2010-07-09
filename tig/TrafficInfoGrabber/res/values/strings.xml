@@ -49,5 +49,5 @@
 	<string name="about_copyright">Copyright © 2010 Patrick Decat</string>
 	<string name="about_website_label">TrafficInfoGrabber at Google Code</string>
 	<string name="about_website_url">http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber/</string>
-	<string name="about_email">pdecat+tig@gmail.com</string>
+	<string name="about_email">pdecat%2Btig@gmail.com</string>
 </resources>

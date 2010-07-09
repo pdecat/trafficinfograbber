@@ -58,5 +58,5 @@
 	<string name="about_copyright">Copyright © 2010 Patrick Decat</string>
 	<string name="about_website_label">dear2dear at Google Code</string>
 	<string name="about_website_url">http://dear2dear.googlecode.com</string>
-	<string name="about_email">pdecat+d2d@gmail.com</string>
+	<string name="about_email">pdecat%2Bd2d@gmail.com</string>
 </resources>
