@@ -47,6 +47,7 @@
 
 	<!-- Strings for Contact Selector -->
 	<string name="showOnlyFavoriteContactsText">Afficher uniquement les contacts favoris</string>
+	<string name="emptyContactsListText">Votre liste de contacts est vide.</string>
 	
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>

@@ -9,14 +9,13 @@ import android.provider.Contacts.People;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
-public class ContactSelector extends ListActivity implements OnItemClickListener, OnClickListener {
+public class ContactSelector extends ListActivity {
 	private static final String ID_COLUMN = People._ID;
 
 	private static final String DISPLAY_COLUMN = People.DISPLAY_NAME;
@@ -52,15 +51,24 @@ public class ContactSelector extends ListActivity implements OnItemClickListener
 		ll.addView(checkBox);
 
 		// Register this activity as the check box' click listener
-		checkBox.setOnClickListener(this);
+		checkBox.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Refresh the list adapter
+				setupListAdapter();
+			}
+		});
 
 		// Add the required list view
 		ListView listView = new ListView(this);
 		listView.setId(android.R.id.list);
 		ll.addView(listView);
 
-		// Register this activity as the list view's item click listener
-		getListView().setOnItemClickListener(this);
+		// Add a view if the list is empty
+		TextView textView = new TextView(this);
+		textView.setId(android.R.id.empty);
+		textView.setText(this.getString(R.string.emptyContactsListText));
+		ll.addView(textView);
 
 		// Set this activity's layout
 		setContentView(ll);
@@ -85,7 +93,8 @@ public class ContactSelector extends ListActivity implements OnItemClickListener
 		setListAdapter(new SimpleCursorAdapter(this, android.R.layout.activity_list_item, cursor, FROM_COLUMN, TO_LAYOUT_FIELD));
 	}
 
-	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// Extract data
 		Cursor cursor = (Cursor) getListAdapter().getItem(position);
 		String value = cursor.getString(cursor.getColumnIndexOrThrow(DISPLAY_COLUMN));
