@@ -23,31 +23,33 @@
 -->
 <resources>
 	<!-- Activities -->
-    <string name="preferencesEditor">dear2dear - Editeur de préférences</string>
+	<string name="preferencesEditor">dear2dear - Editeur de préférences</string>
 	<string name="contactSelector">dear2dear - Sélectionneur de contact</string>
 
-    <!-- Menu items -->
-    <string name="preferences">Préférences</string>
-    <string name="about">À propos</string>
+	<!-- Menu items -->
+	<string name="preferences">Préférences</string>
+	<string name="about">À propos</string>
 
 	<!-- Notifications -->
 	<string name="notificationLabel">Lancer dear2dear</string>
 	<string name="notificationMessage">Raccourci pour lancer dear2dear...</string>
-    
-    	<!-- Miscellaneous messages -->
-	<string name="contactInformationInvalidText">Les informations du contact %s sont invalides ! (contactUri=%s, cachedName=%s, currentName=%s)</string>
+
+	<!-- Miscellaneous messages -->
+	<string name="contactInformationInvalidText">Les informations du contact %s sont invalides ! (contactUri=%s, cachedName=%s, currentName=%s)
+	</string>
 	<string name="pleaseProceedWithConfigurationFirstText">Veuillez procéder à la configuration en premier...</string>
-	<string name="requiresOIAboutAndSearchingMarketText">Nécessite 'OI About' pour l'affichage de la boîte de dialogue 'À propos'. Recherche sur l'Android Market lancée...</string>
+	<string name="requiresOIAboutAndSearchingMarketText">Nécessite 'OI About' pour l'affichage de la boîte de dialogue 'À propos'. Recherche sur l'Android
+		Market lancée...</string>
 	<string name="failedToStartActivityText">Échec du démarrage de l'activité pour l'intention %s !</string>
-    
-    <!-- Strings for steps -->
+
+	<!-- Strings for steps -->
 	<string name="sendToWhomText">Envoyer à qui ?</string>
 	<string name="sendContactWhatText">Envoyer à %s quoi ?</string>
 	<string name="sendMessageToContactHowText">Envoyer \"%s\" à %s comment ?</string>
 	<string name="sendMessageToContactByMediaText">Envoyer \"%s\" à %s par %s ?</string>
 	<string name="sendingMessageToContactText">Envoi de \"%s\" à %s par %s</string>
-    <string name="sendText">Envoyer</string>
-    <string name="restartText">Redémarrer</string>
+	<string name="sendText">Envoyer</string>
+	<string name="restartText">Redémarrer</string>
 
 	<!-- Strings for preferences labels -->
 	<string name="MESSAGE_1_label">Message 1</string>
@@ -58,16 +60,16 @@
 	<string name="CONTACT_3_label">Contact 3</string>
 	<string name="NOTIFICATION_SHORTCUT_label">Raccourci dans la barre de notification</string>
 	<string name="NOTIFICATION_SHORTCUT_ON_BOOT_label">Raccourci dans la barre de notification au démarrage</string>
-	
+
 	<!-- Strings for Preferences Editor -->
 	<string name="selectYourMessagesAndContacts">Sélectionnez vos messages et contacts</string>
 	<string name="selectContactText">Sélectionner %s</string>
-	
+
 	<!-- Strings for Contact Selector -->
 	<string name="showOnlyFavoriteContactsText">Afficher uniquement les contacts favoris</string>
 	<string name="emptyContactsListText">Votre liste de contacts est vide.</string>
 	<string name="contactSelectedToast">Sélection de %s (id=%d, position=%d)</string>
-	
+
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>
 	<string name="about_website_label">dear2dear chez Google Code</string>
