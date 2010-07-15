@@ -35,10 +35,10 @@
 	<string name="notificationMessage">Raccourci pour lancer dear2dear...</string>
     
     	<!-- Miscellaneous messages -->
-	<string name="contactInformationInvalidText">Contact information for %s is invalid! (contactUri=%s, cachedName=%s, currentName=%s)</string>
-	<string name="pleaseProceedWithConfigurationFirstText">Please proceed with configuration first...</string>
-	<string name="requiresOIAboutAndSearchingMarketText">Requires 'OI About' to show about dialog. Searching Android Market for it...</string>
-	<string name="failedToStartActivityText">Failed to start activity for intent %s!</string>
+	<string name="contactInformationInvalidText">Les informations du contact %s sont invalides ! (contactUri=%s, cachedName=%s, currentName=%s)</string>
+	<string name="pleaseProceedWithConfigurationFirstText">Veuillez procéder à la configuration en premier...</string>
+	<string name="requiresOIAboutAndSearchingMarketText">Nécessite 'OI About' pour l'affichage de la boîte de dialogue 'À propos'. Recherche sur l'Android Market lancée...</string>
+	<string name="failedToStartActivityText">Échec du démarrage de l'activité pour l'intention %s !</string>
     
     <!-- Strings for steps -->
 	<string name="sendToWhomText">Envoyer à qui ?</string>
@@ -60,8 +60,8 @@
 	<string name="NOTIFICATION_SHORTCUT_ON_BOOT_label">Raccourci dans la barre de notification au démarrage</string>
 	
 	<!-- Strings for Preferences Editor -->
-	<string name="selectYourMessagesAndContacts">Select your messages and contacts</string>
-	<string name="selectContactText">Select %s</string>
+	<string name="selectYourMessagesAndContacts">Sélectionnez vos messages et contacts</string>
+	<string name="selectContactText">Sélectionner %s</string>
 	
 	<!-- Strings for Contact Selector -->
 	<string name="showOnlyFavoriteContactsText">Afficher uniquement les contacts favoris</string>
