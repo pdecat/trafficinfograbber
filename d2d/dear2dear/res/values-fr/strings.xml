@@ -34,20 +34,39 @@
 	<string name="notificationLabel">Lancer dear2dear</string>
 	<string name="notificationMessage">Raccourci pour lancer dear2dear...</string>
     
-    <!-- Strings for steps -->
-    <string name="q_what">quoi ?</string>
-    <string name="q_to_whom">à qui ?</string>
-    <string name="to">à</string>
-    <string name="q_how">comment ?</string>
-    <string name="by">par</string>
+    	<!-- Miscellaneous messages -->
+	<string name="contactInformationInvalidText">Contact information for %s is invalid! (contactUri=%s, cachedName=%s, currentName=%s)</string>
+	<string name="pleaseProceedWithConfigurationFirstText">Please proceed with configuration first...</string>
+	<string name="requiresOIAboutAndSearchingMarketText">Requires 'OI About' to show about dialog. Searching Android Market for it...</string>
+	<string name="failedToStartActivityText">Failed to start activity for intent %s!</string>
     
-    <string name="send">Envoyer</string>
-    <string name="sending">Envoi</string>
-    <string name="restart">Redémarrer</string>
+    <!-- Strings for steps -->
+	<string name="sendToWhomText">Envoyer à qui ?</string>
+	<string name="sendContactWhatText">Envoyer à %s quoi ?</string>
+	<string name="sendMessageToContactHowText">Envoyer \"%s\" à %s comment ?</string>
+	<string name="sendMessageToContactByMediaText">Envoyer \"%s\" à %s par %s ?</string>
+	<string name="sendingMessageToContactText">Envoi de \"%s\" à %s par %s</string>
+    <string name="sendText">Envoyer</string>
+    <string name="restartText">Redémarrer</string>
 
+	<!-- Strings for preferences labels -->
+	<string name="MESSAGE_1_label">Message 1</string>
+	<string name="MESSAGE_2_label">Message 2</string>
+	<string name="MESSAGE_3_label">Message 3</string>
+	<string name="CONTACT_1_label">Contact 1</string>
+	<string name="CONTACT_2_label">Contact 2</string>
+	<string name="CONTACT_3_label">Contact 3</string>
+	<string name="NOTIFICATION_SHORTCUT_label">Raccourci dans la barre de notification</string>
+	<string name="NOTIFICATION_SHORTCUT_ON_BOOT_label">Raccourci dans la barre de notification au démarrage</string>
+	
+	<!-- Strings for Preferences Editor -->
+	<string name="selectYourMessagesAndContacts">Select your messages and contacts</string>
+	<string name="selectContactText">Select %s</string>
+	
 	<!-- Strings for Contact Selector -->
 	<string name="showOnlyFavoriteContactsText">Afficher uniquement les contacts favoris</string>
 	<string name="emptyContactsListText">Votre liste de contacts est vide.</string>
+	<string name="contactSelectedToast">Sélection de %s (id=%d, position=%d)</string>
 	
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>

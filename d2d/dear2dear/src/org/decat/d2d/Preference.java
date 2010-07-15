@@ -25,24 +25,30 @@ import android.view.View;
 
 class Preference {
 	enum PreferenceType {
-		TYPE_STRING, TYPE_CONTACT, TYPE_CONTACT_VALUE, TYPE_BOOLEAN
+		TYPE_STRING,
+		TYPE_CONTACT,
+		TYPE_CONTACT_VALUE,
+		TYPE_BOOLEAN
 	}
 
 	enum PreferenceGroup {
-		GROUP_MESSAGES, GROUP_CONTACTS, GROUP_CONTACTS_VALUES, GROUP_TOGGLES
+		GROUP_MESSAGES,
+		GROUP_CONTACTS,
+		GROUP_CONTACTS_VALUES,
+		GROUP_TOGGLES
 	}
 
 	protected String key;
 	protected PreferenceGroup group;
 	protected PreferenceType type;
-	protected Object label;
+	protected int labelResourceId;
 	protected View view;
 
-	public Preference(String key, PreferenceGroup group, PreferenceType type, Object label) {
+	public Preference(String key, PreferenceGroup group, PreferenceType type, int labelResourceId) {
 		this.key = key;
 		this.group = group;
 		this.type = type;
-		this.label = label;
+		this.labelResourceId = labelResourceId;
 		this.view = null;
 	}
 }

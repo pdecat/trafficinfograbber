@@ -74,6 +74,8 @@ public class dear2dear extends Activity {
 
 	protected String mediaStepChoice;
 
+	private String destinationChoiceDetails;
+
 	private Button restartButton;
 
 	private static boolean notificationShortcut = false;
@@ -116,7 +118,7 @@ public class dear2dear extends Activity {
 
 		// Add a restart button
 		restartButton = new Button(this);
-		restartButton.setText(getString(R.string.restart));
+		restartButton.setText(getString(R.string.restartText));
 		restartButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Log.d(dear2dear.TAG, "Restart from scratch");
@@ -147,6 +149,7 @@ public class dear2dear extends Activity {
 			if (cachedName == null || currentName == null || !currentName.equals(cachedName)) {
 				cacheValid = false;
 				sb.append(" is invalid! (contactUri=");
+				showToast(getString(R.string.contactInformationInvalidText, key, contactUri, cachedName, currentName));
 			} else {
 				sb.append(" is correct (contactUri=");
 			}
@@ -160,7 +163,6 @@ public class dear2dear extends Activity {
 
 		if (!cacheValid) {
 			// TODO: launch preferences editor and emphasize invalid contacts
-			showToast(sb.toString());
 			Log.w(dear2dear.TAG, sb.toString());
 		} else {
 			Log.i(dear2dear.TAG, sb.toString());
@@ -201,7 +203,7 @@ public class dear2dear extends Activity {
 		updateNotificationShortcut(this);
 
 		if (sharedPreferences.getString(preferencesHelper.preferences[0].key, null) == null) {
-			String message = "Please proceed with configuration first...";
+			String message = getString(R.string.pleaseProceedWithConfigurationFirstText);
 			Log.i(dear2dear.TAG, message);
 			showToast(message);
 			showPreferencesEditor();
@@ -242,7 +244,7 @@ public class dear2dear extends Activity {
 		try {
 			PackageManager pm = getPackageManager();
 			if (pm.queryIntentActivities(intent, 0).size() == 0) {
-				String message = "Requires 'OI About' to show about dialog. Searching Android Market for it...";
+				String message = getString(R.string.requiresOIAboutAndSearchingMarketText);
 				Log.i(dear2dear.TAG, message);
 				showToast(message);
 				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:org.openintents.about"));
@@ -251,7 +253,7 @@ public class dear2dear extends Activity {
 
 			startActivityForResult(intent, activityRequest);
 		} catch (Exception e) {
-			String message = "Failed to start activity for intent " + intent.toString();
+			String message = getString(R.string.failedToStartActivityText, intent.toString());
 			Log.e(dear2dear.TAG, message, e);
 			showToast(message);
 		}
@@ -282,10 +284,8 @@ public class dear2dear extends Activity {
 		// Hide restart button
 		restartButton.setVisibility(View.INVISIBLE);
 
-		StringBuffer message = new StringBuffer(getString(R.string.send));
-		message.append(" ");
-		message.append(getString(R.string.q_to_whom));
-		Log.d(dear2dear.TAG, message.toString());
+		String message = getString(R.string.sendToWhomText);
+		Log.d(dear2dear.TAG, message);
 		tv.setText(message);
 
 		List<Preference> contacts = preferencesHelper.getPreferencesByGroup(PreferenceGroup.GROUP_CONTACTS);
@@ -313,12 +313,8 @@ public class dear2dear extends Activity {
 					destinationStepChoiceLabel = optionLabel;
 					destinationStepChoiceValue = optionValue;
 
-					StringBuffer message = new StringBuffer(getString(R.string.send));
-					message.append(" ");
-					message.append(destinationStepChoiceLabel);
-					message.append(" ");
-					message.append(getString(R.string.q_what));
-					Log.d(dear2dear.TAG, message.toString());
+					String message = getString(R.string.sendContactWhatText, destinationStepChoiceLabel);
+					Log.d(dear2dear.TAG, message);
 					tv.setText(message);
 
 					List<Preference> messages = preferencesHelper.getPreferencesByGroup(PreferenceGroup.GROUP_MESSAGES);
@@ -344,16 +340,8 @@ public class dear2dear extends Activity {
 			btn.setOnClickListener(new Button.OnClickListener() {
 				public void onClick(View v) {
 					messageStepChoice = optionValue;
-					StringBuffer message = new StringBuffer(getString(R.string.send));
-					message.append(" \"");
-					message.append(messageStepChoice);
-					message.append("\" ");
-					message.append(getString(R.string.to));
-					message.append(" ");
-					message.append(destinationStepChoiceLabel);
-					message.append(" ");
-					message.append(getString(R.string.q_how));
-					Log.d(dear2dear.TAG, message.toString());
+					String message = getString(R.string.sendMessageToContactHowText, messageStepChoice, destinationStepChoiceLabel);
+					Log.d(dear2dear.TAG, message);
 					tv.setText(message);
 					mediaStepOption(buttons[0], getString(R.string.sms));
 					mediaStepOption(buttons[1], getString(R.string.email));
@@ -370,31 +358,19 @@ public class dear2dear extends Activity {
 		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				mediaStepChoice = option;
-				StringBuffer message = new StringBuffer(getString(R.string.send));
-				message.append(" \"");
-				message.append(messageStepChoice);
-				message.append("\" ");
-				message.append(getString(R.string.to));
-				message.append(" ");
-				message.append(destinationStepChoiceLabel);
-				message.append(" ");
-				message.append(getString(R.string.by));
-				message.append(" ");
-				message.append(mediaStepChoice);
-				message.append("?");
+				destinationChoiceDetails = null;
 				if (getString(R.string.sms).equals(mediaStepChoice)) {
-					String phoneNumber = getPhoneNumberFromUri(destinationStepChoiceValue);
-					message.append(" (");
-					message.append(phoneNumber);
-					message.append(")");
-					Log.d(dear2dear.TAG, message.toString());
+					destinationChoiceDetails = getPhoneNumberFromUri(destinationStepChoiceValue);
 				} else if (getString(R.string.email).equals(mediaStepChoice)) {
 					showToast("TODO: Implement email");
+					destinationChoiceDetails = "test@example.com";
 					// TODO: handle email
 					Log.d(dear2dear.TAG, "TODO: Implement email");
 				}
+				String message = getString(R.string.sendMessageToContactByMediaText, messageStepChoice, destinationStepChoiceLabel, mediaStepChoice, destinationChoiceDetails);
+				Log.d(dear2dear.TAG, message.toString());
 				tv.setText(message);
-				fourthStepOption(buttons[0], getString(R.string.send));
+				fourthStepOption(buttons[0], getString(R.string.sendText));
 				Log.d(dear2dear.TAG, "Added send step option");
 				buttons[1].setVisibility(View.INVISIBLE);
 			}
@@ -408,21 +384,10 @@ public class dear2dear extends Activity {
 			public void onClick(View v) {
 				buttons[0].setVisibility(View.INVISIBLE);
 
-				StringBuffer message = new StringBuffer(getString(R.string.sending));
-				message.append(" ");
-				message.append(mediaStepChoice);
-				message.append(" ");
-				message.append(getString(R.string.to));
-				message.append(" ");
-				message.append(destinationStepChoiceLabel);
-				message.append(" ");
-				message.append(getString(R.string.by));
-				message.append(" ");
-				message.append(mediaStepChoice);
-
+				String message = getString(R.string.sendingMessageToContactText, messageStepChoice, destinationStepChoiceLabel, mediaStepChoice, destinationChoiceDetails);
+				showToast(message);
 				if (getString(R.string.sms).equals(mediaStepChoice)) {
-					sendSms(message);
-					showToast(message.toString());
+					sendSms();
 				} else if (getString(R.string.email).equals(mediaStepChoice)) {
 					showToast("TODO: Implement email");
 					// TODO: handle email
@@ -464,7 +429,9 @@ public class dear2dear extends Activity {
 			Uri phoneNumbersUri = builder.build();
 
 			Cursor phonesCursor = managedQuery(phoneNumbersUri, new String[] {
-					People.Phones._ID, People.Phones.NUMBER, People.Phones.TYPE
+					People.Phones._ID,
+					People.Phones.NUMBER,
+					People.Phones.TYPE
 			}, People.Phones.TYPE + "=" + People.Phones.TYPE_MOBILE, null, null);
 			int phonesCount = phonesCursor.getCount();
 			Log.d(dear2dear.TAG, "phonesCount=" + phonesCount);
@@ -507,15 +474,9 @@ public class dear2dear extends Activity {
 		return name;
 	}
 
-	private void sendSms(StringBuffer message) {
-		String phoneNumber = getPhoneNumberFromUri(destinationStepChoiceValue);
-		message.append(" (phoneNumber=");
-		message.append(phoneNumber);
-		message.append(")");
-		Log.d(dear2dear.TAG, message.toString());
-
-		if (phoneNumber != null) {
-			SmsManager.getDefault().sendTextMessage(phoneNumber, null, messageStepChoice, null, null);
+	private void sendSms() {
+		if (destinationChoiceDetails != null) {
+			SmsManager.getDefault().sendTextMessage(destinationChoiceDetails, null, messageStepChoice, null, null);
 
 			// Store the SMS into the standard Google SMS app
 			StringBuilder sb = new StringBuilder();
@@ -526,7 +487,7 @@ public class dear2dear extends Activity {
 				ContentValues cv = new ContentValues();
 				cv.put("thread_id", 0);
 				cv.put("body", messageStepChoice);
-				cv.put("address", phoneNumber);
+				cv.put("address", destinationChoiceDetails);
 				cv.put("status", -1);
 				cv.put("read", "1");
 				cv.put("date", System.currentTimeMillis());

@@ -29,7 +29,9 @@ public class ContactSelector extends ListActivity {
 	};
 
 	private static final String[] PROJECTION = new String[] {
-			ID_COLUMN, DISPLAY_COLUMN, People.STARRED
+			ID_COLUMN,
+			DISPLAY_COLUMN,
+			People.STARRED
 	};
 
 	private String key;
@@ -46,7 +48,7 @@ public class ContactSelector extends ListActivity {
 		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
 
 		checkBox = new CheckBox(this);
-		checkBox.setText(this.getString(R.string.showOnlyFavoriteContactsText));
+		checkBox.setText(getString(R.string.showOnlyFavoriteContactsText));
 		checkBox.setChecked(true);
 		ll.addView(checkBox);
 
@@ -67,7 +69,7 @@ public class ContactSelector extends ListActivity {
 		// Add a view if the list is empty
 		TextView textView = new TextView(this);
 		textView.setId(android.R.id.empty);
-		textView.setText(this.getString(R.string.emptyContactsListText));
+		textView.setText(getString(R.string.emptyContactsListText));
 		ll.addView(textView);
 
 		// Set this activity's layout
@@ -100,13 +102,7 @@ public class ContactSelector extends ListActivity {
 		String value = cursor.getString(cursor.getColumnIndexOrThrow(DISPLAY_COLUMN));
 
 		// Show a toast
-		StringBuilder sb = new StringBuilder("Selected id=");
-		sb.append(id);
-		sb.append(", position=");
-		sb.append(position);
-		sb.append(", value=");
-		sb.append(value);
-		dear2dear.showToast(this, sb.toString());
+		dear2dear.showToast(this, getString(R.string.contactSelectedToast, value, id, position));
 
 		// Prepare result for calling activity
 		Intent result = new Intent();

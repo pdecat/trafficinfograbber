@@ -63,7 +63,7 @@ public class PreferencesEditor extends Activity {
 		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
 
 		final TextView tv = new TextView(this);
-		tv.setText("Select your messages and contacts");
+		tv.setText(getString(R.string.selectYourMessagesAndContacts));
 		ll.addView(tv);
 
 		Preference[] preferences = preferencesHelper.preferences;
@@ -89,7 +89,7 @@ public class PreferencesEditor extends Activity {
 				Button btn = new Button(this);
 				view = btn;
 				value = sharedPreferences.getString(key, null);
-				String btnLabel = (String) (value == null ? "Select " + preference.label : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX));
+				String btnLabel = (String) (value == null ? getString(R.string.selectContactText, getString(preference.labelResourceId)) : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX));
 				btn.setText(btnLabel);
 				btn.setOnClickListener(new Button.OnClickListener() {
 					public void onClick(View v) {
@@ -114,7 +114,7 @@ public class PreferencesEditor extends Activity {
 			case TYPE_BOOLEAN:
 				CheckBox checkBox = new CheckBox(this);
 				view = checkBox;
-				checkBox.setText((CharSequence) preference.label);
+				checkBox.setText((CharSequence) getString(preference.labelResourceId));
 				value = sharedPreferences.getBoolean(key, true);
 				checkBox.setChecked((Boolean) value);
 				ll.addView(checkBox);
