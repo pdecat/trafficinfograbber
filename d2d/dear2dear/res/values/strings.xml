@@ -39,7 +39,7 @@
 	<!-- Miscellaneous messages -->
 	<string name="contactInformationInvalidText">Contact information for %s is invalid! (contactUri=%s, cachedName=%s, currentName=%s)</string>
 	<string name="pleaseProceedWithConfigurationFirstText">Please proceed with configuration first...</string>
-	<string name="requiresOIAboutAndSearchingMarketText">Requires 'OI About' to show about dialog. Searching Android Market for it...</string>
+	<string name="requiresOIAboutAndSearchingMarketText">Requires \'OI About\' to show about dialog. Searching Android Market for it...</string>
 	<string name="failedToStartActivityText">Failed to start activity for intent %s!</string>
 
 	<!-- Strings for steps -->

@@ -38,9 +38,9 @@
 	<string name="contactInformationInvalidText">Les informations du contact %s sont invalides ! (contactUri=%s, cachedName=%s, currentName=%s)
 	</string>
 	<string name="pleaseProceedWithConfigurationFirstText">Veuillez procéder à la configuration en premier...</string>
-	<string name="requiresOIAboutAndSearchingMarketText">Nécessite 'OI About' pour l'affichage de la boîte de dialogue 'À propos'. Recherche sur l'Android
+	<string name="requiresOIAboutAndSearchingMarketText">Nécessite \'OI About\' pour l\'affichage de la boîte de dialogue \'À propos\'. Recherche sur l\'Android
 		Market lancée...</string>
-	<string name="failedToStartActivityText">Échec du démarrage de l'activité pour l'intention %s !</string>
+	<string name="failedToStartActivityText">Échec du démarrage de l\'activité pour l\'intention %s !</string>
 
 	<!-- Strings for steps -->
 	<string name="sendToWhomText">Envoyer à qui ?</string>
