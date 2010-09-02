@@ -23,8 +23,6 @@
 -->
 <resources>
 	<!-- Activities -->
-	<string name="app_name">dear2dear</string>
-	<string name="app_version">0.0.6-截图</string>
 	<string name="preferencesEditor">dear2dear - 首选项编辑器</string>
 	<string name="contactSelector">dear2dear - 联系人选择器</string>
 
@@ -46,8 +44,8 @@
 	<string name="sendToWhomText">发送给谁？</string>
 	<string name="sendContactWhatText">发送给 %s 什么？</string>
 	<string name="sendMessageToContactHowText">怎么发送 \"%s\" 给 %s ？</string>
-	<string name="sendMessageToContactByMediaText">发送 \"%s\" 给 %s，使用 %s ？</string>
-	<string name="sendingMessageToContactText">正在发送 \"%s\" 给 %s ，使用的是 %s</string>
+	<string name="sendMessageToContactByMediaText">发送 \"%s\" 给 %s，使用 %s ？ (%s)</string>
+	<string name="sendingMessageToContactText">正在发送 \"%s\" 给 %s ，使用的是 %s (%s)</string>
 	<string name="sms">短信</string>
 	<string name="email">Email</string>
 	<string name="sendText">发送</string>
@@ -76,6 +74,4 @@
 	<string name="about_comments">一个简单的通知栏程序</string>
 	<string name="about_copyright">版权所有 © 2010 Patrick Decat</string>
 	<string name="about_website_label">dear2dear在Google Code的主页</string>
-	<string name="about_website_url">http://dear2dear.googlecode.com</string>
-	<string name="about_email">pdecat%2Bd2d@gmail.com</string>
 </resources>

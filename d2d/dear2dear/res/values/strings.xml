@@ -46,8 +46,8 @@
 	<string name="sendToWhomText">Send to Whom?</string>
 	<string name="sendContactWhatText">Send %s What?</string>
 	<string name="sendMessageToContactHowText">Send \"%s\" to %s How?</string>
-	<string name="sendMessageToContactByMediaText">Send \"%s\" to %s by %s ?</string>
-	<string name="sendingMessageToContactText">Sending \"%s\" to %s by %s</string>
+	<string name="sendMessageToContactByMediaText">Send \"%s\" to %s by %s ? (%s)</string>
+	<string name="sendingMessageToContactText">Sending \"%s\" to %s by %s (%s)</string>
 	<string name="sms">SMS</string>
 	<string name="email">Email</string>
 	<string name="sendText">Send</string>

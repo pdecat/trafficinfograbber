@@ -46,8 +46,8 @@
 	<string name="sendToWhomText">Envoyer à qui ?</string>
 	<string name="sendContactWhatText">Envoyer à %s quoi ?</string>
 	<string name="sendMessageToContactHowText">Envoyer \"%s\" à %s comment ?</string>
-	<string name="sendMessageToContactByMediaText">Envoyer \"%s\" à %s par %s ?</string>
-	<string name="sendingMessageToContactText">Envoi de \"%s\" à %s par %s</string>
+	<string name="sendMessageToContactByMediaText">Envoyer \"%s\" à %s par %s ? (%s)</string>
+	<string name="sendingMessageToContactText">Envoi de \"%s\" à %s par %s (%s)</string>
 	<string name="sendText">Envoyer</string>
 	<string name="restartText">Redémarrer</string>
 
@@ -72,5 +72,6 @@
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>
+	<string name="about_copyright">Tous droits réservés © 2010 Patrick Decat</string>
 	<string name="about_website_label">dear2dear chez Google Code</string>
 </resources>

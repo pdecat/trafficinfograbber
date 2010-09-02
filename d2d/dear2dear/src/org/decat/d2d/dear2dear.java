@@ -367,7 +367,8 @@ public class dear2dear extends Activity {
 					// TODO: handle email
 					Log.d(dear2dear.TAG, "TODO: Implement email");
 				}
-				String message = getString(R.string.sendMessageToContactByMediaText, messageStepChoice, destinationStepChoiceLabel, mediaStepChoice, destinationChoiceDetails);
+				StringBuffer message = new StringBuffer();
+				message.append(getString(R.string.sendMessageToContactByMediaText, messageStepChoice, destinationStepChoiceLabel, mediaStepChoice, destinationChoiceDetails));
 				Log.d(dear2dear.TAG, message.toString());
 				tv.setText(message);
 				fourthStepOption(buttons[0], getString(R.string.sendText));
