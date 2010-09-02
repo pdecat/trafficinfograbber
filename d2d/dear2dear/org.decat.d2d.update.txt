@@ -1,5 +1,8 @@
-5
+6
 -
+Version 0.0.6:
+ Translated to simplified and traditional chinese (thanks to goapk.com)
+
 Version 0.0.5:
  Add favorites filter check box to the contact selector
  Fix email address link in About view 
