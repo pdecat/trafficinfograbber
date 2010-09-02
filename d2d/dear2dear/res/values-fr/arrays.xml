@@ -31,11 +31,11 @@
     </string-array>
     
     <string-array name="about_translators">
-        <item>English and French by Patrick Decat</item>
-	<item>Chinese by bbs.goapk.com</item>
+        <item>Anglais et Français par Patrick Decat</item>
+	<item>Chinois par bbs.goapk.com</item>
     </string-array>
     
     <string-array name="about_artists">
-        <item>None ;)</item>
+        <item>Aucun ;)</item>
     </string-array>
 </resources>
