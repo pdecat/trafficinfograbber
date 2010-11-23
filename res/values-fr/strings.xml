@@ -24,7 +24,7 @@
 <resources>
 	<!-- Activities -->
     <string name="preferencesEditor">TIG - Editeur de préférences</string>
-	<string name="activitySelector">TIG - Sélectionneur d'activité</string>
+	<string name="activitySelector">TIG - Sélectionneur d\'activité</string>
 
 	<!-- Menu items -->
     <string name="liveTrafficLite">Trafic en direct allégé</string>
@@ -34,6 +34,9 @@
     <string name="trafficCollisions">Accidents</string>
 	<string name="preferences">Préférences</string>
     <string name="about">À propos</string>
+
+	<!-- View items -->
+	<string name="refresh">Raffraichir</string>
 
 	<!-- Notifications -->
 	<string name="notificationLabel">Lancer TIG</string>

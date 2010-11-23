@@ -21,10 +21,22 @@
  **
  */
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 
-	<WebView android:id="@+id/webview" android:layout_below="@+id/refresh" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" />
+	<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-</FrameLayout>
+
+		<WebView android:id="@+id/webview" android:layout_below="@+id/refresh" android:layout_width="fill_parent"
+			android:layout_height="fill_parent" />
+
+	</LinearLayout>
+
+	<LinearLayout android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
+		android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5px" android:layout_marginRight="5px">
+
+		<ImageButton android:id="@+id/refreshButton" android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:src="@drawable/ic_menu_refresh" android:onClick="refreshWebview" />
+
+	</LinearLayout>
+</RelativeLayout>
