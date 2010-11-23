@@ -46,6 +46,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -328,5 +329,9 @@ public class TIG extends Activity {
 			showToast(message);
 		}
 		return false;
+	}
+
+	public void refreshWebview(View v) {
+		webview.reload();
 	}
 }

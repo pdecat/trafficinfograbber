@@ -40,6 +40,9 @@
 	<string name="preferences">Preferences</string>
 	<string name="about">About</string>
 
+	<!-- View items -->
+	<string name="refresh">Refresh</string>
+
 	<!-- Notifications -->
 	<string name="notificationLabel">Launch TIG</string>
 	<string name="notificationMessage">Shortcut to launch TIG...</string>
