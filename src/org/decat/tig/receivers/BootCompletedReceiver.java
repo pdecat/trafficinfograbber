@@ -45,7 +45,7 @@ public class BootCompletedReceiver extends android.content.BroadcastReceiver {
 
 			if (value != notificationShortcutOnBoot) {
 				// Update notification shortcut state
-				TIG.updateNotificationShortcut(context);
+				TIG.updateNotificationShortcutVisibility(context);
 			}
 		}
 	}

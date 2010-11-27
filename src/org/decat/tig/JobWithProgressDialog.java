@@ -13,7 +13,7 @@ abstract class JobWithProgressDialog extends Thread {
 	 * @param context
 	 */
 	JobWithProgressDialog(Context context) {
-		mypd = ProgressDialog.show(context, "Downloading resources", "Please wait...", false);
+		mypd = ProgressDialog.show(context, context.getString(R.string.downloadingResources), context.getString(R.string.pleaseWait), false);
 
 	}
 
