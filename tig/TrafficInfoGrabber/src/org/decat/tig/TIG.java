@@ -37,6 +37,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -81,7 +82,11 @@ public class TIG extends Activity {
 
 	private TIGWebViewClient webViewClient;
 
-	private static boolean notificationShortcut = false;
+	private static boolean preferenceNotificationShortcut = false;
+
+	private static boolean preferenceLockOrientation = false;
+
+	private static boolean preferenceShowRefreshButton = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -113,22 +118,53 @@ public class TIG extends Activity {
 		showLiveTraffic();
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		// Update notification shortcut state
-		updateNotificationShortcut(this);
-	}
-
-	public static void updateNotificationShortcut(Context context) {
+	private static boolean getBooleanPreferenceValue(Context context, String preferenceKey) {
 		// Get shared preferences
 		SharedPreferences sharedPreferences = context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
 
-		// Get current value
-		boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT, true);
+		return sharedPreferences.getBoolean(preferenceKey, true);
+	}
 
-		if (value != notificationShortcut) {
+	private void updateRefreshButtonVisibility(Context context) {
+		// Get current value
+		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.SHOW_REFRESH_BUTTON);
+
+		if (value != preferenceShowRefreshButton) {
+			View refreshButton = findViewById(R.id.refreshButton);
+			if (value) {
+				// Show refresh button as set in preferences
+				refreshButton.setVisibility(View.VISIBLE);
+			} else {
+				refreshButton.setVisibility(View.INVISIBLE);
+			}
+		}
+
+		// Store new value
+		preferenceShowRefreshButton = value;
+	}
+
+	private void updateOrientationForcing(Context context) {
+		// Get current value
+		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.FORCE_PORTRAIT_ORIENTATION);
+
+		if (value != preferenceLockOrientation) {
+			if (value) {
+				// Lock orientation as set in preferences
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			} else {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+			}
+		}
+
+		// Store new value
+		preferenceLockOrientation = value;
+	}
+
+	public static void updateNotificationShortcutVisibility(Context context) {
+		// Get current value
+		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.NOTIFICATION_SHORTCUT);
+
+		if (value != preferenceNotificationShortcut) {
 			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 			if (value) {
 				Notification notification = new Notification(R.drawable.icon, context.getString(R.string.notificationMessage), System.currentTimeMillis());
@@ -144,7 +180,21 @@ public class TIG extends Activity {
 		}
 
 		// Store new value
-		notificationShortcut = value;
+		preferenceNotificationShortcut = value;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		// Update notification shortcut visibility
+		updateNotificationShortcutVisibility(this);
+
+		// Update orientation forcing
+		updateOrientationForcing(this);
+
+		// Update refresh button visibility
+		updateRefreshButtonVisibility(this);
 	}
 
 	@Override
@@ -272,25 +322,25 @@ public class TIG extends Activity {
 			@Override
 			public void doJob() {
 				String lastModified = ResourceDownloader.downloadFile(TIG.this, URL_LIVE_TRAFFIC_IDF_STATE, FILENAME_IDF_TRAFFIC);
-				loadUrlInWebview("file:///android_asset/tig.html", 200, 400, 150, "LLT", lastModified);
+				loadUrlInWebview("file:///android_asset/tig.html", 200, 400, 150, getString(R.string.liveTrafficLite), lastModified);
 			}
 		}.start();
 	}
 
 	private void showLiveTraffic() {
-		loadUrlInWebview(URL_LIVE_TRAFFIC, 200, 480, 220, "LT");
+		loadUrlInWebview(URL_LIVE_TRAFFIC, 200, 480, 220, getString(R.string.liveTraffic));
 	}
 
 	private void showQuickStats() {
-		loadUrlInWebview(URL_QUICK_STATS, 180, 0, 0, "QS");
+		loadUrlInWebview(URL_QUICK_STATS, 180, 0, 0, getString(R.string.quickStats));
 	}
 
 	private void showClosedAtNight() {
-		loadUrlInWebview(URL_CLOSED_AT_NIGHT, 75, 0, 0, "CAT");
+		loadUrlInWebview(URL_CLOSED_AT_NIGHT, 75, 0, 0, getString(R.string.closedAtNight));
 	}
 
 	private void showTrafficCollisions() {
-		loadUrlInWebview(URL_TRAFFIC_COLLISIONS_IDF, 100, 0, 0, "TC");
+		loadUrlInWebview(URL_TRAFFIC_COLLISIONS_IDF, 100, 0, 0, getString(R.string.trafficCollisions));
 	}
 
 	private void launchWebsite(String url) {

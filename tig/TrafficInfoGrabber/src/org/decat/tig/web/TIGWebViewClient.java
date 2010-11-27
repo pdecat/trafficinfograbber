@@ -1,5 +1,7 @@
 package org.decat.tig.web;
 
+import org.decat.tig.R;
+
 import android.app.Activity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,7 +25,7 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Override
 	public void onLoadResource(WebView view, String url) {
-		setTitle(view, "Loading " + title + "...");
+		setTitle(view, activity.getString(R.string.loading) + " " + title + "...");
 	}
 
 	@Override

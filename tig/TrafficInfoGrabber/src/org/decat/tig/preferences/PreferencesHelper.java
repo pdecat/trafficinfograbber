@@ -38,13 +38,19 @@ public class PreferencesHelper {
 
 	public static final String NOTIFICATION_SHORTCUT_ON_BOOT = "NOTIFICATION_SHORTCUT_ON_BOOT";
 
+	public static final String SHOW_REFRESH_BUTTON = "SHOW_REFRESH_BUTTON";
+
+	public static final String FORCE_PORTRAIT_ORIENTATION = "FORCE_PORTRAIT_ORIENTATION";
+
 	public final Preference[] preferences = {
 			// Values must be before keys so they are loaded when the view is
 			// created
-			new Preference(OTHER_ACTIVITY + VALUE_SUFFIX, PreferenceGroup.GROUP_ACTIVITIES_VALUES, PreferenceType.TYPE_ACTIVITY_VALUE, "Activity value"),
-			new Preference(OTHER_ACTIVITY, PreferenceGroup.GROUP_ACTIVITIES, PreferenceType.TYPE_ACTIVITY, "Activity to launch on Search"),
-			new Preference(NOTIFICATION_SHORTCUT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN, "Notification shortcut"),
-			new Preference(NOTIFICATION_SHORTCUT_ON_BOOT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN, "Notification shortcut on boot"),
+			new Preference(OTHER_ACTIVITY + VALUE_SUFFIX, PreferenceGroup.GROUP_ACTIVITIES_VALUES, PreferenceType.TYPE_ACTIVITY_VALUE),
+			new Preference(OTHER_ACTIVITY, PreferenceGroup.GROUP_ACTIVITIES, PreferenceType.TYPE_ACTIVITY),
+			new Preference(NOTIFICATION_SHORTCUT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
+			new Preference(NOTIFICATION_SHORTCUT_ON_BOOT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
+			new Preference(SHOW_REFRESH_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
+			new Preference(FORCE_PORTRAIT_ORIENTATION, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 	};
 
 	SharedPreferences sharedPreferences;

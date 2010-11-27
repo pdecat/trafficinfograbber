@@ -43,6 +43,20 @@
 	<!-- View items -->
 	<string name="refresh">Refresh</string>
 
+	<!-- Miscellaneous -->
+	<string name="loading">Loading</string>
+	<string name="downloadingResources">Downloading resources</string>
+	<string name="pleaseWait">Please wait...</string>
+
+	<!-- Preferences labels -->
+	<string name="preferencesMessage">Set your preferred third party activity to launch on Search</string>
+	<string name="OTHER_ACTIVITY_VALUE">Activity value</string>
+	<string name="OTHER_ACTIVITY">Activity to launch on Search</string>
+	<string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>
+	<string name="NOTIFICATION_SHORTCUT_ON_BOOT">Notification shortcut on boot</string>
+	<string name="SHOW_REFRESH_BUTTON">Show Refresh button</string>
+	<string name="FORCE_PORTRAIT_ORIENTATION">Force portrait orientation</string>
+
 	<!-- Notifications -->
 	<string name="notificationLabel">Launch TIG</string>
 	<string name="notificationMessage">Shortcut to launch TIG...</string>

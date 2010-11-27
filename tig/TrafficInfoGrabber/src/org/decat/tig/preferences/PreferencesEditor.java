@@ -24,6 +24,7 @@ package org.decat.tig.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.decat.tig.R;
 import org.decat.tig.TIG;
 import org.decat.tig.preferences.Preference.PreferenceType;
 
@@ -52,6 +53,11 @@ public class PreferencesEditor extends Activity {
 	private Map<String, View> inputViews;
 	private HashMap<String, Object> preferencesValues;
 
+	private String getStringById(String id) {
+		int identifier = getResources().getIdentifier(id, "string", TIG.class.getPackage().getName());
+		return identifier != 0 ? getString(identifier) : "NOT_FOUND";
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,7 +68,7 @@ public class PreferencesEditor extends Activity {
 		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
 
 		final TextView tv = new TextView(this);
-		tv.setText("Set your prefered third party activity to launch on Search");
+		tv.setText(getString(R.string.preferencesMessage));
 		ll.addView(tv);
 
 		Preference[] preferences = preferencesHelper.preferences;
@@ -87,7 +93,7 @@ public class PreferencesEditor extends Activity {
 				Button btn = new Button(this);
 				view = btn;
 				value = sharedPreferences.getString(key, null);
-				String btnLabel = (String) (value == null ? "Select " + preference.label : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX));
+				String btnLabel = (String) (value == null ? "Select " + getStringById(preference.key) : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX));
 				btn.setText(btnLabel);
 				btn.setOnClickListener(new Button.OnClickListener() {
 					public void onClick(View v) {
@@ -102,7 +108,7 @@ public class PreferencesEditor extends Activity {
 			case TYPE_BOOLEAN:
 				CheckBox checkBox = new CheckBox(this);
 				view = checkBox;
-				checkBox.setText((CharSequence) preference.label);
+				checkBox.setText((CharSequence) getStringById(preference.key));
 				value = sharedPreferences.getBoolean(key, true);
 				checkBox.setChecked((Boolean) value);
 				ll.addView(checkBox);
