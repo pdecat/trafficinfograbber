@@ -1,5 +1,11 @@
-8
+9
 -
+Version 0.0.9:
+ New logo (thanks Benoit!)
+ Added optional Refresh button
+ Optional portrait orientation forcing
+ French translation continuation
+
 Version 0.0.8:
  Enable built-in zoom controls
  Fix email address link in About view 
