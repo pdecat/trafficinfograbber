@@ -55,6 +55,7 @@
 	<string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>
 	<string name="NOTIFICATION_SHORTCUT_ON_BOOT">Notification shortcut on boot</string>
 	<string name="SHOW_REFRESH_BUTTON">Show Refresh button</string>
+	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Show Day Night Switch button</string>
 	<string name="FORCE_PORTRAIT_ORIENTATION">Force portrait orientation</string>
 
 	<!-- Notifications -->
