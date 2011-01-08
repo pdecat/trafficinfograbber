@@ -50,6 +50,7 @@
 	<string name="NOTIFICATION_SHORTCUT">Raccourci dans la barre de notification</string>
 	<string name="NOTIFICATION_SHORTCUT_ON_BOOT">Raccourci dans la barre de notification au démarrage</string>
 	<string name="SHOW_REFRESH_BUTTON">Afficher le bouton Rafraichir</string>
+	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Afficher le bouton pour commuter le mode jour/nuit</string>
 	<string name="FORCE_PORTRAIT_ORIENTATION">Forcer l\'orientation en portrait</string>
 
 	<!-- Notifications -->

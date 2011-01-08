@@ -32,11 +32,19 @@
 
 	</LinearLayout>
 
+	<LinearLayout android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"
+		android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5px" android:layout_marginRight="5px">
+
+		<ImageButton android:id="@+id/dayNightSwitchButton" android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:src="@android:drawable/ic_menu_view" android:onClick="dayNightSwitch" android:background="#0000" />
+
+	</LinearLayout>
+
 	<LinearLayout android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
 		android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5px" android:layout_marginRight="5px">
 
 		<ImageButton android:id="@+id/refreshButton" android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:src="@drawable/ic_menu_refresh" android:onClick="refreshWebview" />
+			android:src="@drawable/ic_menu_refresh" android:onClick="refreshWebview" android:background="#0000" />
 
 	</LinearLayout>
 </RelativeLayout>

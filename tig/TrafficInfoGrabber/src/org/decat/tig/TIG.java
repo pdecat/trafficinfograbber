@@ -48,6 +48,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -82,11 +84,11 @@ public class TIG extends Activity {
 
 	private TIGWebViewClient webViewClient;
 
+	private float oldScreenBrightness = 1f;
+
 	private static boolean preferenceNotificationShortcut = false;
 
 	private static boolean preferenceLockOrientation = false;
-
-	private static boolean preferenceShowRefreshButton = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -129,8 +131,9 @@ public class TIG extends Activity {
 		// Get current value
 		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.SHOW_REFRESH_BUTTON);
 
+		View refreshButton = findViewById(R.id.refreshButton);
+		boolean preferenceShowRefreshButton = refreshButton.getVisibility() == View.VISIBLE;
 		if (value != preferenceShowRefreshButton) {
-			View refreshButton = findViewById(R.id.refreshButton);
 			if (value) {
 				// Show refresh button as set in preferences
 				refreshButton.setVisibility(View.VISIBLE);
@@ -138,9 +141,22 @@ public class TIG extends Activity {
 				refreshButton.setVisibility(View.INVISIBLE);
 			}
 		}
+	}
 
-		// Store new value
-		preferenceShowRefreshButton = value;
+	private void updateDayNightSwitchButtonVisibility(Context context) {
+		// Get current value
+		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.SHOW_DAY_NIGHT_SWITCH_BUTTON);
+
+		View dayNightSwitchButton = findViewById(R.id.dayNightSwitchButton);
+		boolean preferenceShowDayNightSwitchButton = dayNightSwitchButton.getVisibility() == View.VISIBLE;
+		if (value != preferenceShowDayNightSwitchButton) {
+			if (value) {
+				// Show refresh button as set in preferences
+				dayNightSwitchButton.setVisibility(View.VISIBLE);
+			} else {
+				dayNightSwitchButton.setVisibility(View.INVISIBLE);
+			}
+		}
 	}
 
 	private void updateOrientationForcing(Context context) {
@@ -193,8 +209,11 @@ public class TIG extends Activity {
 		// Update orientation forcing
 		updateOrientationForcing(this);
 
-		// Update refresh button visibility
+		// Update Refresh button visibility
 		updateRefreshButtonVisibility(this);
+
+		// Update Day Night Switch button visibility
+		updateDayNightSwitchButtonVisibility(this);
 	}
 
 	@Override
@@ -383,5 +402,19 @@ public class TIG extends Activity {
 
 	public void refreshWebview(View v) {
 		webview.reload();
+	}
+
+	public void dayNightSwitch(View v) {
+		Window win = getWindow();
+		WindowManager.LayoutParams winParams = win.getAttributes();
+
+		if (winParams.screenBrightness > 0.5f) {
+			oldScreenBrightness = winParams.screenBrightness;
+			winParams.screenBrightness = 0.5f;
+		} else {
+			winParams.screenBrightness = oldScreenBrightness;
+		}
+
+		win.setAttributes(winParams);
 	}
 }
