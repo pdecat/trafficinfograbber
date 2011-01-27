@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.decat.vd"
+	android:versionCode="1" android:versionName="1.0">
+	<application android:icon="@drawable/icon" android:label="@string/app_name" android:installLocation="internalOnly">
+		<receiver android:name=".DockEventReceiver">
+			<intent-filter>
+				<action android:name="android.app.action.ENTER_CAR_MODE" />
+				<action android:name="android.app.action.EXIT_CAR_MODE" />
+				<action android:name="android.app.action.ENTER_DESK_MODE" />
+				<action android:name="android.app.action.EXIT_DESK_MODE" />
+			</intent-filter>
+		</receiver>
+	</application>
+
+	<uses-sdk android:minSdkVersion="8" />
+</manifest> 
