@@ -31,6 +31,7 @@ import android.util.Log;
 
 public class DockEventReceiver extends BroadcastReceiver {
 	public static final String PREVIOUS_RINGER_MODE = "PREVIOUS_RINGER_MODE";
+	public static final String PREVIOUS_VOLUME_LEVEL_SYSTEM = "PREVIOUS_VOLUME_LEVEL_SYSTEM";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -52,14 +53,26 @@ public class DockEventReceiver extends BroadcastReceiver {
 
 				// Store current ringer mode
 				ed.putInt(PREVIOUS_RINGER_MODE, audioManager.getRingerMode());
+
+				// Store current volume level for system stream
+				ed.putInt(PREVIOUS_VOLUME_LEVEL_SYSTEM, audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM));
+
 				ed.commit();
+
+				// Alter volume level for system stream
+				if (UiModeManager.ACTION_ENTER_CAR_MODE.equals(intentAction)) {
+					audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM), 0);
+				}
 
 				// Alter ringer mode
 				audioManager.setRingerMode(UiModeManager.ACTION_ENTER_DESK_MODE.equals(intentAction) ? AudioManager.RINGER_MODE_VIBRATE : AudioManager.RINGER_MODE_NORMAL);
 			} else if (UiModeManager.ACTION_EXIT_DESK_MODE.equals(intentAction) || UiModeManager.ACTION_EXIT_CAR_MODE.equals(intentAction)) {
-				// Restore previous ringer mode
-				int storedRingerMode = sharedPreferences.getInt(PREVIOUS_RINGER_MODE, 0);
-				audioManager.setRingerMode(storedRingerMode);
+				// Restore previous ringer mode or normal mode if unknown
+				audioManager.setRingerMode(sharedPreferences.getInt(PREVIOUS_RINGER_MODE, AudioManager.RINGER_MODE_NORMAL));
+
+				// Restore previous volume level for system stream or max level
+				// if unknown
+				audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, sharedPreferences.getInt(PREVIOUS_VOLUME_LEVEL_SYSTEM, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM)), 0);
 			}
 		}
 	}
