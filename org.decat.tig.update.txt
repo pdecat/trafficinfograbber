@@ -1,5 +1,8 @@
-11
+12
 -
+Version 0.1.2:
+ Fixed web view management
+
 Version 0.1.1:
  Fixed Quit button effect on notification shortcut
 
