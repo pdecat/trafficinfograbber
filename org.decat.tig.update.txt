@@ -1,5 +1,8 @@
-10
+11
 -
+Version 0.1.1:
+ Fixed Quit button effect on notification shortcut
+
 Version 0.1.0:
  Added optional Quit button
  Added optional Day Night Switch button
