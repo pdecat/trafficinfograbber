@@ -3,6 +3,7 @@
 Version 0.1.0:
  Added optional Quit button
  Added optional Day Night Switch button
+ Fixed Refresh button setting behavior
 
 Version 0.0.9:
  New logo (thanks Benoit!)
