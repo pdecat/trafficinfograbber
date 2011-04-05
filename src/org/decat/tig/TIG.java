@@ -148,6 +148,22 @@ public class TIG extends Activity {
 		}
 	}
 
+	private void updateQuitButtonVisibility(Context context) {
+		// Get current value
+		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.SHOW_QUIT_BUTTON);
+
+		View quitButton = findViewById(R.id.quitButton);
+		boolean preferenceShowQuitButton = quitButton.getVisibility() == View.VISIBLE;
+		if (value != preferenceShowQuitButton) {
+			if (value) {
+				// Show refresh button as set in preferences
+				quitButton.setVisibility(View.VISIBLE);
+			} else {
+				quitButton.setVisibility(View.INVISIBLE);
+			}
+		}
+	}
+
 	private void updateOrientationForcing(Context context) {
 		// Get current value
 		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.FORCE_PORTRAIT_ORIENTATION);
@@ -170,22 +186,31 @@ public class TIG extends Activity {
 		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.NOTIFICATION_SHORTCUT);
 
 		if (value != preferenceNotificationShortcut) {
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 			if (value) {
-				Notification notification = new Notification(R.drawable.icon, context.getString(R.string.notificationMessage), System.currentTimeMillis());
-				Intent intent = new Intent(context, TIG.class);
-				notification.setLatestEventInfo(context, context.getString(R.string.app_name) + " " + context.getString(R.string.app_version), context.getString(R.string.notificationLabel),
-						PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-				notification.flags |= Notification.FLAG_ONGOING_EVENT;
-				notification.flags |= Notification.FLAG_NO_CLEAR;
-				notificationManager.notify(0, notification);
+				triggerNotification(context);
 			} else {
-				notificationManager.cancel(0);
+				cancelNotification(context);
 			}
 		}
 
 		// Store new value
 		preferenceNotificationShortcut = value;
+	}
+
+	private static void triggerNotification(Context context) {
+		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification notification = new Notification(R.drawable.icon, context.getString(R.string.notificationMessage), System.currentTimeMillis());
+		Intent intent = new Intent(context, TIG.class);
+		notification.setLatestEventInfo(context, context.getString(R.string.app_name) + " " + context.getString(R.string.app_version), context.getString(R.string.notificationLabel),
+				PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+		notification.flags |= Notification.FLAG_ONGOING_EVENT;
+		notification.flags |= Notification.FLAG_NO_CLEAR;
+		notificationManager.notify(0, notification);
+	}
+
+	private static void cancelNotification(Context context) {
+		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.cancel(0);
 	}
 
 	@Override
@@ -203,6 +228,9 @@ public class TIG extends Activity {
 
 		// Update Day Night Switch button visibility
 		updateDayNightSwitchButtonVisibility(this);
+
+		// Update Quit button visibility
+		updateQuitButtonVisibility(this);
 	}
 
 	@Override
@@ -420,6 +448,11 @@ public class TIG extends Activity {
 
 	public void refreshWebview(View v) {
 		webview.reload();
+	}
+
+	public void quit(View v) {
+		cancelNotification(this);
+		finish();
 	}
 
 	public void dayNightSwitch(View v) {

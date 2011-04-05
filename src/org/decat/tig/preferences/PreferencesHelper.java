@@ -42,6 +42,8 @@ public class PreferencesHelper {
 
 	public static final String SHOW_DAY_NIGHT_SWITCH_BUTTON = "SHOW_DAY_NIGHT_SWITCH_BUTTON";
 
+	public static final String SHOW_QUIT_BUTTON = "SHOW_QUIT_BUTTON";
+
 	public static final String FORCE_PORTRAIT_ORIENTATION = "FORCE_PORTRAIT_ORIENTATION";
 
 	public final Preference[] preferences = {
@@ -53,6 +55,7 @@ public class PreferencesHelper {
 			new Preference(NOTIFICATION_SHORTCUT_ON_BOOT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 			new Preference(SHOW_REFRESH_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 			new Preference(SHOW_DAY_NIGHT_SWITCH_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
+			new Preference(SHOW_QUIT_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 			new Preference(FORCE_PORTRAIT_ORIENTATION, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 	};
 
