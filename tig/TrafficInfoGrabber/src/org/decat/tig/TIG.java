@@ -95,6 +95,7 @@ public class TIG extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
 
 		// Load preferences
 		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
@@ -104,6 +105,15 @@ public class TIG extends Activity {
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		zoomFactor = metrics.densityDpi / 160.0f;
 		Log.i(TIG.TAG, "Screen DPI is " + metrics.densityDpi + ", zoom factor is " + zoomFactor);
+
+		// Initialize view
+		webview = (WebView) findViewById(R.id.webview);
+		webViewClient = new TIGWebViewClient(this);
+		webview.setWebViewClient(webViewClient);
+		WebSettings settings = webview.getSettings();
+		settings.setBuiltInZoomControls(true);
+		settings.setJavaScriptEnabled(true);
+		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		// Default view
 		showLiveTraffic();
@@ -336,37 +346,11 @@ public class TIG extends Activity {
 
 	private void loadUrlInWebview(String url, int scale, int x, int y, String title, String lastModified) {
 		Log.i(TAG, "Loading URL '" + url + "'");
-
-		// Set content view
-		switchContentView(R.layout.main);
-
 		webview.setInitialScale((int) (scale * zoomFactor));
 		webViewClient.setOffset((int) (x * zoomFactor), (int) (y * zoomFactor));
 		webViewClient.setTitle(title);
 		webViewClient.setLastModified(lastModified);
 		webview.loadUrl(url);
-	}
-
-	private void switchContentView(int viewId) {
-		if (viewId != currentContentView) {
-			setContentView(viewId);
-
-			switch (viewId) {
-			case R.layout.main:
-				if (webview == null) {
-					// Initialize view
-					webViewClient = new TIGWebViewClient(this);
-					webview = (WebView) findViewById(R.id.webview);
-					webview.setWebViewClient(webViewClient);
-					WebSettings settings = webview.getSettings();
-					settings.setBuiltInZoomControls(true);
-					settings.setJavaScriptEnabled(true);
-					settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-				}
-				break;
-			}
-		}
-
 	}
 
 	private void cacheResources(ContextWrapper context) {
