@@ -452,6 +452,7 @@ public class TIG extends Activity {
 
 	public void quit(View v) {
 		cancelNotification(this);
+		preferenceNotificationShortcut = false;
 		finish();
 	}
 
