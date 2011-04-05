@@ -1,5 +1,9 @@
-9
+10
 -
+Version 0.1.0:
+ Added optional Quit button
+ Added optional Day Night Switch button
+
 Version 0.0.9:
  New logo (thanks Benoit!)
  Added optional Refresh button
