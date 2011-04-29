@@ -1,5 +1,8 @@
-12
+13
 -
+Version 0.1.3:
+ Added optional Ads while loading
+
 Version 0.1.2:
  Fixed web view management
 
