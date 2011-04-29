@@ -1,8 +1,13 @@
 package org.decat.tig.web;
 
 import org.decat.tig.R;
+import org.decat.tig.TIG;
+import org.decat.tig.preferences.PreferencesHelper;
+
+import com.google.ads.AdView;
 
 import android.app.Activity;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -26,10 +31,20 @@ public class TIGWebViewClient extends WebViewClient {
 	@Override
 	public void onLoadResource(WebView view, String url) {
 		setTitle(view, activity.getString(R.string.loading) + " " + title + "...");
+
+		// Show the Ads banner if enabled
+		boolean showAds = TIG.getBooleanPreferenceValue(activity, PreferencesHelper.SHOW_ADS);
+		if (showAds) {
+			view.post(new Runnable() {
+				public void run() {
+					setAdsVisibility(true);
+				}
+			});
+		}
 	}
 
 	@Override
-	public void onPageFinished(WebView view, String url) {
+	public void onPageFinished(final WebView view, String url) {
 		String formattedTitle = title;
 		if (lastModified != null) {
 			/*
@@ -42,8 +57,29 @@ public class TIGWebViewClient extends WebViewClient {
 		}
 		setTitle(view, formattedTitle);
 		view.scrollTo(xScroll, yScroll);
+
+		// Hide the Ads banner after some time
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				view.post(new Runnable() {
+					public void run() {
+						setAdsVisibility(false);
+					}
+				});
+			}
+		}).start();
 	}
 
+	private void setAdsVisibility(boolean visibility) {
+	    AdView adView = (AdView) activity.findViewById(R.id.adview);
+	    adView.setVisibility(visibility ? View.VISIBLE : View.GONE);
+	}
+	
 	private void setTitle(WebView view, String title) {
 		activity.setTitle(title);
 	}

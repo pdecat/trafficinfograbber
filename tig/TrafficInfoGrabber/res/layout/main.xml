@@ -21,38 +21,38 @@
  **
  */
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:ads="http://schemas.android.com/apk/res/org.decat.tig"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-	<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<WebView android:id="@+id/webview" android:layout_above="@+id/adview"
+		android:layout_width="fill_parent" android:layout_height="fill_parent" />
+
+	<ImageButton android:id="@+id/quitButton"
+		android:layout_alignParentRight="true" android:layout_alignParentTop="true"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_marginTop="5px" android:layout_marginRight="5px"
+		android:src="@android:drawable/ic_lock_power_off" android:onClick="quit"
+		android:background="#0000" />
+
+	<ImageButton android:id="@+id/dayNightSwitchButton"
+		android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_marginBottom="5px" android:layout_marginRight="5px"
+		android:src="@android:drawable/ic_menu_view"
+		android:onClick="dayNightSwitch" android:background="#0000" />
 
 
-		<WebView android:id="@+id/webview" android:layout_below="@+id/refresh" android:layout_width="fill_parent"
-			android:layout_height="fill_parent" />
-
-	</LinearLayout>
-
-	<LinearLayout android:layout_alignParentRight="true" android:layout_alignParentTop="true"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5px" android:layout_marginRight="5px">
-
-		<ImageButton android:id="@+id/quitButton" android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:src="@android:drawable/ic_lock_power_off" android:onClick="quit" android:background="#0000" />
-
-	</LinearLayout>
-
-	<LinearLayout android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5px" android:layout_marginRight="5px">
-
-		<ImageButton android:id="@+id/dayNightSwitchButton" android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:src="@android:drawable/ic_menu_view" android:onClick="dayNightSwitch" android:background="#0000" />
-
-	</LinearLayout>
-
-	<LinearLayout android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5px" android:layout_marginRight="5px">
-
-		<ImageButton android:id="@+id/refreshButton" android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:src="@drawable/ic_menu_refresh" android:onClick="refreshWebview" android:background="#0000" />
-
-	</LinearLayout>
+	<ImageButton android:id="@+id/refreshButton"
+		android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_marginBottom="5px" android:layout_marginRight="5px"
+		android:src="@drawable/ic_menu_refresh"
+		android:onClick="refreshWebview"
+		android:background="#0000" />
+		
+	<com.google.ads.AdView android:id="@+id/adview"
+		android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		ads:adUnitId="a14dba5ee6f0b5f" ads:adSize="BANNER" />		
 </RelativeLayout>
