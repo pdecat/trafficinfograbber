@@ -45,6 +45,8 @@ public class PreferencesHelper {
 	public static final String SHOW_QUIT_BUTTON = "SHOW_QUIT_BUTTON";
 
 	public static final String FORCE_PORTRAIT_ORIENTATION = "FORCE_PORTRAIT_ORIENTATION";
+	
+	public static final String SHOW_ADS = "SHOW_ADS";
 
 	public final Preference[] preferences = {
 			// Values must be before keys so they are loaded when the view is
@@ -57,6 +59,7 @@ public class PreferencesHelper {
 			new Preference(SHOW_DAY_NIGHT_SWITCH_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 			new Preference(SHOW_QUIT_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 			new Preference(FORCE_PORTRAIT_ORIENTATION, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
+			new Preference(SHOW_ADS, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 	};
 
 	SharedPreferences sharedPreferences;

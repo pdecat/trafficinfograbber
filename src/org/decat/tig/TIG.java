@@ -28,6 +28,9 @@ import org.decat.tig.preferences.PreferencesEditor;
 import org.decat.tig.preferences.PreferencesHelper;
 import org.decat.tig.web.TIGWebViewClient;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
+
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -115,11 +118,22 @@ public class TIG extends Activity {
 		settings.setJavaScriptEnabled(true);
 		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
+		// Setup Ads
+	    AdView adView = (AdView) findViewById(R.id.adview);
+	    AdRequest adRequest = new AdRequest();
+		adRequest.setTesting(false);
+	    adRequest.addKeyword("paris");
+	    adRequest.addKeyword("sytadin");
+	    adRequest.addKeyword("trafic");
+	    adRequest.addKeyword("info");
+	    adRequest.addKeyword("navigation");
+		adView.loadAd(adRequest);
+
 		// Default view
 		showLiveTraffic();
 	}
 
-	private static boolean getBooleanPreferenceValue(Context context, String preferenceKey) {
+	public static boolean getBooleanPreferenceValue(Context context, String preferenceKey) {
 		// Get shared preferences
 		SharedPreferences sharedPreferences = context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
 
@@ -191,6 +205,16 @@ public class TIG extends Activity {
 		preferenceLockOrientation = value;
 	}
 
+	private void updateAdsVisibility(Context context) {
+		// Get current value
+		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.SHOW_ADS);
+
+		if (!value) {
+			View adView = findViewById(R.id.adview);
+			adView.setVisibility(View.GONE);
+		}
+	}
+	
 	public static void updateNotificationShortcutVisibility(Context context) {
 		// Get current value
 		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.NOTIFICATION_SHORTCUT);
@@ -241,6 +265,9 @@ public class TIG extends Activity {
 
 		// Update Quit button visibility
 		updateQuitButtonVisibility(this);
+		
+		// Update Ads visibility
+		updateAdsVisibility(this);
 	}
 
 	@Override

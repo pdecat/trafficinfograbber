@@ -53,6 +53,7 @@
 	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Afficher le bouton pour commuter le mode jour/nuit</string>
 	<string name="SHOW_QUIT_BUTTON">Afficher le bouton Quitter</string>
 	<string name="FORCE_PORTRAIT_ORIENTATION">Forcer l\'orientation en portrait</string>
+	<string name="SHOW_ADS">Afficher les publicités pendant le chargement</string>
 
 	<!-- Notifications -->
 	<string name="notificationLabel">Lancer TIG</string>

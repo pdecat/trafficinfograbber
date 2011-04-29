@@ -58,6 +58,7 @@
 	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Show Day Night Switch button</string>
 	<string name="SHOW_QUIT_BUTTON">Show Quit button</string>
 	<string name="FORCE_PORTRAIT_ORIENTATION">Force portrait orientation</string>
+	<string name="SHOW_ADS">Show Ads while loading</string>
 
 	<!-- Notifications -->
 	<string name="notificationLabel">Launch TIG</string>
