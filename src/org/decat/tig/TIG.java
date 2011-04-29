@@ -2,7 +2,7 @@ package org.decat.tig;
 
 /*
  **
- **       Copyright (C) 2010 Patrick Decat
+ **       Copyright (C) 2010-2011 Patrick Decat
  ** 
  **       This file is part of TrafficInfoGrabber.
  **
