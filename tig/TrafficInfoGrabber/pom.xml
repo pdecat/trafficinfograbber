@@ -69,7 +69,6 @@
                 <targetPath>${project.build.directory}/filtered-manifest</targetPath>
                 <includes>
                     <include>AndroidManifest.xml</include>
-                    <include>org.decat.tig.update.txt</include>
                 </includes>
             </resource>
         </resources>
