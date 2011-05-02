@@ -28,9 +28,6 @@ import org.decat.tig.preferences.PreferencesEditor;
 import org.decat.tig.preferences.PreferencesHelper;
 import org.decat.tig.web.TIGWebViewClient;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
-
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -56,6 +53,9 @@ import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
+
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 
 public class TIG extends Activity {
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
@@ -119,14 +119,10 @@ public class TIG extends Activity {
 		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		// Setup Ads
-	    AdView adView = (AdView) findViewById(R.id.adview);
-	    AdRequest adRequest = new AdRequest();
+		AdView adView = (AdView) findViewById(R.id.adview);
+		AdRequest adRequest = new AdRequest();
 		adRequest.setTesting(false);
-	    adRequest.addKeyword("paris");
-	    adRequest.addKeyword("sytadin");
-	    adRequest.addKeyword("trafic");
-	    adRequest.addKeyword("info");
-	    adRequest.addKeyword("navigation");
+		// adRequest.addKeyword("navigation");
 		adView.loadAd(adRequest);
 
 		// Default view
@@ -214,7 +210,7 @@ public class TIG extends Activity {
 			adView.setVisibility(View.GONE);
 		}
 	}
-	
+
 	public static void updateNotificationShortcutVisibility(Context context) {
 		// Get current value
 		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.NOTIFICATION_SHORTCUT);
@@ -265,7 +261,7 @@ public class TIG extends Activity {
 
 		// Update Quit button visibility
 		updateQuitButtonVisibility(this);
-		
+
 		// Update Ads visibility
 		updateAdsVisibility(this);
 	}
