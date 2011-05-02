@@ -7,6 +7,12 @@
     <packaging>apk</packaging>
     <name>TrafficInfoGrabber</name>
 
+    <scm>
+        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber</connection>
+        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber</developerConnection>
+        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Ftig%2FTrafficInfoGrabber</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
@@ -44,10 +50,20 @@
                 </configuration>
                 <extensions>true</extensions>
             </plugin>
+
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <!-- version 2.3 defaults to java 1.5, so no further configuration needed-->
                 <version>2.3</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <tagBase>http://dear2dear.googlecode.com/svn/tags</tagBase>
+                </configuration>
             </plugin>
         </plugins>
     </build>
