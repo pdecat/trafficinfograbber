@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat.tig</groupId>
     <artifactId>tig</artifactId>
-    <version>0.1.6-SNAPSHOT</version>
+    <version>0.1.6</version>
     <packaging>apk</packaging>
     <name>TrafficInfoGrabber</name>
 
@@ -20,9 +20,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Ftig%2FTrafficInfoGrabber</url>
+        <connection>scm:svn:http://dear2dear.googlecode.com/svn/tags/tig-0.1.6</connection>
+        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/tags/tig-0.1.6</developerConnection>
+        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Ftig%2FTrafficInfoGrabber/tags/tig-0.1.6</url>
     </scm>
 
     <dependencies>
@@ -169,7 +169,7 @@ plugin -->
                                 <inherited>true</inherited>
                                 <configuration>
                                     <removeExistingSignatures>true</removeExistingSignatures>
-                                    <archiveDirectory/>
+                                    <archiveDirectory />
                                     <includes>
                                         <include>${project.build.directory}/${project.artifactId}.apk</include>
                                     </includes>
