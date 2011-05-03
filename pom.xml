@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat.tig</groupId>
     <artifactId>tig</artifactId>
-    <version>0.1.7</version>
+    <version>0.1.8-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>TrafficInfoGrabber</name>
 
@@ -20,9 +20,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/tags/tig-0.1.7</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/tags/tig-0.1.7</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Ftig%2FTrafficInfoGrabber/tags/tig-0.1.7</url>
+        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber</connection>
+        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber</developerConnection>
+        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Ftig%2FTrafficInfoGrabber</url>
     </scm>
 
     <dependencies>
