@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat.tig</groupId>
     <artifactId>tig</artifactId>
-    <version>0.1.9-SNAPSHOT</version>
+    <version>0.1.8-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>TrafficInfoGrabber</name>
 
@@ -12,7 +12,7 @@
 
         <!-- set a custom format that is guaranteed to grow as a Long number, so it can be used as version code
         in the AndroidManifest.xml -->
-        <maven.build.timestamp.format>yyMMddHHmmss</maven.build.timestamp.format>
+        <maven.build.timestamp.format>yyMMddHHmm</maven.build.timestamp.format>
 
         <!-- this trick of loading build timestamp into other property is necessary due to
         http://jira.codehaus.org/browse/MRESOURCES-99 and also more readable -->
@@ -30,7 +30,7 @@
 			<uniqueVersion>false</uniqueVersion>
 			<id>local</id>
 			<name>Local</name>
-			<url>scp://repo1/maven2</url>
+			<url>file:///home/patrick</url>
 			<layout>default</layout>
 		</repository>
 	</distributionManagement>
@@ -115,9 +115,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.1</version>
-                <configuration>
-                    <goals>install</goals>
-                </configuration>
             </plugin>
 
             <plugin>
