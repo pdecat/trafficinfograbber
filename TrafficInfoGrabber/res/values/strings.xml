@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+**
+**       Copyright (C) 2010-2011 Patrick Decat
+** 
+**       This file is part of TrafficInfoGrabber.
+**
+**   TrafficInfoGrabber is free software: you can redistribute it and/or modify
+**   it under the terms of the GNU General Public License as published by
+**   the Free Software Foundation, either version 3 of the License, or
+**   (at your option) any later version.
+**
+**   TrafficInfoGrabber is distributed in the hope that it will be useful,
+**   but WITHOUT ANY WARRANTY; without even the implied warranty of
+**   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**   GNU General Public License for more details.
+**
+**   You should have received a copy of the GNU General Public License
+**   along with TrafficInfoGrabber.  If not, see <http://www.gnu.org/licenses/>.
+**
+*/
+-->
+<resources>
+	<string name="app_name">TrafficInfoGrabber</string>
+	<string name="app_version">${project.version}</string>
+
+	<!-- Activities -->
+	<string name="preferencesEditor">TIG - Preferences Editor</string>
+	<string name="activitySelector">TIG - Activity Selector</string>
+
+	<!-- Menu items -->
+	<string name="liveTrafficLite">Live Traffic Live</string>
+	<string name="liveTraffic">Live Traffic</string>
+	<string name="closedAtNight">Closed At Night</string>
+	<string name="quickStats">Quick statistics</string>
+	<string name="trafficCollisions">Traffic Collisions</string>
+	<string name="sytadinWebsite">www.sytadin.fr</string>
+	<string name="infotraficWebsite">www.infotrafic.com</string>
+	<string name="preferences">Preferences</string>
+	<string name="about">About</string>
+
+	<!-- View items -->
+	<string name="refresh">Refresh</string>
+
+	<!-- Miscellaneous -->
+	<string name="loading">Loading</string>
+	<string name="downloadingResources">Downloading resources</string>
+	<string name="pleaseWait">Please wait...</string>
+
+	<!-- Preferences labels -->
+	<string name="preferencesMessage">Set your preferred third party activity to launch on Search</string>
+	<string name="OTHER_ACTIVITY_VALUE">Activity value</string>
+	<string name="OTHER_ACTIVITY">Activity to launch on Search</string>
+	<string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>
+	<string name="NOTIFICATION_SHORTCUT_ON_BOOT">Notification shortcut on boot</string>
+	<string name="SHOW_REFRESH_BUTTON">Show Refresh button</string>
+	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Show Day Night Switch button</string>
+	<string name="SHOW_QUIT_BUTTON">Show Quit button</string>
+	<string name="FORCE_PORTRAIT_ORIENTATION">Force portrait orientation</string>
+	<string name="SHOW_ADS">Show Ads while loading</string>
+
+	<!-- Notifications -->
+	<string name="notificationLabel">Launch TIG</string>
+	<string name="notificationMessage">Shortcut to launch TIG...</string>
+
+	<!-- Strings for About dialog -->
+	<string name="about_comments">A simple traffic information grabber</string>
+	<string name="about_copyright">Copyright © 2010-2011 Patrick Decat</string>
+	<string name="about_website_label">TrafficInfoGrabber at Google Code</string>
+	<string name="about_website_url">http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber/</string>
+	<string name="about_email">pdecat%2Btig@gmail.com</string>
+</resources>
