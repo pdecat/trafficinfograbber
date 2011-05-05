@@ -64,9 +64,9 @@
             </resource>
 
             <resource>
-                <directory>${project.basedir}</directory>
+                <directory>${project.basedir}/templates</directory>
                 <filtering>true</filtering>
-                <targetPath>${project.build.directory}/filtered-manifest</targetPath>
+                <targetPath>${project.basedir}</targetPath>
                 <includes>
                     <include>AndroidManifest.xml</include>
                 </includes>
@@ -90,7 +90,7 @@
                     </emulator>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
-                    <androidManifestFile>${project.build.directory}/filtered-manifest/AndroidManifest.xml</androidManifestFile>
+                    <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
                     <resourceDirectory>${project.build.directory}/filtered-res</resourceDirectory>
                 </configuration>
             </plugin>
