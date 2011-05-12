@@ -32,6 +32,11 @@ import android.util.Log;
 public class DockEventReceiver extends BroadcastReceiver {
 	public static final String PREVIOUS_RINGER_MODE = "PREVIOUS_RINGER_MODE";
 	public static final String PREVIOUS_VOLUME_LEVEL_SYSTEM = "PREVIOUS_VOLUME_LEVEL_SYSTEM";
+	private static final int[] STREAMS = new int[] {
+			AudioManager.STREAM_SYSTEM,
+			AudioManager.STREAM_NOTIFICATION,
+			AudioManager.STREAM_RING,
+	};;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -39,7 +44,7 @@ public class DockEventReceiver extends BroadcastReceiver {
 
 		if (UiModeManager.ACTION_ENTER_DESK_MODE.equals(intentAction) || UiModeManager.ACTION_ENTER_CAR_MODE.equals(intentAction) || UiModeManager.ACTION_EXIT_DESK_MODE.equals(intentAction)
 				|| UiModeManager.ACTION_EXIT_CAR_MODE.equals(intentAction)) {
-			logAction(context, intentAction);
+			logMessage(context, "VolumeDock received a " + intentAction + " broadcast action.");
 
 			// Get shared preferences
 			SharedPreferences sharedPreferences = context.getSharedPreferences(DockEventReceiver.class.getSimpleName(), Context.MODE_PRIVATE);
@@ -52,33 +57,67 @@ public class DockEventReceiver extends BroadcastReceiver {
 				SharedPreferences.Editor ed = sharedPreferences.edit();
 
 				// Store current ringer mode
-				ed.putInt(PREVIOUS_RINGER_MODE, audioManager.getRingerMode());
-
-				// Store current volume level for system stream
-				ed.putInt(PREVIOUS_VOLUME_LEVEL_SYSTEM, audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM));
-
-				ed.commit();
-
-				// Alter volume level for system stream
-				if (UiModeManager.ACTION_ENTER_CAR_MODE.equals(intentAction)) {
-					audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM), 0);
-				}
+				int oldRingerMode = audioManager.getRingerMode();
+				ed.putInt(PREVIOUS_RINGER_MODE, oldRingerMode);
 
 				// Alter ringer mode
-				audioManager.setRingerMode(UiModeManager.ACTION_ENTER_DESK_MODE.equals(intentAction) ? AudioManager.RINGER_MODE_VIBRATE : AudioManager.RINGER_MODE_NORMAL);
-			} else if (UiModeManager.ACTION_EXIT_DESK_MODE.equals(intentAction) || UiModeManager.ACTION_EXIT_CAR_MODE.equals(intentAction)) {
-				// Restore previous ringer mode or normal mode if unknown
-				audioManager.setRingerMode(sharedPreferences.getInt(PREVIOUS_RINGER_MODE, AudioManager.RINGER_MODE_NORMAL));
+				int newRingerMode = UiModeManager.ACTION_ENTER_DESK_MODE.equals(intentAction) ? AudioManager.RINGER_MODE_VIBRATE : AudioManager.RINGER_MODE_NORMAL;
+				audioManager.setRingerMode(newRingerMode);
+				logMessage(context, "VolumeDock changed ringer mode from " + oldRingerMode + " to " + newRingerMode + ".");
 
-				// Restore previous volume level for system stream or max level
-				// if unknown
-				audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, sharedPreferences.getInt(PREVIOUS_VOLUME_LEVEL_SYSTEM, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM)), 0);
+				// Alter streams volume levels
+				if (UiModeManager.ACTION_ENTER_CAR_MODE.equals(intentAction)) {
+					StringBuilder message = new StringBuilder();
+					for (int i = 0; i < STREAMS.length; i++) {
+						int stream = STREAMS[i];
+
+						// Store current volume level for stream
+						int oldStreamVolume = audioManager.getStreamVolume(stream);
+						ed.putInt(PREVIOUS_VOLUME_LEVEL_SYSTEM + "_" + stream, oldStreamVolume);
+
+						// Alter volume level for stream
+						int newStreamVolume = audioManager.getStreamMaxVolume(stream);
+						audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, newStreamVolume, 0);
+
+						message.append("Stream " + stream + ": from " + oldStreamVolume + " to " + newStreamVolume + ".\n");
+					}
+					logMessage(context, "VolumeDock changed streams volume levels:\n" + message.toString());
+				}
+
+				// Commit preferences
+				ed.commit();
+			} else if (UiModeManager.ACTION_EXIT_DESK_MODE.equals(intentAction) || UiModeManager.ACTION_EXIT_CAR_MODE.equals(intentAction)) {
+				// Restore previous streams volume levels or max level if
+				// unknown
+				if (UiModeManager.ACTION_EXIT_CAR_MODE.equals(intentAction)) {
+					StringBuilder message = new StringBuilder();
+					for (int i = 0; i < STREAMS.length; i++) {
+						int stream = STREAMS[i];
+
+						// Check current volume level for stream
+						int oldStreamVolume = audioManager.getStreamVolume(stream);
+
+						// Restore volume level for stream
+						int newStreamVolume = sharedPreferences.getInt(PREVIOUS_VOLUME_LEVEL_SYSTEM + "_" + stream, audioManager.getStreamMaxVolume(stream));
+						audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, newStreamVolume, 0);
+
+						message.append("\tStream " + stream + ": from " + oldStreamVolume + " to " + newStreamVolume + ".\n");
+					}
+					logMessage(context, "VolumeDock restored streams volume levels:\n" + message.toString());
+				}
+
+				// Check current ringer mode
+				int oldRingerMode = audioManager.getRingerMode();
+
+				// Restore previous ringer mode or normal mode if unknown
+				int newRingerMode = sharedPreferences.getInt(PREVIOUS_RINGER_MODE, AudioManager.RINGER_MODE_NORMAL);
+				audioManager.setRingerMode(newRingerMode);
+				logMessage(context, "VolumeDock restored ringer mode from " + oldRingerMode + " to " + newRingerMode + ".");
 			}
 		}
 	}
 
-	private void logAction(Context context, String intentAction) {
-		String message = "VolumeDock received a " + intentAction + " broadcast action.";
+	private void logMessage(Context context, String message) {
 		Log.i(VolumeDock.TAG, message);
 		VolumeDock.showToast(context, message);
 	}
