@@ -16,17 +16,19 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.SimpleAdapter;
 
 public class ActivitySelector extends ListActivity implements OnItemClickListener {
 	private static final String KEY_TITLE = "TITLE";
 	private static final String KEY_RESOLVE_INFO = "RESOLVE_INFO";
 	private static final String FROM[] = new String[] {
-			KEY_TITLE, KEY_RESOLVE_INFO
+			KEY_TITLE,
+			KEY_RESOLVE_INFO
 	};
 	private static final int TO[] = new int[] {
-			R.id.title, R.id.icon
+			R.id.title,
+			R.id.icon
 	};
 	private List<Map<String, ?>> list;
 	private List<ResolveInfo> resolvInfos;
