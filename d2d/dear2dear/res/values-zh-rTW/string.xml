@@ -35,7 +35,7 @@
 	<string name="notificationMessage">啟動 dear2dear 的捷徑...</string>
 
 	<!-- Miscellaneous messages -->
-	<string name="contactInformationInvalidText">聯繫人 %s 的訊息是無效的！(聯繫人的網址=%s，儲存名字=%s，目前名字=%s)</string>
+	<string name="contactInformationInvalidText">聯繫人 %1$s 的訊息是無效的！(聯繫人的網址=%2$s，儲存名字=%3$s，目前名字=%4$s)</string>
 	<string name="pleaseProceedWithConfigurationFirstText">請在繼續使用之前先進行設定...</string>
 	<string name="requiresOIAboutAndSearchingMarketText">需要 \'OI About\' 來顯示關於對話方塊。正在Android市場中搜索它...</string>
 	<string name="failedToStartActivityText">無法為 %s 開始工作！</string>
@@ -43,9 +43,9 @@
 	<!-- Strings for steps -->
 	<string name="sendToWhomText">傳送給誰？</string>
 	<string name="sendContactWhatText">傳送給 %s 什麼？</string>
-	<string name="sendMessageToContactHowText">怎麼傳送 \"%s\" 給 %s ？</string>
-	<string name="sendMessageToContactByMediaText">傳送 \"%s\" 給 %s，使用 %s ？ (%s)</string>
-	<string name="sendingMessageToContactText">正在傳送 \"%s\" 給 %s ，使用的是 %s (%s)</string>
+	<string name="sendMessageToContactHowText">怎麼傳送 \"%1$s\" 給 %2$s ？</string>
+	<string name="sendMessageToContactByMediaText">傳送 \"%1$s\" 給 %2$s，使用 %3$s ？ (%4$s)</string>
+	<string name="sendingMessageToContactText">正在傳送 \"%1$s\" 給 %2$s ，使用的是 %3$s (%4$s)</string>
 	<string name="sms">短信</string>
 	<string name="email">Email</string>
 	<string name="sendText">傳送</string>
@@ -68,7 +68,7 @@
 	<!-- Strings for Contact Selector -->
 	<string name="showOnlyFavoriteContactsText">僅顯示常用聯繫人</string>
 	<string name="emptyContactsListText">你的聯繫人清單為空。</string>
-	<string name="contactSelectedToast">以選取 %s (編號=%d，位置=%d)</string>
+	<string name="contactSelectedToast">以選取 %1$s (編號=%2$d，位置=%3$d)</string>
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">一個簡單的通知列程式</string>

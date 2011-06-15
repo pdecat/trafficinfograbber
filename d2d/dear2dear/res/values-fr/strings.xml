@@ -35,8 +35,7 @@
 	<string name="notificationMessage">Raccourci pour lancer dear2dear...</string>
 
 	<!-- Miscellaneous messages -->
-	<string name="contactInformationInvalidText">Les informations du contact %s sont invalides ! (contactUri=%s, cachedName=%s, currentName=%s)
-	</string>
+	<string name="contactInformationInvalidText">Les informations du contact %1$s sont invalides ! (contactUri=%2$s, cachedName=%3$s, currentName=%4$s)</string>
 	<string name="pleaseProceedWithConfigurationFirstText">Veuillez procéder à la configuration en premier...</string>
 	<string name="requiresOIAboutAndSearchingMarketText">Nécessite \'OI About\' pour l\'affichage de la boîte de dialogue \'À propos\'. Recherche sur l\'Android
 		Market lancée...</string>
@@ -45,9 +44,9 @@
 	<!-- Strings for steps -->
 	<string name="sendToWhomText">Envoyer à qui ?</string>
 	<string name="sendContactWhatText">Envoyer à %s quoi ?</string>
-	<string name="sendMessageToContactHowText">Envoyer \"%s\" à %s comment ?</string>
-	<string name="sendMessageToContactByMediaText">Envoyer \"%s\" à %s par %s ? (%s)</string>
-	<string name="sendingMessageToContactText">Envoi de \"%s\" à %s par %s (%s)</string>
+	<string name="sendMessageToContactHowText">Envoyer \"%1$s\" à %2$s comment ?</string>
+	<string name="sendMessageToContactByMediaText">Envoyer \"%1$s\" à %2$s par %3$s ? (%4$s)</string>
+	<string name="sendingMessageToContactText">Envoi de \"%1$s\" à %2$s par %3$s (%4$s)</string>
 	<string name="sendText">Envoyer</string>
 	<string name="restartText">Redémarrer</string>
 
@@ -68,7 +67,7 @@
 	<!-- Strings for Contact Selector -->
 	<string name="showOnlyFavoriteContactsText">Afficher uniquement les contacts favoris</string>
 	<string name="emptyContactsListText">Votre liste de contacts est vide.</string>
-	<string name="contactSelectedToast">Sélection de %s (id=%d, position=%d)</string>
+	<string name="contactSelectedToast">Sélection de %1$s (id=%2$d, position=%3$d)</string>
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>

@@ -439,6 +439,9 @@ public class dear2dear extends Activity {
 			phonesCursor.moveToFirst();
 			int phoneColumnIndex = phonesCursor.getColumnIndexOrThrow(People.Phones.NUMBER);
 			Log.d(dear2dear.TAG, "phoneColumnIndex=" + phoneColumnIndex);
+
+			// TODO: handle potential errors
+			// (https://market.android.com/publish/Home?pli=1#LegacyFeedbackPlace:s=CRASH_DETAILS|org.decat.d2d|android.database.CursorIndexOutOfBoundsException||android.database.AbstractCursor|AbstractCursor.java|checkPosition)
 			number = phonesCursor.getString(phoneColumnIndex);
 			Log.d(dear2dear.TAG, "Found number " + number);
 		}
