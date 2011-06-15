@@ -436,14 +436,17 @@ public class dear2dear extends Activity {
 			}, People.Phones.TYPE + "=" + People.Phones.TYPE_MOBILE, null, null);
 			int phonesCount = phonesCursor.getCount();
 			Log.d(dear2dear.TAG, "phonesCount=" + phonesCount);
-			phonesCursor.moveToFirst();
-			int phoneColumnIndex = phonesCursor.getColumnIndexOrThrow(People.Phones.NUMBER);
-			Log.d(dear2dear.TAG, "phoneColumnIndex=" + phoneColumnIndex);
 
-			// TODO: handle potential errors
-			// (https://market.android.com/publish/Home?pli=1#LegacyFeedbackPlace:s=CRASH_DETAILS|org.decat.d2d|android.database.CursorIndexOutOfBoundsException||android.database.AbstractCursor|AbstractCursor.java|checkPosition)
-			number = phonesCursor.getString(phoneColumnIndex);
-			Log.d(dear2dear.TAG, "Found number " + number);
+			// Check there's at least one phone number available
+			if (phonesCount > 0 && phonesCursor.moveToFirst()) {
+				int phoneColumnIndex = phonesCursor.getColumnIndexOrThrow(People.Phones.NUMBER);
+				Log.d(dear2dear.TAG, "phoneColumnIndex=" + phoneColumnIndex);
+
+				number = phonesCursor.getString(phoneColumnIndex);
+				Log.d(dear2dear.TAG, "Found number " + number);
+			} else {
+				Log.d(dear2dear.TAG, "No number available");
+			}
 		}
 
 		return number;
