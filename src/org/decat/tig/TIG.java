@@ -37,6 +37,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -89,8 +90,6 @@ public class TIG extends Activity {
 
 	private float oldScreenBrightness = 1f;
 
-	private static int currentContentView = 0;
-
 	private static boolean preferenceNotificationShortcut = false;
 
 	private static boolean preferenceLockOrientation = false;
@@ -127,13 +126,42 @@ public class TIG extends Activity {
 
 		// Default view
 		showLiveTraffic();
+
+		// Show preferences editor if first run of this version
+		String appVersion = getAppVersion(this);
+		String installedAppVersion = getInstalledAppVersion(this);
+		if (!appVersion.equals(installedAppVersion)) {
+			Log.i(TAG, "New application version: " + appVersion + " (previous: " + installedAppVersion + ")");
+			setInstalledAppVersion(this, appVersion);
+			showToast(getString(R.string.newVersion));
+			showPreferencesEditor();
+		} else {
+			Log.i(TAG, "Application version: " + appVersion);
+		}
+
+	}
+
+	public static SharedPreferences getPreferences(Context context) {
+		return context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
 	}
 
 	public static boolean getBooleanPreferenceValue(Context context, String preferenceKey) {
-		// Get shared preferences
-		SharedPreferences sharedPreferences = context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
+		return getPreferences(context).getBoolean(preferenceKey, true);
+	}
 
-		return sharedPreferences.getBoolean(preferenceKey, true);
+	private String getAppVersion(Context context) {
+		return context.getString(R.string.app_version);
+	}
+
+	private String getInstalledAppVersion(Context context) {
+		return getPreferences(context).getString(PreferencesHelper.INSTALLED_VERSION, "FIRST_RUN");
+	}
+
+	private void setInstalledAppVersion(Context context, String appVersion) {
+		SharedPreferences preferences = getPreferences(context);
+		Editor edit = preferences.edit();
+		edit.putString(PreferencesHelper.INSTALLED_VERSION, appVersion);
+		edit.commit();
 	}
 
 	private void updateRefreshButtonVisibility(Context context) {

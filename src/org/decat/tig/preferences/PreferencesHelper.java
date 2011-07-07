@@ -32,6 +32,8 @@ import android.content.SharedPreferences;
 public class PreferencesHelper {
 	public static final String VALUE_SUFFIX = "_VALUE";
 
+	public static final String INSTALLED_VERSION = "INSTALLED_VERSION";
+
 	public static final String OTHER_ACTIVITY = "OTHER_ACTIVITY";
 
 	public static final String NOTIFICATION_SHORTCUT = "NOTIFICATION_SHORTCUT";
@@ -45,7 +47,7 @@ public class PreferencesHelper {
 	public static final String SHOW_QUIT_BUTTON = "SHOW_QUIT_BUTTON";
 
 	public static final String FORCE_PORTRAIT_ORIENTATION = "FORCE_PORTRAIT_ORIENTATION";
-	
+
 	public static final String SHOW_ADS = "SHOW_ADS";
 
 	public final Preference[] preferences = {
