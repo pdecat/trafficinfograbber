@@ -42,6 +42,7 @@
 	<string name="loading">Chargement</string>
 	<string name="downloadingResources">Chargement des ressources</string>
 	<string name="pleaseWait">Merci de patienter...</string>
+	<string name="newVersion">Nouvelle version : veuillez définir votre propre préférences</string>
 
 	<!-- Labels des préférences -->
 	<string name="preferencesMessage">Configurez votre activité tierce préférée à lancer avec le bouton Recherche</string>

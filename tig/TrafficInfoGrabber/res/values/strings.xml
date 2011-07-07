@@ -47,6 +47,7 @@
 	<string name="loading">Loading</string>
 	<string name="downloadingResources">Downloading resources</string>
 	<string name="pleaseWait">Please wait...</string>
+	<string name="newVersion">New version: please set your own preferences</string>
 
 	<!-- Preferences labels -->
 	<string name="preferencesMessage">Set your preferred third party activity to launch on Search</string>
