@@ -48,6 +48,8 @@
 	<string name="sendMessageToContactByMediaText">Envoyer \"%1$s\" à %2$s par %3$s ? (%4$s)</string>
 	<string name="sendingMessageToContactText">Envoi de \"%1$s\" à %2$s par %3$s (%4$s)</string>
 	<string name="sendText">Envoyer</string>
+	<string name="sendingMessageText">Envoi du message...</string>
+	<string name="retryText">Réessayer</string>
 	<string name="restartText">Redémarrer</string>
 
 	<!-- Strings for preferences labels -->

@@ -29,6 +29,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -89,6 +90,8 @@ public class dear2dear extends Activity {
 
 	private PendingIntent deliveryIntent;
 
+	private ProgressDialog sendingMessageProgressDialog;
+
 	public static void showToast(Context context, String message) {
 		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
@@ -138,6 +141,10 @@ public class dear2dear extends Activity {
 
 		registerBroadcastReceivers();
 
+		sendingMessageProgressDialog = new ProgressDialog(this);
+		sendingMessageProgressDialog.setMessage(getString(R.string.sendingMessageText));
+		sendingMessageProgressDialog.setCancelable(false);
+
 		setContentView(ll);
 	}
 
@@ -146,22 +153,30 @@ public class dear2dear extends Activity {
 		registerReceiver(new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				switch (getResultCode()) {
-				case Activity.RESULT_OK:
+				sendingMessageProgressDialog.dismiss();
+
+				int resultCode = getResultCode();
+				if (resultCode == Activity.RESULT_OK) {
 					showToast("SMS sent");
-					break;
-				case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-					showToast("Generic failure");
-					break;
-				case SmsManager.RESULT_ERROR_NO_SERVICE:
-					showToast("No service");
-					break;
-				case SmsManager.RESULT_ERROR_NULL_PDU:
-					showToast("Null PDU");
-					break;
-				case SmsManager.RESULT_ERROR_RADIO_OFF:
-					showToast("Radio off");
-					break;
+					Log.d(TAG, "Successfully sent an SMS");
+				} else {
+					switch (resultCode) {
+					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+						showToast("Generic failure");
+						break;
+					case SmsManager.RESULT_ERROR_NO_SERVICE:
+						showToast("No service");
+						break;
+					case SmsManager.RESULT_ERROR_NULL_PDU:
+						showToast("Null PDU");
+						break;
+					case SmsManager.RESULT_ERROR_RADIO_OFF:
+						showToast("Radio off");
+						break;
+					}
+					Log.e(TAG, "Failed to send SMS (resultCode=" + resultCode + ")");
+
+					showRetryButton();
 				}
 			}
 		}, new IntentFilter(INTENT_SMS_SENT));
@@ -170,12 +185,19 @@ public class dear2dear extends Activity {
 		registerReceiver(new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				switch (getResultCode()) {
+				int resultCode = getResultCode();
+				switch (resultCode) {
 				case Activity.RESULT_OK:
 					showToast("SMS delivered");
+
+					Log.d(TAG, "Successfully delivered an SMS");
 					break;
 				case Activity.RESULT_CANCELED:
 					showToast("SMS not delivered");
+					Log.e(TAG, "Failed to deliver SMS (resultCode=" + resultCode + ")");
+
+					// FIXME: May already have been done by sentIntent?
+					showRetryButton();
 					break;
 				}
 			}
@@ -437,17 +459,36 @@ public class dear2dear extends Activity {
 			public void onClick(View v) {
 				buttons[0].setVisibility(View.INVISIBLE);
 
-				String message = getString(R.string.sendingMessageToContactText, messageStepChoice, destinationStepChoiceLabel, mediaStepChoice, destinationChoiceDetails);
-				showToast(message);
-				if (getString(R.string.sms).equals(mediaStepChoice)) {
-					sendSms();
-				} else if (getString(R.string.email).equals(mediaStepChoice)) {
-					showToast("TODO: Implement email");
-					// TODO: handle email
-					Log.d(dear2dear.TAG, "TODO: Implement email");
-				}
+				sendMessage();
 			}
+		});
+	}
 
+	private void sendMessage() {
+		String message = getString(R.string.sendingMessageToContactText, messageStepChoice, destinationStepChoiceLabel, mediaStepChoice, destinationChoiceDetails);
+
+		sendingMessageProgressDialog.setMessage(message);
+		sendingMessageProgressDialog.show();
+		Log.d(TAG, message);
+
+		if (getString(R.string.sms).equals(mediaStepChoice)) {
+			sendSms();
+		} else if (getString(R.string.email).equals(mediaStepChoice)) {
+			showToast("TODO: Implement email");
+			// TODO: handle email
+			Log.d(dear2dear.TAG, "TODO: Implement email");
+		}
+	}
+
+	private void showRetryButton() {
+		buttons[0].setText(getString(R.string.retryText));
+		buttons[0].setVisibility(View.VISIBLE);
+		buttons[0].setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				buttons[0].setVisibility(View.INVISIBLE);
+
+				sendMessage();
+			}
 		});
 	}
 
@@ -535,6 +576,7 @@ public class dear2dear extends Activity {
 
 	private void sendSms() {
 		if (destinationChoiceDetails != null) {
+			sendingMessageProgressDialog.show();
 			SmsManager.getDefault().sendTextMessage(destinationChoiceDetails, null, messageStepChoice, sentIntent, deliveryIntent);
 
 			// Store the SMS into the standard Google SMS app

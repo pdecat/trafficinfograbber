@@ -51,6 +51,8 @@
 	<string name="sms">SMS</string>
 	<string name="email">Email</string>
 	<string name="sendText">Send</string>
+	<string name="sendingMessageText">Sending message...</string>
+	<string name="retryText">Retry</string>
 	<string name="restartText">Restart</string>
 
 	<!-- Strings for preferences labels -->
