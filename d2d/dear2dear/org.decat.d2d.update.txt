@@ -1,5 +1,9 @@
-6
+7
 -
+Version 0.0.7:
+ Handle SMS sending errors
+ Show progress dialog while sending SMS
+
 Version 0.0.6:
  Translated to simplified and traditional chinese (thanks to goapk.com)
 
