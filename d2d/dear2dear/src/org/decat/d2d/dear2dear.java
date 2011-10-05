@@ -29,11 +29,13 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -58,6 +60,9 @@ public class dear2dear extends Activity {
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
 
+	private static final String INTENT_SMS_SENT = "SMS_SENT";
+	private static final String INTENT_SMS_DELIVERED = "SMS_DELIVERED";
+
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 
 	private TextView tv;
@@ -79,6 +84,10 @@ public class dear2dear extends Activity {
 	private Button restartButton;
 
 	private static boolean notificationShortcut = false;
+
+	private PendingIntent sentIntent;
+
+	private PendingIntent deliveryIntent;
 
 	public static void showToast(Context context, String message) {
 		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
@@ -127,7 +136,50 @@ public class dear2dear extends Activity {
 		});
 		ll.addView(restartButton);
 
+		registerBroadcastReceivers();
+
 		setContentView(ll);
+	}
+
+	private void registerBroadcastReceivers() {
+		sentIntent = PendingIntent.getBroadcast(this, 0, new Intent(INTENT_SMS_SENT), 0);
+		registerReceiver(new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				switch (getResultCode()) {
+				case Activity.RESULT_OK:
+					showToast("SMS sent");
+					break;
+				case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+					showToast("Generic failure");
+					break;
+				case SmsManager.RESULT_ERROR_NO_SERVICE:
+					showToast("No service");
+					break;
+				case SmsManager.RESULT_ERROR_NULL_PDU:
+					showToast("Null PDU");
+					break;
+				case SmsManager.RESULT_ERROR_RADIO_OFF:
+					showToast("Radio off");
+					break;
+				}
+			}
+		}, new IntentFilter(INTENT_SMS_SENT));
+
+		deliveryIntent = PendingIntent.getBroadcast(this, 0, new Intent(INTENT_SMS_DELIVERED), 0);
+		registerReceiver(new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				switch (getResultCode()) {
+				case Activity.RESULT_OK:
+					showToast("SMS delivered");
+					break;
+				case Activity.RESULT_CANCELED:
+					showToast("SMS not delivered");
+					break;
+				}
+			}
+		}, new IntentFilter(INTENT_SMS_DELIVERED));
 	}
 
 	/**
@@ -483,36 +535,61 @@ public class dear2dear extends Activity {
 
 	private void sendSms() {
 		if (destinationChoiceDetails != null) {
-			SmsManager.getDefault().sendTextMessage(destinationChoiceDetails, null, messageStepChoice, null, null);
+			SmsManager.getDefault().sendTextMessage(destinationChoiceDetails, null, messageStepChoice, sentIntent, deliveryIntent);
 
 			// Store the SMS into the standard Google SMS app
-			StringBuilder sb = new StringBuilder();
-
-			try {
-				Uri uri = Uri.parse("content://sms/");
-				ContentResolver cr = getContentResolver();
-				ContentValues cv = new ContentValues();
-				cv.put("thread_id", 0);
-				cv.put("body", messageStepChoice);
-				cv.put("address", destinationChoiceDetails);
-				cv.put("status", -1);
-				cv.put("read", "1");
-				cv.put("date", System.currentTimeMillis());
-
-				sb.append("SMS to store:\n");
-				sb.append(cv.toString());
-
-				cr.insert(uri, cv);
-				sb.append("\n\nResult: success");
-			} catch (Exception e) {
-				sb.append("\n\nResult: failure");
-				Log.e(TAG, "Failed to store SMS", e);
-			}
-
-			Log.i(TAG, sb.toString());
+			storeSms(messageStepChoice, destinationChoiceDetails);
 
 		} else {
 			showToast("Could not find a phone number for " + destinationStepChoiceLabel);
 		}
+	}
+
+	private void storeSms(String body, String address) {
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			Uri uri = Uri.parse("content://sms/");
+			ContentResolver cr = getContentResolver();
+			ContentValues cv = new ContentValues();
+			cv.put("thread_id", 0);
+			cv.put("body", body);
+			cv.put("address", address);
+			cv.put("status", -1);
+			cv.put("date", System.currentTimeMillis());
+
+			sb.append("SMS to store:\n");
+			sb.append(cv.toString());
+
+			// Insert SMS
+			uri = cr.insert(uri, cv);
+
+			// Mark SMS read
+			Cursor cursor = cr.query(uri, null, null, null, null);
+			while (cursor.moveToNext()) {
+				int read = cursor.getInt(cursor.getColumnIndex("read"));
+				if (read != 1) {
+					cv = new ContentValues();
+					cv.put("read", "1");
+					cr.update(uri, cv, null, null);
+
+					cr.query(uri, null, null, null, null);
+					read = cursor.getInt(cursor.getColumnIndex("read"));
+					if (read == 1) {
+						sb.append("\nFailed to mark SMS as read");
+					} else {
+						sb.append("\nSMS marked as read");
+					}
+				} else {
+					sb.append("\nSMS already marked as read");
+				}
+			}
+			sb.append("\n\nResult: success");
+		} catch (Exception e) {
+			sb.append("\n\nResult: failure");
+			Log.e(TAG, "Failed to store SMS", e);
+		}
+
+		Log.i(TAG, sb.toString());
 	}
 }
