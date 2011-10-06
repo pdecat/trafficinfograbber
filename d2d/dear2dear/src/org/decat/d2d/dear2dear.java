@@ -157,24 +157,26 @@ public class dear2dear extends Activity {
 
 				int resultCode = getResultCode();
 				if (resultCode == Activity.RESULT_OK) {
-					showToast("SMS sent");
+					showToast(getString(R.string.smsSuccessfullySentText));
 					Log.d(TAG, "Successfully sent an SMS");
 				} else {
+					String message = getString(R.string.failedToSendSmsErrorUnknownText);
 					switch (resultCode) {
 					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-						showToast("Generic failure");
+						message = getString(R.string.failedToSendSmsErrorGenericText);
 						break;
 					case SmsManager.RESULT_ERROR_NO_SERVICE:
-						showToast("No service");
+						message = getString(R.string.failedToSendSmsErrorNoServiceText);
 						break;
 					case SmsManager.RESULT_ERROR_NULL_PDU:
-						showToast("Null PDU");
+						message = getString(R.string.failedToSendSmsErrorNullPduText);
 						break;
 					case SmsManager.RESULT_ERROR_RADIO_OFF:
-						showToast("Radio off");
+						message = getString(R.string.failedToSendSmsErrorRadioOffText);
 						break;
 					}
-					Log.e(TAG, "Failed to send SMS (resultCode=" + resultCode + ")");
+					showToast(getString(R.string.failedToSendSmsText, message));
+					Log.e(TAG, "Failed to send SMS (message=" + message + ", resultCode=" + resultCode + ")");
 
 					showRetryButton();
 				}
@@ -188,12 +190,12 @@ public class dear2dear extends Activity {
 				int resultCode = getResultCode();
 				switch (resultCode) {
 				case Activity.RESULT_OK:
-					showToast("SMS delivered");
+					showToast(getString(R.string.smsSuccessfullyDeliveredText));
 
 					Log.d(TAG, "Successfully delivered an SMS");
 					break;
 				case Activity.RESULT_CANCELED:
-					showToast("SMS not delivered");
+					showToast(getString(R.string.failedToDeliverSmsText));
 					Log.e(TAG, "Failed to deliver SMS (resultCode=" + resultCode + ")");
 
 					// FIXME: May already have been done by sentIntent?

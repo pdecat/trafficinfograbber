@@ -52,6 +52,15 @@
 	<string name="email">Email</string>
 	<string name="sendText">Send</string>
 	<string name="sendingMessageText">Sending message...</string>
+	<string name="smsSuccessfullySentText">SMS successfully sent</string>
+	<string name="failedToSendSmsText">Failed to send SMS (%1)</string>
+	<string name="failedToSendSmsErrorUnknownText">Unknown failure</string>
+	<string name="failedToSendSmsErrorGenericText">Generic failure</string>
+	<string name="failedToSendSmsErrorNoServiceText">No service</string>
+	<string name="failedToSendSmsErrorNullPduText">Null PDU</string>
+	<string name="failedToSendSmsErrorRadioOffText">Radio off</string>
+	<string name="smsSuccessfullyDeliveredText">SMS successfully delivered</string>
+	<string name="failedToDeliverSmsText">Failed to deliver SMS</string>
 	<string name="retryText">Retry</string>
 	<string name="restartText">Restart</string>
 

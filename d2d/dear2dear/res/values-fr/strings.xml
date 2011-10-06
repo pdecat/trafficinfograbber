@@ -49,6 +49,15 @@
 	<string name="sendingMessageToContactText">Envoi de \"%1$s\" à %2$s par %3$s (%4$s)</string>
 	<string name="sendText">Envoyer</string>
 	<string name="sendingMessageText">Envoi du message...</string>
+	<string name="smsSuccessfullySentText">SMS envoyé avec succès</string>
+	<string name="failedToSendSmsText">Envoi du SMS échoué (%1)</string>
+	<string name="failedToSendSmsErrorUnknownText">échec inconnu</string>
+	<string name="failedToSendSmsErrorGenericText">échec générique</string>
+	<string name="failedToSendSmsErrorNoServiceText">aucun service</string>
+	<string name="failedToSendSmsErrorNullPduText">PDU nul</string>
+	<string name="failedToSendSmsErrorRadioOffText">Radio éteinte</string>
+	<string name="smsSuccessfullyDeliveredText">SMS délivré avec succès</string>
+	<string name="failedToDeliverSmsText">Délivrance du SMS échouée</string>
 	<string name="retryText">Réessayer</string>
 	<string name="restartText">Redémarrer</string>
 
@@ -73,6 +82,6 @@
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>
-	<string name="about_copyright">Tous droits réservés © 2010 Patrick Decat</string>
+	<string name="about_copyright">Tous droits réservés © 2011 Patrick Decat</string>
 	<string name="about_website_label">dear2dear chez Google Code</string>
 </resources>
