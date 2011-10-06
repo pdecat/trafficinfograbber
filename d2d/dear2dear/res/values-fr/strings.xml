@@ -50,7 +50,7 @@
 	<string name="sendText">Envoyer</string>
 	<string name="sendingMessageText">Envoi du message...</string>
 	<string name="smsSuccessfullySentText">SMS envoyé avec succès</string>
-	<string name="failedToSendSmsText">Envoi du SMS échoué (%1)</string>
+	<string name="failedToSendSmsText">Envoi du SMS échoué (%1$s)</string>
 	<string name="failedToSendSmsErrorUnknownText">échec inconnu</string>
 	<string name="failedToSendSmsErrorGenericText">échec générique</string>
 	<string name="failedToSendSmsErrorNoServiceText">aucun service</string>

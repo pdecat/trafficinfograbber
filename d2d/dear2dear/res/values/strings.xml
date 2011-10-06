@@ -53,7 +53,7 @@
 	<string name="sendText">Send</string>
 	<string name="sendingMessageText">Sending message...</string>
 	<string name="smsSuccessfullySentText">SMS successfully sent</string>
-	<string name="failedToSendSmsText">Failed to send SMS (%1)</string>
+	<string name="failedToSendSmsText">Failed to send SMS (%1$s)</string>
 	<string name="failedToSendSmsErrorUnknownText">Unknown failure</string>
 	<string name="failedToSendSmsErrorGenericText">Generic failure</string>
 	<string name="failedToSendSmsErrorNoServiceText">No service</string>
