@@ -159,6 +159,9 @@ public class dear2dear extends Activity {
 				if (resultCode == Activity.RESULT_OK) {
 					showToast(getString(R.string.smsSuccessfullySentText));
 					Log.d(TAG, "Successfully sent an SMS");
+
+					// Store the SMS into the standard Google SMS app
+					storeSms(messageStepChoice, destinationChoiceDetails);
 				} else {
 					String message = getString(R.string.failedToSendSmsErrorUnknownText);
 					switch (resultCode) {
@@ -580,10 +583,6 @@ public class dear2dear extends Activity {
 		if (destinationChoiceDetails != null) {
 			sendingMessageProgressDialog.show();
 			SmsManager.getDefault().sendTextMessage(destinationChoiceDetails, null, messageStepChoice, sentIntent, deliveryIntent);
-
-			// Store the SMS into the standard Google SMS app
-			storeSms(messageStepChoice, destinationChoiceDetails);
-
 		} else {
 			showToast("Could not find a phone number for " + destinationStepChoiceLabel);
 		}
