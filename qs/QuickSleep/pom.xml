@@ -17,7 +17,7 @@
  ** GNU General	Public License for more details.
  ** 
  ** You should have received a copy of the GNU General Public License
- ** along with QuickSleep. If not, see <http://www.gnu.org/licenses/>.
+ ** along with QuickSleep. If not, see <http://www.gnu.org/licenses />.
  **
  */
 -->
@@ -25,7 +25,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat.qs</groupId>
     <artifactId>qs</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>apk</packaging>
     <name>QuickSleep</name>
 
@@ -45,9 +45,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/qs/QuickSleep</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/qs/QuickSleep</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fqs%2FQuickSleep</url>
+        <connection>scm:svn:http://dear2dear.googlecode.com/svn/tags/qs-0.0.1</connection>
+        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/tags/qs-0.0.1</developerConnection>
+        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fqs%2FQuickSleep/tags/qs-0.0.1</url>
     </scm>
 
     <dependencies>
