@@ -188,8 +188,8 @@
                 <extensions>true</extensions>
                 <configuration>
                     <sdk>
-                        <!-- platform or api level (api level 4 = platform 1.6)-->
-                        <platform>4</platform>
+                        <!-- platform or api level (api level 8 = platform 2.2)-->
+                        <platform>8</platform>
                     </sdk>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
