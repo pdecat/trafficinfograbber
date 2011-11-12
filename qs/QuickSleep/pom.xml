@@ -25,7 +25,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat.qs</groupId>
     <artifactId>qs</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>QuickSleep</name>
 
@@ -45,9 +45,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/tags/qs-0.0.3</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/tags/qs-0.0.3</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fqs%2FQuickSleep/tags/qs-0.0.3</url>
+        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/qs/QuickSleep</connection>
+        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/qs/QuickSleep</developerConnection>
+        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fqs%2FQuickSleep</url>
     </scm>
 
     <dependencies>
