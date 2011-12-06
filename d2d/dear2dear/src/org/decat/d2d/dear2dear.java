@@ -592,41 +592,17 @@ public class dear2dear extends Activity {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			Uri uri = Uri.parse("content://sms/");
+			Uri uri = Uri.parse("content://sms/sent");
 			ContentResolver cr = getContentResolver();
 			ContentValues cv = new ContentValues();
-			cv.put("thread_id", 0);
 			cv.put("body", body);
 			cv.put("address", address);
-			cv.put("status", -1);
-			cv.put("date", System.currentTimeMillis());
 
 			sb.append("SMS to store:\n");
 			sb.append(cv.toString());
 
 			// Insert SMS
 			uri = cr.insert(uri, cv);
-
-			// Mark SMS read
-			Cursor cursor = cr.query(uri, null, null, null, null);
-			while (cursor.moveToNext()) {
-				int read = cursor.getInt(cursor.getColumnIndex("read"));
-				if (read != 1) {
-					cv = new ContentValues();
-					cv.put("read", "1");
-					cr.update(uri, cv, null, null);
-
-					cr.query(uri, null, null, null, null);
-					read = cursor.getInt(cursor.getColumnIndex("read"));
-					if (read == 1) {
-						sb.append("\nFailed to mark SMS as read");
-					} else {
-						sb.append("\nSMS marked as read");
-					}
-				} else {
-					sb.append("\nSMS already marked as read");
-				}
-			}
 			sb.append("\n\nResult: success");
 		} catch (Exception e) {
 			sb.append("\n\nResult: failure");
