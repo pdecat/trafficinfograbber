@@ -30,6 +30,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -65,6 +67,16 @@ public class PreferencesEditor extends Activity {
 		final TextView tv = new TextView(this);
 		tv.setText(getString(R.string.selectYourMessagesAndContacts));
 		ll.addView(tv);
+
+		try {
+			PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+			String sd = pi.applicationInfo.sourceDir;
+			if (sd == null || sd.indexOf("/data/app") != 0) {
+				dear2dear.showToast(this, getString(R.string.notificationOnBootNeedsInternalMemoryInstallLocation));
+			}
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		Preference[] preferences = preferencesHelper.preferences;
 		inputViews = new HashMap<String, View>();

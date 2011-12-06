@@ -74,6 +74,7 @@
 	<!-- Strings for Preferences Editor -->
 	<string name="selectYourMessagesAndContacts">Sélectionnez vos messages et contacts</string>
 	<string name="selectContactText">Sélectionner %s</string>
+	<string name="notificationOnBootNeedsInternalMemoryInstallLocation">Le raccourci au démarrage nécessite l\'installation dans la mémoire interne</string>
 
 	<!-- Strings for Contact Selector -->
 	<string name="showOnlyFavoriteContactsText">Afficher uniquement les contacts favoris</string>
