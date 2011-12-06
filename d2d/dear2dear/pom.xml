@@ -16,7 +16,7 @@
  ** GNU General	Public License for more details.
  ** 
  ** You should have received a copy of the GNU General Public License
- ** along with dear2dear. If not, see <http://www.gnu.org/licenses/>.
+ ** along with dear2dear. If not, see <http://www.gnu.org/licenses />.
  **
  */
 -->
@@ -24,7 +24,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat.d2d</groupId>
     <artifactId>d2d</artifactId>
-    <version>0.0.11-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>apk</packaging>
     <name>dear2dear</name>
 
@@ -44,9 +44,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/d2d/dear2dear</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/d2d/dear2dear</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fd2d2d%2Fdear2dear</url>
+        <connection>scm:svn:http://dear2dear.googlecode.com/svn/tags/d2d-0.1.0</connection>
+        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/tags/d2d-0.1.0</developerConnection>
+        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fd2d2d%2Fdear2dear/tags/d2d-0.1.0</url>
     </scm>
 
     <dependencies>
