@@ -281,6 +281,8 @@ public class TIG extends Activity {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification notification = new Notification(R.drawable.icon, context.getString(R.string.notificationMessage), System.currentTimeMillis());
 		Intent intent = new Intent(context, TIG.class);
+		intent.setAction("android.intent.action.MAIN");
+		intent.addCategory("android.intent.category.LAUNCHER");
 		notification.setLatestEventInfo(context, context.getString(R.string.app_name) + " " + context.getString(R.string.app_version), context.getString(R.string.notificationLabel),
 				PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
 		notification.flags |= Notification.FLAG_ONGOING_EVENT;
@@ -419,7 +421,7 @@ public class TIG extends Activity {
 
 	private void loadUrlInWebview(String url, int scale, int x, int y, String title, String lastModified) {
 		Log.i(TAG, "Loading URL '" + url + "'");
-		webview.setInitialScale((int) (scale * zoomFactor));
+		webViewClient.setInitialScale((int) (scale * zoomFactor));
 		webViewClient.setOffset((int) (x * zoomFactor), (int) (y * zoomFactor));
 		webViewClient.setTitle(title);
 		webViewClient.setLastModified(lastModified);
