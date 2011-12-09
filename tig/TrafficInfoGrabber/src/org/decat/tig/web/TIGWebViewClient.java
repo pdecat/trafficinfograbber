@@ -5,6 +5,7 @@ import org.decat.tig.TIG;
 import org.decat.tig.preferences.PreferencesHelper;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -44,17 +45,23 @@ public class TIGWebViewClient extends WebViewClient {
 	}
 
 	@Override
+	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+		Log.w(TIG.TAG, "Got error " + errorCode + " while loading URL " + failingUrl);
+	}
+
+	@Override
 	public void onPageFinished(final WebView view, String url) {
 		String formattedTitle = title;
-		if (lastModified != null) {
-			/*
-			 * try { SimpleDateFormat sdt = new SimpleDateFormat(); lastModified
-			 * = sdt.format(lastModified); } catch (Exception e) {
-			 * Log.w(TIG.TAG, "Failed to parse last modified date '" +
-			 * lastModified + "'", e); }
-			 */
-			formattedTitle += " - " + lastModified;
-		}
+		// if (lastModified != null) {
+		// try {
+		// SimpleDateFormat sdt = new SimpleDateFormat();
+		// lastModified = sdt.format(lastModified);
+		// } catch (Exception e) {
+		// Log.w(TIG.TAG, "Failed to parse last modified date '" + lastModified
+		// + "'", e);
+		// }
+		// formattedTitle += " - " + lastModified;
+		// }
 		setTitle(view, formattedTitle);
 		view.scrollTo(xScroll, yScroll);
 

@@ -26,6 +26,7 @@ import java.io.File;
 import org.decat.tig.net.ResourceDownloader;
 import org.decat.tig.preferences.PreferencesEditor;
 import org.decat.tig.preferences.PreferencesHelper;
+import org.decat.tig.web.TIGWebChromeClient;
 import org.decat.tig.web.TIGWebViewClient;
 
 import android.app.Activity;
@@ -87,6 +88,7 @@ public class TIG extends Activity {
 	private WebView webview;
 
 	private TIGWebViewClient webViewClient;
+	private TIGWebChromeClient webChromeClient;
 
 	private float oldScreenBrightness = 1f;
 
@@ -97,7 +99,19 @@ public class TIG extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// Clear webview databases
+		clearDatabase("webview.db");
+		clearDatabase("webviewCache.db");
+
+		// Request progress bar feature
+		getWindow().requestFeature(Window.FEATURE_PROGRESS);
+
+		// Set main layout
 		setContentView(R.layout.main);
+
+		// Show progress bar
+		getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
 
 		// Load preferences
 		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
@@ -112,6 +126,9 @@ public class TIG extends Activity {
 		webview = (WebView) findViewById(R.id.webview);
 		webViewClient = new TIGWebViewClient(this);
 		webview.setWebViewClient(webViewClient);
+		webChromeClient = new TIGWebChromeClient(this);
+		webview.setWebChromeClient(webChromeClient);
+
 		WebSettings settings = webview.getSettings();
 		settings.setBuiltInZoomControls(true);
 		settings.setJavaScriptEnabled(true);
@@ -120,7 +137,6 @@ public class TIG extends Activity {
 		// Setup Ads
 		AdView adView = (AdView) findViewById(R.id.adview);
 		AdRequest adRequest = new AdRequest();
-		adRequest.setTesting(false);
 		// adRequest.addKeyword("navigation");
 		adView.loadAd(adRequest);
 
@@ -139,6 +155,12 @@ public class TIG extends Activity {
 			Log.i(TAG, "Application version: " + appVersion);
 		}
 
+	}
+
+	private void clearDatabase(String database) {
+		if (this.deleteDatabase(database)) {
+			Log.i(TIG.TAG, "Cleared " + database + " database.");
+		}
 	}
 
 	public static SharedPreferences getPreferences(Context context) {
