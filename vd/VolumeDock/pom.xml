@@ -24,7 +24,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat.vd</groupId>
     <artifactId>vd</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>VolumeDock</name>
 
@@ -44,9 +44,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/tags/vd-0.0.4</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/tags/vd-0.0.4</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fvd%2FVolumeDock/tags/vd-0.0.4</url>
+        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/vd/VolumeDock</connection>
+        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/vd/VolumeDock</developerConnection>
+        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fvd%2FVolumeDock</url>
     </scm>
 
     <dependencies>
