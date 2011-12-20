@@ -92,7 +92,7 @@ public class VolumeDock extends Activity {
 	}
 
 	public static void showToast(Context context, String message) {
-		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
 		toast.show();
 	}
