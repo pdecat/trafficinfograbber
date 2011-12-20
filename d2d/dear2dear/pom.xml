@@ -89,6 +89,11 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.1</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-eclipse-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -210,6 +215,15 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <goals>install</goals>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
                 </configuration>
             </plugin>
         </plugins>
