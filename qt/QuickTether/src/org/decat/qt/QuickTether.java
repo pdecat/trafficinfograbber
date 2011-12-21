@@ -21,83 +21,119 @@ package org.decat.qt;
  **
  */
 
+import java.lang.reflect.InvocationTargetException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
 public class QuickTether extends Activity {
-	private static final int REQUEST_TOGGLE_TETHERING = 1;
 	private static final String TAG = "QT";
 
-	public static void showToast(Context context, String message) {
-		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+	private void showToast(String message) {
+		final Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
 		toast.show();
 	}
 
-	/** Called when the activity is first created. */
+	private void logMessage(String message, StringBuilder messageBuilder) {
+		Log.i(TAG, message);
+		if (messageBuilder.length() > 0) {
+			messageBuilder.append("\n");
+		}
+		messageBuilder.append(message);
+	}
+
+	/** Called when the activity is resumed. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onResume() {
+		super.onResume();
+
+		StringBuilder messageBuilder = new StringBuilder();
 
 		WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
+		logMessage("QuickTether: ", messageBuilder);
+
+		// Toggle tethering
 		try {
-			int wifiApState = (Integer) wifiManager.getClass().getMethod("getWifiApState").invoke(wifiManager);
-			Log.d(TAG, "wifiApState=" + wifiApState);
-			WifiConfiguration wifiConfiguration = (WifiConfiguration) wifiManager.getClass().getMethod("getWifiApConfiguration").invoke(wifiManager);
-			Log.d(TAG, "wifiConfiguration=" + wifiConfiguration);
-			if (wifiApState != (Integer) wifiManager.getClass().getField("WIFI_AP_STATE_ENABLED").getInt(wifiManager)) {
+			int wifiApState = getWifiApState(wifiManager, messageBuilder);
+			WifiConfiguration wifiConfiguration = getWifiApConfiguration(wifiManager, messageBuilder);
+
+			Integer WIFI_AP_STATE_ENABLED = getConstant(wifiManager, "WIFI_AP_STATE_ENABLED");
+
+			if (wifiApState != WIFI_AP_STATE_ENABLED) {
 				// Disable Wifi
-				boolean result = wifiManager.setWifiEnabled(false);
-				Log.d(TAG, "setWifiEnabled()=" + result);
+				setWifiEnabled(messageBuilder, false, wifiManager);
+
+				// Wait 1s
+				wait1s();
 
 				// Enable tethering
-				result = (Boolean) wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class).invoke(wifiManager, wifiConfiguration, true);
-				Log.d(TAG, "setWifiApEnabled()=" + result);
+				setWifiApEnabled(wifiManager, wifiConfiguration, true, messageBuilder);
 			} else {
 				// Disable tethering
-				boolean result = (Boolean) wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class).invoke(wifiManager, wifiConfiguration, false);
-				Log.d(TAG, "setWifiApEnabled()=" + result);
+				setWifiApEnabled(wifiManager, wifiConfiguration, false, messageBuilder);
+
+				wait1s();
 
 				// Enable wifi
-				result = wifiManager.setWifiEnabled(true);
-				Log.d(TAG, "setWifiEnabled()=" + result);
+				setWifiEnabled(messageBuilder, true, wifiManager);
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Failed to toggle tethering.", e);
+			logMessage("Failed to toggle tethering:\n" + e.getMessage(), messageBuilder);
 		}
 
+		showToast(messageBuilder.toString());
+
+		// Launch tethering settings
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
 		intent.setClassName("com.android.settings", "com.android.settings.TetherSettings");
+		startActivity(intent);
 
-		startActivityForResult(intent, REQUEST_TOGGLE_TETHERING);
+		// Finish activity
+		finish();
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		String message;
-		switch (requestCode) {
-		case REQUEST_TOGGLE_TETHERING:
-			Log.d(TAG, "Back from toggling tethering with resultCode=" + resultCode);
-			if (resultCode == RESULT_OK) {
-				message = "Tethering toggling done.";
-			} else {
-				message = "Failed to toggle tethering.";
-			}
-			break;
-		default:
-			message = "Unknown activity request code " + requestCode;
-		}
-		Log.i(TAG, message);
+	private Integer getConstant(WifiManager wifiManager, String constant) throws IllegalAccessException, NoSuchFieldException {
+		return (Integer) wifiManager.getClass().getField(constant).getInt(wifiManager);
+	}
 
-		finish();
+	private void wait1s() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			Log.e(TAG, "Failed to wait 1s.", e);
+		}
+	}
+
+	private Integer getWifiApState(WifiManager wifiManager, StringBuilder messageBuilder) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		Integer result = (Integer) wifiManager.getClass().getMethod("getWifiApState").invoke(wifiManager);
+		logMessage("getWifiApState()=" + result, messageBuilder);
+		return result;
+	}
+
+	private void setWifiEnabled(StringBuilder messageBuilder, boolean enable, WifiManager wifiManager) {
+		boolean result = wifiManager.setWifiEnabled(enable);
+		logMessage("setWifiEnabled(" + enable + ")=" + result, messageBuilder);
+	}
+
+	private WifiConfiguration getWifiApConfiguration(WifiManager wifiManager, StringBuilder messageBuilder) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		WifiConfiguration result = (WifiConfiguration) wifiManager.getClass().getMethod("getWifiApConfiguration").invoke(wifiManager);
+		Log.d(TAG, "wifiConfiguration=" + result);
+		return result;
+	}
+
+	private void setWifiApEnabled(WifiManager wifiManager, WifiConfiguration wifiConfiguration, boolean enable, StringBuilder messageBuilder) throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
+		boolean result = (Boolean) wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class).invoke(wifiManager, wifiConfiguration, enable);
+		logMessage("setWifiApEnabled(" + enable + ")=" + result, messageBuilder);
 	}
 }
