@@ -24,6 +24,8 @@ package org.decat.qt;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -43,6 +45,34 @@ public class QuickTether extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+		try {
+			int wifiApState = (Integer) wifiManager.getClass().getMethod("getWifiApState").invoke(wifiManager);
+			Log.d(TAG, "wifiApState=" + wifiApState);
+			WifiConfiguration wifiConfiguration = (WifiConfiguration) wifiManager.getClass().getMethod("getWifiApConfiguration").invoke(wifiManager);
+			Log.d(TAG, "wifiConfiguration=" + wifiConfiguration);
+			if (wifiApState != (Integer) wifiManager.getClass().getField("WIFI_AP_STATE_ENABLED").getInt(wifiManager)) {
+				// Disable Wifi
+				boolean result = wifiManager.setWifiEnabled(false);
+				Log.d(TAG, "setWifiEnabled()=" + result);
+
+				// Enable tethering
+				result = (Boolean) wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class).invoke(wifiManager, wifiConfiguration, true);
+				Log.d(TAG, "setWifiApEnabled()=" + result);
+			} else {
+				// Disable tethering
+				boolean result = (Boolean) wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class).invoke(wifiManager, wifiConfiguration, false);
+				Log.d(TAG, "setWifiApEnabled()=" + result);
+
+				// Enable wifi
+				result = wifiManager.setWifiEnabled(true);
+				Log.d(TAG, "setWifiEnabled()=" + result);
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "Failed to toggle tethering.", e);
+		}
 
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
