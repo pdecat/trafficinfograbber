@@ -24,33 +24,41 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/liveTraffic"
-        android:title="@string/liveTraffic"/>
-    <item
-        android:id="@+id/liveTrafficLite"
-        android:title="@string/liveTrafficLite"/>
-    <item
-        android:id="@+id/closedAtNight"
-        android:title="@string/closedAtNight"/>
-    <item
-        android:id="@+id/quickStats"
-        android:title="@string/quickStats"/>
-    <item
-        android:id="@+id/trafficCollisions"
-        android:title="@string/trafficCollisions"/>
-    <item
-        android:id="@+id/sytadinWebsite"
-        android:title="@string/sytadinWebsite"/>
-    <item
-        android:id="@+id/infotraficWebsite"
-        android:title="@string/infotraficWebsite"/>
+        android:id="@+id/currentView"
+        android:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="@string/switchView">
+        <menu>
+            <item
+                android:id="@+id/liveTraffic"
+                android:title="@string/liveTraffic"/>
+            <item
+                android:id="@+id/liveTrafficLite"
+                android:title="@string/liveTrafficLite"/>
+            <item
+                android:id="@+id/closedAtNight"
+                android:title="@string/closedAtNight"/>
+            <item
+                android:id="@+id/quickStats"
+                android:title="@string/quickStats"/>
+            <item
+                android:id="@+id/trafficCollisions"
+                android:title="@string/trafficCollisions"/>
+        </menu>
+    </item>
     <item
         android:id="@+id/preferences"
+        android:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/preferences"/>
     <item
         android:id="@+id/about"
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="@string/about"/>
-
+    <item
+        android:id="@+id/sytadinWebsite"
+        android:title="@string/sytadinWebsite"/>
+    <item
+        android:id="@+id/infotraficWebsite"
+        android:title="@string/infotraficWebsite"/>
 </menu>

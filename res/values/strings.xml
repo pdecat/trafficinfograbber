@@ -30,8 +30,9 @@
 	<string name="activitySelector">TIG - Activity Selector</string>
 
 	<!-- Menu items -->
-	<string name="liveTrafficLite">Live Traffic Lite</string>
+	<string name="switchView">Switch View</string>
 	<string name="liveTraffic">Live Traffic</string>
+	<string name="liveTrafficLite">Live Traffic Lite</string>
 	<string name="closedAtNight">Closed At Night</string>
 	<string name="quickStats">Quick statistics</string>
 	<string name="trafficCollisions">Traffic Collisions</string>
