@@ -27,8 +27,9 @@
 	<string name="activitySelector">TIG - Sélectionneur d\'activité</string>
 
 	<!-- Eléments du menu -->
-	<string name="liveTrafficLite">Trafic en direct allégé</string>
+	<string name="switchView">Changer de vue</string>
 	<string name="liveTraffic">Trafic en direct</string>
+	<string name="liveTrafficLite">Trafic en direct allégé</string>
 	<string name="closedAtNight">Fermetures nocturnes</string>
 	<string name="quickStats">Statistiques</string>
 	<string name="trafficCollisions">Accidents</string>
