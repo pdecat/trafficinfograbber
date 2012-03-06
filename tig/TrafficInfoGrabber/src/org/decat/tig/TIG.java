@@ -22,6 +22,7 @@ package org.decat.tig;
  */
 
 import java.io.File;
+import java.util.Date;
 
 import org.decat.tig.net.ResourceDownloader;
 import org.decat.tig.preferences.PreferencesEditor;
@@ -72,8 +73,8 @@ public class TIG extends Activity {
 	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
 
 	private static final String URL_SYTADIN = "http://www.sytadin.fr";
-	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND = URL_SYTADIN + "/fonds/" + FILENAME_IDF_BACKGROUND;
-	private static final String URL_LIVE_TRAFFIC_IDF_STATE = URL_SYTADIN + "/raster/" + FILENAME_IDF_TRAFFIC;
+	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE = URL_SYTADIN + "/fonds/";
+	private static final String URL_LIVE_TRAFFIC_IDF_STATE_BASE = URL_SYTADIN + "/raster/";
 	private static final String URL_LIVE_TRAFFIC = URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html";
 	private static final String URL_QUICK_STATS = URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html";
 	private static final String URL_CLOSED_AT_NIGHT = URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp";
@@ -95,20 +96,38 @@ public class TIG extends Activity {
 	private static boolean preferenceNotificationShortcut = false;
 
 	private static boolean preferenceLockOrientation = false;
+	private int currentViewId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// Request progress bar feature
+		getWindow().requestFeature(Window.FEATURE_PROGRESS);
+
 		// Clear webview databases
 		clearDatabase("webview.db");
 		clearDatabase("webviewCache.db");
 
-		// Request progress bar feature
-		getWindow().requestFeature(Window.FEATURE_PROGRESS);
-
 		// Set main layout
 		setContentView(R.layout.main);
+
+		// Initialize web view
+		webview = (WebView) findViewById(R.id.webview);
+		webViewClient = new TIGWebViewClient(this);
+		webview.setWebViewClient(webViewClient);
+		webChromeClient = new TIGWebChromeClient(this);
+		webview.setWebChromeClient(webChromeClient);
+
+		// Clear web view history and caches
+		webview.clearHistory();
+		webview.clearFormData();
+		webview.clearCache(true);
+
+		WebSettings settings = webview.getSettings();
+		settings.setBuiltInZoomControls(true);
+		settings.setJavaScriptEnabled(true);
+		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		// Show progress bar
 		getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
@@ -122,26 +141,14 @@ public class TIG extends Activity {
 		zoomFactor = metrics.densityDpi / 160.0f;
 		Log.i(TIG.TAG, "Screen DPI is " + metrics.densityDpi + ", zoom factor is " + zoomFactor);
 
-		// Initialize view
-		webview = (WebView) findViewById(R.id.webview);
-		webViewClient = new TIGWebViewClient(this);
-		webview.setWebViewClient(webViewClient);
-		webChromeClient = new TIGWebChromeClient(this);
-		webview.setWebChromeClient(webChromeClient);
-
-		WebSettings settings = webview.getSettings();
-		settings.setBuiltInZoomControls(true);
-		settings.setJavaScriptEnabled(true);
-		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-
 		// Setup Ads
 		AdView adView = (AdView) findViewById(R.id.adview);
 		AdRequest adRequest = new AdRequest();
-		// adRequest.addKeyword("navigation");
 		adView.loadAd(adRequest);
 
-		// Default view
-		showLiveTraffic();
+		// Set default view then show it
+		currentViewId = R.id.liveTraffic;
+		showViewById(currentViewId);
 
 		// Show preferences editor if first run of this version
 		String appVersion = getAppVersion(this);
@@ -327,7 +334,12 @@ public class TIG extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		currentViewId = item.getItemId();
+		return showViewById(currentViewId);
+	}
+
+	private boolean showViewById(int viewId) {
+		switch (viewId) {
 		case R.id.liveTrafficLite:
 			showLiveTrafficLite();
 			return true;
@@ -428,27 +440,34 @@ public class TIG extends Activity {
 		webview.loadUrl(url);
 	}
 
-	private void cacheResources(ContextWrapper context) {
-		File file = context.getFileStreamPath(FILENAME_IDF_BACKGROUND);
+	private String cacheResource(ContextWrapper context, String filename, String baseUrl, boolean useCache) {
+		File file = context.getFileStreamPath(filename);
 
 		if (file.exists()) {
-			Log.i(TAG, "Resources already cached in '" + getFilesDir().getAbsolutePath() + "'");
-		} else {
-			ResourceDownloader.downloadFile(this, URL_LIVE_TRAFFIC_IDF_BACKGROUND, FILENAME_IDF_BACKGROUND);
+			if (useCache) {
+				Log.i(TAG, "Resource '" + filename + "' already cached in '" + getFilesDir().getAbsolutePath() + "'");
+				return new Date(file.lastModified()).toString();
+			}
+			file.delete();
+			Log.i(TAG, "Deleted cached ressource '" + filename + "' from '" + getFilesDir().getAbsolutePath() + "'");
 		}
+
+		return ResourceDownloader.downloadFile(context, baseUrl + filename, filename);
 	}
 
 	private void showLiveTrafficLite() {
-		// Cache resources
-		cacheResources(this);
+		this.setProgress(0);
 
-		new JobWithProgressDialog(this) {
-			@Override
-			public void doJob() {
-				String lastModified = ResourceDownloader.downloadFile(TIG.this, URL_LIVE_TRAFFIC_IDF_STATE, FILENAME_IDF_TRAFFIC);
-				loadUrlInWebview("file:///android_asset/tig.html", 200, 400, 150, getString(R.string.liveTrafficLite), lastModified);
-			}
-		}.start();
+		// Cache resources
+		cacheResource(this, FILENAME_IDF_BACKGROUND, URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE, true);
+
+		this.setProgress(25);
+
+		String lastModified = cacheResource(this, FILENAME_IDF_TRAFFIC, URL_LIVE_TRAFFIC_IDF_STATE_BASE, false);
+
+		this.setProgress(50);
+
+		loadUrlInWebview("file:///android_asset/tig.html", 200, 400, 150, getString(R.string.liveTrafficLite), lastModified);
 	}
 
 	private void showLiveTraffic() {
@@ -506,7 +525,7 @@ public class TIG extends Activity {
 	}
 
 	public void refreshWebview(View v) {
-		webview.reload();
+		showViewById(currentViewId);
 	}
 
 	public void quit(View v) {

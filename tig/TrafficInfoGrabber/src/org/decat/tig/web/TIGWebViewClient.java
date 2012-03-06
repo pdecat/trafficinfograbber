@@ -25,12 +25,6 @@ public class TIGWebViewClient extends WebViewClient {
 		this.activity = activity;
 	}
 
-	// @Override
-	// public boolean shouldOverrideUrlLoading(WebView view, String url) {
-	// view.loadUrl(url);
-	// return true;
-	// }
-	//
 	@Override
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 		Log.w(TIG.TAG, "Got error " + errorCode + " while loading URL " + failingUrl);
@@ -56,14 +50,6 @@ public class TIGWebViewClient extends WebViewClient {
 	public void onPageFinished(final WebView view, String url) {
 		String formattedTitle = title;
 		if (lastModified != null) {
-			// try {
-			// SimpleDateFormat sdt = new SimpleDateFormat();
-			// lastModified = sdt.format(lastModified);
-			// } catch (Exception e) {
-			// Log.w(TIG.TAG, "Failed to parse last modified date '" +
-			// lastModified
-			// + "'", e);
-			// }
 			formattedTitle += " - " + lastModified;
 		}
 		setTitle(view, formattedTitle);
@@ -71,7 +57,7 @@ public class TIGWebViewClient extends WebViewClient {
 		// Set the scale and scroll once
 		setScaleAndScroll(view);
 
-		// Set the scale and scroll a second after some time because
+		// Set the scale and scroll again after some time because
 		// onPageFinished is called only for main frame.
 		// When onPageFinished() is called, the picture rendering may not be
 		// done yet.
