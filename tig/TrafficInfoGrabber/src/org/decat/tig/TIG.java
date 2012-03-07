@@ -84,7 +84,8 @@ public class TIG extends Activity {
 
 	private SharedPreferences sharedPreferences;
 
-	private float zoomFactor;
+	private int width;
+	private int height;
 
 	private WebView webview;
 
@@ -135,11 +136,12 @@ public class TIG extends Activity {
 		// Load preferences
 		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
-		// Retrieve screen density
+		// Retrieve screen density and aspect ratio
 		DisplayMetrics metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		zoomFactor = metrics.densityDpi / 160.0f;
-		Log.i(TIG.TAG, "Screen DPI is " + metrics.densityDpi + ", zoom factor is " + zoomFactor);
+		width = metrics.widthPixels;
+		height = metrics.heightPixels;
+		Log.i(TIG.TAG, "Screen width is " + width + ", and height is " + height);
 
 		// Setup Ads
 		AdView adView = (AdView) findViewById(R.id.adview);
@@ -427,14 +429,25 @@ public class TIG extends Activity {
 		}
 	}
 
-	private void loadUrlInWebview(String url, int scale, int x, int y, String title) {
-		loadUrlInWebview(url, scale, x, y, title, null);
+	private void loadUrlInWebview(String url, int xmin, int ymin, int xmax, int ymax, String title) {
+		loadUrlInWebview(url, xmin, ymin, xmax, ymax, title, null);
 	}
 
-	private void loadUrlInWebview(String url, int scale, int x, int y, String title, String lastModified) {
-		Log.i(TAG, "Loading URL '" + url + "'");
-		webViewClient.setInitialScale((int) (scale * zoomFactor));
-		webViewClient.setOffset((int) (x * zoomFactor), (int) (y * zoomFactor));
+	private void loadUrlInWebview(String url, int xmin, int ymin, int xmax, int ymax, String title, String lastModified) {
+		Log.i(TAG, "Loading URL '" + url + "' (xmin=" + xmin + ", ymin=" + ymin + ", xmax=" + xmax + ", ymax=" + ymax + ")");
+		int xscale = (int) ((float) width * 100 / (float) (xmax - xmin));
+		int yscale = (int) ((float) height * 100 / (float) (ymax - ymin));
+		int scale = xscale < yscale ? xscale : yscale;
+		int xoffset = (xmin * scale) / 100;
+		int yoffset = (ymin * scale) / 100;
+		if (xscale < yscale) {
+			yoffset -= (height - ((ymax - ymin) * scale) / 100) / 2;
+		} else {
+			xoffset -= (width - ((xmax - xmin) * scale) / 100) / 2;
+		}
+		Log.d(TAG, "Computed values: xscale=" + xscale + ", yscale=" + yscale + ", scale=" + scale + ", xoffset=" + xoffset + ", yoffset=" + yoffset);
+		webViewClient.setInitialScale(scale);
+		webViewClient.setOffset(xoffset, yoffset);
 		webViewClient.setTitle(title);
 		webViewClient.setLastModified(lastModified);
 		webview.loadUrl(url);
@@ -467,23 +480,23 @@ public class TIG extends Activity {
 
 		this.setProgress(50);
 
-		loadUrlInWebview("file:///android_asset/tig.html", 200, 400, 150, getString(R.string.liveTrafficLite), lastModified);
+		loadUrlInWebview("file:///android_asset/tig.html", 197, 81, 385, 298, getString(R.string.liveTrafficLite), lastModified);
 	}
 
 	private void showLiveTraffic() {
-		loadUrlInWebview(URL_LIVE_TRAFFIC, 200, 480, 220, getString(R.string.liveTraffic));
+		loadUrlInWebview(URL_LIVE_TRAFFIC, 237, 108, 424, 316, getString(R.string.liveTraffic));
 	}
 
 	private void showQuickStats() {
-		loadUrlInWebview(URL_QUICK_STATS, 180, 0, 0, getString(R.string.quickStats));
+		loadUrlInWebview(URL_QUICK_STATS, 1, 10, 173, 276, getString(R.string.quickStats));
 	}
 
 	private void showClosedAtNight() {
-		loadUrlInWebview(URL_CLOSED_AT_NIGHT, 75, 0, 0, getString(R.string.closedAtNight));
+		loadUrlInWebview(URL_CLOSED_AT_NIGHT, 0, 0, 595, 539, getString(R.string.closedAtNight));
 	}
 
 	private void showTrafficCollisions() {
-		loadUrlInWebview(URL_TRAFFIC_COLLISIONS_IDF, 100, 0, 0, getString(R.string.trafficCollisions));
+		loadUrlInWebview(URL_TRAFFIC_COLLISIONS_IDF, 136, 135, 697, 548, getString(R.string.trafficCollisions));
 	}
 
 	private void launchWebsite(String url) {
