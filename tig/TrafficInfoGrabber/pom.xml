@@ -105,6 +105,11 @@
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>1.7</version>
                 </plugin>
+                <plugin>
+                    <groupId>com.mycila.maven-license-plugin</groupId>
+                    <artifactId>maven-license-plugin</artifactId>
+                    <version>1.9.0</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -226,6 +231,25 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <goals>install</goals>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <!-- Checks for license headers. Use "mvn license:format" to update files. -->
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <header>res/raw/license_short.txt</header>
+                    <excludes>
+                        <exclude>res/raw/license_short.txt</exclude>
+                        <exclude>bin/**</exclude>
+                        <exclude>**/R.java</exclude>
+                        <exclude>**/*_.java</exclude>
+                        <exclude>.factorypath</exclude>
+                        <exclude>project.properties</exclude>
+                        <exclude>maven-eclipse.xml</exclude>
+                    </excludes>
+                    <strictCheck>true</strictCheck>
                 </configuration>
             </plugin>
         </plugins>
