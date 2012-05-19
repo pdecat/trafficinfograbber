@@ -25,8 +25,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 public class BootCompletedReceiver extends android.content.BroadcastReceiver {
-	private boolean notificationShortcutOnBoot = false;
-
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
@@ -38,7 +36,7 @@ public class BootCompletedReceiver extends android.content.BroadcastReceiver {
 			// Get current value
 			boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT_ON_BOOT, true);
 
-			if (value != notificationShortcutOnBoot) {
+			if (value) {
 				// Update notification shortcut state
 				TIG.updateNotificationShortcutVisibility(context);
 			}
