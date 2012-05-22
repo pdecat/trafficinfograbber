@@ -55,9 +55,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.admob.android</groupId>
-            <artifactId>ads</artifactId>
-            <version>4.3.1</version>
+            <groupId>com.google.android.admob</groupId>
+            <artifactId>admob</artifactId>
+            <version>6.0.1-r6</version>
         </dependency>
     </dependencies>
 
@@ -80,7 +80,7 @@
                 <plugin>
                     <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                     <artifactId>android-maven-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>3.2.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
