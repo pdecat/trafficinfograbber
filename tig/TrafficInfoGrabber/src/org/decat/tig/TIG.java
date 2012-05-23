@@ -144,8 +144,7 @@ public class TIG extends Activity {
 		adView.loadAd(adRequest);
 
 		// Set default view then show it
-		currentViewId = R.id.liveTraffic;
-		showViewById(currentViewId);
+		showViewById(R.id.liveTraffic);
 
 		// Show preferences editor if first run of this version
 		String appVersion = getAppVersion(this);
@@ -331,25 +330,29 @@ public class TIG extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		currentViewId = item.getItemId();
-		return showViewById(currentViewId);
+		return showViewById(item.getItemId());
 	}
 
 	private boolean showViewById(int viewId) {
 		switch (viewId) {
 		case R.id.liveTrafficLite:
+			currentViewId = viewId;
 			showLiveTrafficLite();
 			return true;
 		case R.id.liveTraffic:
+			currentViewId = viewId;
 			showLiveTraffic();
 			return true;
 		case R.id.quickStats:
+			currentViewId = viewId;
 			showQuickStats();
 			return true;
 		case R.id.closedAtNight:
+			currentViewId = viewId;
 			showClosedAtNight();
 			return true;
 		case R.id.trafficCollisions:
+			currentViewId = viewId;
 			showTrafficCollisions();
 			return true;
 		case R.id.sytadinWebsite:
