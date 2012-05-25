@@ -17,13 +17,17 @@
 package org.decat.tig;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.decat.tig.net.ResourceDownloader;
 import org.decat.tig.preferences.PreferencesEditor;
 import org.decat.tig.preferences.PreferencesHelper;
 import org.decat.tig.web.TIGWebChromeClient;
 import org.decat.tig.web.TIGWebViewClient;
+import org.decat.tig.web.WebviewSettings;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -68,15 +72,13 @@ public class TIG extends Activity {
 	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
 
 	private static final String URL_SYTADIN = "http://www.sytadin.fr";
+	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
+
 	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE = URL_SYTADIN + "/fonds/";
 	private static final String URL_LIVE_TRAFFIC_IDF_STATE_BASE = URL_SYTADIN + "/raster/";
-	private static final String URL_LIVE_TRAFFIC = URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html";
-	private static final String URL_QUICK_STATS = URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html";
-	private static final String URL_CLOSED_AT_NIGHT = URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp";
 
-	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
-	private static final String URL_TRAFFIC_COLLISIONS_IDF = URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php";
-
+	private final Map<Integer, WebviewSettings> availableWebviews = new HashMap<Integer, WebviewSettings>();
+	
 	private SharedPreferences sharedPreferences;
 
 	private int width;
@@ -143,6 +145,14 @@ public class TIG extends Activity {
 		AdRequest adRequest = new AdRequest();
 		adView.loadAd(adRequest);
 
+		// Initialize webview settings
+		availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.id.liveTrafficLite), "file:///android_asset/tig.html", 197, 81, 385, 298));
+		availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.id.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html", 237, 108, 424, 316));
+//	    availableWebviews.put(R.id.liveTrafficHD, new WebviewSettings(getString(R.id.liveTrafficHD), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_fs.jsp.html", 237, 108, 424, 316));
+		availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.id.quickStats), URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html", 1, 10, 173, 276));
+		availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.id.closedAtNight), URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp", 0, 0, 595, 539));
+		availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.id.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
+	    
 		// Set default view then show it
 		showViewById(R.id.liveTraffic);
 
@@ -334,39 +344,34 @@ public class TIG extends Activity {
 	}
 
 	private boolean showViewById(int viewId) {
-		switch (viewId) {
-		case R.id.liveTrafficLite:
-			currentViewId = viewId;
-			showLiveTrafficLite();
-			return true;
-		case R.id.liveTraffic:
-			currentViewId = viewId;
-			showLiveTraffic();
-			return true;
-		case R.id.quickStats:
-			currentViewId = viewId;
-			showQuickStats();
-			return true;
-		case R.id.closedAtNight:
-			currentViewId = viewId;
-			showClosedAtNight();
-			return true;
-		case R.id.trafficCollisions:
-			currentViewId = viewId;
-			showTrafficCollisions();
-			return true;
-		case R.id.sytadinWebsite:
-			launchWebsite(URL_SYTADIN);
-			return true;
-		case R.id.infotraficWebsite:
-			launchWebsite(URL_INFOTRAFIC);
-		case R.id.preferences:
-			showPreferencesEditor();
-			return true;
-		case R.id.about:
-			showAbout();
-			return true;
-		}
+	    String lastModified = null;
+	    
+        switch (viewId) {
+            case R.id.liveTrafficLite:
+                lastModified = prepareLiveTrafficLite();
+            case R.id.liveTraffic:
+            case R.id.quickStats:
+            case R.id.closedAtNight:
+            case R.id.trafficCollisions:
+                // Store view ID
+                currentViewId = viewId;
+                
+                // Load Webview
+                loadUrlInWebview(availableWebviews.get(viewId), lastModified);
+                return true;
+
+            case R.id.sytadinWebsite:
+                launchWebsite(URL_SYTADIN);
+                return true;
+            case R.id.infotraficWebsite:
+                launchWebsite(URL_INFOTRAFIC);
+            case R.id.preferences:
+                showPreferencesEditor();
+                return true;
+            case R.id.about:
+                showAbout();
+                return true;
+        }
 		return false;
 	}
 
@@ -427,28 +432,29 @@ public class TIG extends Activity {
 		}
 	}
 
-	private void loadUrlInWebview(String url, int xmin, int ymin, int xmax, int ymax, String title) {
-		loadUrlInWebview(url, xmin, ymin, xmax, ymax, title, null);
-	}
-
-	private void loadUrlInWebview(String url, int xmin, int ymin, int xmax, int ymax, String title, String lastModified) {
-		Log.i(TAG, "Loading URL '" + url + "' (xmin=" + xmin + ", ymin=" + ymin + ", xmax=" + xmax + ", ymax=" + ymax + ")");
-		int xscale = (int) ((float) width * 100 / (float) (xmax - xmin));
-		int yscale = (int) ((float) height * 100 / (float) (ymax - ymin));
+	private void loadUrlInWebview(WebviewSettings settings, String lastModified) {
+		Log.i(TAG, "Loading '" + settings.title + "' (URL=" + settings.url + ", xmin=" + settings.xmin + ", ymin=" + settings.ymin + ", xmax=" + settings.xmax + ", ymax=" + settings.ymax + ")");
+		int xscale = (int) ((float) width * 100 / (float) (settings.xmax - settings.xmin));
+		int yscale = (int) ((float) height * 100 / (float) (settings.ymax - settings.ymin));
 		int scale = xscale < yscale ? xscale : yscale;
-		int xoffset = (xmin * scale) / 100;
-		int yoffset = (ymin * scale) / 100;
+		int xoffset = (settings.xmin * scale) / 100;
+		int yoffset = (settings.ymin * scale) / 100;
 		if (xscale < yscale) {
-			yoffset -= (height - ((ymax - ymin) * scale) / 100) / 2;
+			yoffset -= (height - ((settings.ymax - settings.ymin) * scale) / 100) / 2;
 		} else {
-			xoffset -= (width - ((xmax - xmin) * scale) / 100) / 2;
+			xoffset -= (width - ((settings.xmax - settings.xmin) * scale) / 100) / 2;
 		}
 		Log.d(TAG, "Computed values: xscale=" + xscale + ", yscale=" + yscale + ", scale=" + scale + ", xoffset=" + xoffset + ", yoffset=" + yoffset);
 		webViewClient.setInitialScale(scale);
 		webViewClient.setOffset(xoffset, yoffset);
-		webViewClient.setTitle(title);
+		webViewClient.setTitle(settings.title);
 		webViewClient.setLastModified(lastModified);
-		webview.loadUrl(url);
+		
+		// TODO ?
+//		webview.stopLoading();
+//		webview.freeMemory();
+		
+		webview.loadUrl(settings.url);
 	}
 
 	private String cacheResource(ContextWrapper context, String filename, String baseUrl, boolean useCache) {
@@ -466,7 +472,7 @@ public class TIG extends Activity {
 		return ResourceDownloader.downloadFile(context, baseUrl + filename, filename);
 	}
 
-	private void showLiveTrafficLite() {
+	private String prepareLiveTrafficLite() {
 		this.setProgress(0);
 
 		// Cache resources
@@ -478,23 +484,7 @@ public class TIG extends Activity {
 
 		this.setProgress(50);
 
-		loadUrlInWebview("file:///android_asset/tig.html", 197, 81, 385, 298, getString(R.string.liveTrafficLite), lastModified);
-	}
-
-	private void showLiveTraffic() {
-		loadUrlInWebview(URL_LIVE_TRAFFIC, 237, 108, 424, 316, getString(R.string.liveTraffic));
-	}
-
-	private void showQuickStats() {
-		loadUrlInWebview(URL_QUICK_STATS, 1, 10, 173, 276, getString(R.string.quickStats));
-	}
-
-	private void showClosedAtNight() {
-		loadUrlInWebview(URL_CLOSED_AT_NIGHT, 0, 0, 595, 539, getString(R.string.closedAtNight));
-	}
-
-	private void showTrafficCollisions() {
-		loadUrlInWebview(URL_TRAFFIC_COLLISIONS_IDF, 136, 135, 697, 548, getString(R.string.trafficCollisions));
+		return lastModified;
 	}
 
 	private void launchWebsite(String url) {
