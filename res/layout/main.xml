@@ -27,14 +27,14 @@
 	<ImageButton android:id="@+id/quitButton"
 		android:layout_alignParentRight="true" android:layout_alignParentTop="true"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingTop="5px" android:paddingRight="5px"
+		android:paddingTop="@dimen/power_button_padding_top" android:paddingRight="5dp"
 		android:src="@android:drawable/ic_lock_power_off" android:onClick="quit"
 		android:background="#0000" />
 
 	<ImageButton android:id="@+id/dayNightSwitchButton"
 		android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingBottom="5px" android:paddingRight="5px"
+		android:paddingBottom="5dp" android:paddingRight="5dp"
 		android:src="@android:drawable/ic_menu_view"
 		android:onClick="dayNightSwitch" android:background="#0000" />
 
@@ -42,7 +42,7 @@
 	<ImageButton android:id="@+id/refreshButton"
 		android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingBottom="5px" android:paddingRight="5px"
+		android:paddingBottom="5dp" android:paddingRight="5dp"
 		android:src="@drawable/ic_menu_refresh"
 		android:onClick="refreshWebview"
 		android:background="#0000" />
