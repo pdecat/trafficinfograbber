@@ -26,12 +26,10 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
-import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -39,7 +37,6 @@ import android.widget.Toast;
 public class QuickSleep extends Activity {
 	// Interaction with the DevicePolicyManager
 	private DevicePolicyManager mDPM;
-	private PowerManager mPM;
 	private ComponentName mDeviceAdminSample;
 
 	private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
@@ -55,9 +52,6 @@ public class QuickSleep extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		// Prepare to work with the PM
-		mPM = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
 		// Prepare to work with the DPM
 		mDPM = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -88,8 +82,7 @@ public class QuickSleep extends Activity {
 				};
 
 				t.schedule(lockTask, 500);
-				
-				mPM.goToSleep(0);
+
 			} else {
 				message = "Failed to request admin priviledges.";
 			}
