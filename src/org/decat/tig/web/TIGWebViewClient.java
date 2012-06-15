@@ -28,18 +28,23 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.google.ads.AdView;
+import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.annotations.ViewById;
 
+@EBean
 public class TIGWebViewClient extends WebViewClient {
-	private transient final Activity activity;
+	@RootContext
+	protected Activity activity;
+
 	private int initialScale;
 	private int xScroll;
 	private int yScroll;
 	private String lastModified;
 	private String title;
 
-	public TIGWebViewClient(Activity activity) {
-		this.activity = activity;
-	}
+	@ViewById
+	protected AdView adview;
 
 	@Override
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -117,8 +122,7 @@ public class TIGWebViewClient extends WebViewClient {
 	}
 
 	private void setAdsVisibility(boolean visibility) {
-		AdView adView = (AdView) activity.findViewById(R.id.adview);
-		adView.setVisibility(visibility ? View.VISIBLE : View.GONE);
+		adview.setVisibility(visibility ? View.VISIBLE : View.GONE);
 	}
 
 	private void setTitle(WebView view, String title) {
