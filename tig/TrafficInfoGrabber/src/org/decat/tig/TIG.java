@@ -41,7 +41,6 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -57,7 +56,13 @@ import android.widget.Toast;
 
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
+import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Bean;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.ViewById;
 
+@EActivity(R.layout.main)
 public class TIG extends Activity {
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
@@ -77,16 +82,20 @@ public class TIG extends Activity {
 	private static final String URL_LIVE_TRAFFIC_IDF_STATE_BASE = URL_SYTADIN + "/raster/";
 
 	private final Map<Integer, WebviewSettings> availableWebviews = new HashMap<Integer, WebviewSettings>();
-	
+
 	private SharedPreferences sharedPreferences;
 
 	private int width;
 	private int height;
 
-	private WebView webview;
+	@ViewById
+	protected WebView webview;
 
-	private TIGWebViewClient webViewClient;
-	private TIGWebChromeClient webChromeClient;
+	@Bean
+	protected TIGWebViewClient webViewClient;
+
+	@Bean
+	protected TIGWebChromeClient webChromeClient;
 
 	private float oldScreenBrightness = 1f;
 
@@ -95,25 +104,20 @@ public class TIG extends Activity {
 	private static boolean preferenceLockOrientation = false;
 	private int currentViewId;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
+	@AfterInject
+	public void init() {
 		// Request progress bar feature
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
 		// Clear webview databases
 		clearDatabase("webview.db");
 		clearDatabase("webviewCache.db");
+	}
 
-		// Set main layout
-		setContentView(R.layout.main);
-
+	@AfterViews
+	public void setup() {
 		// Initialize web view
-		webview = (WebView) findViewById(R.id.webview);
-		webViewClient = new TIGWebViewClient(this);
 		webview.setWebViewClient(webViewClient);
-		webChromeClient = new TIGWebChromeClient(this);
 		webview.setWebChromeClient(webChromeClient);
 
 		// Clear web view history and caches
@@ -145,13 +149,16 @@ public class TIG extends Activity {
 		adView.loadAd(adRequest);
 
 		// Initialize webview settings
-		availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.id.liveTrafficLite), "file:///android_asset/tig.html", 197, 81, 385, 298));
-		availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.id.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html", 237, 108, 424, 316));
-//	    availableWebviews.put(R.id.liveTrafficHD, new WebviewSettings(getString(R.id.liveTrafficHD), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_fs.jsp.html", 237, 108, 424, 316));
-		availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.id.quickStats), URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html", 1, 10, 173, 276));
-		availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.id.closedAtNight), URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp", 0, 0, 595, 539));
-		availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.id.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
-	    
+		availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), "file:///android_asset/tig.html", 197, 81, 385, 298));
+		// availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html", 237, 108, 424, 316));
+		availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_fs.jsp.html", 361 + 34, 145 + 24, 690 + 34,
+				633 + 24));
+		// availableWebviews.put(R.id.liveTrafficHD, new WebviewSettings(getString(R.string.liveTrafficHD), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_fs.jsp.html", 361 + 34, 145 + 24, 690 + 34,
+		// 633 + 24));
+		availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html", 1, 10, 173, 276));
+		availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp", 0, 0, 595, 539));
+		availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
+
 		// Set default view then show it
 		showViewById(R.id.liveTraffic);
 
@@ -292,7 +299,7 @@ public class TIG extends Activity {
 	private static void triggerNotification(Context context) {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification notification = new Notification(R.drawable.icon, context.getString(R.string.notificationMessage), System.currentTimeMillis());
-		Intent intent = new Intent(context, TIG.class);
+		Intent intent = new Intent(context, TIG_.class);
 		intent.setAction("android.intent.action.MAIN");
 		intent.addCategory("android.intent.category.LAUNCHER");
 		notification.setLatestEventInfo(context, context.getString(R.string.app_name) + " " + context.getString(R.string.app_version), context.getString(R.string.notificationLabel),
@@ -464,7 +471,7 @@ public class TIG extends Activity {
 		webview.loadUrl(settings.url);
 	}
 
-	private String cacheResource(ContextWrapper context, String filename, String baseUrl, boolean useCache) {
+	protected String cacheResource(ContextWrapper context, String filename, String baseUrl, boolean useCache) {
 		File file = context.getFileStreamPath(filename);
 
 		if (file.exists()) {

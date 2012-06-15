@@ -20,17 +20,18 @@ import android.app.Activity;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-public class TIGWebChromeClient extends WebChromeClient {
-	private transient final Activity activity;
+import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
 
-	public TIGWebChromeClient(Activity activity) {
-		this.activity = activity;
-	}
+@EBean
+public class TIGWebChromeClient extends WebChromeClient {
+	@RootContext
+	protected Activity context;
 
 	@Override
 	public void onProgressChanged(WebView view, int progress) {
 		// Activities and WebViews measure progress with different scales.
 		// The progress meter will automatically disappear when we reach 100%
-		activity.setProgress(progress * 100);
+		context.setProgress(progress * 100);
 	}
 }
