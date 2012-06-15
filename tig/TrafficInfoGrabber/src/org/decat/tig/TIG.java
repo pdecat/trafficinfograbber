@@ -17,7 +17,6 @@
 package org.decat.tig;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -344,35 +343,43 @@ public class TIG extends Activity {
 	}
 
 	private boolean showViewById(int viewId) {
-	    String lastModified = null;
-	    
-        switch (viewId) {
-            case R.id.liveTrafficLite:
-                lastModified = prepareLiveTrafficLite();
-            case R.id.liveTraffic:
-            case R.id.quickStats:
-            case R.id.closedAtNight:
-            case R.id.trafficCollisions:
-                // Store view ID
-                currentViewId = viewId;
-                
-                // Load Webview
-                loadUrlInWebview(availableWebviews.get(viewId), lastModified);
-                return true;
+		String lastModified = null;
 
-            case R.id.sytadinWebsite:
-                launchWebsite(URL_SYTADIN);
-                return true;
-            case R.id.infotraficWebsite:
-                launchWebsite(URL_INFOTRAFIC);
-            case R.id.preferences:
-                showPreferencesEditor();
-                return true;
-            case R.id.about:
-                showAbout();
-                return true;
-        }
+		switch (viewId) {
+			case 0x102002c: // android.R.id.home
+				refreshCurrentView();
+				return true;
+
+			case R.id.liveTrafficLite:
+				lastModified = prepareLiveTrafficLite();
+			case R.id.liveTraffic:
+			case R.id.quickStats:
+			case R.id.closedAtNight:
+			case R.id.trafficCollisions:
+				// Store view ID
+				currentViewId = viewId;
+
+				// Load Webview
+				loadUrlInWebview(availableWebviews.get(viewId), lastModified);
+				return true;
+
+			case R.id.sytadinWebsite:
+				launchWebsite(URL_SYTADIN);
+				return true;
+			case R.id.infotraficWebsite:
+				launchWebsite(URL_INFOTRAFIC);
+			case R.id.preferences:
+				showPreferencesEditor();
+				return true;
+			case R.id.about:
+				showAbout();
+				return true;
+		}
 		return false;
+	}
+
+	public void refreshCurrentView() {
+		showViewById(currentViewId);
 	}
 
 	public static void showToast(Context context, String message) {
@@ -416,19 +423,19 @@ public class TIG extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO: use this...
 		switch (requestCode) {
-		case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
-			if (resultCode == RESULT_OK) {
-				Log.d(TIG.TAG, "Back from OI About");
-			}
-			break;
-		case ACTIVITY_REQUEST_OI_ABOUT_INSTALL:
-			if (resultCode == RESULT_CANCELED) {
-				Log.d(TIG.TAG, "Back from Android Market");
-				showAbout();
-			}
-			break;
-		default:
-			Log.w(TIG.TAG, "Unknown activity request code " + requestCode);
+			case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
+				if (resultCode == RESULT_OK) {
+					Log.d(TIG.TAG, "Back from OI About");
+				}
+				break;
+			case ACTIVITY_REQUEST_OI_ABOUT_INSTALL:
+				if (resultCode == RESULT_CANCELED) {
+					Log.d(TIG.TAG, "Back from Android Market");
+					showAbout();
+				}
+				break;
+			default:
+				Log.w(TIG.TAG, "Unknown activity request code " + requestCode);
 		}
 	}
 
@@ -449,11 +456,11 @@ public class TIG extends Activity {
 		webViewClient.setOffset(xoffset, yoffset);
 		webViewClient.setTitle(settings.title);
 		webViewClient.setLastModified(lastModified);
-		
+
 		// TODO ?
-//		webview.stopLoading();
-//		webview.freeMemory();
-		
+		// webview.stopLoading();
+		// webview.freeMemory();
+
 		webview.loadUrl(settings.url);
 	}
 
@@ -526,7 +533,7 @@ public class TIG extends Activity {
 	}
 
 	public void refreshWebview(View v) {
-		showViewById(currentViewId);
+		refreshCurrentView();
 	}
 
 	public void quit(View v) {
