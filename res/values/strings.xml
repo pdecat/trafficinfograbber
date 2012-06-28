@@ -43,7 +43,7 @@
 	<!-- Miscellaneous -->
 	<string name="loading">Loading</string>
 	<string name="downloadingResources">Downloading resources</string>
-	<string name="pleaseWait">Please wait...</string>
+	<string name="pleaseWait">Please wait…</string>
 	<string name="newVersion">New version: please set your own preferences</string>
 
 	<!-- Preferences labels -->
@@ -57,14 +57,15 @@
 	<string name="SHOW_QUIT_BUTTON">Show Quit button</string>
 	<string name="FORCE_PORTRAIT_ORIENTATION">Force portrait orientation</string>
 	<string name="SHOW_ADS">Support this project\'s developer by showing Ads while loading</string>
-
+    <string name="USE_HD">Use HD views when available</string>
+    
 	<!-- Notifications -->
 	<string name="notificationLabel">Launch TIG</string>
-	<string name="notificationMessage">Shortcut to launch TIG...</string>
+	<string name="notificationMessage">Shortcut to launch TIG…</string>
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">A simple traffic information grabber</string>
-	<string name="about_copyright">Copyright © 2010-2012 Patrick Decat</string>
+	<string name="about_copyright">Copyright © 2010–2012 Patrick Decat</string>
 	<string name="about_website_label">TrafficInfoGrabber at Google Code</string>
 	<string name="about_website_url">http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber/</string>
 	<string name="about_email">pdecat%2Btig@gmail.com</string>

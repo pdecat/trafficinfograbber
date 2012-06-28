@@ -38,7 +38,7 @@
 	<!-- Divers -->
 	<string name="loading">Chargement</string>
 	<string name="downloadingResources">Chargement des ressources</string>
-	<string name="pleaseWait">Merci de patienter...</string>
+	<string name="pleaseWait">Merci de patienter…</string>
 	<string name="newVersion">Nouvelle version : veuillez définir vos propres préférences</string>
 
 	<!-- Labels des préférences -->
@@ -52,10 +52,11 @@
 	<string name="SHOW_QUIT_BUTTON">Afficher le bouton Quitter</string>
 	<string name="FORCE_PORTRAIT_ORIENTATION">Forcer l\'orientation en portrait</string>
 	<string name="SHOW_ADS">Supporter le développeur de ce projet en affichant des publicités pendant le chargement</string>
-
+    <string name="USE_HD">Utiliser les vues HD quand elles sont disponibles</string>
+    
 	<!-- Notifications -->
 	<string name="notificationLabel">Lancer TIG</string>
-	<string name="notificationMessage">Raccourci pour lancer TIG...</string>
+	<string name="notificationMessage">Raccourci pour lancer TIG…</string>
 
 	<!-- Chaines pour 'A propos' -->
 	<string name="about_comments">Un simple attrapeur d\'information trafic</string>
