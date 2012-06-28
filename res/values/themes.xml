@@ -17,7 +17,7 @@
 
 -->
 <resources>
-    <style name="MyTheme" parent="@android:style/Theme">
-        <!-- Any customizations for your app running on pre-3.0 devices here -->
-    </style>
+    <style name="MyTheme" parent="@android:style/Theme" />
+
+    <style name="MyThemeWithOverlaidActionBar" parent="@style/MyTheme" />
 </resources>

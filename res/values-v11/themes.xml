@@ -18,12 +18,12 @@
 -->
 <resources>
     <style name="MyTheme" parent="@android:style/Theme.Holo" />
-    
+
     <style name="MyThemeWithOverlaidActionBar" parent="@style/MyTheme">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
     </style>
-    
+
     <style name="MyActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
         <item name="android:background">@drawable/actionbar_bg</item>
     </style>
