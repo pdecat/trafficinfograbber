@@ -39,6 +39,9 @@
 			</intent-filter>
 		</activity>
 
+        <!-- AndroidAnnotations introduction have changed the main activity's name -->
+        <activity-alias android:name=".TIG" android:label="@string/app_name" android:targetActivity=".TIG_" android:exported="true" />
+    
 		<activity android:name=".preferences.PreferencesEditor" android:label="@string/preferencesEditor" android:launchMode="singleTask" />
 
 		<activity android:name=".preferences.ActivitySelector" android:label="@string/app_name" android:launchMode="singleTask" />
