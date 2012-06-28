@@ -45,6 +45,8 @@ public class PreferencesHelper {
 
 	public static final String SHOW_ADS = "SHOW_ADS";
 
+	public static final String USE_HD = "USE_HD";
+
 	public final Preference[] preferences = {
 			// Values must be before keys so they are loaded when the view is
 			// created
@@ -57,6 +59,7 @@ public class PreferencesHelper {
 			new Preference(SHOW_QUIT_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 			new Preference(FORCE_PORTRAIT_ORIENTATION, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 			new Preference(SHOW_ADS, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
+			new Preference(USE_HD, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
 	};
 
 	SharedPreferences sharedPreferences;

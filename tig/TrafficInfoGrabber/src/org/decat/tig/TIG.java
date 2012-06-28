@@ -134,7 +134,7 @@ public class TIG extends Activity {
 		getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
 
 		// Load preferences
-		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+		sharedPreferences = getPreferences(this);
 
 		// Retrieve screen density and aspect ratio
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -149,15 +149,7 @@ public class TIG extends Activity {
 		adView.loadAd(adRequest);
 
 		// Initialize webview settings
-		availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), "file:///android_asset/tig.html", 197, 81, 385, 298));
-		// availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html", 237, 108, 424, 316));
-		availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_fs.jsp.html", 361 + 34, 145 + 24, 690 + 34,
-				633 + 24));
-		// availableWebviews.put(R.id.liveTrafficHD, new WebviewSettings(getString(R.string.liveTrafficHD), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_fs.jsp.html", 361 + 34, 145 + 24, 690 + 34,
-		// 633 + 24));
-		availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html", 1, 10, 173, 276));
-		availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp", 0, 0, 595, 539));
-		availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
+		initializeWebviewSettings();
 
 		// Set default view then show it
 		showViewById(R.id.liveTraffic);
@@ -172,6 +164,25 @@ public class TIG extends Activity {
 			showPreferencesEditor();
 		} else {
 			Log.i(TAG, "Application version: " + appVersion);
+		}
+
+	}
+
+	private void initializeWebviewSettings() {
+		boolean useHD = sharedPreferences.getBoolean(PreferencesHelper.USE_HD, true);
+
+		if (availableWebviews.isEmpty()) {
+			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), "file:///android_asset/tig.html", 197, 81, 385, 298));
+			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html", 1, 10, 173, 276));
+			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp", 0, 0, 595, 539));
+			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
+		}
+
+		if (useHD) {
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_fs.jsp.html", 361 + 34, 145 + 24, 690 + 34,
+					633 + 24));
+		} else {
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html", 237, 108, 424, 316));
 		}
 
 	}
@@ -195,12 +206,11 @@ public class TIG extends Activity {
 	}
 
 	private String getInstalledAppVersion(Context context) {
-		return getPreferences(context).getString(PreferencesHelper.INSTALLED_VERSION, "FIRST_RUN");
+		return sharedPreferences.getString(PreferencesHelper.INSTALLED_VERSION, "FIRST_RUN");
 	}
 
 	private void setInstalledAppVersion(Context context, String appVersion) {
-		SharedPreferences preferences = getPreferences(context);
-		Editor edit = preferences.edit();
+		Editor edit = sharedPreferences.edit();
 		edit.putString(PreferencesHelper.INSTALLED_VERSION, appVersion);
 		edit.commit();
 	}
@@ -318,6 +328,9 @@ public class TIG extends Activity {
 	public void onResume() {
 		super.onResume();
 
+		// Refresh webview settings
+		initializeWebviewSettings();
+
 		// Update notification shortcut visibility
 		updateNotificationShortcutVisibility(this);
 
@@ -335,6 +348,9 @@ public class TIG extends Activity {
 
 		// Update Ads visibility
 		updateAdsVisibility(this);
+
+		// Refresh webview
+		refreshCurrentView();
 	}
 
 	@Override
