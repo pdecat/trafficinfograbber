@@ -42,6 +42,8 @@ public class PreferencesEditor extends Activity {
 	public static final String EXTRA_VALUE = "value";
 
 	protected static final int ACTIVITY_REQUEST_ACTIVITY_PICK = 0;
+	
+	public static final String ACTIVITY_PREFERENCES_EDITOR_RESET_DEFAULTS = "resetDefaults";
 
 	private PreferencesHelper preferencesHelper;
 	private SharedPreferences sharedPreferences;
@@ -57,6 +59,10 @@ public class PreferencesEditor extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		boolean resetDefaults = getIntent().getBooleanExtra(ACTIVITY_PREFERENCES_EDITOR_RESET_DEFAULTS, false);
+		Log.d(TIG.TAG, ACTIVITY_PREFERENCES_EDITOR_RESET_DEFAULTS + " extra was " + resetDefaults);
+		
 		sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
 		preferencesHelper = new PreferencesHelper(sharedPreferences);
 
@@ -110,6 +116,11 @@ public class PreferencesEditor extends Activity {
 					view = checkBox;
 					checkBox.setText((CharSequence) getStringById(preference.key));
 					value = sharedPreferences.getBoolean(key, true);
+					
+					if (resetDefaults && PreferencesHelper.SHOW_ADS.equals(key)) {
+					    value = true;
+					}
+					
 					checkBox.setChecked((Boolean) value);
 					ll.addView(checkBox);
 					Log.d(TIG.TAG, "Created checkbox view for preference " + key);

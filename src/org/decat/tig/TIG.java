@@ -64,7 +64,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
 public class TIG extends Activity {
-	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
+    private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
 
@@ -161,7 +161,7 @@ public class TIG extends Activity {
 			Log.i(TAG, "New application version: " + appVersion + " (previous: " + installedAppVersion + ")");
 			setInstalledAppVersion(this, appVersion);
 			showToast(getString(R.string.newVersion));
-			showPreferencesEditor();
+			showPreferencesEditor(true);
 		} else {
 			Log.i(TAG, "Application version: " + appVersion);
 		}
@@ -392,7 +392,7 @@ public class TIG extends Activity {
 			case R.id.infotraficWebsite:
 				launchWebsite(URL_INFOTRAFIC);
 			case R.id.preferences:
-				showPreferencesEditor();
+				showPreferencesEditor(false);
 				return true;
 			case R.id.about:
 				showAbout();
@@ -415,8 +415,9 @@ public class TIG extends Activity {
 		showToast(this, message);
 	}
 
-	private void showPreferencesEditor() {
+	private void showPreferencesEditor(boolean resetDefaults) {
 		Intent intent = new Intent(this, PreferencesEditor.class);
+		intent.putExtra(PreferencesEditor.ACTIVITY_PREFERENCES_EDITOR_RESET_DEFAULTS, resetDefaults);
 		startActivityForResult(intent, ACTIVITY_REQUEST_PREFERENCES_EDITOR);
 	}
 
