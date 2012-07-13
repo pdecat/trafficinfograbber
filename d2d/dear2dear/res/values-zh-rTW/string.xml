@@ -28,12 +28,12 @@
 
 	<!-- Notifications -->
 	<string name="notificationLabel">啟動 dear2dear</string>
-	<string name="notificationMessage">啟動 dear2dear 的捷徑...</string>
+	<string name="notificationMessage">啟動 dear2dear 的捷徑…</string>
 
 	<!-- Miscellaneous messages -->
 	<string name="contactInformationInvalidText">聯繫人 %1$s 的訊息是無效的！(聯繫人的網址=%2$s，儲存名字=%3$s，目前名字=%4$s)</string>
-	<string name="pleaseProceedWithConfigurationFirstText">請在繼續使用之前先進行設定...</string>
-	<string name="requiresOIAboutAndSearchingMarketText">需要 \'OI About\' 來顯示關於對話方塊。正在Android市場中搜索它...</string>
+	<string name="pleaseProceedWithConfigurationFirstText">請在繼續使用之前先進行設定…</string>
+	<string name="requiresOIAboutAndSearchingMarketText">需要 \'OI About\' 來顯示關於對話方塊。正在Android市場中搜索它…</string>
 	<string name="failedToStartActivityText">無法為 %s 開始工作！</string>
 
 	<!-- Strings for steps -->
@@ -43,7 +43,6 @@
 	<string name="sendMessageToContactByMediaText">傳送 \"%1$s\" 給 %2$s，使用 %3$s ？ (%4$s)</string>
 	<string name="sendingMessageToContactText">正在傳送 \"%1$s\" 給 %2$s ，使用的是 %3$s (%4$s)</string>
 	<string name="sms">短信</string>
-	<string name="email">Email</string>
 	<string name="sendText">傳送</string>
 	<string name="restartText">重新開始</string>
 
@@ -68,6 +67,6 @@
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">一個簡單的通知列程式</string>
-	<string name="about_copyright">版權所有 c 2010 Patrick Decat</string>
+	<string name="about_copyright">版權所有 © 2010–2012 Patrick Decat</string>
 	<string name="about_website_label">dear2dear在Google Code的首頁</string>
 </resources>

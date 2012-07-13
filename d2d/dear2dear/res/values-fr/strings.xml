@@ -79,6 +79,6 @@
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">Un simple notificateur des personnes qui vous sont chères</string>
-	<string name="about_copyright">Tous droits réservés © 2011 Patrick Decat</string>
+	<string name="about_copyright">Tous droits réservés © 2010-2012 Patrick Decat</string>
 	<string name="about_website_label">dear2dear chez Google Code</string>
 </resources>

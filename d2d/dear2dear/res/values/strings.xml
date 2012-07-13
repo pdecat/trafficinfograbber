@@ -30,12 +30,12 @@
 
 	<!-- Notifications -->
 	<string name="notificationLabel">Launch dear2dear</string>
-	<string name="notificationMessage">Shortcut to launch dear2dear...</string>
+	<string name="notificationMessage">Shortcut to launch dear2dear…</string>
 
 	<!-- Miscellaneous messages -->
 	<string name="contactInformationInvalidText">Contact information for %1$s is invalid! (contactUri=%2$s, cachedName=%3$s, currentName=%4$s)</string>
-	<string name="pleaseProceedWithConfigurationFirstText">Please proceed with configuration first...</string>
-	<string name="requiresOIAboutAndSearchingMarketText">Requires \'OI About\' to show about dialog. Searching Android Market for it...</string>
+	<string name="pleaseProceedWithConfigurationFirstText">Please proceed with configuration first…</string>
+	<string name="requiresOIAboutAndSearchingMarketText">Requires \'OI About\' to show about dialog. Searching Android Market for it…</string>
 	<string name="failedToStartActivityText">Failed to start activity for intent %s!</string>
 
 	<!-- Strings for steps -->
@@ -45,9 +45,8 @@
 	<string name="sendMessageToContactByMediaText">Send \"%1$s\" to %2$s by %3$s ? (%4$s)</string>
 	<string name="sendingMessageToContactText">Sending \"%1$s\" to %2$s by %3$s (%4$s)</string>
 	<string name="sms">SMS</string>
-	<string name="email">Email</string>
 	<string name="sendText">Send</string>
-	<string name="sendingMessageText">Sending message...</string>
+	<string name="sendingMessageText">Sending message…</string>
 	<string name="smsSuccessfullySentText">SMS successfully sent</string>
 	<string name="failedToSendSmsText">Failed to send SMS (%1$s)</string>
 	<string name="failedToSendSmsErrorUnknownText">Unknown failure</string>
@@ -82,7 +81,7 @@
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">A simple dear notification application</string>
-	<string name="about_copyright">Copyright © 2010 Patrick Decat</string>
+	<string name="about_copyright">Copyright © 2010–2012 Patrick Decat</string>
 	<string name="about_website_label">dear2dear at Google Code</string>
 	<string name="about_website_url">http://dear2dear.googlecode.com</string>
 	<string name="about_email">pdecat%2Bd2d@gmail.com</string>

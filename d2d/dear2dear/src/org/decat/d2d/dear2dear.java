@@ -73,8 +73,6 @@ public class dear2dear extends Activity {
 
 	protected String messageStepChoice;
 
-	protected String mediaStepChoice;
-
 	private String destinationChoiceDetails;
 
 	private Button restartButton;
@@ -160,18 +158,18 @@ public class dear2dear extends Activity {
 				} else {
 					String message = getString(R.string.failedToSendSmsErrorUnknownText);
 					switch (resultCode) {
-					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-						message = getString(R.string.failedToSendSmsErrorGenericText);
-						break;
-					case SmsManager.RESULT_ERROR_NO_SERVICE:
-						message = getString(R.string.failedToSendSmsErrorNoServiceText);
-						break;
-					case SmsManager.RESULT_ERROR_NULL_PDU:
-						message = getString(R.string.failedToSendSmsErrorNullPduText);
-						break;
-					case SmsManager.RESULT_ERROR_RADIO_OFF:
-						message = getString(R.string.failedToSendSmsErrorRadioOffText);
-						break;
+						case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+							message = getString(R.string.failedToSendSmsErrorGenericText);
+							break;
+						case SmsManager.RESULT_ERROR_NO_SERVICE:
+							message = getString(R.string.failedToSendSmsErrorNoServiceText);
+							break;
+						case SmsManager.RESULT_ERROR_NULL_PDU:
+							message = getString(R.string.failedToSendSmsErrorNullPduText);
+							break;
+						case SmsManager.RESULT_ERROR_RADIO_OFF:
+							message = getString(R.string.failedToSendSmsErrorRadioOffText);
+							break;
 					}
 					showToast(getString(R.string.failedToSendSmsText, message));
 					Log.e(TAG, "Failed to send SMS (message=" + message + ", resultCode=" + resultCode + ")");
@@ -187,18 +185,18 @@ public class dear2dear extends Activity {
 			public void onReceive(Context context, Intent intent) {
 				int resultCode = getResultCode();
 				switch (resultCode) {
-				case Activity.RESULT_OK:
-					showToast(getString(R.string.smsSuccessfullyDeliveredText));
+					case Activity.RESULT_OK:
+						showToast(getString(R.string.smsSuccessfullyDeliveredText));
 
-					Log.d(TAG, "Successfully delivered an SMS");
-					break;
-				case Activity.RESULT_CANCELED:
-					showToast(getString(R.string.failedToDeliverSmsText));
-					Log.e(TAG, "Failed to deliver SMS (resultCode=" + resultCode + ")");
+						Log.d(TAG, "Successfully delivered an SMS");
+						break;
+					case Activity.RESULT_CANCELED:
+						showToast(getString(R.string.failedToDeliverSmsText));
+						Log.e(TAG, "Failed to deliver SMS (resultCode=" + resultCode + ")");
 
-					// FIXME: May already have been done by sentIntent?
-					showRetryButton();
-					break;
+						// FIXME: May already have been done by sentIntent?
+						showRetryButton();
+						break;
 				}
 			}
 		}, new IntentFilter(INTENT_SMS_DELIVERED));
@@ -296,12 +294,12 @@ public class dear2dear extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.preferences:
-			showPreferencesEditor();
-			return true;
-		case R.id.about:
-			showAbout();
-			return true;
+			case R.id.preferences:
+				showPreferencesEditor();
+				return true;
+			case R.id.about:
+				showAbout();
+				return true;
 		}
 		return false;
 	}
@@ -336,21 +334,21 @@ public class dear2dear extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
-		case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
-			Log.d(dear2dear.TAG, "Back from OI About");
-			break;
-		case ACTIVITY_REQUEST_OI_ABOUT_INSTALL:
-			if (resultCode == RESULT_CANCELED) {
-				Log.d(dear2dear.TAG, "Back from Android Market");
-				showAbout();
-			}
-			break;
-		case ACTIVITY_REQUEST_PREFERENCES_EDITOR:
-			Log.d(dear2dear.TAG, "Back from preferences editor");
-			break;
+			case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
+				Log.d(dear2dear.TAG, "Back from OI About");
+				break;
+			case ACTIVITY_REQUEST_OI_ABOUT_INSTALL:
+				if (resultCode == RESULT_CANCELED) {
+					Log.d(dear2dear.TAG, "Back from Android Market");
+					showAbout();
+				}
+				break;
+			case ACTIVITY_REQUEST_PREFERENCES_EDITOR:
+				Log.d(dear2dear.TAG, "Back from preferences editor");
+				break;
 
-		default:
-			Log.w(dear2dear.TAG, "Unknown activity request code " + requestCode);
+			default:
+				Log.w(dear2dear.TAG, "Unknown activity request code " + requestCode);
 		}
 	}
 
@@ -406,7 +404,7 @@ public class dear2dear extends Activity {
 	}
 
 	private void messageStepOption(final Button btn, final String optionLabel, final String optionValue) {
-		if (optionLabel == null || optionValue == null) {
+		if (optionLabel == null || optionValue == null || "".equals(optionValue)) {
 			btn.setVisibility(View.INVISIBLE);
 		} else {
 			btn.setVisibility(View.VISIBLE);
@@ -414,45 +412,21 @@ public class dear2dear extends Activity {
 			btn.setOnClickListener(new Button.OnClickListener() {
 				public void onClick(View v) {
 					messageStepChoice = optionValue;
-					String message = getString(R.string.sendMessageToContactHowText, messageStepChoice, destinationStepChoiceLabel);
-					Log.d(dear2dear.TAG, message);
+					destinationChoiceDetails = getPhoneNumberFromUri(destinationStepChoiceValue);
+					StringBuffer message = new StringBuffer();
+					message.append(getString(R.string.sendMessageToContactByMediaText, messageStepChoice, destinationStepChoiceLabel, getString(R.string.sms), destinationChoiceDetails));
+					Log.d(dear2dear.TAG, message.toString());
 					tv.setText(message);
-					mediaStepOption(buttons[0], getString(R.string.sms));
-					mediaStepOption(buttons[1], getString(R.string.email));
-					Log.d(dear2dear.TAG, "Added media steps options");
+					lastStepOption(buttons[0], getString(R.string.sendText));
+					Log.d(dear2dear.TAG, "Added send step option");
+					buttons[1].setVisibility(View.INVISIBLE);
 					buttons[2].setVisibility(View.INVISIBLE);
 				}
 			});
 		}
 	}
 
-	private void mediaStepOption(final Button btn, final String option) {
-		btn.setText(option);
-		btn.setVisibility(View.VISIBLE);
-		btn.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View v) {
-				mediaStepChoice = option;
-				destinationChoiceDetails = null;
-				if (getString(R.string.sms).equals(mediaStepChoice)) {
-					destinationChoiceDetails = getPhoneNumberFromUri(destinationStepChoiceValue);
-				} else if (getString(R.string.email).equals(mediaStepChoice)) {
-					showToast("TODO: Implement email");
-					destinationChoiceDetails = "test@example.com";
-					// TODO: handle email
-					Log.d(dear2dear.TAG, "TODO: Implement email");
-				}
-				StringBuffer message = new StringBuffer();
-				message.append(getString(R.string.sendMessageToContactByMediaText, messageStepChoice, destinationStepChoiceLabel, mediaStepChoice, destinationChoiceDetails));
-				Log.d(dear2dear.TAG, message.toString());
-				tv.setText(message);
-				fourthStepOption(buttons[0], getString(R.string.sendText));
-				Log.d(dear2dear.TAG, "Added send step option");
-				buttons[1].setVisibility(View.INVISIBLE);
-			}
-		});
-	}
-
-	private void fourthStepOption(final Button btn, String option) {
+	private void lastStepOption(final Button btn, String option) {
 		btn.setText(option);
 		btn.setVisibility(View.VISIBLE);
 		btn.setOnClickListener(new Button.OnClickListener() {
@@ -465,19 +439,12 @@ public class dear2dear extends Activity {
 	}
 
 	private void sendMessage() {
-		String message = getString(R.string.sendingMessageToContactText, messageStepChoice, destinationStepChoiceLabel, mediaStepChoice, destinationChoiceDetails);
+		String message = getString(R.string.sendingMessageToContactText, messageStepChoice, destinationStepChoiceLabel, getString(R.string.sms), destinationChoiceDetails);
 
 		sendingMessageProgressDialog.setMessage(message);
 		sendingMessageProgressDialog.show();
 		Log.d(TAG, message);
-
-		if (getString(R.string.sms).equals(mediaStepChoice)) {
-			sendSms();
-		} else if (getString(R.string.email).equals(mediaStepChoice)) {
-			showToast("TODO: Implement email");
-			// TODO: handle email
-			Log.d(dear2dear.TAG, "TODO: Implement email");
-		}
+		sendSms();
 	}
 
 	private void showRetryButton() {
