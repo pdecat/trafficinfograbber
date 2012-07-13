@@ -29,20 +29,11 @@
     <packaging>apk</packaging>
     <name>QuickSleep</name>
 
-    <properties>
-        <environment>development</environment>
-
-        <!-- set a custom format that is guaranteed to grow as a Long number, so it can be used as version code
-        in the AndroidManifest.xml -->
-        <maven.build.timestamp.format>yyMMddHHmm</maven.build.timestamp.format>
-
-        <!-- this trick of loading build timestamp into other property is necessary due to
-        http://jira.codehaus.org/browse/MRESOURCES-99 and also more readable -->
-        <versionCode>${maven.build.timestamp}</versionCode>
-
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java-version>1.6</java-version>
-    </properties>
+    <parent>
+        <groupId>org.decat</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.1</version>
+    </parent>
 
     <scm>
         <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/qs/QuickSleep</connection>
@@ -55,48 +46,17 @@
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <version>2.2.1</version>
-            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.androidannotations</groupId>
+            <artifactId>androidannotations</artifactId>
         </dependency>
     </dependencies>
 
     <build>
         <finalName>${project.artifactId}</finalName>
         <sourceDirectory>src</sourceDirectory>
-
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.5</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>xml-maven-plugin</artifactId>
-                    <version>1.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                    <artifactId>android-maven-plugin</artifactId>
-                    <version>3.0.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-eclipse-plugin</artifactId>
-                    <version>2.6</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
 
         <resources>
             <!-- a pair definition for resource filtering of xml files only (not binary files since they get mangled -->
@@ -122,106 +82,26 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>initialize</phase>
-                        <goals>
-                              <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/extra-resources</outputDirectory>
-                            <resources>          
-                                <resource>
-                                    <directory>${project.basedir}/templates</directory>
-                                    <filtering>true</filtering>
-                                    <targetPath>${project.build.directory}/filtered-manifest</targetPath>
-                                    <includes>
-                                        <include>AndroidManifest.xmlt</include>
-                                    </includes>
-                                </resource>
-                            </resources>              
-                        </configuration>            
-                    </execution>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                              <goal>resources</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
              
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>xml-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>transform</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <transformationSets>
-                        <transformationSet>
-                            <dir>${project.build.directory}/filtered-manifest</dir>
-                            <outputDir>${project.basedir}</outputDir>
-                            <stylesheet>${project.basedir}/copy.xslt</stylesheet>
-                            <includes>
-                                <include>AndroidManifest.xmlt</include>
-                            </includes>
-                            <fileMappers>
-                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-                                    <targetExtension>.xml</targetExtension>
-                                </fileMapper>
-                            </fileMappers>
-                        </transformationSet>
-                    </transformationSets>
-                </configuration>
             </plugin>
 
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <sdk>
-                        <!-- platform or api level (api level 8 = platform 2.2)-->
-                        <platform>8</platform>
-                    </sdk>
-                    <deleteConflictingFiles>true</deleteConflictingFiles>
-                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
-                    <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
-                    <resourceDirectory>${project.build.directory}/filtered-res</resourceDirectory>
-                </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java-version}</source>
-                    <target>${java-version}</target>
-                </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <goals>install</goals>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -250,8 +130,7 @@
 
         <profile>
             <id>release</id>
-            <!-- via this activation the profile is automatically used when the release is done with the maven release
-plugin -->
+            <!-- via this activation the profile is automatically used when the release is done with the maven release plugin -->
             <activation>
                 <property>
                     <name>performRelease</name>
@@ -263,83 +142,15 @@ plugin -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jarsigner-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>signing</id>
-                                <goals>
-                                    <goal>sign</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <inherited>true</inherited>
-                                <configuration>
-                                    <removeExistingSignatures>true</removeExistingSignatures>
-                                    <archiveDirectory />
-                                    <includes>
-                                        <include>${project.build.directory}/${project.artifactId}.apk</include>
-                                    </includes>
-                                    <keystore>${sign.keystore}</keystore>
-                                    <alias>${sign.alias}</alias>
-                                    <storepass>${sign.storepass}</storepass>
-                                    <keypass>${sign.keypass}</keypass>
-                                    <verbose>true</verbose>
-                                    <arguments>
-                                        <argument>-sigalg</argument>
-                                        <argument>MD5withRSA</argument>
-                                        <argument>-digestalg</argument>
-                                        <argument>SHA1</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
                     </plugin>
                     <!-- the signed apk then needs to be zipaligned -->
                     <plugin>
                         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                         <artifactId>android-maven-plugin</artifactId>
-                        <inherited>true</inherited>
-                        <configuration>
-                            <sign>
-                                <debug>false</debug>
-                            </sign>
-                            <zipalign>
-                                <verbose>true</verbose>
-                                <inputApk>${project.build.directory}/${project.artifactId}.apk</inputApk>
-                                <outputApk>${project.build.directory}/${project.artifactId}-signed-aligned.apk
-                                </outputApk>
-                            </zipalign>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>alignApk</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>zipalign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>build-helper-maven-plugin</artifactId>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.build.directory}/${project.artifactId}-signed-aligned.apk</file>
-                                    <type>apk</type>
-                                    <classifier>signed-aligned</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-signed-aligned</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>attach-artifact</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                 </plugins>
             </build>
