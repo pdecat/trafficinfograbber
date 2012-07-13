@@ -66,7 +66,7 @@ public class DockEventReceiver extends BroadcastReceiver {
 			} else {
 				actionMessage = "Exited Car Mode";
 			}
-			logMessage(context, "VolumeDock: " + actionMessage, messageBuilder);
+			logMessage("VolumeDock: " + actionMessage, messageBuilder);
 
 			// Get shared preferences
 			SharedPreferences sharedPreferences = context.getSharedPreferences(DockEventReceiver.class.getSimpleName(), Context.MODE_PRIVATE);
@@ -85,7 +85,7 @@ public class DockEventReceiver extends BroadcastReceiver {
 				// Alter ringer mode
 				int newRingerMode = UiModeManager.ACTION_ENTER_DESK_MODE.equals(intentAction) ? AudioManager.RINGER_MODE_VIBRATE : AudioManager.RINGER_MODE_NORMAL;
 				audioManager.setRingerMode(newRingerMode);
-				logMessage(context, "\nRinger mode changed from " + oldRingerMode + " to " + newRingerMode + ".", messageBuilder);
+				logMessage("\nRinger mode changed from " + oldRingerMode + " to " + newRingerMode + ".", messageBuilder);
 
 				// Alter streams volume levels
 				if (UiModeManager.ACTION_ENTER_CAR_MODE.equals(intentAction)) {
@@ -103,7 +103,7 @@ public class DockEventReceiver extends BroadcastReceiver {
 
 						message.append("\t" + STREAMS_NAMES[i] + " changed from " + oldStreamVolume + " to " + newStreamVolume + ".\n");
 					}
-					logMessage(context, "\nStreams volume levels:\n" + message.toString(), messageBuilder);
+					logMessage("\nStreams volume levels:\n" + message.toString(), messageBuilder);
 				}
 
 				// Commit preferences
@@ -125,7 +125,7 @@ public class DockEventReceiver extends BroadcastReceiver {
 
 						message.append("\t" + STREAMS_NAMES[i] + " restored from " + oldStreamVolume + " to " + newStreamVolume + ".\n");
 					}
-					logMessage(context, "\nStreams volume levels:\n" + message.toString(), messageBuilder);
+					logMessage("\nStreams volume levels:\n" + message.toString(), messageBuilder);
 				}
 
 				// Check current ringer mode
@@ -134,14 +134,14 @@ public class DockEventReceiver extends BroadcastReceiver {
 				// Restore previous ringer mode or normal mode if unknown
 				int newRingerMode = sharedPreferences.getInt(PREVIOUS_RINGER_MODE, AudioManager.RINGER_MODE_NORMAL);
 				audioManager.setRingerMode(newRingerMode);
-				logMessage(context, "\nRinger restored mode from " + oldRingerMode + " to " + newRingerMode + ".", messageBuilder);
+				logMessage("\nRinger restored mode from " + oldRingerMode + " to " + newRingerMode + ".", messageBuilder);
 			}
 
 			VolumeDock.showToast(context, messageBuilder.toString());
 		}
 	}
 
-	private void logMessage(Context context, String message, StringBuilder messageBuilder) {
+	private void logMessage(String message, StringBuilder messageBuilder) {
 		Log.i(VolumeDock.TAG, message);
 		if (messageBuilder.length() > 0) {
 			messageBuilder.append("\n");
