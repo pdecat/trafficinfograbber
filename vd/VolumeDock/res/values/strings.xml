@@ -23,7 +23,7 @@
 
 	<!-- Strings for About dialog -->
 	<string name="about_comments">A simple ringtone mode switcher</string>
-	<string name="about_copyright">Copyright © 2011 Patrick Decat</string>
+	<string name="about_copyright">Copyright © 2011-2012 Patrick Decat</string>
 	<string name="about_website_label">VolumeDock at Google Code</string>
 	<string name="about_website_url">http://dear2dear.googlecode.com/svn/trunk/vd/VolumeDock/</string>
 	<string name="about_email">pdecat%2Bvd@gmail.com</string>
