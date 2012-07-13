@@ -14,14 +14,14 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with VolumeDock.  If not, see <http://www.gnu.org/licenses/>.
+    along with VolumeDock.  If not, see <http://www.gnu.org/licenses />.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat.vd</groupId>
     <artifactId>vd</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5</version>
     <packaging>apk</packaging>
     <name>VolumeDock</name>
 
@@ -32,9 +32,9 @@
     </parent>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/vd/VolumeDock</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/vd/VolumeDock</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fvd%2FVolumeDock</url>
+        <connection>scm:svn:http://dear2dear.googlecode.com/svn/tags/vd-0.0.5</connection>
+        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/tags/vd-0.0.5</developerConnection>
+        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fvd%2FVolumeDock/tags/vd-0.0.5</url>
     </scm>
 
     <dependencies>
