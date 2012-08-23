@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    Copyright (C) 2010-2012 Patrick Decat
+
+    QuickWifiSwitcher is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    QuickWifiSwitcher is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with QuickWifiSwitcher.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<resources>
+    <string name="app_name">QuickWifiSwitcher</string>
+    <string name="app_version">${project.version}</string>
+
+    <!-- Notifications -->
+    <string name="notificationLabel">QuickWifiSwitcher</string>
+    <string name="notificationMessage">Use QuickWifiSwitcher to switch Wifi networks…</string>
+
+    <!-- Strings for About dialog -->
+    <string name="about_comments">A simple Wifi switcher</string>
+    <string name="about_copyright">Copyright © 2010–2012 Patrick Decat</string>
+    <string name="about_website_label">QuickWifiSwitcher at Google Code</string>
+    <string name="about_website_url">http://dear2dear.googlecode.com/svn/trunk/qws/QuickWifiSwitcher/</string>
+    <string name="about_email">pdecat@gmail.com</string>
+</resources>
