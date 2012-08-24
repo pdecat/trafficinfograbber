@@ -18,24 +18,41 @@ package org.decat.qws;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 public class QuickWifiSwitcher extends Activity {
-	private static final String TAG = "QWS";
+	protected static final String TAG = "QWS";
+	
+	protected static final String ORG_DECAT_QWS_INTENT_ACTION_QUIT = "org.decat.qws.intent.action.QUIT";
+    protected static final String ORG_DECAT_QWS_INTENT_ACTION_SHOW_ABOUT = "org.decat.qws.intent.action.SHOW_ABOUT";
 
 	@Override
-	public void onResume() {
-		super.onResume();
+	protected void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    
+        Log.i(QuickWifiSwitcher.TAG, "onCreate : Starting the wifi state monitoring service...");
 
-        Log.i(QuickWifiSwitcher.TAG, "Starting the wifi state monitoring service...");
-
-		// Start the wifi state monitoring service 
-		Intent intent = new Intent(this, WifiStateMonitoringService.class);
-		startService(intent);
-
-        Log.i(QuickWifiSwitcher.TAG, "Wifi state monitoring service started, finishing...");
-
-		// Finish activity
-		finish();
+        // Start the wifi state monitoring service 
+        Intent intent = new Intent(this, WifiStateMonitoringService.class);
+        startService(intent);
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+	    String action = intent.getAction();
+	    Uri data = intent.getData();
+	    
+        Log.i(QuickWifiSwitcher.TAG, "onNewIntent : received action: " + action + " with data: " + data);
+	    
+	    if (Intent.ACTION_MAIN.equals(action)) {
+	        Log.i(QuickWifiSwitcher.TAG, "onNewIntent : Nothing to do...");
+	    } else if (ORG_DECAT_QWS_INTENT_ACTION_SHOW_ABOUT.equals(action)) {
+            Log.i(QuickWifiSwitcher.TAG, "onNewIntent : *TODO* show about");
+	    }
+	    
+	    // No UI so finish
+	    Log.i(QuickWifiSwitcher.TAG, "onNewIntent : No UI, finishing...");
 	}
 }

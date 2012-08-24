@@ -20,44 +20,70 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+//import android.widget.RemoteViews;
 
 public class WifiStateMonitoringService extends IntentService {
+    private static final int NOTIFICATION_ID = 0;
 
-    public WifiStateMonitoringService(String name) {
+    protected static final String ORG_DECAT_QWS_INTENT_ACTION_UPDATE_SERVICE = "org.decat.qws.intent.action.UPDATE_SERVICE";
+
+    public WifiStateMonitoringService() {
         super("WifiStateMonitoringService");
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        
+        Log.i(QuickWifiSwitcher.TAG, "Make the wifi state monitoring service foreground...");
+        
+        Intent mainIntent = new Intent(this, QuickWifiSwitcher.class);
+        mainIntent.setAction("android.intent.action.MAIN");
+        mainIntent.addCategory("android.intent.category.LAUNCHER");
+        PendingIntent mainPendingIntent = PendingIntent.getActivity(this, 0, mainIntent, 0);
+        
+        Intent aboutIntent = new Intent(this, QuickWifiSwitcher.class);
+        aboutIntent.setAction(QuickWifiSwitcher.ORG_DECAT_QWS_INTENT_ACTION_SHOW_ABOUT);
+        aboutIntent.addCategory("android.intent.category.LAUNCHER");
+        PendingIntent aboutPendingIntent = PendingIntent.getActivity(this, 0, aboutIntent, 0);
+
+        Intent quitIntent = new Intent(this, QuickWifiSwitcher.class);
+        quitIntent.setAction(QuickWifiSwitcher.ORG_DECAT_QWS_INTENT_ACTION_QUIT);
+        quitIntent.addCategory("android.intent.category.LAUNCHER");
+        PendingIntent quitPendingIntent = PendingIntent.getActivity(this, 0, quitIntent, 0);
+
+//        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification);
+//        contentView.setImageViewResource(R.id.image, R.drawable.icon);
+//        contentView.setTextViewText(R.id.title, getString(R.string.app_name) + " " + getString(R.string.app_version));
+//        contentView.setTextViewText(R.id.text, getString(R.string.notificationLabel));
+
+        Notification notification = new Notification.Builder(this)
+        .setContentIntent(mainPendingIntent)
+//        .setContent(contentView)
+        .setContentTitle(getString(R.string.app_name) + " " + getString(R.string.app_version))
+        .setContentText(getString(R.string.notificationLabel))
+        .setSmallIcon(R.drawable.icon)
+        .addAction(android.R.drawable.ic_menu_info_details, getString(R.string.about), aboutPendingIntent)
+        .addAction(android.R.drawable.ic_menu_close_clear_cancel, getString(R.string.quit), quitPendingIntent)
+        .setTicker(getString(R.string.notificationMessage))
+        .build();
+        
+//        startForeground(NOTIFICATION_ID, notification);
+        NotificationManager nm = (NotificationManager ) getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(NOTIFICATION_ID, notification);
+    }
+    
+    @Override
     protected void onHandleIntent(Intent intent) {
-        // Normally we would do some work here, like download a file.
-        // For our sample, we just sleep for 5 seconds.
-        long endTime = System.currentTimeMillis() + 5*1000;
-        while (System.currentTimeMillis() < endTime) {
-            synchronized (this) {
-                try {
-                    wait(endTime - System.currentTimeMillis());
-                } catch (Exception e) {
-                }
-            }
+        String action = intent.getAction();
+        Log.i(QuickWifiSwitcher.TAG, "onHandleIntent : received action: " + action);
+
+        if (ORG_DECAT_QWS_INTENT_ACTION_UPDATE_SERVICE.equals(action)) {
+            // Extract status and update notification
+            Log.i(QuickWifiSwitcher.TAG, "onHandleIntent : *TODO* extract status and update notification");
         }
     }
-
-    private static void updateNotification(Context context) {
-        NotificationManager notificationManager =
-                        (NotificationManager ) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification =
-                        new Notification(R.drawable.icon, context.getString(R.string.notificationMessage),
-                                        System.currentTimeMillis());
-        Intent intent = new Intent(context, QuickWifiSwitcher.class);
-        intent.setAction("android.intent.action.MAIN");
-        intent.addCategory("android.intent.category.LAUNCHER");
-        notification.setLatestEventInfo(context,
-                        context.getString(R.string.app_name) + " " + context.getString(R.string.app_version),
-                        context.getString(R.string.notificationLabel),
-                        PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-        notification.flags |= Notification.FLAG_ONGOING_EVENT;
-        notificationManager.notify(0, notification);
-    }
+    
 }

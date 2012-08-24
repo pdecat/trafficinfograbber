@@ -30,16 +30,21 @@
 
         <activity
             android:label="@string/app_name"
-            android:name=".QuickWifiSwitcher" >
+            android:name=".QuickWifiSwitcher" android:launchMode="singleTop">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         
         <service android:name=".WifiStateMonitoringService"></service>
-    </application>
+        
+        <receiver android:name=".WifiStateChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+</application>
 
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
