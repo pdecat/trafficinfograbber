@@ -34,17 +34,51 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EBean
 public class TIGWebViewClient extends WebViewClient {
-	@RootContext
+	private final class HideAdsJob implements Runnable {
+        private final WebView view;
+        private long loadCount;
+
+        public HideAdsJob(WebView view, long loadCount) {
+            this.view = view;
+            this.loadCount = loadCount;
+        }
+
+        public void run() {
+        	try {
+        		Thread.sleep(4000);
+        	} catch (InterruptedException e) {
+        		e.printStackTrace();
+        	}
+        	
+        	// Hide ads only if no other loading has been triggered since this job was instantiated 
+            if (loadCount == TIGWebViewClient.this.loadCount) {
+                view.post(new Runnable() {
+                    public void run() {
+                        setAdsVisibility(false);
+                    }
+                });
+            }
+        }
+    }
+
+    @RootContext
 	protected Activity activity;
 
+    @ViewById
+    protected AdView adview;
+    
+    // Fields to manage the application title
+    private String lastModified;
+    private String title;
+    
+    // Fields to manage zoom and scrolling display
 	private int initialScale;
 	private int xScroll;
 	private int yScroll;
-	private String lastModified;
-	private String title;
-
-	@ViewById
-	protected AdView adview;
+	
+    // Fields to manage ads display
+	private long loadCount = 0;
+	private Runnable hideAdsJob;
 
 	@Override
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -53,8 +87,11 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
+	    // Update title
 		setTitle(view, activity.getString(R.string.loading) + " " + title + "...");
-		setScaleAndScroll(view);
+		
+        // Set the scale and scroll once
+        setScaleAndScroll(view);
 
 		// Show the Ads banner if enabled
 		boolean showAds = TIG.getBooleanPreferenceValue(activity, PreferencesHelper.SHOW_ADS);
@@ -65,10 +102,15 @@ public class TIGWebViewClient extends WebViewClient {
 				}
 			});
 		}
+		
+		// Increment loadCount and instantiate future job to hide ads
+		loadCount++;
+        hideAdsJob = new HideAdsJob(view, loadCount);
 	}
 
 	@Override
 	public void onPageFinished(final WebView view, String url) {
+        // Update title
 		String formattedTitle = title;
 		if (lastModified != null) {
 			formattedTitle += " - " + lastModified;
@@ -78,7 +120,7 @@ public class TIGWebViewClient extends WebViewClient {
 		// Set the scale and scroll once
 		setScaleAndScroll(view);
 
-		// Set the scale and scroll again after some time because
+		// Schedule another zooming again after some time because
 		// onPageFinished is called only for main frame.
 		// When onPageFinished() is called, the picture rendering may not be
 		// done yet.
@@ -97,21 +139,8 @@ public class TIGWebViewClient extends WebViewClient {
 			}
 		}).start();
 
-		// Hide the Ads banner after some time
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					Thread.sleep(4000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				view.post(new Runnable() {
-					public void run() {
-						setAdsVisibility(false);
-					}
-				});
-			}
-		}).start();
+		// Schedule ads hiding
+		new Thread(hideAdsJob).start();
 
 		super.onPageFinished(view, url);
 	}
