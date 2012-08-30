@@ -17,5 +17,6 @@
 
 -->
 <resources>
+    <dimen name="html_body_padding_top">45px</dimen>
     <dimen name="power_button_padding_top">56dp</dimen>
 </resources>

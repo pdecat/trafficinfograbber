@@ -481,10 +481,8 @@ public class TIG extends Activity {
 		webViewClient.setTitle(settings.title);
 		webViewClient.setLastModified(lastModified);
 
-		// TODO ?
-		// webview.stopLoading();
-		// webview.freeMemory();
-
+		// Interrupt previous loading then proceed 
+        webview.stopLoading();
 		webview.loadUrl(settings.url);
 	}
 
