@@ -21,13 +21,17 @@ import org.decat.tig.TIG;
 import org.decat.tig.preferences.PreferencesHelper;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.google.ads.AdView;
+import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
@@ -80,6 +84,13 @@ public class TIGWebViewClient extends WebViewClient {
 	private long loadCount = 0;
 	private Runnable hideAdsJob;
 
+    private int topPaddingPx;
+
+    @AfterInject
+    protected void initialize() {
+        topPaddingPx = (int ) Float.parseFloat(activity.getString(R.dimen.html_body_padding_top).replace("px", ""));
+    }
+    
 	@Override
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 		Log.w(TIG.TAG, "Got error " + errorCode + " while loading URL " + failingUrl);
@@ -139,6 +150,11 @@ public class TIGWebViewClient extends WebViewClient {
 			}
 		}).start();
 
+        // Add padding to the top of the HTML view to compensate for the overlaid action bar on Android 3.0+
+        if (Integer.parseInt(Build.VERSION.SDK) >= 11) {
+            view.loadUrl("javascript:document.body.style.paddingTop='" + topPaddingPx + "px'");
+        }
+		
 		// Schedule ads hiding
 		new Thread(hideAdsJob).start();
 
@@ -165,6 +181,11 @@ public class TIGWebViewClient extends WebViewClient {
 	public void setOffset(int x, int y) {
 		this.xScroll = x;
 		this.yScroll = y;
+		
+        // Compensate the padding at the top of the HTML view that compensates for the overlaid action bar on Android 3.0+
+        if (Integer.parseInt(Build.VERSION.SDK) >= 11) {
+            this.yScroll += topPaddingPx;
+        }
 	}
 
 	public void setTitle(String title) {
