@@ -21,11 +21,9 @@ import org.decat.tig.TIG;
 import org.decat.tig.preferences.PreferencesHelper;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -39,70 +37,76 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @EBean
 public class TIGWebViewClient extends WebViewClient {
 	private final class HideAdsJob implements Runnable {
-        private final WebView view;
-        private long loadCount;
+		private final WebView view;
+		private long loadCount;
 
-        public HideAdsJob(WebView view, long loadCount) {
-            this.view = view;
-            this.loadCount = loadCount;
-        }
+		public HideAdsJob(WebView view, long loadCount) {
+			this.view = view;
+			this.loadCount = loadCount;
+		}
 
-        public void run() {
-        	try {
-        		Thread.sleep(4000);
-        	} catch (InterruptedException e) {
-        		e.printStackTrace();
-        	}
-        	
-        	// Hide ads only if no other loading has been triggered since this job was instantiated 
-            if (loadCount == TIGWebViewClient.this.loadCount) {
-                view.post(new Runnable() {
-                    public void run() {
-                        setAdsVisibility(false);
-                    }
-                });
-            }
-        }
-    }
+		public void run() {
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
-    @RootContext
+			// Hide ads only if no other loading has been triggered since this job was instantiated
+			if (loadCount == TIGWebViewClient.this.loadCount) {
+				view.post(new Runnable() {
+					public void run() {
+						setAdsVisibility(false);
+					}
+				});
+			}
+		}
+	}
+
+	@RootContext
 	protected Activity activity;
 
-    @ViewById
-    protected AdView adview;
-    
-    // Fields to manage the application title
-    private String lastModified;
-    private String title;
-    
-    // Fields to manage zoom and scrolling display
+	@ViewById
+	protected AdView adview;
+
+	// Fields to manage the application title
+	private String lastModified;
+	private String title;
+
+	// Fields to manage zoom and scrolling display
 	private int initialScale;
 	private int xScroll;
 	private int yScroll;
-	
-    // Fields to manage ads display
+
+	// Fields to manage ads display
 	private long loadCount = 0;
 	private Runnable hideAdsJob;
 
-    private int topPaddingPx;
+	private int topPaddingPx;
 
-    @AfterInject
-    protected void initialize() {
-        topPaddingPx = (int ) Float.parseFloat(activity.getString(R.dimen.html_body_padding_top).replace("px", ""));
-    }
-    
+	@AfterInject
+	protected void initialize() {
+		topPaddingPx = (int) Float.parseFloat(activity.getString(R.dimen.html_body_padding_top).replace("px", ""));
+	}
+
 	@Override
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-		Log.w(TIG.TAG, "Got error " + errorCode + " while loading URL " + failingUrl);
+		super.onReceivedError(view, errorCode, description, failingUrl);
+
+		Log.w(TIG.TAG, "TIGWebViewClient.onReceivedError: Got error " + description + " (" + errorCode + ") while loading URL " + failingUrl);
 	}
 
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
-	    // Update title
+		super.onPageStarted(view, url, favicon);
+
+		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);
+
+		// Update title
 		setTitle(view, activity.getString(R.string.loading) + " " + title + "...");
-		
-        // Set the scale and scroll once
-        setScaleAndScroll(view);
+
+		// Set the scale and scroll once
+		setScaleAndScroll(view);
 
 		// Show the Ads banner if enabled
 		boolean showAds = TIG.getBooleanPreferenceValue(activity, PreferencesHelper.SHOW_ADS);
@@ -113,15 +117,29 @@ public class TIGWebViewClient extends WebViewClient {
 				}
 			});
 		}
-		
+
 		// Increment loadCount and instantiate future job to hide ads
 		loadCount++;
-        hideAdsJob = new HideAdsJob(view, loadCount);
+		hideAdsJob = new HideAdsJob(view, loadCount);
+	}
+
+	@Override
+	public void onLoadResource(WebView view, String url) {
+		super.onLoadResource(view, url);
+
+		Log.d(TIG.TAG, "TIGWebViewClient.onLoadResource: url=" + url);
+
+		// Set the scale and scroll
+		setScaleAndScroll(view);
 	}
 
 	@Override
 	public void onPageFinished(final WebView view, String url) {
-        // Update title
+		super.onPageFinished(view, url);
+
+		Log.d(TIG.TAG, "TIGWebViewClient.onPageFinished: url=" + url);
+
+		// Update title
 		String formattedTitle = title;
 		if (lastModified != null) {
 			formattedTitle += " - " + lastModified;
@@ -150,15 +168,13 @@ public class TIGWebViewClient extends WebViewClient {
 			}
 		}).start();
 
-        // Add padding to the top of the HTML view to compensate for the overlaid action bar on Android 3.0+
-        if (Integer.parseInt(Build.VERSION.SDK) >= 11) {
-            view.loadUrl("javascript:document.body.style.paddingTop='" + topPaddingPx + "px'");
-        }
-		
+		// Add padding to the top of the HTML view to compensate for the overlaid action bar on Android 3.0+
+		if (Integer.parseInt(Build.VERSION.SDK) >= 11) {
+			view.loadUrl("javascript:document.body.style.paddingTop='" + topPaddingPx + "px'");
+		}
+
 		// Schedule ads hiding
 		new Thread(hideAdsJob).start();
-
-		super.onPageFinished(view, url);
 	}
 
 	private void setScaleAndScroll(WebView view) {
@@ -181,11 +197,11 @@ public class TIGWebViewClient extends WebViewClient {
 	public void setOffset(int x, int y) {
 		this.xScroll = x;
 		this.yScroll = y;
-		
-        // Compensate the padding at the top of the HTML view that compensates for the overlaid action bar on Android 3.0+
-        if (Integer.parseInt(Build.VERSION.SDK) >= 11) {
-            this.yScroll += topPaddingPx;
-        }
+
+		// Compensate the padding at the top of the HTML view that compensates for the overlaid action bar on Android 3.0+
+		if (Integer.parseInt(Build.VERSION.SDK) >= 11) {
+			this.yScroll += topPaddingPx;
+		}
 	}
 
 	public void setTitle(String title) {

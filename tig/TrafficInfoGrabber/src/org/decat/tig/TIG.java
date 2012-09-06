@@ -64,7 +64,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
 public class TIG extends Activity {
-    private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
+	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
 
@@ -481,8 +481,8 @@ public class TIG extends Activity {
 		webViewClient.setTitle(settings.title);
 		webViewClient.setLastModified(lastModified);
 
-		// Interrupt previous loading then proceed 
-        webview.stopLoading();
+		// Interrupt previous loading then proceed
+		webview.stopLoading();
 		webview.loadUrl(settings.url);
 	}
 
@@ -555,6 +555,10 @@ public class TIG extends Activity {
 	}
 
 	public void refreshWebview(View v) {
+		Log.d(TIG.TAG, "TIG.refreshWebview");
+
+		webview.clearCache(true);
+
 		refreshCurrentView();
 	}
 
