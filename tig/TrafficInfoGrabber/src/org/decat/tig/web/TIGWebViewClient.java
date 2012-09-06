@@ -58,6 +58,8 @@ public class TIGWebViewClient extends WebViewClient {
 			if (loadCount == TIGWebViewClient.this.loadCount) {
 				view.post(new Runnable() {
 					public void run() {
+						Log.d(TIG.TAG, "TIGWebViewClient.HideAdsJob.run: loadCount=" + loadCount);
+
 						setAdsVisibility(false);
 					}
 				});
@@ -86,6 +88,8 @@ public class TIGWebViewClient extends WebViewClient {
 
 	private int topPaddingPx;
 
+	private boolean showAds;
+
 	@AfterInject
 	protected void initialize() {
 		topPaddingPx = (int) Float.parseFloat(activity.getString(R.dimen.html_body_padding_top).replace("px", ""));
@@ -110,19 +114,19 @@ public class TIGWebViewClient extends WebViewClient {
 		// Set the scale and scroll once
 		setScaleAndScroll(view);
 
-		// Show the Ads banner if enabled
-		boolean showAds = TIG.getBooleanPreferenceValue(activity, PreferencesHelper.SHOW_ADS);
+		// Show ads if checked in preferences
+		showAds = TIG.getBooleanPreferenceValue(activity, PreferencesHelper.SHOW_ADS);
 		if (showAds) {
 			view.post(new Runnable() {
 				public void run() {
 					setAdsVisibility(true);
 				}
 			});
+			
+			// Increment loadCount and instantiate future job to hide ads
+			loadCount++;
+			hideAdsJob = new HideAdsJob(view, loadCount);
 		}
-
-		// Increment loadCount and instantiate future job to hide ads
-		loadCount++;
-		hideAdsJob = new HideAdsJob(view, loadCount);
 	}
 
 	@Override
@@ -176,7 +180,9 @@ public class TIGWebViewClient extends WebViewClient {
 		}
 
 		// Schedule ads hiding
-		new Thread(hideAdsJob).start();
+		if (showAds) {
+			new Thread(hideAdsJob).start();
+		}
 	}
 
 	private void setScaleAndScroll(WebView view) {
