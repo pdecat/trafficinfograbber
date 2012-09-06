@@ -50,5 +50,5 @@
 	<com.google.ads.AdView android:id="@+id/adview"
 		android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"
 		android:layout_width="match_parent" android:layout_height="wrap_content"
-		ads:adUnitId="a14dba5ee6f0b5f" ads:adSize="SMART_BANNER" />
+		ads:adUnitId="a14dba5ee6f0b5f" ads:adSize="SMART_BANNER" ads:loadAdOnCreate="true" />
 </RelativeLayout>
