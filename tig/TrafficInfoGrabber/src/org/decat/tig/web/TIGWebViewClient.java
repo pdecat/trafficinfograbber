@@ -36,6 +36,8 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EBean
 public class TIGWebViewClient extends WebViewClient {
+	private static final int ADS_DISPLAY_DURATION = 5000;
+
 	private final class HideAdsJob implements Runnable {
 		private final WebView view;
 		private long loadCount;
@@ -47,7 +49,7 @@ public class TIGWebViewClient extends WebViewClient {
 
 		public void run() {
 			try {
-				Thread.sleep(4000);
+				Thread.sleep(ADS_DISPLAY_DURATION);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
