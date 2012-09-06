@@ -58,8 +58,10 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
@@ -374,7 +376,12 @@ public class TIG extends Activity {
 				return true;
 
 			case R.id.liveTrafficLite:
-				lastModified = prepareLiveTrafficLite();
+				// Store view ID
+				currentViewId = viewId;
+
+				showLiveTrafficLite();
+				return true;
+
 			case R.id.liveTraffic:
 			case R.id.quickStats:
 			case R.id.closedAtNight:
@@ -463,7 +470,8 @@ public class TIG extends Activity {
 		}
 	}
 
-	private void loadUrlInWebview(WebviewSettings settings, String lastModified) {
+	@UiThread
+	protected void loadUrlInWebview(WebviewSettings settings, String lastModified) {
 		Log.i(TAG, "Loading '" + settings.title + "' (URL=" + settings.url + ", xmin=" + settings.xmin + ", ymin=" + settings.ymin + ", xmax=" + settings.xmax + ", ymax=" + settings.ymax + ")");
 		int xscale = (int) ((float) width * 100 / (float) (settings.xmax - settings.xmin));
 		int yscale = (int) ((float) height * 100 / (float) (settings.ymax - settings.ymin));
@@ -501,19 +509,26 @@ public class TIG extends Activity {
 		return ResourceDownloader.downloadFile(context, baseUrl + filename, filename);
 	}
 
-	private String prepareLiveTrafficLite() {
-		this.setProgress(0);
+	@Background
+	protected void showLiveTrafficLite() {
+		updateWebviewProgress(0);
 
 		// Cache resources
 		cacheResource(this, FILENAME_IDF_BACKGROUND, URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE, true);
 
-		this.setProgress(25);
+		updateWebviewProgress(25);
 
 		String lastModified = cacheResource(this, FILENAME_IDF_TRAFFIC, URL_LIVE_TRAFFIC_IDF_STATE_BASE, false);
 
-		this.setProgress(50);
+		updateWebviewProgress(50);
 
-		return lastModified;
+		// Load Webview
+		loadUrlInWebview(availableWebviews.get(currentViewId), lastModified);
+	}
+
+	@UiThread
+	protected void updateWebviewProgress(int progress) {
+		this.setProgress(progress);
 	}
 
 	private void launchWebsite(String url) {
