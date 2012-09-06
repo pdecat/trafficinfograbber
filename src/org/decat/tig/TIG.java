@@ -145,16 +145,11 @@ public class TIG extends Activity {
 		height = metrics.heightPixels;
 		Log.i(TIG.TAG, "Screen width is " + width + ", and height is " + height);
 
-		// Setup Ads
-		AdView adView = (AdView) findViewById(R.id.adview);
-		AdRequest adRequest = new AdRequest();
-		adView.loadAd(adRequest);
-
 		// Initialize webview settings
 		initializeWebviewSettings();
 
-		// Set default view then show it
-		showViewById(R.id.liveTraffic);
+		// Set default view
+		currentViewId = R.id.liveTraffic;
 
 		// Show preferences editor if first run of this version
 		String appVersion = getAppVersion(this);
@@ -493,9 +488,15 @@ public class TIG extends Activity {
 		webViewClient.setTitle(settings.title);
 		webViewClient.setLastModified(lastModified);
 
-		// Interrupt previous loading then proceed
+		// Interrupt previous loading
 		webview.stopLoading();
-		webview.loadUrl(settings.url);
+		
+		// I've got an issue on my Nexus One (Android 2.3.6) where WebViewClient.onPageStarted() is not called
+		// if the URL passed to WebView.loadUrl() does not change from the previous call.
+		// On my Galaxy Nexus (Android 4.1.1), this does not happen.
+		// Check http://code.google.com/p/android/issues/detail?id=37123
+		// Workaround this issue by appending a timestamp to the URL then load it.
+		webview.loadUrl(settings.url + "?timestamp=" + new Date().getTime());
 	}
 
 	protected String cacheResource(ContextWrapper context, String filename, String baseUrl, boolean useCache) {
