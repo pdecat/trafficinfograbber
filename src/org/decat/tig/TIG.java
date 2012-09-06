@@ -371,8 +371,12 @@ public class TIG extends Activity {
 		String lastModified = null;
 
 		switch (viewId) {
-			case 0x102002c: // android.R.id.home
-				refreshCurrentView();
+			case 0x102002c: // Refresh on android.R.id.home click for Android 3.0+
+				// Restore view ID
+				viewId = currentViewId;
+				
+				// Load Webview
+				loadUrlInWebview(availableWebviews.get(viewId), lastModified);
 				return true;
 
 			case R.id.liveTrafficLite:
