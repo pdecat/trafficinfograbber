@@ -45,6 +45,15 @@
 	<string name="downloadingResources">Downloading resources</string>
 	<string name="pleaseWait">Please wait…</string>
 	<string name="newVersion">New version: please set your own preferences</string>
+    
+    <!-- Retry count down items -->
+	<string name="countDownRefreshingIn">Refreshing in&#160;</string>
+	<string name="countDownUnits">s</string>
+    
+    <!-- Buttons -->
+	<string name="quitButtonDescription">Quit</string>
+	<string name="dayNightSwitchButtonDescription">Day/Night Switch</string>
+	<string name="refreshButtonDescription">Refresh</string>
 
 	<!-- Preferences labels -->
 	<string name="preferencesMessage">Set your preferred third party activity to launch on Search</string>
