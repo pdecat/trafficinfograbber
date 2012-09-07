@@ -65,7 +65,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @EActivity(R.layout.main)
 public class TIG extends Activity {
 	public static final String TIG_TIMESTAMP = "?TIG_TIMESTAMP=";
-	
+
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
@@ -131,6 +131,7 @@ public class TIG extends Activity {
 		settings.setBuiltInZoomControls(true);
 		settings.setJavaScriptEnabled(true);
 		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+		// settings.setAppCacheEnabled(false); // New Android SDK v7
 
 		// Show progress bar
 		getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
@@ -369,7 +370,7 @@ public class TIG extends Activity {
 			case 0x102002c: // Refresh on android.R.id.home click for Android 3.0+
 				// Restore view ID
 				viewId = currentViewId;
-				
+
 				// Load Webview
 				loadUrlInWebview(availableWebviews.get(viewId), lastModified);
 				return true;
@@ -483,14 +484,12 @@ public class TIG extends Activity {
 			xoffset -= (width - ((settings.xmax - settings.xmin) * scale) / 100) / 2;
 		}
 		Log.d(TAG, "Computed values: xscale=" + xscale + ", yscale=" + yscale + ", scale=" + scale + ", xoffset=" + xoffset + ", yoffset=" + yoffset);
-		webViewClient.setInitialScale(scale);
-		webViewClient.setOffset(xoffset, yoffset);
-		webViewClient.setTitle(settings.title);
-		webViewClient.setLastModified(lastModified);
+
+		webViewClient.setParameters(settings.title, lastModified, scale, xoffset, yoffset);
 
 		// Interrupt previous loading
 		webview.stopLoading();
-		
+
 		webview.loadUrl(settings.url);
 	}
 

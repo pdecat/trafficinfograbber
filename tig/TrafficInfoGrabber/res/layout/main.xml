@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-
     Copyright (C) 2010-2012 Patrick Decat
 
     TrafficInfoGrabber is free software: you can redistribute it and/or modify
@@ -15,40 +14,94 @@
 
     You should have received a copy of the GNU General Public License
     along with TrafficInfoGrabber.  If not, see <http://www.gnu.org/licenses/>.
-
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
-	android:layout_width="fill_parent" android:layout_height="fill_parent">
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-	<WebView android:id="@+id/webview" android:layout_above="@+id/adview"
-		android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/adview" />
 
-	<ImageButton android:id="@+id/quitButton"
-		android:layout_alignParentRight="true" android:layout_alignParentTop="true"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingTop="@dimen/power_button_padding_top" android:paddingRight="5dp"
-		android:src="@drawable/ic_lock_power_off" android:onClick="quit"
-		android:background="#0000" />
+    <LinearLayout
+        android:id="@+id/retryCountDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
 
-	<ImageButton android:id="@+id/dayNightSwitchButton"
-		android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingBottom="5dp" android:paddingRight="5dp"
-		android:src="@drawable/ic_menu_view"
-		android:onClick="dayNightSwitch" android:background="#0000" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/countDownRefreshingIn"
+            android:textSize="35sp" />
 
+        <TextView
+            android:id="@+id/retryCountDownText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            tools:ignore="HardcodedText"
+            />
 
-	<ImageButton android:id="@+id/refreshButton"
-		android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingBottom="5dp" android:paddingRight="5dp"
-		android:src="@drawable/ic_menu_refresh"
-		android:onClick="refreshWebview"
-		android:background="#0000" />
-		
-	<com.google.ads.AdView android:id="@+id/adview"
-		android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"
-		android:layout_width="match_parent" android:layout_height="wrap_content"
-		ads:adUnitId="a14dba5ee6f0b5f" ads:adSize="SMART_BANNER" ads:loadAdOnCreate="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/countDownUnits" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/quitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#0000"
+        android:contentDescription="@string/quitButtonDescription"
+        android:onClick="quit"
+        android:paddingRight="5dp"
+        android:paddingTop="@dimen/power_button_padding_top"
+        android:src="@drawable/ic_lock_power_off" />
+
+    <ImageButton
+        android:id="@+id/dayNightSwitchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="#0000"
+        android:contentDescription="@string/dayNightSwitchButtonDescription"
+        android:onClick="dayNightSwitch"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:src="@drawable/ic_menu_view" />
+
+    <ImageButton
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="#0000"
+        android:contentDescription="@string/refreshButtonDescription"
+        android:onClick="refreshWebview"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:src="@drawable/ic_menu_refresh" />
+
+    <com.google.ads.AdView
+        android:id="@+id/adview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="a14dba5ee6f0b5f"
+        ads:loadAdOnCreate="true" />
+
 </RelativeLayout>
