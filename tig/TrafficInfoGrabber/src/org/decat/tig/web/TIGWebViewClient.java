@@ -90,6 +90,9 @@ public class TIGWebViewClient extends WebViewClient {
 
 	private boolean showAds;
 
+	// Field to store main URL
+	private String mainURL;
+
 	@AfterInject
 	protected void initialize() {
 		topPaddingPx = (int) Float.parseFloat(activity.getString(R.dimen.html_body_padding_top).replace("px", ""));
@@ -104,15 +107,18 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
-		super.onPageStarted(view, url, favicon);
-
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);
+		super.onPageStarted(view, url, favicon);
+		
+		// Store main URL
+		mainURL = url;
+	}
+
+	private void doOnPageStarted(WebView view) {
+		Log.d(TIG.TAG, "TIGWebViewClient.doOnPageStarted");
 
 		// Update title
 		setTitle(view, activity.getString(R.string.loading) + " " + title + "...");
-
-		// Set the scale and scroll once
-		setScaleAndScroll(view);
 
 		// Show ads if checked in preferences
 		showAds = TIG.getBooleanPreferenceValue(activity, PreferencesHelper.SHOW_ADS);
@@ -131,14 +137,22 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Override
 	public void onLoadResource(WebView view, String url) {
+		Log.d(TIG.TAG, "TIGWebViewClient.onLoadResource: url=" + url);
 		super.onLoadResource(view, url);
 
-		Log.d(TIG.TAG, "TIGWebViewClient.onLoadResource: url=" + url);
+		// I've got an issue on my Nexus One (Android 2.3.6) where WebViewClient.onPageStarted() is not called
+		// if the URL passed to WebView.loadUrl() does not change from the previous call.
+		// On my Galaxy Nexus (Android 4.1.1), this does not happen.
+		// Check http://code.google.com/p/android/issues/detail?id=37123
+		// Workaround this issue by checking if the URL loaded matches the main URL.
+		if (mainURL.equals(url)) {
+			doOnPageStarted(view);
+		}
 
 		// Set the scale and scroll
 		setScaleAndScroll(view);
 	}
-
+	
 	@Override
 	public void onPageFinished(final WebView view, String url) {
 		super.onPageFinished(view, url);
