@@ -54,8 +54,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
@@ -66,6 +64,8 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
 public class TIG extends Activity {
+	public static final String TIG_TIMESTAMP = "?TIG_TIMESTAMP=";
+	
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
@@ -491,12 +491,7 @@ public class TIG extends Activity {
 		// Interrupt previous loading
 		webview.stopLoading();
 		
-		// I've got an issue on my Nexus One (Android 2.3.6) where WebViewClient.onPageStarted() is not called
-		// if the URL passed to WebView.loadUrl() does not change from the previous call.
-		// On my Galaxy Nexus (Android 4.1.1), this does not happen.
-		// Check http://code.google.com/p/android/issues/detail?id=37123
-		// Workaround this issue by appending a timestamp to the URL then load it.
-		webview.loadUrl(settings.url + "?timestamp=" + new Date().getTime());
+		webview.loadUrl(settings.url);
 	}
 
 	protected String cacheResource(ContextWrapper context, String filename, String baseUrl, boolean useCache) {
