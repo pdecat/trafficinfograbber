@@ -41,13 +41,23 @@
 	<string name="pleaseWait">Merci de patienter…</string>
 	<string name="newVersion">Nouvelle version : veuillez définir vos propres préférences</string>
 
+    <!-- Eléments du compte à rebours avant nouvelle tentative -->
+    <string name="countDownRefreshingIn">Rafraîchissement dans &#160;</string>
+    <string name="countDownUnits">s</string>
+    <string name="countDownClickToCancel">Cliquer pour annuler</string>
+    
+    <!-- Boutons -->
+    <string name="quitButtonDescription">Quitter</string>
+    <string name="dayNightSwitchButtonDescription">Commuter le mode jour/nuit</string>
+    <string name="refreshButtonDescription">Rafraîchir</string>
+
 	<!-- Labels des préférences -->
 	<string name="preferencesMessage">Configurez votre activité tierce préférée à lancer avec le bouton Recherche</string>
 	<string name="OTHER_ACTIVITY_VALUE">Valeur de l\'activité</string>
 	<string name="OTHER_ACTIVITY">Activité à lancer avec le bouton Recherche</string>
 	<string name="NOTIFICATION_SHORTCUT">Raccourci dans la barre de notification</string>
 	<string name="NOTIFICATION_SHORTCUT_ON_BOOT">Raccourci dans la barre de notification au démarrage</string>
-	<string name="SHOW_REFRESH_BUTTON">Afficher le bouton Rafraichir</string>
+	<string name="SHOW_REFRESH_BUTTON">Afficher le bouton Rafraîchir</string>
 	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Afficher le bouton pour commuter le mode jour/nuit</string>
 	<string name="SHOW_QUIT_BUTTON">Afficher le bouton Quitter</string>
 	<string name="FORCE_PORTRAIT_ORIENTATION">Forcer l\'orientation en portrait</string>

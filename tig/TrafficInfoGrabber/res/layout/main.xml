@@ -19,51 +19,64 @@
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_height="fill_parent" >
 
     <WebView
         android:id="@+id/webview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/adview"
-        />
+        android:layout_above="@+id/adview" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/retryCountDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:onClick="cancelRetryCountDown"
-        android:orientation="horizontal"
-        android:padding="15dp"
+        android:background="#FFFFFF"
+        android:alpha="50"
         android:visibility="invisible" >
 
+        <LinearLayout
+            android:id="@+id/retryCountDownMainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:padding="15dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/countDownRefreshingIn"
+                android:textColor="#000000"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/retryCountDownText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/countDownUnits"
+                android:textColor="#000000"
+                android:textSize="25sp" />
+        </LinearLayout>
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/countDownRefreshingIn"
+            android:layout_below="@id/retryCountDownMainText"
+            android:layout_centerInParent="true"
+            android:text="@string/countDownClickToCancel"
             android:textColor="#000000"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/retryCountDownText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/countDownUnits"
-            android:textColor="#000000"
-            android:textSize="25sp" />
-
-    </LinearLayout>
+            android:textSize="15sp" />
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/quitButton"
@@ -76,8 +89,7 @@
         android:onClick="quit"
         android:paddingRight="5dp"
         android:paddingTop="@dimen/power_button_padding_top"
-        android:src="@drawable/ic_lock_power_off"
-        />
+        android:src="@drawable/ic_lock_power_off" />
 
     <ImageButton
         android:id="@+id/dayNightSwitchButton"
@@ -90,8 +102,7 @@
         android:onClick="dayNightSwitch"
         android:paddingBottom="5dp"
         android:paddingRight="5dp"
-        android:src="@drawable/ic_menu_view"
-        />
+        android:src="@drawable/ic_menu_view" />
 
     <ImageButton
         android:id="@+id/refreshButton"
@@ -104,8 +115,7 @@
         android:onClick="refreshWebview"
         android:paddingBottom="5dp"
         android:paddingRight="5dp"
-        android:src="@drawable/ic_menu_refresh"
-        />
+        android:src="@drawable/ic_menu_refresh" />
 
     <com.google.ads.AdView
         android:id="@+id/adview"
@@ -115,6 +125,6 @@
         android:layout_alignParentLeft="true"
         ads:adSize="SMART_BANNER"
         ads:adUnitId="a14dba5ee6f0b5f"
-        ads:loadAdOnCreate="true"
-        />
+        ads:loadAdOnCreate="true" />
+
 </RelativeLayout>
