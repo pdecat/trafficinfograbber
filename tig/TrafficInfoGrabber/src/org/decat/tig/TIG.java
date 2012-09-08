@@ -416,7 +416,7 @@ public class TIG extends Activity {
 		showViewById(currentViewId);
 	}
 
-	public void cancelRetryCountDown() {
+	public void cancelRetryCountDown(View v) {
 		webViewClient.cancelRetryCountDown();
 	}
 
