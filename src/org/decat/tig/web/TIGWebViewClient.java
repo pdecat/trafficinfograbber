@@ -155,6 +155,8 @@ public class TIGWebViewClient extends WebViewClient {
 	private void doOnPageStarted(WebView view) {
 		Log.d(TIG.TAG, "TIGWebViewClient.doOnPageStarted");
 
+		retryCountDownCancelled = false;
+
 		// Update title
 		setTitle(view, activity.getString(R.string.loading) + " " + title + "...");
 
