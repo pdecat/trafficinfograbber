@@ -49,6 +49,7 @@
     <!-- Retry count down items -->
 	<string name="countDownRefreshingIn">Refreshing in&#160;</string>
 	<string name="countDownUnits">s</string>
+	<string name="countDownClickToCancel">Click to cancel</string>
     
     <!-- Buttons -->
 	<string name="quitButtonDescription">Quit</string>
