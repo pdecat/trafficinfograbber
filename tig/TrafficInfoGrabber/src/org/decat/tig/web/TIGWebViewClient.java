@@ -131,6 +131,7 @@ public class TIGWebViewClient extends WebViewClient {
 
 	public void cancelRetryCountDown() {
 		retryCountDownCancelled = true;
+		updateRetryCountDown("0");
 		setRetryCountDownVisibility(View.INVISIBLE);
 	}
 
