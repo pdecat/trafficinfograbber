@@ -42,7 +42,7 @@
 	<string name="newVersion">Nouvelle version : veuillez définir vos propres préférences</string>
 
     <!-- Eléments du compte à rebours avant nouvelle tentative -->
-    <string name="countDownRefreshingIn">Rafraîchissement dans &#160;</string>
+    <string name="countDownRefreshingIn">Rafraîchissement dans&#160;</string>
     <string name="countDownUnits">s</string>
     <string name="countDownClickToCancel">Cliquer pour annuler</string>
     
