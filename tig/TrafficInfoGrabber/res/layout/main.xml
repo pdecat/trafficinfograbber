@@ -34,32 +34,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:onClick="cancelRetryCountDown"
         android:orientation="horizontal"
-        android:visibility="invisible"
-        >
+        android:visibility="invisible" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/countDownRefreshingIn"
-            android:textSize="25sp"
-            />
+            android:textColor="#000000"
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/retryCountDownText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
+            android:textColor="#000000"
             android:textSize="25sp"
-            tools:ignore="HardcodedText"
-            />
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/countDownUnits"
-            android:textSize="25sp"
-            />
+            android:textColor="#000000"
+            android:textSize="25sp" />
+
     </LinearLayout>
 
     <ImageButton
