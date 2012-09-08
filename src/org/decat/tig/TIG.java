@@ -108,6 +108,8 @@ public class TIG extends Activity {
 
 	@AfterInject
 	public void init() {
+		Log.d(TAG, "TIG.init");
+
 		// Request progress bar feature
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
@@ -118,6 +120,8 @@ public class TIG extends Activity {
 
 	@AfterViews
 	public void setup() {
+		Log.d(TAG, "TIG.setup");
+
 		// Initialize web view
 		webview.setWebViewClient(webViewClient);
 		webview.setWebChromeClient(webChromeClient);
@@ -144,7 +148,7 @@ public class TIG extends Activity {
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		width = metrics.widthPixels;
 		height = metrics.heightPixels;
-		Log.i(TIG.TAG, "Screen width is " + width + ", and height is " + height);
+		Log.i(TAG, "Screen width is " + width + ", and height is " + height);
 
 		// Initialize webview settings
 		initializeWebviewSettings();
@@ -187,7 +191,7 @@ public class TIG extends Activity {
 
 	private void clearDatabase(String database) {
 		if (this.deleteDatabase(database)) {
-			Log.i(TIG.TAG, "Cleared " + database + " database.");
+			Log.i(TAG, "Cleared " + database + " database.");
 		}
 	}
 
@@ -412,6 +416,10 @@ public class TIG extends Activity {
 		showViewById(currentViewId);
 	}
 
+	public void cancelRetryCountDown() {
+		webViewClient.cancelRetryCountDown();
+	}
+
 	public static void showToast(Context context, String message) {
 		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
@@ -436,7 +444,7 @@ public class TIG extends Activity {
 			PackageManager pm = getPackageManager();
 			if (pm.queryIntentActivities(intent, 0).size() == 0) {
 				String message = "Requires 'OI About' to show about dialog. Searching Android Market for it...";
-				Log.i(TIG.TAG, message);
+				Log.i(TAG, message);
 				showToast(message);
 				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:org.openintents.about"));
 				activityRequest = ACTIVITY_REQUEST_OI_ABOUT_INSTALL;
@@ -445,7 +453,7 @@ public class TIG extends Activity {
 			startActivityForResult(intent, activityRequest);
 		} catch (Exception e) {
 			String message = "Failed to start activity for intent " + intent.toString();
-			Log.e(TIG.TAG, message, e);
+			Log.e(TAG, message, e);
 			showToast(message);
 		}
 	}
@@ -456,17 +464,17 @@ public class TIG extends Activity {
 		switch (requestCode) {
 			case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
 				if (resultCode == RESULT_OK) {
-					Log.d(TIG.TAG, "Back from OI About");
+					Log.d(TAG, "Back from OI About");
 				}
 				break;
 			case ACTIVITY_REQUEST_OI_ABOUT_INSTALL:
 				if (resultCode == RESULT_CANCELED) {
-					Log.d(TIG.TAG, "Back from Android Market");
+					Log.d(TAG, "Back from Android Market");
 					showAbout();
 				}
 				break;
 			default:
-				Log.w(TIG.TAG, "Unknown activity request code " + requestCode);
+				Log.w(TAG, "Unknown activity request code " + requestCode);
 		}
 	}
 
@@ -536,7 +544,7 @@ public class TIG extends Activity {
 			startActivity(myIntent);
 		} catch (Exception e) {
 			String message = "Error while launching " + url + " website";
-			Log.e(TIG.TAG, message, e);
+			Log.e(TAG, message, e);
 			showToast(message);
 		}
 
@@ -557,19 +565,19 @@ public class TIG extends Activity {
 				startActivity(myIntent);
 			} catch (Exception e) {
 				String message = "Error while launching third party activity " + otherComponentName.getPackageName();
-				Log.e(TIG.TAG, message, e);
+				Log.e(TAG, message, e);
 				showToast(message);
 			}
 		} else {
 			String message = "No third party activity set in preferences...";
-			Log.w(TIG.TAG, message);
+			Log.w(TAG, message);
 			showToast(message);
 		}
 		return false;
 	}
 
 	public void refreshWebview(View v) {
-		Log.d(TIG.TAG, "TIG.refreshWebview");
+		Log.d(TAG, "TIG.refreshWebview");
 
 		webview.clearCache(true);
 

@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.google.ads.AdView;
 import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
@@ -66,15 +67,28 @@ public class TIGWebViewClient extends WebViewClient {
 	// Field to store main URL
 	private String mainURL;
 
+	private View retryCountDown;
+
+	private TextView retryCountDownText;
+
+	private boolean retryCountDownCancelled;
+
 	@AfterInject
 	protected void initialize() {
 		topPaddingPx = (int) Float.parseFloat(activity.getString(R.dimen.html_body_padding_top).replace("px", ""));
 	}
 
+	@AfterViews
+	protected void initialize2() {
+		// I had to move those from initialize to here because findViewById triggers setContentView which then triggers the following AndroidRuntimeException:
+		// "requestFeature() must be called before adding content"
+		retryCountDown = activity.findViewById(R.id.retryCountDown);
+		retryCountDownText = (TextView) activity.findViewById(R.id.retryCountDownText);
+	}
+
 	@Override
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-		super.onReceivedError(view, errorCode, description, failingUrl);
-
+		retryCountDownCancelled = false;
 		startRetryCountDown();
 
 		Log.w(TIG.TAG, "TIGWebViewClient.onReceivedError: Got error " + description + " (" + errorCode + ") while loading URL " + failingUrl);
@@ -84,50 +98,55 @@ public class TIGWebViewClient extends WebViewClient {
 	protected void startRetryCountDown() {
 		Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown");
 
-		TextView tv = (TextView) activity.findViewById(R.id.retryCountDownText);
-
 		// Check if another count down is already in progress
-		String currentCountDown = tv.getText().toString();
+		String currentCountDown = retryCountDownText.getText().toString();
 		if (Integer.parseInt(currentCountDown) > 0) {
 			// Abort
 			Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: another count down is already in progress, aborting (" + currentCountDown + "s left).");
 			return;
 		}
 
-		// Display retry count down
-		View rcd = activity.findViewById(R.id.retryCountDown);
-
-		setRetryCountDownVisibility(rcd, View.VISIBLE);
+		setRetryCountDownVisibility(View.VISIBLE);
 
 		for (int c = 30; c >= 0; c--) {
-			updateRetryCountDown(tv, Integer.toString(c));
+			updateRetryCountDown(Integer.toString(c));
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+
+			if (retryCountDownCancelled) {
+				Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: trigger refresh");
+				return;
+			}
 		}
 
-		setRetryCountDownVisibility(rcd, View.INVISIBLE);
+		setRetryCountDownVisibility(View.INVISIBLE);
 
 		// Trigger refresh
-		Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: trigger refresh (TODO)");
+		Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: trigger refresh");
+		((TIG) activity).refreshCurrentView();
+	}
+
+	public void cancelRetryCountDown() {
+		retryCountDownCancelled = true;
+		setRetryCountDownVisibility(View.INVISIBLE);
 	}
 
 	@UiThread
-	protected void setRetryCountDownVisibility(View v, int visibility) {
-		v.setVisibility(visibility);
+	protected void setRetryCountDownVisibility(int visibility) {
+		retryCountDown.setVisibility(visibility);
 	}
 
 	@UiThread
-	protected void updateRetryCountDown(TextView tv, String text) {
-		tv.setText(text);
+	protected void updateRetryCountDown(String text) {
+		retryCountDownText.setText(text);
 	}
 
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);
-		super.onPageStarted(view, url, favicon);
 
 		// Store main URL
 		mainURL = url;
@@ -152,7 +171,6 @@ public class TIGWebViewClient extends WebViewClient {
 	@Override
 	public void onLoadResource(WebView view, String url) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onLoadResource: url=" + url);
-		super.onLoadResource(view, url);
 
 		// I've got an issue on my Nexus One (Android 2.3.6) where WebViewClient.onPageStarted() is not called
 		// if the URL passed to WebView.loadUrl() does not change from the previous call.
@@ -169,8 +187,6 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Override
 	public void onPageFinished(final WebView view, String url) {
-		super.onPageFinished(view, url);
-
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageFinished: url=" + url);
 
 		// Update title
