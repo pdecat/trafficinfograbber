@@ -189,7 +189,7 @@ public class TIGWebViewClient extends WebViewClient {
 	}
 
 	@Override
-	public void onPageFinished(final WebView view, String url) {
+	public void onPageFinished(WebView view, String url) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageFinished: url=" + url);
 
 		// Update title
@@ -232,10 +232,11 @@ public class TIGWebViewClient extends WebViewClient {
 		adview.setVisibility(visibility ? View.VISIBLE : View.GONE);
 	}
 
-	@UiThread
+	@UiThread(delay=100)
 	protected void setScaleAndScroll(WebView view) {
 		view.setInitialScale(initialScale);
 		view.scrollTo(xScroll, yScroll);
+		Log.d(TIG.TAG, "TIGWebViewClient.setScaleAndScroll: initialScale=" + initialScale + ", xScroll=" + xScroll + ", yScroll=" + yScroll);
 	}
 
 	@UiThread
