@@ -88,7 +88,6 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Override
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-		retryCountDownCancelled = false;
 		startRetryCountDown();
 
 		Log.w(TIG.TAG, "TIGWebViewClient.onReceivedError: Got error " + description + " (" + errorCode + ") while loading URL " + failingUrl);
@@ -96,16 +95,16 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Background
 	protected void startRetryCountDown() {
-		Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown");
-
 		// Check if another count down is already in progress
 		String currentCountDown = retryCountDownText.getText().toString();
+		Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: currentCountDown=" + currentCountDown);
 		if (Integer.parseInt(currentCountDown) > 0) {
 			// Abort
 			Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: another count down is already in progress, aborting (" + currentCountDown + "s left).");
 			return;
 		}
 
+		retryCountDownCancelled = false;
 		setRetryCountDownVisibility(View.VISIBLE);
 
 		for (int c = 30; c >= 0; c--) {
@@ -117,7 +116,7 @@ public class TIGWebViewClient extends WebViewClient {
 			}
 
 			if (retryCountDownCancelled) {
-				Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: trigger refresh");
+				Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: count down cancelled");
 				return;
 			}
 		}
@@ -130,6 +129,7 @@ public class TIGWebViewClient extends WebViewClient {
 	}
 
 	public void cancelRetryCountDown() {
+		Log.d(TIG.TAG, "TIGWebViewClient.cancelRetryCountDown");
 		retryCountDownCancelled = true;
 		updateRetryCountDown("0");
 		setRetryCountDownVisibility(View.INVISIBLE);
@@ -156,7 +156,7 @@ public class TIGWebViewClient extends WebViewClient {
 	private void doOnPageStarted(WebView view) {
 		Log.d(TIG.TAG, "TIGWebViewClient.doOnPageStarted");
 
-		retryCountDownCancelled = false;
+		cancelRetryCountDown();
 
 		// Update title
 		setTitle(view, activity.getString(R.string.loading) + " " + title + "...");
