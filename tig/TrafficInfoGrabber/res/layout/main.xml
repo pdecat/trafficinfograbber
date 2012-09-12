@@ -31,9 +31,9 @@
         android:id="@+id/retryCountDown"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:onClick="cancelRetryCountDown"
-        android:background="#eeeeeecc"
         android:alpha="50"
+        android:background="#eeeeeeee"
+        android:onClick="cancelRetryCountDown"
         android:visibility="invisible" >
 
         <LinearLayout
