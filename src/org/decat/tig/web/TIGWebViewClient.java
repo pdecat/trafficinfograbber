@@ -56,21 +56,18 @@ public class TIGWebViewClient extends WebViewClient {
 	private int initialScale;
 	private int xScroll;
 	private int yScroll;
-
-	// Fields to manage ads display
-	private long loadCount = 0;
-
 	private int topPaddingPx;
 
+	// Fields to manage ads display
 	private boolean showAds;
+	private long loadCount = 0;
 
 	// Field to store main URL
 	private String mainURL;
 
+	// Fields to manage retry count down
 	private View retryCountDown;
-
 	private TextView retryCountDownText;
-
 	private boolean retryCountDownCancelled;
 
 	@AfterInject
@@ -88,25 +85,25 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Override
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-		startRetryCountDown();
-
 		Log.w(TIG.TAG, "TIGWebViewClient.onReceivedError: Got error " + description + " (" + errorCode + ") while loading URL " + failingUrl);
+		startRetryCountDown();
 	}
 
 	@Background
 	protected void startRetryCountDown() {
+		retryCountDownCancelled = false;
+		
 		// Check if another count down is already in progress
-		String currentCountDown = retryCountDownText.getText().toString();
+		int currentCountDown = getCurrentRetryCountDown();
 		Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: currentCountDown=" + currentCountDown);
-		if (Integer.parseInt(currentCountDown) > 0) {
+		if (currentCountDown > 0) {
 			// Abort
 			Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: another count down is already in progress, aborting (" + currentCountDown + "s left).");
 			return;
 		}
 
-		retryCountDownCancelled = false;
 		setRetryCountDownVisibility(View.VISIBLE);
-
+		
 		for (int c = 30; c >= 0; c--) {
 			updateRetryCountDown(Integer.toString(c));
 			try {
@@ -117,6 +114,8 @@ public class TIGWebViewClient extends WebViewClient {
 
 			if (retryCountDownCancelled) {
 				Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: count down cancelled");
+				updateRetryCountDown("0");
+				setRetryCountDownVisibility(View.INVISIBLE);
 				return;
 			}
 		}
@@ -128,11 +127,13 @@ public class TIGWebViewClient extends WebViewClient {
 		((TIG) activity).refreshCurrentView();
 	}
 
+	private int getCurrentRetryCountDown() {
+		return Integer.parseInt(retryCountDownText.getText().toString());
+	}
+
 	public void cancelRetryCountDown() {
 		Log.d(TIG.TAG, "TIGWebViewClient.cancelRetryCountDown");
 		retryCountDownCancelled = true;
-		updateRetryCountDown("0");
-		setRetryCountDownVisibility(View.INVISIBLE);
 	}
 
 	@UiThread
