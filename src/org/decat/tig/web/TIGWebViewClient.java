@@ -16,8 +16,12 @@
  */
 package org.decat.tig.web;
 
+import java.io.File;
+import java.util.Date;
+
 import org.decat.tig.R;
 import org.decat.tig.TIG;
+import org.decat.tig.net.ResourceDownloader;
 import org.decat.tig.preferences.PreferencesHelper;
 
 import android.app.Activity;
@@ -40,6 +44,15 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EBean
 public class TIGWebViewClient extends WebViewClient {
+	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE = TIG.URL_SYTADIN + "/fonds/";
+	private static final String URL_LIVE_TRAFFIC_IDF_STATE_BASE = TIG.URL_SYTADIN + "/raster/";
+
+	private static final String PATH_TO_FILES = "file:///data/data/org.decat.tig/files/";
+	private static final String FILENAME_IDF_BACKGROUND = "fond_IDF.jpg";
+	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
+	private static final String PATH_IDF_BACKGROUND = PATH_TO_FILES + FILENAME_IDF_BACKGROUND;
+	private static final String PATH_IDF_TRAFFIC = PATH_TO_FILES + FILENAME_IDF_TRAFFIC;
+
 	private static final int ADS_DISPLAY_DURATION = 5000;
 
 	@RootContext
@@ -92,7 +105,7 @@ public class TIGWebViewClient extends WebViewClient {
 	@Background
 	protected void startRetryCountDown() {
 		retryCountDownCancelled = false;
-		
+
 		// Check if another count down is already in progress
 		int currentCountDown = getCurrentRetryCountDown();
 		Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: currentCountDown=" + currentCountDown);
@@ -103,7 +116,7 @@ public class TIGWebViewClient extends WebViewClient {
 		}
 
 		setRetryCountDownVisibility(View.VISIBLE);
-		
+
 		for (int c = 30; c >= 0; c--) {
 			updateRetryCountDown(Integer.toString(c));
 			try {
@@ -152,6 +165,9 @@ public class TIGWebViewClient extends WebViewClient {
 
 		// Store main URL
 		mainURL = url;
+
+		// Clear last modified
+		lastModified = null;
 	}
 
 	private void doOnPageStarted(WebView view) {
@@ -185,8 +201,32 @@ public class TIGWebViewClient extends WebViewClient {
 			doOnPageStarted(view);
 		}
 
+		if (TIG.FILENAME_IDF_HTML.equals(mainURL)) {
+			if (PATH_IDF_BACKGROUND.equals(url)) {
+				// Cache resources
+				cacheResource(FILENAME_IDF_BACKGROUND, URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE, true);
+			} else if (PATH_IDF_TRAFFIC.equals(url)) {
+				lastModified = cacheResource(FILENAME_IDF_TRAFFIC, URL_LIVE_TRAFFIC_IDF_STATE_BASE, false);
+			}
+		}
+
 		// Set the scale and scroll
 		setScaleAndScroll(view);
+	}
+
+	private String cacheResource(String filename, String baseUrl, boolean useCache) {
+		File file = activity.getFileStreamPath(filename);
+
+		if (file.exists()) {
+			if (useCache) {
+				Log.i(TIG.TAG, "TIGWebViewClient.cacheResource: '" + filename + "' already cached in '" + activity.getFilesDir().getAbsolutePath() + "'");
+				return new Date(file.lastModified()).toString();
+			}
+			file.delete();
+			Log.i(TIG.TAG, "TIGWebViewClient.cacheResource: Deleted cached ressource '" + filename + "' from '" + activity.getFilesDir().getAbsolutePath() + "'");
+		}
+
+		return ResourceDownloader.downloadFile(activity, baseUrl + filename, filename);
 	}
 
 	@Override
@@ -233,7 +273,7 @@ public class TIGWebViewClient extends WebViewClient {
 		adview.setVisibility(visibility ? View.VISIBLE : View.GONE);
 	}
 
-	@UiThread(delay=100)
+	@UiThread(delay = 100)
 	protected void setScaleAndScroll(WebView view) {
 		view.setInitialScale(initialScale);
 		view.scrollTo(xScroll, yScroll);
@@ -245,9 +285,8 @@ public class TIGWebViewClient extends WebViewClient {
 		activity.setTitle(title);
 	}
 
-	public void setParameters(String title, String lastModified, int initialScale, int xoffset, int yoffset) {
+	public void setParameters(String title, int initialScale, int xoffset, int yoffset) {
 		this.title = title;
-		this.lastModified = lastModified;
 		this.initialScale = initialScale;
 		this.xScroll = xoffset;
 		this.yScroll = yoffset;

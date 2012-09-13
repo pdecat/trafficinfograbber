@@ -16,12 +16,9 @@
  */
 package org.decat.tig;
 
-import java.io.File;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.decat.tig.net.ResourceDownloader;
 import org.decat.tig.preferences.PreferencesEditor;
 import org.decat.tig.preferences.PreferencesHelper;
 import org.decat.tig.web.TIGWebChromeClient;
@@ -34,7 +31,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -56,7 +52,6 @@ import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.UiThread;
@@ -64,8 +59,6 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
 public class TIG extends Activity {
-	public static final String TIG_TIMESTAMP = "?TIG_TIMESTAMP=";
-
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
@@ -74,14 +67,10 @@ public class TIG extends Activity {
 
 	public static final String TAG = "TIG";
 
-	private static final String FILENAME_IDF_BACKGROUND = "fond_IDF.jpg";
-	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
+	public static final String FILENAME_IDF_HTML = "file:///android_asset/tig.html";
 
-	private static final String URL_SYTADIN = "http://www.sytadin.fr";
+	public static final String URL_SYTADIN = "http://www.sytadin.fr";
 	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
-
-	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE = URL_SYTADIN + "/fonds/";
-	private static final String URL_LIVE_TRAFFIC_IDF_STATE_BASE = URL_SYTADIN + "/raster/";
 
 	private final Map<Integer, WebviewSettings> availableWebviews = new HashMap<Integer, WebviewSettings>();
 
@@ -174,7 +163,7 @@ public class TIG extends Activity {
 		boolean useHD = sharedPreferences.getBoolean(PreferencesHelper.USE_HD, true);
 
 		if (availableWebviews.isEmpty()) {
-			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), "file:///android_asset/tig.html", 197, 81, 385, 298));
+			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_IDF_HTML, 197, 81, 385, 298));
 			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html", 1, 10, 173, 276));
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
@@ -368,24 +357,16 @@ public class TIG extends Activity {
 	}
 
 	private boolean showViewById(int viewId) {
-		String lastModified = null;
-
 		switch (viewId) {
 			case 0x102002c: // Refresh on android.R.id.home click for Android 3.0+
 				// Restore view ID
 				viewId = currentViewId;
 
 				// Load Webview
-				loadUrlInWebview(availableWebviews.get(viewId), lastModified);
+				loadUrlInWebview(availableWebviews.get(viewId));
 				return true;
 
 			case R.id.liveTrafficLite:
-				// Store view ID
-				currentViewId = viewId;
-
-				showLiveTrafficLite();
-				return true;
-
 			case R.id.liveTraffic:
 			case R.id.quickStats:
 			case R.id.closedAtNight:
@@ -394,7 +375,7 @@ public class TIG extends Activity {
 				currentViewId = viewId;
 
 				// Load Webview
-				loadUrlInWebview(availableWebviews.get(viewId), lastModified);
+				loadUrlInWebview(availableWebviews.get(viewId));
 				return true;
 
 			case R.id.sytadinWebsite:
@@ -479,7 +460,7 @@ public class TIG extends Activity {
 	}
 
 	@UiThread
-	protected void loadUrlInWebview(WebviewSettings settings, String lastModified) {
+	protected void loadUrlInWebview(WebviewSettings settings) {
 		Log.i(TAG, "Loading '" + settings.title + "' (URL=" + settings.url + ", xmin=" + settings.xmin + ", ymin=" + settings.ymin + ", xmax=" + settings.xmax + ", ymax=" + settings.ymax + ")");
 		int xscale = (int) ((float) width * 100 / (float) (settings.xmax - settings.xmin));
 		int yscale = (int) ((float) height * 100 / (float) (settings.ymax - settings.ymin));
@@ -493,49 +474,12 @@ public class TIG extends Activity {
 		}
 		Log.d(TAG, "Computed values: xscale=" + xscale + ", yscale=" + yscale + ", scale=" + scale + ", xoffset=" + xoffset + ", yoffset=" + yoffset);
 
-		webViewClient.setParameters(settings.title, lastModified, scale, xoffset, yoffset);
+		webViewClient.setParameters(settings.title, scale, xoffset, yoffset);
 
 		// Interrupt previous loading
 		webview.stopLoading();
 
 		webview.loadUrl(settings.url);
-	}
-
-	protected String cacheResource(ContextWrapper context, String filename, String baseUrl, boolean useCache) {
-		File file = context.getFileStreamPath(filename);
-
-		if (file.exists()) {
-			if (useCache) {
-				Log.i(TAG, "Resource '" + filename + "' already cached in '" + getFilesDir().getAbsolutePath() + "'");
-				return new Date(file.lastModified()).toString();
-			}
-			file.delete();
-			Log.i(TAG, "Deleted cached ressource '" + filename + "' from '" + getFilesDir().getAbsolutePath() + "'");
-		}
-
-		return ResourceDownloader.downloadFile(context, baseUrl + filename, filename);
-	}
-
-	@Background
-	protected void showLiveTrafficLite() {
-		updateWebviewProgress(0);
-
-		// Cache resources
-		cacheResource(this, FILENAME_IDF_BACKGROUND, URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE, true);
-
-		updateWebviewProgress(25);
-
-		String lastModified = cacheResource(this, FILENAME_IDF_TRAFFIC, URL_LIVE_TRAFFIC_IDF_STATE_BASE, false);
-
-		updateWebviewProgress(50);
-
-		// Load Webview
-		loadUrlInWebview(availableWebviews.get(currentViewId), lastModified);
-	}
-
-	@UiThread
-	protected void updateWebviewProgress(int progress) {
-		this.setProgress(progress);
 	}
 
 	private void launchWebsite(String url) {
