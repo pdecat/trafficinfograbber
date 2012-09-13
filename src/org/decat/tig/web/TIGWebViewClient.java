@@ -17,7 +17,6 @@
 package org.decat.tig.web;
 
 import java.io.File;
-import java.util.Date;
 
 import org.decat.tig.R;
 import org.decat.tig.TIG;
@@ -82,10 +81,13 @@ public class TIGWebViewClient extends WebViewClient {
 	private View retryCountDown;
 	private TextView retryCountDownText;
 	private boolean retryCountDownCancelled;
+	private String filesDirAbsolutePath;
+	private int scaledTopPadding;
 
 	@AfterInject
 	protected void initialize() {
 		topPaddingPx = (int) Float.parseFloat(activity.getString(R.dimen.html_body_padding_top).replace("px", ""));
+		filesDirAbsolutePath = activity.getFilesDir().getAbsolutePath();
 	}
 
 	@AfterViews
@@ -215,15 +217,16 @@ public class TIGWebViewClient extends WebViewClient {
 	}
 
 	private String cacheResource(String filename, String baseUrl, boolean useCache) {
+		Log.d(TIG.TAG, "TIGWebViewClient.cacheResource: filename=" + filename + ", baseUrl=" + baseUrl + ", useCache=" + useCache);
 		File file = activity.getFileStreamPath(filename);
 
 		if (file.exists()) {
 			if (useCache) {
-				Log.i(TIG.TAG, "TIGWebViewClient.cacheResource: '" + filename + "' already cached in '" + activity.getFilesDir().getAbsolutePath() + "'");
-				return new Date(file.lastModified()).toString();
+				Log.d(TIG.TAG, "TIGWebViewClient.cacheResource: '" + filename + "' already cached in '" + filesDirAbsolutePath + "'");
+				return null;
 			}
 			file.delete();
-			Log.i(TIG.TAG, "TIGWebViewClient.cacheResource: Deleted cached ressource '" + filename + "' from '" + activity.getFilesDir().getAbsolutePath() + "'");
+			Log.d(TIG.TAG, "TIGWebViewClient.cacheResource: Deleted cached ressource '" + filename + "' from '" + filesDirAbsolutePath + "'");
 		}
 
 		return ResourceDownloader.downloadFile(activity, baseUrl + filename, filename);
@@ -245,7 +248,7 @@ public class TIGWebViewClient extends WebViewClient {
 
 		// Add padding to the top of the HTML view to compensate for the overlaid action bar on Android 3.0+
 		if (Build.VERSION.SDK_INT >= 11) {
-			view.loadUrl("javascript:document.body.style.paddingTop='" + topPaddingPx + "px'");
+			view.loadUrl("javascript:document.body.style.paddingTop='" + scaledTopPadding + "px'");
 		}
 
 		// Hide ads after a short delay
@@ -277,7 +280,7 @@ public class TIGWebViewClient extends WebViewClient {
 	protected void setScaleAndScroll(WebView view) {
 		view.setInitialScale(initialScale);
 		view.scrollTo(xScroll, yScroll);
-		Log.d(TIG.TAG, "TIGWebViewClient.setScaleAndScroll: initialScale=" + initialScale + ", xScroll=" + xScroll + ", yScroll=" + yScroll);
+		Log.d(TIG.TAG, "TIGWebViewClient.setScaleAndScroll: initialScale=" + initialScale + ", xScroll=" + xScroll + ", yScroll=" + yScroll + ", scaledTopPadding=" + scaledTopPadding);
 	}
 
 	@UiThread
@@ -293,7 +296,10 @@ public class TIGWebViewClient extends WebViewClient {
 
 		// Compensate the padding at the top of the HTML view that compensates for the overlaid action bar on Android 3.0+
 		if (Build.VERSION.SDK_INT >= 11) {
-			this.yScroll += topPaddingPx;
+			scaledTopPadding = (topPaddingPx * 100) / initialScale;
+			this.yScroll += scaledTopPadding;
+		} else {
+			scaledTopPadding = 0;
 		}
 	}
 }

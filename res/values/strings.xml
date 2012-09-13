@@ -45,7 +45,10 @@
 	<string name="downloadingResources">Downloading resources</string>
 	<string name="pleaseWait">Please wait…</string>
 	<string name="newVersion">New version: please set your own preferences</string>
-    
+	<string name="no_third_party_activity_set_in_preferences">No third party activity set in preferences…</string>
+	<string name="error_while_launching_third_party_activity">Error while launching third party activity&#160;</string>
+	<string name="error_while_launching_website">Error while launching %1$s website</string>
+        
     <!-- Retry count down items -->
 	<string name="countDownRefreshingIn">Refreshing in&#160;</string>
 	<string name="countDownUnits">s</string>

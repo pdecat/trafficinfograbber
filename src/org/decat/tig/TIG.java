@@ -173,7 +173,8 @@ public class TIG extends Activity {
 			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_fs.jsp.html", 361 + 34, 145 + 24, 690 + 34,
 					633 + 24));
 		} else {
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html", 237, 108, 424, 316));
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html", 203 + 34, 108 + 24, 390 + 34,
+					316 + 24));
 		}
 
 	}
@@ -206,50 +207,18 @@ public class TIG extends Activity {
 		edit.commit();
 	}
 
-	private void updateRefreshButtonVisibility(Context context) {
+	private void updateButtonVisibility(Context context, String buttonPreferenceName, int buttonId) {
 		// Get current value
-		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.SHOW_REFRESH_BUTTON);
+		boolean value = getBooleanPreferenceValue(context, buttonPreferenceName);
 
-		View refreshButton = findViewById(R.id.refreshButton);
-		boolean preferenceShowRefreshButton = refreshButton.getVisibility() == View.VISIBLE;
-		if (value != preferenceShowRefreshButton) {
+		View button = findViewById(buttonId);
+		boolean preferenceShowButton = button.getVisibility() == View.VISIBLE;
+		if (value != preferenceShowButton) {
 			if (value) {
 				// Show refresh button as set in preferences
-				refreshButton.setVisibility(View.VISIBLE);
+				button.setVisibility(View.VISIBLE);
 			} else {
-				refreshButton.setVisibility(View.INVISIBLE);
-			}
-		}
-	}
-
-	private void updateDayNightSwitchButtonVisibility(Context context) {
-		// Get current value
-		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.SHOW_DAY_NIGHT_SWITCH_BUTTON);
-
-		View dayNightSwitchButton = findViewById(R.id.dayNightSwitchButton);
-		boolean preferenceShowDayNightSwitchButton = dayNightSwitchButton.getVisibility() == View.VISIBLE;
-		if (value != preferenceShowDayNightSwitchButton) {
-			if (value) {
-				// Show refresh button as set in preferences
-				dayNightSwitchButton.setVisibility(View.VISIBLE);
-			} else {
-				dayNightSwitchButton.setVisibility(View.INVISIBLE);
-			}
-		}
-	}
-
-	private void updateQuitButtonVisibility(Context context) {
-		// Get current value
-		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.SHOW_QUIT_BUTTON);
-
-		View quitButton = findViewById(R.id.quitButton);
-		boolean preferenceShowQuitButton = quitButton.getVisibility() == View.VISIBLE;
-		if (value != preferenceShowQuitButton) {
-			if (value) {
-				// Show refresh button as set in preferences
-				quitButton.setVisibility(View.VISIBLE);
-			} else {
-				quitButton.setVisibility(View.INVISIBLE);
+				button.setVisibility(View.INVISIBLE);
 			}
 		}
 	}
@@ -329,13 +298,13 @@ public class TIG extends Activity {
 		updateOrientationForcing(this);
 
 		// Update Refresh button visibility
-		updateRefreshButtonVisibility(this);
+		updateButtonVisibility(this, PreferencesHelper.SHOW_REFRESH_BUTTON, R.id.refreshButton);
 
 		// Update Day Night Switch button visibility
-		updateDayNightSwitchButtonVisibility(this);
+		updateButtonVisibility(this, PreferencesHelper.SHOW_DAY_NIGHT_SWITCH_BUTTON, R.id.dayNightSwitchButton);
 
 		// Update Quit button visibility
-		updateQuitButtonVisibility(this);
+		updateButtonVisibility(this, PreferencesHelper.SHOW_QUIT_BUTTON, R.id.quitButton);
 
 		// Update Ads visibility
 		updateAdsVisibility(this);
@@ -487,7 +456,7 @@ public class TIG extends Activity {
 			Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 			startActivity(myIntent);
 		} catch (Exception e) {
-			String message = "Error while launching " + url + " website";
+			String message = getString(R.string.error_while_launching_website, url);
 			Log.e(TAG, message, e);
 			showToast(message);
 		}
@@ -508,12 +477,12 @@ public class TIG extends Activity {
 				myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(myIntent);
 			} catch (Exception e) {
-				String message = "Error while launching third party activity " + otherComponentName.getPackageName();
+				String message = getString(R.string.error_while_launching_third_party_activity) + otherComponentName.getPackageName();
 				Log.e(TAG, message, e);
 				showToast(message);
 			}
 		} else {
-			String message = "No third party activity set in preferences...";
+			String message = getString(R.string.no_third_party_activity_set_in_preferences);
 			Log.w(TAG, message);
 			showToast(message);
 		}
@@ -529,12 +498,16 @@ public class TIG extends Activity {
 	}
 
 	public void quit(View v) {
+		Log.d(TAG, "TIG.quit");
+
 		cancelNotification(this);
 		preferenceNotificationShortcut = false;
 		finish();
 	}
 
 	public void dayNightSwitch(View v) {
+		Log.d(TAG, "TIG.dayNightSwitch");
+
 		Window win = getWindow();
 		WindowManager.LayoutParams winParams = win.getAttributes();
 
