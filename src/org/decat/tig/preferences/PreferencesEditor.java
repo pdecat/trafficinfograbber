@@ -30,10 +30,7 @@ import android.util.Log;
 
 public class PreferencesEditor extends PreferenceActivity {
 	public static final String EXTRA_ID = "id";
-	public static final String EXTRA_KEY = "key";
 	public static final String EXTRA_VALUE = "value";
-
-	public static final String ACTIVITY_PREFERENCES_EDITOR_RESET_DEFAULTS = "resetDefaults";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

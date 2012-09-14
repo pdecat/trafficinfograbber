@@ -105,8 +105,8 @@ public class ActivitySelector extends ListActivity implements OnItemClickListene
 
 		// Prepare result for calling activity
 		Intent result = new Intent();
-		result.putExtra("id", id);
-		result.putExtra("value", value);
+		result.putExtra(PreferencesEditor.EXTRA_ID, id);
+		result.putExtra(PreferencesEditor.EXTRA_VALUE, value);
 		setResult(RESULT_OK, result);
 
 		// Finish this activity
