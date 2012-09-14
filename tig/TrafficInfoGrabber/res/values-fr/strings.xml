@@ -18,43 +18,47 @@
 
 -->
 <resources>
-	<!-- Activité -->
-	<string name="preferencesEditor">TIG - Editeur de préférences</string>
-	<string name="activitySelector">TIG - Sélectionneur d\'activité</string>
 
-	<!-- Eléments du menu -->
-	<string name="switchView">Changer de vue</string>
-	<string name="liveTraffic">Trafic en direct</string>
-	<string name="liveTrafficLite">Trafic en direct allégé</string>
-	<string name="closedAtNight">Fermetures nocturnes</string>
-	<string name="quickStats">Statistiques</string>
-	<string name="trafficCollisions">Accidents</string>
-	<string name="preferences">Préférences</string>
-	<string name="about">À propos</string>
+    <!-- Activité -->
+    <string name="preferencesEditor">TIG - Editeur de préférences</string>
+    <string name="activitySelector">TIG - Sélectionneur d\'activité</string>
 
-	<!-- Eléments de la vue -->
-	<string name="refresh">Rafraichir</string>
+    <!-- Eléments du menu -->
+    <string name="switchView">Changer de vue</string>
+    <string name="liveTraffic">Trafic en direct</string>
+    <string name="liveTrafficLite">Trafic en direct allégé</string>
+    <string name="closedAtNight">Fermetures nocturnes</string>
+    <string name="quickStats">Statistiques</string>
+    <string name="trafficCollisions">Accidents</string>
+    <string name="preferences">Préférences</string>
+    <string name="about">À propos</string>
 
-	<!-- Divers -->
-	<string name="loading">Chargement</string>
-	<string name="downloadingResources">Chargement des ressources</string>
-	<string name="pleaseWait">Merci de patienter…</string>
-	<string name="newVersion">Nouvelle version : veuillez définir vos propres préférences</string>
+    <!-- Eléments de la vue -->
+    <string name="refresh">Rafraichir</string>
+
+    <!-- Divers -->
+    <string name="loading">Chargement</string>
+    <string name="downloadingResources">Chargement des ressources</string>
+    <string name="pleaseWait">Merci de patienter…</string>
+    <string name="newVersion">Nouvelle version : veuillez définir vos propres préférences</string>
+    <string name="newVersionShowPreferences">C\'est la première fois que vous lancez TIG %1$s. Voulez-vous mettre à jour vos préférences ?</string>
     <string name="no_third_party_activity_set_in_preferences">Pas d\'application tierce définie dans les préférences…</string>
     <string name="error_while_launching_third_party_activity">Erreur lors du lancement de l\'application tierce&#160;</string>
     <string name="error_while_launching_website">Erreur lors du lancement du site web %1$s</string>
-    
+    <string name="YES">Oui</string>
+    <string name="NO">Non</string>
+
     <!-- Eléments du compte à rebours avant nouvelle tentative -->
     <string name="countDownRefreshingIn">Rafraîchissement dans&#160;</string>
     <string name="countDownUnits">s</string>
     <string name="countDownClickToCancel">Cliquer pour annuler</string>
-    
+
     <!-- Boutons -->
     <string name="quitButtonDescription">Quitter</string>
     <string name="dayNightSwitchButtonDescription">Commuter le mode jour/nuit</string>
     <string name="refreshButtonDescription">Rafraîchir</string>
 
-	<!-- Labels des préférences -->
+    <!-- Labels des préférences -->
     <string name="PREFS_CATEGORY_INTERFACE_SUMMARY">Adapter l\'interface à votre goût</string>
     <string name="PREFS_CATEGORY_INTERFACE_TITLE">Interface</string>
     <string name="SHOW_REFRESH_BUTTON">Bouton Rafraîchir</string>
@@ -79,12 +83,13 @@
     <string name="PREFS_CATEGORY_OTHER_TITLE">Autres</string>
     <string name="SHOW_ADS">Publicité non intrusive</string>
     <string name="SHOW_ADS_SUMMARY">Supporter le développeur de ce projet en affichant de la publicité pendant le chargement</string>
-    
-    <!-- Notifications -->
-	<string name="notificationLabel">Lancer TIG</string>
-	<string name="notificationMessage">Raccourci pour lancer TIG…</string>
 
-	<!-- Chaines pour 'A propos' -->
-	<string name="about_comments">Un simple attrapeur d\'information trafic</string>
-	<string name="about_website_label">TrafficInfoGrabber chez Google Code</string>
+    <!-- Notifications -->
+    <string name="notificationLabel">Lancer TIG</string>
+    <string name="notificationMessage">Raccourci pour lancer TIG…</string>
+
+    <!-- Chaines pour 'A propos' -->
+    <string name="about_comments">Un simple attrapeur d\'information trafic</string>
+    <string name="about_website_label">TrafficInfoGrabber chez Google Code</string>
+
 </resources>

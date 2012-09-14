@@ -26,11 +26,13 @@ import org.decat.tig.web.TIGWebViewClient;
 import org.decat.tig.web.WebviewSettings;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -150,8 +152,23 @@ public class TIG extends Activity {
 		if (newVersion) {
 			Log.i(TAG, "New application version: " + appVersion + " (previous: " + installedAppVersion + ")");
 			setInstalledAppVersion(appVersion);
-			showToast(getString(R.string.newVersion));
-			showPreferencesEditor();
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(getString(R.string.newVersionShowPreferences, appVersion))
+			       .setCancelable(false)
+			       .setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   dialog.cancel();
+			               showPreferencesEditor();
+			           }
+			       })
+			       .setNegativeButton(R.string.NO, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			                dialog.cancel();
+			           }
+			       });
+			AlertDialog alert = builder.create();
+			alert.show();
 		} else {
 			Log.i(TAG, "Application version: " + appVersion);
 		}

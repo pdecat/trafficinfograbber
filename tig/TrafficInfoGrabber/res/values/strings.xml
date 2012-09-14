@@ -18,83 +18,85 @@
 
 -->
 <resources>
-	<string name="app_name">TrafficInfoGrabber</string>
-	<string name="app_version">${project.version}</string>
 
-	<!-- Activities -->
-	<string name="preferencesEditor">TIG - Preferences Editor</string>
-	<string name="activitySelector">TIG - Activity Selector</string>
+    <string name="app_name">TrafficInfoGrabber</string>
+    <string name="app_version">${project.version}</string>
 
-	<!-- Menu items -->
-	<string name="switchView">Switch View</string>
-	<string name="liveTraffic">Live Traffic</string>
-	<string name="liveTrafficLite">Live Traffic Lite</string>
-	<string name="closedAtNight">Closed At Night</string>
-	<string name="quickStats">Quick statistics</string>
-	<string name="trafficCollisions">Traffic Collisions</string>
-	<string name="sytadinWebsite">www.sytadin.fr</string>
-	<string name="infotraficWebsite">www.infotrafic.com</string>
-	<string name="preferences">Preferences</string>
-	<string name="about">About</string>
+    <!-- Activities -->
+    <string name="preferencesEditor">TIG - Preferences Editor</string>
+    <string name="activitySelector">TIG - Activity Selector</string>
 
-	<!-- View items -->
-	<string name="refresh">Refresh</string>
+    <!-- Menu items -->
+    <string name="switchView">Switch View</string>
+    <string name="liveTraffic">Live Traffic</string>
+    <string name="liveTrafficLite">Live Traffic Lite</string>
+    <string name="closedAtNight">Closed At Night</string>
+    <string name="quickStats">Quick statistics</string>
+    <string name="trafficCollisions">Traffic Collisions</string>
+    <string name="sytadinWebsite">www.sytadin.fr</string>
+    <string name="infotraficWebsite">www.infotrafic.com</string>
+    <string name="preferences">Preferences</string>
+    <string name="about">About</string>
 
-	<!-- Miscellaneous -->
-	<string name="loading">Loading</string>
-	<string name="downloadingResources">Downloading resources</string>
-	<string name="pleaseWait">Please wait…</string>
-	<string name="newVersion">New version: please set your own preferences</string>
-	<string name="no_third_party_activity_set_in_preferences">No third party activity set in preferences…</string>
-	<string name="error_while_launching_third_party_activity">Error while launching third party activity&#160;</string>
-	<string name="error_while_launching_website">Error while launching %1$s website</string>
-        
+    <!-- View items -->
+    <string name="refresh">Refresh</string>
+
+    <!-- Miscellaneous -->
+    <string name="loading">Loading</string>
+    <string name="downloadingResources">Downloading resources</string>
+    <string name="pleaseWait">Please wait…</string>
+    <string name="newVersionShowPreferences">This is the first time you launch TIG %1$s. Would you like to update your preferences?</string>
+    <string name="no_third_party_activity_set_in_preferences">No third party activity set in preferences…</string>
+    <string name="error_while_launching_third_party_activity">Error while launching third party activity&#160;</string>
+    <string name="error_while_launching_website">Error while launching %1$s website</string>
+    <string name="YES">Yes</string>
+    <string name="NO">No</string>
+
     <!-- Retry count down items -->
-	<string name="countDownRefreshingIn">Refreshing in&#160;</string>
-	<string name="countDownUnits">s</string>
-	<string name="countDownClickToCancel">Click to cancel</string>
-    
+    <string name="countDownRefreshingIn">Refreshing in&#160;</string>
+    <string name="countDownUnits">s</string>
+    <string name="countDownClickToCancel">Click to cancel</string>
+
     <!-- Buttons -->
-	<string name="quitButtonDescription">Quit</string>
-	<string name="dayNightSwitchButtonDescription">Day/Night Switch</string>
-	<string name="refreshButtonDescription">Refresh</string>
+    <string name="quitButtonDescription">Quit</string>
+    <string name="dayNightSwitchButtonDescription">Day/Night Switch</string>
+    <string name="refreshButtonDescription">Refresh</string>
 
-	<!-- Preferences labels -->
-	<string name="PREFS_CATEGORY_INTERFACE_SUMMARY">Adapt the interface to your taste</string>
-	<string name="PREFS_CATEGORY_INTERFACE_TITLE">Interface</string>
-	<string name="SHOW_REFRESH_BUTTON">Refresh button</string>
-	<string name="SHOW_REFRESH_BUTTON_SUMMARY">Allows to refresh the current view</string>
-	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Day Night Switch button</string>
-	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON_SUMMARY">Allows to switch between day and night mode</string>
-	<string name="SHOW_QUIT_BUTTON">Quit button</string>
-	<string name="SHOW_QUIT_BUTTON_SUMMARY">Allows to quit the application</string>
-	<string name="FORCE_PORTRAIT_ORIENTATION">Force portrait orientation</string>
-	<string name="FORCE_PORTRAIT_ORIENTATION_SUMMARY">Avoids unwanted orientation changes</string>
+    <!-- Preferences labels -->
+    <string name="PREFS_CATEGORY_INTERFACE_SUMMARY">Adapt the interface to your taste</string>
+    <string name="PREFS_CATEGORY_INTERFACE_TITLE">Interface</string>
+    <string name="SHOW_REFRESH_BUTTON">Refresh button</string>
+    <string name="SHOW_REFRESH_BUTTON_SUMMARY">Allows to refresh the current view</string>
+    <string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Day Night Switch button</string>
+    <string name="SHOW_DAY_NIGHT_SWITCH_BUTTON_SUMMARY">Allows to switch between day and night mode</string>
+    <string name="SHOW_QUIT_BUTTON">Quit button</string>
+    <string name="SHOW_QUIT_BUTTON_SUMMARY">Allows to quit the application</string>
+    <string name="FORCE_PORTRAIT_ORIENTATION">Force portrait orientation</string>
+    <string name="FORCE_PORTRAIT_ORIENTATION_SUMMARY">Avoids unwanted orientation changes</string>
     <string name="USE_HD">HD views</string>
-	<string name="USE_HD_SUMMARY">Display the traffic view in HD when available</string>
-	<string name="OTHER_ACTIVITY">Preferred third party activity</string>
-	<string name="OTHER_ACTIVITY_SUMMARY">Press Search to launch this activity</string>
+    <string name="USE_HD_SUMMARY">Display the traffic view in HD when available</string>
+    <string name="OTHER_ACTIVITY">Preferred third party activity</string>
+    <string name="OTHER_ACTIVITY_SUMMARY">Press Search to launch this activity</string>
+    <string name="PREFS_CATEGORY_NOTIFICATIONS_SUMMARY">Define notifications settings</string>
+    <string name="PREFS_CATEGORY_NOTIFICATIONS_TITLE">Notification</string>
+    <string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>
+    <string name="NOTIFICATION_SHORTCUT_SUMMARY">Add a notification to access TIG quickly</string>
+    <string name="NOTIFICATION_SHORTCUT_ON_BOOT">Trigger on boot</string>
+    <string name="NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY">Upon booting, add a notification to launch TIG</string>
+    <string name="PREFS_CATEGORY_OTHER_SUMMARY">Other settings you may want to adjust</string>
+    <string name="PREFS_CATEGORY_OTHER_TITLE">Other</string>
+    <string name="SHOW_ADS">Non intrusive ads</string>
+    <string name="SHOW_ADS_SUMMARY">Support this project\'s developer displaying ads while loading</string>
 
-  	<string name="PREFS_CATEGORY_NOTIFICATIONS_SUMMARY">Define notifications settings</string>
-	<string name="PREFS_CATEGORY_NOTIFICATIONS_TITLE">Notification</string>
-	<string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>
-	<string name="NOTIFICATION_SHORTCUT_SUMMARY">Add a notification to access TIG quickly</string>
-	<string name="NOTIFICATION_SHORTCUT_ON_BOOT">Trigger on boot</string>
-	<string name="NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY">Upon booting, add a notification to launch TIG</string>
+    <!-- Notifications -->
+    <string name="notificationLabel">Launch TIG</string>
+    <string name="notificationMessage">Shortcut to launch TIG…</string>
 
-  	<string name="PREFS_CATEGORY_OTHER_SUMMARY">Other settings you may want to adjust</string>
-	<string name="PREFS_CATEGORY_OTHER_TITLE">Other</string>
-	<string name="SHOW_ADS">Non intrusive ads</string>
-	<string name="SHOW_ADS_SUMMARY">Support this project\'s developer displaying ads while loading</string>
-    
-	<!-- Notifications -->
-	<string name="notificationLabel">Launch TIG</string>
-	<string name="notificationMessage">Shortcut to launch TIG…</string>
+    <!-- Strings for About dialog -->
+    <string name="about_comments">A simple traffic information grabber</string>
+    <string name="about_copyright">Copyright © 2010–2012 Patrick Decat</string>
+    <string name="about_website_label">TrafficInfoGrabber at Google Code</string>
+    <string name="about_website_url">http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber/</string>
+    <string name="about_email">pdecat%2Btig@gmail.com</string>
 
-	<!-- Strings for About dialog -->
-	<string name="about_comments">A simple traffic information grabber</string>
-	<string name="about_copyright">Copyright © 2010–2012 Patrick Decat</string>
-	<string name="about_website_label">TrafficInfoGrabber at Google Code</string>
-	<string name="about_website_url">http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber/</string>
-	<string name="about_email">pdecat%2Btig@gmail.com</string>
 </resources>
