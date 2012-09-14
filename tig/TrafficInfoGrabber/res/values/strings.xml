@@ -60,7 +60,7 @@
 	<string name="refreshButtonDescription">Refresh</string>
 
 	<!-- Preferences labels -->
-	<string name="preferencesMessage">Set your preferred third party activity to launch on Search</string>
+	<string name="preferenceThirdPartyApp">Set your preferred third party activity to launch on Search</string>
 	<string name="OTHER_ACTIVITY_VALUE">Activity value</string>
 	<string name="OTHER_ACTIVITY">Activity to launch on Search</string>
 	<string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>

@@ -16,14 +16,6 @@
  */
 package org.decat.tig.preferences;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.decat.tig.preferences.Preference.PreferenceGroup;
-import org.decat.tig.preferences.Preference.PreferenceType;
-
-import android.content.SharedPreferences;
-
 public class PreferencesHelper {
 	public static final String VALUE_SUFFIX = "_VALUE";
 
@@ -46,35 +38,4 @@ public class PreferencesHelper {
 	public static final String SHOW_ADS = "SHOW_ADS";
 
 	public static final String USE_HD = "USE_HD";
-
-	public final Preference[] preferences = {
-			// Values must be before keys so they are loaded when the view is
-			// created
-			new Preference(OTHER_ACTIVITY + VALUE_SUFFIX, PreferenceGroup.GROUP_ACTIVITIES_VALUES, PreferenceType.TYPE_ACTIVITY_VALUE),
-			new Preference(OTHER_ACTIVITY, PreferenceGroup.GROUP_ACTIVITIES, PreferenceType.TYPE_ACTIVITY),
-			new Preference(NOTIFICATION_SHORTCUT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
-			new Preference(NOTIFICATION_SHORTCUT_ON_BOOT, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
-			new Preference(SHOW_REFRESH_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
-			new Preference(SHOW_DAY_NIGHT_SWITCH_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
-			new Preference(SHOW_QUIT_BUTTON, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
-			new Preference(FORCE_PORTRAIT_ORIENTATION, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
-			new Preference(SHOW_ADS, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
-			new Preference(USE_HD, PreferenceGroup.GROUP_TOGGLES, PreferenceType.TYPE_BOOLEAN),
-	};
-
-	SharedPreferences sharedPreferences;
-
-	public PreferencesHelper(SharedPreferences sharedPreferences) {
-		this.sharedPreferences = sharedPreferences;
-	}
-
-	public List<Preference> getPreferencesByGroup(PreferenceGroup group) {
-		List<Preference> result = new ArrayList<Preference>();
-		for (Preference preference : preferences) {
-			if (preference.group.equals(group)) {
-				result.add(preference);
-			}
-		}
-		return result;
-	}
 }

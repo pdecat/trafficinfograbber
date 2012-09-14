@@ -49,14 +49,9 @@ public class ActivitySelector extends ListActivity implements OnItemClickListene
 	private List<Map<String, ?>> list;
 	private List<ResolveInfo> resolvInfos;
 
-	private String key;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		// Get the key of the preference being edited
-		key = getIntent().getExtras().getString(PreferencesEditor.EXTRA_KEY);
 
 		// List installed applications
 		PackageManager pm = this.getPackageManager();
@@ -71,10 +66,8 @@ public class ActivitySelector extends ListActivity implements OnItemClickListene
 		for (int i = 0; i < resolvInfosSize; i++) {
 			ResolveInfo resolvInfo = resolvInfos.get(i);
 			/*
-			 * Simple adapter craziness. For each item, we need to create a map
-			 * from a key to its value (the value can be any object--the view
-			 * binder will take care of filling the View with a representation
-			 * of that object).
+			 * Simple adapter craziness. For each item, we need to create a map from a key to its value (the value can be any object--the view binder will take care of filling the View with a
+			 * representation of that object).
 			 */
 			Map<String, Object> map = new TreeMap<String, Object>();
 			CharSequence label = resolvInfo.loadLabel(getPackageManager());
@@ -113,7 +106,6 @@ public class ActivitySelector extends ListActivity implements OnItemClickListene
 		// Prepare result for calling activity
 		Intent result = new Intent();
 		result.putExtra("id", id);
-		result.putExtra("key", key);
 		result.putExtra("value", value);
 		setResult(RESULT_OK, result);
 

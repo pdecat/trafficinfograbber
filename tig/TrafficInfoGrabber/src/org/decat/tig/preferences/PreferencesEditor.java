@@ -16,196 +16,84 @@
  */
 package org.decat.tig.preferences;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.decat.tig.R;
 import org.decat.tig.TIG;
-import org.decat.tig.preferences.Preference.PreferenceType;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-public class PreferencesEditor extends Activity {
+public class PreferencesEditor extends PreferenceActivity {
 	public static final String EXTRA_ID = "id";
 	public static final String EXTRA_KEY = "key";
 	public static final String EXTRA_VALUE = "value";
 
-	protected static final int ACTIVITY_REQUEST_ACTIVITY_PICK = 0;
-	
 	public static final String ACTIVITY_PREFERENCES_EDITOR_RESET_DEFAULTS = "resetDefaults";
-
-	private PreferencesHelper preferencesHelper;
-	private SharedPreferences sharedPreferences;
-
-	private Map<String, View> inputViews;
-	private HashMap<String, Object> preferencesValues;
-
-	private String getStringById(String id) {
-		int identifier = getResources().getIdentifier(id, "string", TIG.class.getPackage().getName());
-		return identifier != 0 ? getString(identifier) : "NOT_FOUND";
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		boolean resetDefaults = getIntent().getBooleanExtra(ACTIVITY_PREFERENCES_EDITOR_RESET_DEFAULTS, false);
-		Log.d(TIG.TAG, ACTIVITY_PREFERENCES_EDITOR_RESET_DEFAULTS + " extra was " + resetDefaults);
-		
-		sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
-		preferencesHelper = new PreferencesHelper(sharedPreferences);
 
-		ScrollView sv = new ScrollView(this);
-		sv.setFillViewport(true);
+		// Initialize preference manager and activity
+		PreferenceManager prefMgr = getPreferenceManager();
+		prefMgr.setSharedPreferencesName(TIG.class.getSimpleName());
 
-		LinearLayout ll = new LinearLayout(this);
-		ll.setOrientation(android.widget.LinearLayout.VERTICAL);
-		sv.addView(ll);
+		addPreferencesFromResource(R.xml.preferences);
 
-		final TextView tv = new TextView(this);
-		tv.setText(getString(R.string.preferencesMessage));
-		ll.addView(tv);
-
-		Preference[] preferences = preferencesHelper.preferences;
-		inputViews = new HashMap<String, View>();
-		preferencesValues = new HashMap<String, Object>();
-		for (int i = 0; i < preferences.length; i++) {
-			Preference preference = preferences[i];
-			PreferenceType preferenceType = preference.type;
-			final String key = preference.key;
-			Log.d(TIG.TAG, "Loading preference " + key);
-
-			Object value = null;
-			View view = null;
-			switch (preferenceType) {
-				case TYPE_ACTIVITY_VALUE:
-					value = sharedPreferences.getString(key, null);
-					// Do not create any view, handled with next case
-					Log.d(TIG.TAG, "No view created for contact value preference " + key);
-					break;
-				case TYPE_ACTIVITY:
-					// TODO: Add label
-					Button btn = new Button(this);
-					view = btn;
-					value = sharedPreferences.getString(key, null);
-					String btnLabel = (String) (value == null ? "Select " + getStringById(preference.key) : preferencesValues.get(key + PreferencesHelper.VALUE_SUFFIX));
-					btn.setText(btnLabel);
-					btn.setOnClickListener(new Button.OnClickListener() {
-						public void onClick(View v) {
-							selectActivity(key);
-						}
-					});
-					ll.addView(btn);
-
-					Log.d(TIG.TAG, "Created button view for activity preference " + key);
-					break;
-
-				case TYPE_BOOLEAN:
-					CheckBox checkBox = new CheckBox(this);
-					view = checkBox;
-					checkBox.setText((CharSequence) getStringById(preference.key));
-					value = sharedPreferences.getBoolean(key, true);
-					
-					if (resetDefaults && PreferencesHelper.SHOW_ADS.equals(key)) {
-					    value = true;
-					}
-					
-					checkBox.setChecked((Boolean) value);
-					ll.addView(checkBox);
-					Log.d(TIG.TAG, "Created checkbox view for preference " + key);
-					break;
-				default:
-					Log.w(TIG.TAG, "Unknown preference type " + key);
+		// Update select third party activity button
+		SharedPreferences sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
+		String thirdPartyActivity = sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, "Not set");
+		final Preference otherActivityPref = findPreference(PreferencesHelper.OTHER_ACTIVITY);
+		otherActivityPref.setSummary(thirdPartyActivity);
+		otherActivityPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				// Useless check?
+				if (otherActivityPref.equals(preference)) {
+					Intent intent = new Intent(PreferencesEditor.this, ActivitySelector.class);
+					otherActivityPref.setIntent(intent);
+					startActivityForResult(intent, 0);
+				}
+				return true;
 			}
-
-			preferencesValues.put(key, value);
-			preference.view = view;
-			inputViews.put(key, view);
-		}
-
-		setContentView(sv);
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		SharedPreferences.Editor ed = sharedPreferences.edit();
-		Preference[] preferences = preferencesHelper.preferences;
-
-		for (int i = 0; i < preferences.length; i++) {
-			Preference preference = preferences[i];
-			PreferenceType preferenceType = preference.type;
-			String key = preference.key;
-
-			switch (preferenceType) {
-				case TYPE_ACTIVITY_VALUE:
-				case TYPE_ACTIVITY:
-					Object value = preferencesValues.get(key);
-					if (value != null) {
-						Log.d(TIG.TAG, "Stored activity preference " + key);
-						ed.putString(key, (String) value);
-					}
-					break;
-
-				case TYPE_BOOLEAN:
-					Log.d(TIG.TAG, "Stored boolean preference " + key);
-					ed.putBoolean(key, ((CheckBox) preference.view).isChecked());
-					break;
-
-				default:
-					Log.w(TIG.TAG, "Unknown preference type " + key);
-			}
-		}
-		ed.commit();
+		});
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		StringBuilder sb = new StringBuilder();
 
-		switch (requestCode) {
-			case ACTIVITY_REQUEST_ACTIVITY_PICK:
-				sb.append("Back from picking activity with resultCode=");
-				sb.append(resultCode);
-				if (resultCode == RESULT_OK) {
-					String dataString = data.getDataString();
-					String key = data.getStringExtra(EXTRA_KEY);
-					String value = data.getStringExtra(EXTRA_VALUE);
+		sb.append("Back from picking activity with resultCode=");
+		sb.append(resultCode);
+		if (resultCode == RESULT_OK) {
+			String dataString = data.getDataString();
+			String value = data.getStringExtra(EXTRA_VALUE);
 
-					sb.append(", dataString=");
-					sb.append(dataString);
-					sb.append(", id=");
-					sb.append(data.getLongExtra(EXTRA_ID, -1));
-					sb.append(", key=");
-					sb.append(key);
-					sb.append(", value=");
-					sb.append(value);
-					// TODO: Separate values
-					preferencesValues.put(key, value);
-					preferencesValues.put(key + PreferencesHelper.VALUE_SUFFIX, value);
-					((Button) inputViews.get(key)).setText(value);
-				}
-				Log.d(TIG.TAG, sb.toString());
-				break;
-			default:
-				Log.w(TIG.TAG, "Unknown activity request code " + requestCode);
+			sb.append(", dataString=");
+			sb.append(dataString);
+			sb.append(", id=");
+			sb.append(data.getLongExtra(EXTRA_ID, -1));
+			sb.append(", value=");
+			sb.append(value);
+
+			// Store new activity
+			updateStringPreference(PreferencesHelper.OTHER_ACTIVITY, value);
+			updateStringPreference(PreferencesHelper.OTHER_ACTIVITY + PreferencesHelper.VALUE_SUFFIX, value);
+
+			// Update select third party activity button
+			findPreference(PreferencesHelper.OTHER_ACTIVITY).setSummary(value);
 		}
+		Log.d(TIG.TAG, sb.toString());
 	}
 
-	private void selectActivity(String key) {
-		Intent intent = new Intent(this, ActivitySelector.class);
-		intent.putExtra(EXTRA_KEY, key);
-		startActivityForResult(intent, ACTIVITY_REQUEST_ACTIVITY_PICK);
+	private void updateStringPreference(String preference, String value) {
+		SharedPreferences sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
+		SharedPreferences.Editor ed = sharedPreferences.edit();
+		ed.putString(preference, value);
+		ed.commit();
 	}
 }

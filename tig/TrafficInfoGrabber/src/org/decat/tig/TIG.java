@@ -37,6 +37,8 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -73,8 +75,6 @@ public class TIG extends Activity {
 	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
 
 	private final Map<Integer, WebviewSettings> availableWebviews = new HashMap<Integer, WebviewSettings>();
-
-	private SharedPreferences sharedPreferences;
 
 	private int width;
 	private int height;
@@ -129,9 +129,6 @@ public class TIG extends Activity {
 		// Show progress bar
 		getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
 
-		// Load preferences
-		sharedPreferences = getPreferences(this);
-
 		// Retrieve screen density and aspect ratio
 		DisplayMetrics metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -139,20 +136,23 @@ public class TIG extends Activity {
 		height = metrics.heightPixels;
 		Log.i(TAG, "Screen width is " + width + ", and height is " + height);
 
-		// Initialize webview settings
-		initializeWebviewSettings();
-
 		// Set default view
 		currentViewId = R.id.liveTraffic;
 
+		// Check if first run of this version
+		String appVersion = getAppVersion();
+		String installedAppVersion = getInstalledAppVersion();
+		boolean newVersion = !appVersion.equals(installedAppVersion);
+
+		// Initialize preferences with default values
+		PreferenceManager.setDefaultValues(this, TIG.class.getSimpleName(), Context.MODE_PRIVATE, R.xml.preferences, newVersion);
+
 		// Show preferences editor if first run of this version
-		String appVersion = getAppVersion(this);
-		String installedAppVersion = getInstalledAppVersion(this);
-		if (!appVersion.equals(installedAppVersion)) {
+		if (newVersion) {
 			Log.i(TAG, "New application version: " + appVersion + " (previous: " + installedAppVersion + ")");
-			setInstalledAppVersion(this, appVersion);
+			setInstalledAppVersion(appVersion);
 			showToast(getString(R.string.newVersion));
-			showPreferencesEditor(true);
+			showPreferencesEditor();
 		} else {
 			Log.i(TAG, "Application version: " + appVersion);
 		}
@@ -160,7 +160,7 @@ public class TIG extends Activity {
 	}
 
 	private void initializeWebviewSettings() {
-		boolean useHD = sharedPreferences.getBoolean(PreferencesHelper.USE_HD, true);
+		boolean useHD = getPreferences(this).getBoolean(PreferencesHelper.USE_HD, true);
 
 		if (availableWebviews.isEmpty()) {
 			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_IDF_HTML, 197, 81, 385, 298));
@@ -180,34 +180,43 @@ public class TIG extends Activity {
 	}
 
 	private void clearDatabase(String database) {
+		Log.d(TAG, "TIG.clearDatabase");
 		if (this.deleteDatabase(database)) {
 			Log.i(TAG, "Cleared " + database + " database.");
 		}
 	}
 
 	public static SharedPreferences getPreferences(Context context) {
+		Log.d(TAG, "TIG.getPreferences");
 		return context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
 	}
 
 	public static boolean getBooleanPreferenceValue(Context context, String preferenceKey) {
-		return getPreferences(context).getBoolean(preferenceKey, true);
+		boolean value = getPreferences(context).getBoolean(preferenceKey, true);
+		Log.d(TAG, "TIG.getBooleanPreferenceValue: preferenceKey=" + preferenceKey + ", value=" + value);
+		return value;
 	}
 
-	private String getAppVersion(Context context) {
-		return context.getString(R.string.app_version);
+	private String getAppVersion() {
+		Log.d(TAG, "TIG.getAppVersion");
+		return getString(R.string.app_version);
 	}
 
-	private String getInstalledAppVersion(Context context) {
-		return sharedPreferences.getString(PreferencesHelper.INSTALLED_VERSION, "FIRST_RUN");
+	private String getInstalledAppVersion() {
+		Log.d(TAG, "TIG.getInstalledAppVersion");
+		return getPreferences(this).getString(PreferencesHelper.INSTALLED_VERSION, "FIRST_RUN");
 	}
 
-	private void setInstalledAppVersion(Context context, String appVersion) {
-		Editor edit = sharedPreferences.edit();
+	private void setInstalledAppVersion(String appVersion) {
+		Log.d(TAG, "TIG.setInstalledAppVersion: appVersion=" + appVersion);
+		Editor edit = getPreferences(this).edit();
 		edit.putString(PreferencesHelper.INSTALLED_VERSION, appVersion);
 		edit.commit();
 	}
 
 	private void updateButtonVisibility(Context context, String buttonPreferenceName, int buttonId) {
+		Log.d(TAG, "TIG.updateButtonVisibility: buttonPreferenceName=" + buttonPreferenceName);
+
 		// Get current value
 		boolean value = getBooleanPreferenceValue(context, buttonPreferenceName);
 
@@ -286,6 +295,7 @@ public class TIG extends Activity {
 
 	@Override
 	public void onResume() {
+		Log.d(TAG, "TIG.onResume");
 		super.onResume();
 
 		// Refresh webview settings
@@ -353,7 +363,7 @@ public class TIG extends Activity {
 			case R.id.infotraficWebsite:
 				launchWebsite(URL_INFOTRAFIC);
 			case R.id.preferences:
-				showPreferencesEditor(false);
+				showPreferencesEditor();
 				return true;
 			case R.id.about:
 				showAbout();
@@ -380,9 +390,8 @@ public class TIG extends Activity {
 		showToast(this, message);
 	}
 
-	private void showPreferencesEditor(boolean resetDefaults) {
+	private void showPreferencesEditor() {
 		Intent intent = new Intent(this, PreferencesEditor.class);
-		intent.putExtra(PreferencesEditor.ACTIVITY_PREFERENCES_EDITOR_RESET_DEFAULTS, resetDefaults);
 		startActivityForResult(intent, ACTIVITY_REQUEST_PREFERENCES_EDITOR);
 	}
 
@@ -465,7 +474,7 @@ public class TIG extends Activity {
 
 	@Override
 	public boolean onSearchRequested() {
-		String otherActivity = sharedPreferences.getString("OTHER_ACTIVITY", null);
+		String otherActivity = getPreferences(this).getString("OTHER_ACTIVITY", null);
 		if (otherActivity != null) {
 			String[] otherActivitySplitted = otherActivity.split("/");
 			ComponentName otherComponentName = new ComponentName(otherActivitySplitted[0], otherActivitySplitted[1]);
