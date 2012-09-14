@@ -20,60 +20,59 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory
-        android:summary="Customize your interface"
-        android:title="Interface" >
+        android:summary="@string/PREFS_CATEGORY_INTERFACE_SUMMARY"
+        android:title="@string/PREFS_CATEGORY_INTERFACE_TITLE" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="SHOW_REFRESH_BUTTON"
-            android:summary="Display a button to refresh the current view"
+            android:summary="@string/SHOW_REFRESH_BUTTON_SUMMARY"
             android:title="@string/SHOW_REFRESH_BUTTON" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="SHOW_DAY_NIGHT_SWITCH_BUTTON"
-            android:summary="Display a button to switch between day and night mode"
+            android:summary="@string/SHOW_DAY_NIGHT_SWITCH_BUTTON_SUMMARY"
             android:title="@string/SHOW_DAY_NIGHT_SWITCH_BUTTON" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="SHOW_QUIT_BUTTON"
-            android:summary="Display a button to quit"
+            android:summary="@string/SHOW_QUIT_BUTTON_SUMMARY"
             android:title="@string/SHOW_QUIT_BUTTON" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="FORCE_PORTRAIT_ORIENTATION"
-            android:summary="Force the orientation in portrait mode"
+            android:summary="@string/FORCE_PORTRAIT_ORIENTATION_SUMMARY"
             android:title="@string/FORCE_PORTRAIT_ORIENTATION" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="USE_HD"
-            android:summary="Display the traffic view in HD"
+            android:summary="@string/USE_HD_SUMMARY"
             android:title="@string/USE_HD" />
+        <Preference
+            android:key="OTHER_ACTIVITY"
+            android:summary="@string/OTHER_ACTIVITY_SUMMARY"
+            android:title="@string/OTHER_ACTIVITY" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:summary="Use notifications to access TIG quickly"
-        android:title="Notifications" >
+        android:summary="@string/PREFS_CATEGORY_NOTIFICATIONS_SUMMARY"
+        android:title="@string/PREFS_CATEGORY_NOTIFICATIONS_TITLE" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="NOTIFICATION_SHORTCUT"
-            android:summary="Add a notification to launch TIG"
+            android:summary="@string/NOTIFICATION_SHORTCUT_SUMMARY"
             android:title="@string/NOTIFICATION_SHORTCUT" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="NOTIFICATION_SHORTCUT_ON_BOOT"
-            android:summary="Add a notification to launch TIG on boot"
+            android:summary="@string/NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY"
             android:title="@string/NOTIFICATION_SHORTCUT_ON_BOOT" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:summary="Other settings"
-        android:title="Miscellaneous" >
-        <Preference
-            android:key="OTHER_ACTIVITY"
-            android:summary="ACTIVITY VALUE"
-            android:title="@string/preferenceThirdPartyApp" />
-
+        android:summary="@string/PREFS_CATEGORY_OTHER_SUMMARY"
+        android:title="@string/PREFS_CATEGORY_OTHER_TITLE" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="SHOW_ADS"
-            android:summary="Display ads while loading"
+            android:summary="@string/SHOW_ADS_SUMMARY"
             android:title="@string/SHOW_ADS" />
     </PreferenceCategory>
 

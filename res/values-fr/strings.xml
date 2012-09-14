@@ -55,19 +55,32 @@
     <string name="refreshButtonDescription">Rafraîchir</string>
 
 	<!-- Labels des préférences -->
-	<string name="preferencesMessage">Configurez votre activité tierce préférée à lancer avec le bouton Recherche</string>
-	<string name="OTHER_ACTIVITY_VALUE">Valeur de l\'activité</string>
-	<string name="OTHER_ACTIVITY">Activité à lancer avec le bouton Recherche</string>
-	<string name="NOTIFICATION_SHORTCUT">Raccourci dans la barre de notification</string>
-	<string name="NOTIFICATION_SHORTCUT_ON_BOOT">Raccourci dans la barre de notification au démarrage</string>
-	<string name="SHOW_REFRESH_BUTTON">Afficher le bouton Rafraîchir</string>
-	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Afficher le bouton pour commuter le mode jour/nuit</string>
-	<string name="SHOW_QUIT_BUTTON">Afficher le bouton Quitter</string>
-	<string name="FORCE_PORTRAIT_ORIENTATION">Forcer l\'orientation en portrait</string>
-	<string name="SHOW_ADS">Supporter le développeur de ce projet en affichant des publicités pendant le chargement</string>
-    <string name="USE_HD">Utiliser les vues HD quand elles sont disponibles</string>
+    <string name="PREFS_CATEGORY_INTERFACE_SUMMARY">Adapter l\'interface à votre goût</string>
+    <string name="PREFS_CATEGORY_INTERFACE_TITLE">Interface</string>
+    <string name="SHOW_REFRESH_BUTTON">Bouton Rafraîchir</string>
+    <string name="SHOW_REFRESH_BUTTON_SUMMARY">Permet de rafraîchir la vue actuelle</string>
+    <string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Bouton jour/nuit</string>
+    <string name="SHOW_DAY_NIGHT_SWITCH_BUTTON_SUMMARY">Permet de commuter le mode jour/nuit</string>
+    <string name="SHOW_QUIT_BUTTON">Bouton Quitter</string>
+    <string name="SHOW_QUIT_BUTTON_SUMMARY">Permet de quitter l\'application</string>
+    <string name="FORCE_PORTRAIT_ORIENTATION">Forcer l\'orientation en portrait</string>
+    <string name="FORCE_PORTRAIT_ORIENTATION_SUMMARY">Eviter les changements d\'orientation indésirables</string>
+    <string name="USE_HD">Vues HD</string>
+    <string name="USE_HD_SUMMARY">Afficher les vues HD quand elles sont disponibles</string>
+    <string name="OTHER_ACTIVITY">Activité tierce préférée</string>
+    <string name="OTHER_ACTIVITY_SUMMARY">Appuyer sur le bouton Recherche pour lancer cette activité</string>
+    <string name="PREFS_CATEGORY_NOTIFICATIONS_SUMMARY">Définir les réglages de notifications</string>
+    <string name="PREFS_CATEGORY_NOTIFICATIONS_TITLE">Notification</string>
+    <string name="NOTIFICATION_SHORTCUT">Raccourci dans la barre de notification</string>
+    <string name="NOTIFICATION_SHORTCUT_SUMMARY">Ajout d\'une notification pour accéder rapidement à TIG</string>
+    <string name="NOTIFICATION_SHORTCUT_ON_BOOT">Déclencher au démarrage du téléphone</string>
+    <string name="NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY">Au démarrage du téléphone, ajouter une notification pour lancer TIG</string>
+    <string name="PREFS_CATEGORY_OTHER_SUMMARY">Autres réglages que vous pourriez souhaiter ajuster</string>
+    <string name="PREFS_CATEGORY_OTHER_TITLE">Autres</string>
+    <string name="SHOW_ADS">Publicité non intrusive</string>
+    <string name="SHOW_ADS_SUMMARY">Supporter le développeur de ce projet en affichant de la publicité pendant le chargement</string>
     
-	<!-- Notifications -->
+    <!-- Notifications -->
 	<string name="notificationLabel">Lancer TIG</string>
 	<string name="notificationMessage">Raccourci pour lancer TIG…</string>
 

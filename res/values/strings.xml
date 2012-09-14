@@ -60,17 +60,32 @@
 	<string name="refreshButtonDescription">Refresh</string>
 
 	<!-- Preferences labels -->
-	<string name="preferenceThirdPartyApp">Set your preferred third party activity to launch on Search</string>
-	<string name="OTHER_ACTIVITY_VALUE">Activity value</string>
-	<string name="OTHER_ACTIVITY">Activity to launch on Search</string>
-	<string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>
-	<string name="NOTIFICATION_SHORTCUT_ON_BOOT">Notification shortcut on boot</string>
-	<string name="SHOW_REFRESH_BUTTON">Show Refresh button</string>
-	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Show Day Night Switch button</string>
-	<string name="SHOW_QUIT_BUTTON">Show Quit button</string>
+	<string name="PREFS_CATEGORY_INTERFACE_SUMMARY">Adapt the interface to your taste</string>
+	<string name="PREFS_CATEGORY_INTERFACE_TITLE">Interface</string>
+	<string name="SHOW_REFRESH_BUTTON">Refresh button</string>
+	<string name="SHOW_REFRESH_BUTTON_SUMMARY">Allows to refresh the current view</string>
+	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Day Night Switch button</string>
+	<string name="SHOW_DAY_NIGHT_SWITCH_BUTTON_SUMMARY">Allows to switch between day and night mode</string>
+	<string name="SHOW_QUIT_BUTTON">Quit button</string>
+	<string name="SHOW_QUIT_BUTTON_SUMMARY">Allows to quit the application</string>
 	<string name="FORCE_PORTRAIT_ORIENTATION">Force portrait orientation</string>
-	<string name="SHOW_ADS">Support this project\'s developer by showing Ads while loading</string>
-    <string name="USE_HD">Use HD views when available</string>
+	<string name="FORCE_PORTRAIT_ORIENTATION_SUMMARY">Avoids unwanted orientation changes</string>
+    <string name="USE_HD">HD views</string>
+	<string name="USE_HD_SUMMARY">Display the traffic view in HD when available</string>
+	<string name="OTHER_ACTIVITY">Preferred third party activity</string>
+	<string name="OTHER_ACTIVITY_SUMMARY">Press Search to launch this activity</string>
+
+  	<string name="PREFS_CATEGORY_NOTIFICATIONS_SUMMARY">Define notifications settings</string>
+	<string name="PREFS_CATEGORY_NOTIFICATIONS_TITLE">Notification</string>
+	<string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>
+	<string name="NOTIFICATION_SHORTCUT_SUMMARY">Add a notification to access TIG quickly</string>
+	<string name="NOTIFICATION_SHORTCUT_ON_BOOT">Trigger on boot</string>
+	<string name="NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY">Upon booting, add a notification to launch TIG</string>
+
+  	<string name="PREFS_CATEGORY_OTHER_SUMMARY">Other settings you may want to adjust</string>
+	<string name="PREFS_CATEGORY_OTHER_TITLE">Other</string>
+	<string name="SHOW_ADS">Non intrusive ads</string>
+	<string name="SHOW_ADS_SUMMARY">Support this project\'s developer displaying ads while loading</string>
     
 	<!-- Notifications -->
 	<string name="notificationLabel">Launch TIG</string>
