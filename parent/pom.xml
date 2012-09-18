@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat</groupId>
     <artifactId>parent</artifactId>
-    <version>0.1.3-SNAPSHOT</version>
+    <version>0.1.3</version>
     <packaging>pom</packaging>
     <name>Parent</name>
 
@@ -37,9 +37,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/parent</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/parent</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fparent</url>
+        <connection>scm:svn:http://dear2dear.googlecode.com/svn/tags/parent-0.1.3</connection>
+        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/tags/parent-0.1.3</developerConnection>
+        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fparent/tags/parent-0.1.3</url>
     </scm>
 
     <dependencyManagement>
