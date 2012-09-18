@@ -25,6 +25,11 @@
     <packaging>pom</packaging>
     <name>Parent</name>
 
+    <organization>
+        <name>Patrick Decat</name>
+    </organization>
+    <inceptionYear>2012</inceptionYear>
+    
     <properties>
         <environment>development</environment>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -158,36 +163,43 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>com.mycila.maven-license-plugin</groupId>
-                    <artifactId>maven-license-plugin</artifactId>
-                    <version>1.9.0</version>
-                    <!-- Checks for license headers. Use "mvn license:format" to update files. -->
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>1.3</version>
                     <configuration>
-                        <header>res/raw/license_short.txt</header>
-                        <mapping>
-                            <xslt>XML_STYLE</xslt>
-                            <xmlt>XML_STYLE</xmlt>
-                        </mapping>
-                        <!-- Disable default excludes to include pom.xml -->
-                        <useDefaultExcludes>false</useDefaultExcludes>
-                        <excludes>
-                            <exclude>res/raw/license_short.txt</exclude>
-                            <exclude>.classpath</exclude>
-                            <exclude>.factorypath</exclude>
-                            <exclude>.project</exclude>
-                            <exclude>.settings/**</exclude>
-                            <exclude>bin/**</exclude>
-                            <exclude>gen/**</exclude>
-                            <exclude>project.properties</exclude>
-                            <exclude>maven-eclipse.xml</exclude>
-                            <exclude>target/**</exclude>
-                            <exclude>**/*.png</exclude>
-                            <exclude>**/.svn/**</exclude>
-                        </excludes>
-                        <strictCheck>true</strictCheck>
+                        <verbose>false</verbose>
+                        <addSvnKeyWords>true</addSvnKeyWords>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <id>update-headers</id>
+                            <goals>
+                                <goal>update-file-header</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <licenseName>gpl_v3</licenseName>
+                                <roots>
+                                    <root>.</root>
+                                </roots>
+                                <excludes>
+                                    <exclude>.classpath</exclude>
+                                    <exclude>.factorypath</exclude>
+                                    <exclude>.project</exclude>
+                                    <exclude>.settings/**</exclude>
+                                    <exclude>bin/**</exclude>
+                                    <exclude>gen/**</exclude>
+                                    <exclude>project.properties</exclude>
+                                    <exclude>maven-eclipse.xml</exclude>
+                                    <exclude>target/**</exclude>
+                                    <exclude>**/*.png</exclude>
+                                    <exclude>**/.svn/**</exclude>
+                                </excludes>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
-
+                
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>
                   <groupId>org.eclipse.m2e</groupId>
