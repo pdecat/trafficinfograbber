@@ -168,7 +168,6 @@
                     <version>1.3</version>
                     <configuration>
                         <verbose>false</verbose>
-                        <addSvnKeyWords>true</addSvnKeyWords>
                     </configuration>
                     <executions>
                         <execution>
@@ -189,12 +188,16 @@
                                     <exclude>.settings/**</exclude>
                                     <exclude>bin/**</exclude>
                                     <exclude>gen/**</exclude>
+                                    <exclude>LICENSE.txt</exclude>
                                     <exclude>project.properties</exclude>
                                     <exclude>maven-eclipse.xml</exclude>
                                     <exclude>target/**</exclude>
                                     <exclude>**/*.png</exclude>
                                     <exclude>**/.svn/**</exclude>
                                 </excludes>
+                                <extraExtensions>
+                                    <txt>properties</txt>
+                                </extraExtensions>
                             </configuration>
                         </execution>
                     </executions>
