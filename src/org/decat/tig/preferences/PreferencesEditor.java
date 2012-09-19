@@ -30,6 +30,7 @@ import org.decat.tig.TIG;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -49,6 +50,12 @@ public class PreferencesEditor extends PreferenceActivity {
 		prefMgr.setSharedPreferencesName(TIG.class.getSimpleName());
 
 		addPreferencesFromResource(R.xml.preferences);
+
+		// Disable preferences targeting Android SDK level 8 if platform is older
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+			findPreference(PreferencesHelper.LAUNCH_TIG_ON_ENTER_CAR_DOCK).setEnabled(false);
+			findPreference(PreferencesHelper.QUIT_TIG_ON_EXIT_CAR_DOCK).setEnabled(false);
+		}
 
 		// Update select third party activity button
 		SharedPreferences sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);

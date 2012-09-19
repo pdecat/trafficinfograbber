@@ -90,6 +90,12 @@
     <string name="PREFS_CATEGORY_OTHER_TITLE">Other</string>
     <string name="SHOW_ADS">Non intrusive ads</string>
     <string name="SHOW_ADS_SUMMARY">Support this project\'s developer displaying ads while loading</string>
+    <string name="PREFS_CATEGORY_CAR_MODE_SUMMARY">Define desired behaviour on Car Mode changes</string>
+    <string name="PREFS_CATEGORY_CAR_MODE_TITLE">Car Mode (Android 2.2+)</string>
+    <string name="LAUNCH_TIG_ON_ENTER_CAR_DOCK_SUMMARY">TIG will be started or brought back to the foreground</string>
+    <string name="LAUNCH_TIG_ON_ENTER_CAR_DOCK_TITLE">Launch on entering Car Mode</string>
+    <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_SUMMARY">TIG will be finished</string>
+    <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_TITLE">Quit on exiting Car Mode</string>
 
     <!-- Notifications -->
     <string name="notificationLabel">Launch TIG</string>

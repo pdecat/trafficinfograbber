@@ -255,7 +255,7 @@ public class TIGWebViewClient extends WebViewClient {
 		setScaleAndScroll(view);
 
 		// Add padding to the top of the HTML view to compensate for the overlaid action bar on Android 3.0+
-		if (Build.VERSION.SDK_INT >= 11) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			view.loadUrl("javascript:document.body.style.paddingTop='" + scaledTopPadding + "px'");
 		}
 
@@ -303,7 +303,7 @@ public class TIGWebViewClient extends WebViewClient {
 		this.yScroll = yoffset;
 
 		// Compensate the padding at the top of the HTML view that compensates for the overlaid action bar on Android 3.0+
-		if (Build.VERSION.SDK_INT >= 11) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			scaledTopPadding = (topPaddingPx * 100) / initialScale;
 			this.yScroll += scaledTopPadding;
 		} else {
