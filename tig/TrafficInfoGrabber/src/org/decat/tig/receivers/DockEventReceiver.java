@@ -29,6 +29,7 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EReceiver;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.app.UiModeManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -78,12 +79,9 @@ public class DockEventReceiver extends BroadcastReceiver {
 	}
 
 	private void quitTig(Context context) {
-		// FIXME: Do nothing if activity is not running?
-
-		Intent finishTigIntent = new Intent(context, TIG.class);
-		finishTigIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		finishTigIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		finishTigIntent.putExtra(TIG.QUIT, true);
-		context.startActivity(finishTigIntent);
+		// Broadcasting an intent with a specific QUIT action is better than starting an activity every time.
+		// Indeed, it does nothing if then activity is not already running as its receiver is dynamically registered by onResume / unregistered by onPause
+		Intent quitTigIntent = new Intent(TIG.QUIT);
+		context.sendBroadcast(quitTigIntent);
 	}
 }
