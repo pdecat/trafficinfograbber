@@ -25,6 +25,9 @@ package org.decat.tig.receivers;
 import org.decat.tig.TIG;
 import org.decat.tig.preferences.PreferencesHelper;
 
+import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.EReceiver;
+
 import android.annotation.TargetApi;
 import android.app.UiModeManager;
 import android.content.BroadcastReceiver;
@@ -38,6 +41,7 @@ import android.util.Log;
  * Indeed, android.app.action.ENTER_CAR_MODE and android.app.action.EXIT_CAR_MODE are also new intents since level 8.
  */
 @TargetApi(8)
+@EReceiver
 public class DockEventReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -51,17 +55,35 @@ public class DockEventReceiver extends BroadcastReceiver {
 			if (UiModeManager.ACTION_ENTER_CAR_MODE.equals(intentAction) && sharedPreferences.getBoolean(PreferencesHelper.LAUNCH_TIG_ON_ENTER_CAR_DOCK, false)) {
 				Log.i(TIG.TAG, "DockEventReceiver.onReceive: launching TIG...");
 
-				Intent startTigIntent = new Intent(context, TIG.class);
-				startTigIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(startTigIntent);
+				startTig(context);
 			} else if (UiModeManager.ACTION_EXIT_CAR_MODE.equals(intentAction) && sharedPreferences.getBoolean(PreferencesHelper.QUIT_TIG_ON_EXIT_CAR_DOCK, false)) {
 				Log.i(TIG.TAG, "DockEventReceiver.onReceive: quitting TIG...");
-				Intent finishTigIntent = new Intent(context, TIG.class);
-				finishTigIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				finishTigIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				finishTigIntent.putExtra(TIG.QUIT, true);
-				context.startActivity(finishTigIntent);
+				quitTig(context);
 			}
 		}
+	}
+
+	@Background
+	protected void startTig(Context context) {
+		// Wait for a short time to work around CarHome applications getting in the foreground
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			Log.e(TIG.TAG, "Failed to sleep", e);
+		}
+
+		Intent startTigIntent = new Intent(context, TIG.class);
+		startTigIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(startTigIntent);
+	}
+
+	private void quitTig(Context context) {
+		// FIXME: Do nothing if activity is not running?
+
+		Intent finishTigIntent = new Intent(context, TIG.class);
+		finishTigIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		finishTigIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		finishTigIntent.putExtra(TIG.QUIT, true);
+		context.startActivity(finishTigIntent);
 	}
 }
