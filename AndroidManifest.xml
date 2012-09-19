@@ -19,7 +19,7 @@
   License along with this program.  If not, see
   <http://www.gnu.org/licenses/gpl-3.0.html>.
   #L%
-  --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1209180037" android:versionName="0.4.4-SNAPSHOT" package="org.decat.tig">
+  --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1209180038" android:versionName="0.4.4-SNAPSHOT" package="org.decat.tig">
     
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -64,7 +64,7 @@
 			</intent-filter>
 		</receiver>
         
-        <receiver android:name=".receivers.DockEventReceiver">
+        <receiver android:name=".receivers.DockEventReceiver_">
             <intent-filter>
                 <!-- New intents since Android SDK level 8 -->
                 <action android:name="android.app.action.ENTER_CAR_MODE"/>
