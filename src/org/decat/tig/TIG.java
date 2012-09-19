@@ -38,10 +38,12 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
@@ -76,7 +78,16 @@ public class TIG extends Activity {
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
 
-	public static final String QUIT = "QUIT";
+	public static final String QUIT = "org.decat.tig.QUIT_ORDER";
+	// Set up an intent filter to quit TIG on Car Mode exiting
+	private IntentFilter quitIntentFilter = new IntentFilter(QUIT);
+	// Set up broadcast receiver to quit TIG on Car Mode exiting
+	private BroadcastReceiver quitBroadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			quit();
+		}
+	};
 
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 
@@ -112,78 +123,74 @@ public class TIG extends Activity {
 	public void init() {
 		Log.d(TAG, "TIG.init");
 
-		if (!isFinishing()) {
-			// Request progress bar feature
-			getWindow().requestFeature(Window.FEATURE_PROGRESS);
+		// Request progress bar feature
+		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
-			// Clear webview databases
-			clearDatabase("webview.db");
-			clearDatabase("webviewCache.db");
-		}
+		// Clear webview databases
+		clearDatabase("webview.db");
+		clearDatabase("webviewCache.db");
 	}
 
 	@AfterViews
 	public void setup() {
 		Log.d(TAG, "TIG.setup");
 
-		if (!isFinishing()) {
-			// Initialize web view
-			webview.setWebViewClient(webViewClient);
-			webview.setWebChromeClient(webChromeClient);
+		// Initialize web view
+		webview.setWebViewClient(webViewClient);
+		webview.setWebChromeClient(webChromeClient);
 
-			// Clear web view history and caches
-			webview.clearHistory();
-			webview.clearFormData();
-			webview.clearCache(true);
+		// Clear web view history and caches
+		webview.clearHistory();
+		webview.clearFormData();
+		webview.clearCache(true);
 
-			WebSettings settings = webview.getSettings();
-			settings.setBuiltInZoomControls(true);
-			settings.setJavaScriptEnabled(true);
-			settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-			// settings.setAppCacheEnabled(false); // New Android SDK v7
+		WebSettings settings = webview.getSettings();
+		settings.setBuiltInZoomControls(true);
+		settings.setJavaScriptEnabled(true);
+		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+		// settings.setAppCacheEnabled(false); // New Android SDK v7
 
-			// Show progress bar
-			getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
+		// Show progress bar
+		getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
 
-			// Retrieve screen density and aspect ratio
-			DisplayMetrics metrics = new DisplayMetrics();
-			getWindowManager().getDefaultDisplay().getMetrics(metrics);
-			width = metrics.widthPixels;
-			height = metrics.heightPixels;
-			Log.i(TAG, "Screen width is " + width + ", and height is " + height);
+		// Retrieve screen density and aspect ratio
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		width = metrics.widthPixels;
+		height = metrics.heightPixels;
+		Log.i(TAG, "Screen width is " + width + ", and height is " + height);
 
-			// Set default view
-			currentViewId = R.id.liveTraffic;
+		// Set default view
+		currentViewId = R.id.liveTraffic;
 
-			// Check if first run of this version
-			String appVersion = getAppVersion();
-			String installedAppVersion = getInstalledAppVersion();
-			boolean newVersion = !appVersion.equals(installedAppVersion);
+		// Check if first run of this version
+		String appVersion = getAppVersion();
+		String installedAppVersion = getInstalledAppVersion();
+		boolean newVersion = !appVersion.equals(installedAppVersion);
 
-			// Initialize preferences with default values
-			PreferenceManager.setDefaultValues(this, TIG.class.getSimpleName(), Context.MODE_PRIVATE, R.xml.preferences, newVersion);
+		// Initialize preferences with default values
+		PreferenceManager.setDefaultValues(this, TIG.class.getSimpleName(), Context.MODE_PRIVATE, R.xml.preferences, newVersion);
 
-			// Show preferences editor if first run of this version
-			if (newVersion) {
-				Log.i(TAG, "New application version: " + appVersion + " (previous: " + installedAppVersion + ")");
-				setInstalledAppVersion(appVersion);
+		// Show preferences editor if first run of this version
+		if (newVersion) {
+			Log.i(TAG, "New application version: " + appVersion + " (previous: " + installedAppVersion + ")");
+			setInstalledAppVersion(appVersion);
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage(getString(R.string.newVersionShowPreferences, appVersion)).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-						showPreferencesEditor();
-					}
-				}).setNegativeButton(R.string.NO, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-				AlertDialog alert = builder.create();
-				alert.show();
-			} else {
-				Log.i(TAG, "Application version: " + appVersion);
-			}
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(getString(R.string.newVersionShowPreferences, appVersion)).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+					showPreferencesEditor();
+				}
+			}).setNegativeButton(R.string.NO, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
+		} else {
+			Log.i(TAG, "Application version: " + appVersion);
 		}
 	}
 
@@ -321,37 +328,34 @@ public class TIG extends Activity {
 		notificationManager.cancel(0);
 	}
 
-	@Override
-	public void onResume() {
-		Log.d(TAG, "TIG.onResume: isFinishing=" + isFinishing());
+	private void resume() {
+		Log.d(TAG, "TIG.resume");
 
 		super.onResume();
 
-		if (!isFinishing()) {
-			// Refresh webview settings
-			initializeWebviewSettings();
+		// Refresh webview settings
+		initializeWebviewSettings();
 
-			// Update notification shortcut visibility
-			updateNotificationShortcutVisibility(this);
+		// Update notification shortcut visibility
+		updateNotificationShortcutVisibility(this);
 
-			// Update orientation forcing
-			updateOrientationForcing(this);
+		// Update orientation forcing
+		updateOrientationForcing(this);
 
-			// Update Refresh button visibility
-			updateButtonVisibility(this, PreferencesHelper.SHOW_REFRESH_BUTTON, R.id.refreshButton);
+		// Update Refresh button visibility
+		updateButtonVisibility(this, PreferencesHelper.SHOW_REFRESH_BUTTON, R.id.refreshButton);
 
-			// Update Day Night Switch button visibility
-			updateButtonVisibility(this, PreferencesHelper.SHOW_DAY_NIGHT_SWITCH_BUTTON, R.id.dayNightSwitchButton);
+		// Update Day Night Switch button visibility
+		updateButtonVisibility(this, PreferencesHelper.SHOW_DAY_NIGHT_SWITCH_BUTTON, R.id.dayNightSwitchButton);
 
-			// Update Quit button visibility
-			updateButtonVisibility(this, PreferencesHelper.SHOW_QUIT_BUTTON, R.id.quitButton);
+		// Update Quit button visibility
+		updateButtonVisibility(this, PreferencesHelper.SHOW_QUIT_BUTTON, R.id.quitButton);
 
-			// Update Ads visibility
-			updateAdsVisibility(this);
+		// Update Ads visibility
+		updateAdsVisibility(this);
 
-			// Refresh webview
-			refreshCurrentView();
-		}
+		// Refresh webview
+		refreshCurrentView();
 	}
 
 	@Override
@@ -537,6 +541,22 @@ public class TIG extends Activity {
 		refreshCurrentView();
 	}
 
+	public void dayNightSwitch(View v) {
+		Log.d(TAG, "TIG.dayNightSwitch");
+
+		Window win = getWindow();
+		WindowManager.LayoutParams winParams = win.getAttributes();
+
+		if (winParams.screenBrightness > 0.5f) {
+			oldScreenBrightness = winParams.screenBrightness;
+			winParams.screenBrightness = 0.5f;
+		} else {
+			winParams.screenBrightness = oldScreenBrightness;
+		}
+
+		win.setAttributes(winParams);
+	}
+
 	public void quit(View v) {
 		quit();
 	}
@@ -546,7 +566,10 @@ public class TIG extends Activity {
 
 		cancelNotification(this);
 		preferenceNotificationShortcut = false;
+
+		// FIXME: Superfluous?
 		moveTaskToBack(true);
+
 		finish();
 	}
 
@@ -562,11 +585,6 @@ public class TIG extends Activity {
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle savedInstanceState) {
-		Log.d(TAG, "TIG.onSaveInstanceState: isFinishing=" + isFinishing() + ", savedInstanceState=" + savedInstanceState);
-	}
-
-	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		Log.d(TAG, "TIG.onConfigurationChanged: isFinishing=" + isFinishing() + ", newConfig=" + newConfig);
 		super.onConfigurationChanged(newConfig);
@@ -575,14 +593,32 @@ public class TIG extends Activity {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		Log.d(TAG, "TIG.onNewIntent: isFinishing=" + isFinishing() + ", intent=" + intent);
-		if (intent.hasExtra(QUIT)) {
-			quit();
-		}
+	}
+
+	@Override
+	public void onResume() {
+		Log.d(TAG, "TIG.onResume: isFinishing=" + isFinishing());
+
+		// Register an intent receiver to quit TIG on Car Mode exiting
+		registerReceiver(quitBroadcastReceiver, quitIntentFilter);
+
+		resume();
+
+		super.onResume();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle savedInstanceState) {
+		Log.d(TAG, "TIG.onSaveInstanceState: isFinishing=" + isFinishing() + ", savedInstanceState=" + savedInstanceState);
 	}
 
 	@Override
 	protected void onPause() {
 		Log.d(TAG, "TIG.onPause: isFinishing=" + isFinishing());
+
+		// Unregister the intent receiver to do nothing on Car Mode exiting if TIG is not active
+		unregisterReceiver(quitBroadcastReceiver);
+
 		super.onPause();
 	}
 
@@ -596,21 +632,5 @@ public class TIG extends Activity {
 	protected void onDestroy() {
 		Log.d(TAG, "TIG.onDestroy: isFinishing=" + isFinishing());
 		super.onDestroy();
-	}
-
-	public void dayNightSwitch(View v) {
-		Log.d(TAG, "TIG.dayNightSwitch");
-
-		Window win = getWindow();
-		WindowManager.LayoutParams winParams = win.getAttributes();
-
-		if (winParams.screenBrightness > 0.5f) {
-			oldScreenBrightness = winParams.screenBrightness;
-			winParams.screenBrightness = 0.5f;
-		} else {
-			winParams.screenBrightness = oldScreenBrightness;
-		}
-
-		win.setAttributes(winParams);
 	}
 }
