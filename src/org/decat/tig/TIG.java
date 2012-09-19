@@ -46,6 +46,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -546,13 +547,29 @@ public class TIG extends Activity {
 		cancelNotification(this);
 		preferenceNotificationShortcut = false;
 		moveTaskToBack(true);
-		// finish();
+		finish();
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.d(TAG, "TIG.onCreate: isFinishing=" + isFinishing());
+		Log.d(TAG, "TIG.onCreate: isFinishing=" + isFinishing() + ", savedInstanceState=" + savedInstanceState);
 		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		Log.d(TAG, "TIG.onRestoreInstanceState: isFinishing=" + isFinishing() + ", savedInstanceState=" + savedInstanceState);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle savedInstanceState) {
+		Log.d(TAG, "TIG.onSaveInstanceState: isFinishing=" + isFinishing() + ", savedInstanceState=" + savedInstanceState);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		Log.d(TAG, "TIG.onConfigurationChanged: isFinishing=" + isFinishing() + ", newConfig=" + newConfig);
+		super.onConfigurationChanged(newConfig);
 	}
 
 	@Override
