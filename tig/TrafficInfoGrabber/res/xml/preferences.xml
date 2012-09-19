@@ -70,6 +70,20 @@
             android:title="@string/NOTIFICATION_SHORTCUT_ON_BOOT" />
     </PreferenceCategory>
     <PreferenceCategory
+        android:summary="@string/PREFS_CATEGORY_CAR_MODE_SUMMARY"
+        android:title="@string/PREFS_CATEGORY_CAR_MODE_TITLE" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="LAUNCH_TIG_ON_ENTER_CAR_DOCK"
+            android:summary="@string/LAUNCH_TIG_ON_ENTER_CAR_DOCK_SUMMARY"
+            android:title="@string/LAUNCH_TIG_ON_ENTER_CAR_DOCK_TITLE" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="QUIT_TIG_ON_EXIT_CAR_DOCK"
+            android:summary="@string/QUIT_TIG_ON_EXIT_CAR_DOCK_SUMMARY"
+            android:title="@string/QUIT_TIG_ON_EXIT_CAR_DOCK_TITLE" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:summary="@string/PREFS_CATEGORY_OTHER_SUMMARY"
         android:title="@string/PREFS_CATEGORY_OTHER_TITLE" >
         <CheckBoxPreference
