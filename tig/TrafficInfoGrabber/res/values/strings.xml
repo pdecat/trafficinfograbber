@@ -73,7 +73,7 @@
     <string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Day Night Switch button</string>
     <string name="SHOW_DAY_NIGHT_SWITCH_BUTTON_SUMMARY">Allows to switch between day and night mode</string>
     <string name="SHOW_QUIT_BUTTON">Quit button</string>
-    <string name="SHOW_QUIT_BUTTON_SUMMARY">Allows to quit the application</string>
+    <string name="SHOW_QUIT_BUTTON_SUMMARY">Allows to quit the application (long press to kill the process)</string>
     <string name="FORCE_PORTRAIT_ORIENTATION">Force portrait orientation</string>
     <string name="FORCE_PORTRAIT_ORIENTATION_SUMMARY">Avoids unwanted orientation changes</string>
     <string name="USE_HD">HD views</string>
