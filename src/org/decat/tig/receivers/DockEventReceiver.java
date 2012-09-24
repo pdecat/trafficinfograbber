@@ -25,17 +25,16 @@ package org.decat.tig.receivers;
 import org.decat.tig.TIG;
 import org.decat.tig.preferences.PreferencesHelper;
 
-import com.googlecode.androidannotations.annotations.Background;
-import com.googlecode.androidannotations.annotations.EReceiver;
-
 import android.annotation.TargetApi;
-import android.app.ActivityManager;
 import android.app.UiModeManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.EReceiver;
 
 /* 
  * This receiver uses Android SDK level 8 APIs but will never get reached on older platforms. 

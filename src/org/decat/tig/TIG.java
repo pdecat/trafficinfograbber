@@ -24,9 +24,6 @@ package org.decat.tig;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.decat.tig.preferences.PreferencesEditor;
 import org.decat.tig.preferences.PreferencesHelper;
 import org.decat.tig.web.TIGWebChromeClient;
@@ -54,6 +51,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -85,7 +83,7 @@ public class TIG extends Activity {
 	private BroadcastReceiver quitBroadcastReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			quit();
+			quit(false);
 		}
 	};
 
@@ -98,7 +96,7 @@ public class TIG extends Activity {
 	public static final String URL_SYTADIN = "http://www.sytadin.fr";
 	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
 
-	private final Map<Integer, WebviewSettings> availableWebviews = new HashMap<Integer, WebviewSettings>();
+	private final SparseArray<WebviewSettings> availableWebviews = new SparseArray<WebviewSettings>(5);
 
 	private int width;
 	private int height;
@@ -163,6 +161,15 @@ public class TIG extends Activity {
 		// Set default view
 		currentViewId = R.id.liveTraffic;
 
+		// Add a long click listener on the quit button to kill the process instead of finishing the activity
+		findViewById(R.id.quitButton).setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				TIG.this.quit(true);
+				return true;
+			}
+		});
+
 		// Check if first run of this version
 		String appVersion = getAppVersion();
 		String installedAppVersion = getInstalledAppVersion();
@@ -197,7 +204,7 @@ public class TIG extends Activity {
 	private void initializeWebviewSettings() {
 		boolean useHD = getPreferences(this).getBoolean(PreferencesHelper.USE_HD, true);
 
-		if (availableWebviews.isEmpty()) {
+		if (availableWebviews.size() == 0) {
 			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_IDF_HTML, 197, 81, 385, 298));
 			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html", 1, 10, 173, 276));
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp", 0, 0, 595, 539));
@@ -454,7 +461,6 @@ public class TIG extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO: use this...
 		switch (requestCode) {
 			case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
 				if (resultCode == RESULT_OK) {
@@ -558,11 +564,11 @@ public class TIG extends Activity {
 	}
 
 	public void quit(View v) {
-		quit();
+		quit(false);
 	}
 
-	public void quit() {
-		Log.d(TAG, "TIG.quit");
+	public void quit(boolean kill) {
+		Log.d(TAG, "TIG.quit: kill=" + kill);
 
 		cancelNotification(this);
 		preferenceNotificationShortcut = false;
@@ -570,7 +576,13 @@ public class TIG extends Activity {
 		// FIXME: Superfluous?
 		moveTaskToBack(true);
 
-		finish();
+		if (kill) {
+			Log.i(TAG, "TIG.quit: killing self...");
+			android.os.Process.killProcess(android.os.Process.myPid());
+		} else {
+			Log.i(TAG, "TIG.quit: finishing self...");
+			finish();
+		}
 	}
 
 	@Override
