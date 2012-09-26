@@ -87,7 +87,13 @@
     <string name="PREFS_CATEGORY_OTHER_TITLE">Autres</string>
     <string name="SHOW_ADS">Publicité non intrusive</string>
     <string name="SHOW_ADS_SUMMARY">Supporter le développeur de ce projet en affichant de la publicité pendant le chargement</string>
-
+    <string name="PREFS_CATEGORY_CAR_MODE_SUMMARY">Définir le comportement souhaité lors du changement du mode voiture</string>
+    <string name="PREFS_CATEGORY_CAR_MODE_TITLE">Mode voiture (Android 2.2+)</string>
+    <string name="LAUNCH_TIG_ON_ENTER_CAR_DOCK_SUMMARY">TIG se lancera ou sera ramené au premier plan</string>
+    <string name="LAUNCH_TIG_ON_ENTER_CAR_DOCK_TITLE">Lancer à l\'activation du mode voiture</string>
+    <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_SUMMARY">TIG se terminera</string>
+    <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_TITLE">Quitter à la désactivation du mode voiture</string>
+    
     <!-- Notifications -->
     <string name="notificationLabel">Lancer TIG</string>
     <string name="notificationMessage">Raccourci pour lancer TIG…</string>
