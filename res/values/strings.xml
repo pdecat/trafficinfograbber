@@ -52,6 +52,7 @@
     <string name="no_third_party_activity_set_in_preferences">No third party activity set in preferences…</string>
     <string name="error_while_launching_third_party_activity">Error while launching third party activity&#160;</string>
     <string name="error_while_launching_website">Error while launching %1$s website</string>
+    <string name="fetching_activities">Fetching activities…</string>
     <string name="YES">Yes</string>
     <string name="NO">No</string>
 
