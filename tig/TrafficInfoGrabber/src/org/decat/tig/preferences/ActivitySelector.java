@@ -25,96 +25,104 @@ package org.decat.tig.preferences;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.decat.tig.R;
 import org.decat.tig.TIG;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.SimpleAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.UiThread;
+
+@EActivity
 public class ActivitySelector extends ListActivity implements OnItemClickListener {
-	private static final String KEY_TITLE = "TITLE";
-	private static final String KEY_RESOLVE_INFO = "RESOLVE_INFO";
-	private static final String FROM[] = new String[] {
-			KEY_TITLE,
-			KEY_RESOLVE_INFO
-	};
-	private static final int TO[] = new int[] {
-			R.id.title,
-			R.id.icon
-	};
-	private List<Map<String, ?>> list;
-	private List<ResolveInfo> resolvInfos;
+	private ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d(TIG.TAG, "ActivitySelector.onCreate");
 		super.onCreate(savedInstanceState);
 
-		// List installed applications
-		PackageManager pm = this.getPackageManager();
-
-		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-		resolvInfos = pm.queryIntentActivities(mainIntent, 0);
-		Collections.sort(resolvInfos, new ResolveInfo.DisplayNameComparator(pm));
-		list = new ArrayList<Map<String, ?>>();
-		int resolvInfosSize = resolvInfos.size();
-		for (int i = 0; i < resolvInfosSize; i++) {
-			ResolveInfo resolvInfo = resolvInfos.get(i);
-			/*
-			 * Simple adapter craziness. For each item, we need to create a map from a key to its value (the value can be any object--the view binder will take care of filling the View with a
-			 * representation of that object).
-			 */
-			Map<String, Object> map = new TreeMap<String, Object>();
-			CharSequence label = resolvInfo.loadLabel(getPackageManager());
-			if (label == null) {
-				label = resolvInfo.activityInfo.name;
-			}
-			map.put(KEY_TITLE, label.toString());
-			map.put(KEY_RESOLVE_INFO, resolvInfo);
-			list.add(map);
-		}
+		// Display a dialog as it takes time to fetch activities
+		dialog = new ProgressDialog(this);
+		dialog.setMessage(getString(R.string.fetching_activities));
+		dialog.show();
 
 		// Register this as an item click listener
 		getListView().setOnItemClickListener(this);
 
+		// FIXME: Does nothing...
+		// Enable list view filtering
+		getListView().setTextFilterEnabled(true);
+
+		initializeListAdapter();
+	}
+
+	@Background
+	protected void initializeListAdapter() {
+		Log.d(TIG.TAG, "ActivitySelector.initializeListAdapter");
+		// Query activities that are meant to be started from a launcher
+		final PackageManager pm = this.getPackageManager();
+		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		ArrayList<ResolveInfo> resolveInfos = (ArrayList<ResolveInfo>) pm.queryIntentActivities(mainIntent, 0);
+
+		// Map these activities' data to the list view
+		final ArrayAdapter<ResolveInfo> adapter = new ArrayAdapter<ResolveInfo>(this, R.layout.activity_picker_layout, resolveInfos) {
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				if (convertView == null) {
+					convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_picker_layout, parent, false);
+				}
+
+				final String text = getItem(position).loadLabel(pm).toString();
+				((TextView) convertView.findViewById(R.id.title)).setText(text);
+
+				final Drawable drawable = getItem(position).loadIcon(pm);
+				((ImageView) convertView.findViewById(R.id.icon)).setImageDrawable(drawable);
+
+				return convertView;
+			}
+		};
+
+		// WARN: This kind of sorting takes time...
+		adapter.sort(new ResolveInfo.DisplayNameComparator(pm));
+
 		// Set up our adapter
-		setListAdapter(new SimpleAdapter(this, list, R.layout.activity_picker_layout, FROM, TO));
+		setupListAdapter(adapter);
+	}
+
+	@UiThread
+	protected void setupListAdapter(final ArrayAdapter<ResolveInfo> adapter) {
+		Log.d(TIG.TAG, "ActivitySelector.setupListAdapter");
+		setListAdapter(adapter);
+
+		dialog.dismiss();
 	}
 
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-		// Extract data
-		if (position >= resolvInfos.size()) {
-			return;
-		}
-		ResolveInfo resolvInfo = resolvInfos.get(position);
-		String value = resolvInfo.activityInfo.applicationInfo.packageName + "/" + resolvInfo.activityInfo.name;
-
-		// Show a toast
-		StringBuilder sb = new StringBuilder("Selected id=");
-		sb.append(id);
-		sb.append(", position=");
-		sb.append(position);
-		sb.append(", value=");
-		sb.append(value);
-		TIG.showToast(this, sb.toString());
+		Log.d(TIG.TAG, "ActivitySelector.onItemClick: position=" + position);
+		ResolveInfo resolveInfo = (ResolveInfo) getListView().getItemAtPosition(position);
 
 		// Prepare result for calling activity
 		Intent result = new Intent();
-		result.putExtra(PreferencesEditor.EXTRA_ID, id);
-		result.putExtra(PreferencesEditor.EXTRA_VALUE, value);
+		result.putExtra(PreferencesEditor.EXTRA_RESOLVE_INFO, resolveInfo);
 		setResult(RESULT_OK, result);
 
 		// Finish this activity

@@ -30,6 +30,7 @@ import org.decat.tig.TIG;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -38,8 +39,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class PreferencesEditor extends PreferenceActivity {
-	public static final String EXTRA_ID = "id";
-	public static final String EXTRA_VALUE = "value";
+	public static final String EXTRA_RESOLVE_INFO = "value";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class PreferencesEditor extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				// Useless check?
 				if (otherActivityPref.equals(preference)) {
-					Intent intent = new Intent(PreferencesEditor.this, ActivitySelector.class);
+					Intent intent = new Intent(PreferencesEditor.this, ActivitySelector_.class);
 					otherActivityPref.setIntent(intent);
 					startActivityForResult(intent, 0);
 				}
@@ -82,22 +82,23 @@ public class PreferencesEditor extends PreferenceActivity {
 		sb.append("Back from picking activity with resultCode=");
 		sb.append(resultCode);
 		if (resultCode == RESULT_OK) {
-			String dataString = data.getDataString();
-			String value = data.getStringExtra(EXTRA_VALUE);
+			ResolveInfo resolveInfo = data.getParcelableExtra(EXTRA_RESOLVE_INFO);
 
-			sb.append(", dataString=");
-			sb.append(dataString);
-			sb.append(", id=");
-			sb.append(data.getLongExtra(EXTRA_ID, -1));
+			String value = resolveInfo.activityInfo.applicationInfo.packageName + "/" + resolveInfo.activityInfo.name;
 			sb.append(", value=");
 			sb.append(value);
 
+			String label = resolveInfo.activityInfo.loadLabel(getPackageManager()).toString();
+
+			sb.append(", label=");
+			sb.append(label);
+
 			// Store new activity
-			updateStringPreference(PreferencesHelper.OTHER_ACTIVITY, value);
+			updateStringPreference(PreferencesHelper.OTHER_ACTIVITY, label);
 			updateStringPreference(PreferencesHelper.OTHER_ACTIVITY + PreferencesHelper.VALUE_SUFFIX, value);
 
 			// Update select third party activity button
-			findPreference(PreferencesHelper.OTHER_ACTIVITY).setSummary(value);
+			findPreference(PreferencesHelper.OTHER_ACTIVITY).setSummary(label);
 		}
 		Log.d(TIG.TAG, sb.toString());
 	}

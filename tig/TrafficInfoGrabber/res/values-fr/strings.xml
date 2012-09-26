@@ -48,6 +48,7 @@
     <string name="no_third_party_activity_set_in_preferences">Pas d\'application tierce définie dans les préférences…</string>
     <string name="error_while_launching_third_party_activity">Erreur lors du lancement de l\'application tierce&#160;</string>
     <string name="error_while_launching_website">Erreur lors du lancement du site web %1$s</string>
+    <string name="fetching_activities">Récupération des activités…</string>
     <string name="YES">Oui</string>
     <string name="NO">Non</string>
 
