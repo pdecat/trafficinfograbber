@@ -194,6 +194,7 @@
                                     <exclude>target/**</exclude>
                                     <exclude>**/*.png</exclude>
                                     <exclude>**/.svn/**</exclude>
+                                    <exclude>res/raw*/recent_changes.txt</exclude>
                                 </excludes>
                                 <extraExtensions>
                                     <txt>properties</txt>
