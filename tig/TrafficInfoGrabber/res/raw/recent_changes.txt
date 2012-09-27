@@ -1,0 +1,14 @@
+v0.4.3:
+- Redesign preferences editor
+- Fix third party activity selection, low definition view padding & centering on Android 3.0+, Light Traffic loading
+
+v0.4.2:
+- Improve retry count down layout
+
+v0.4.1:
+- Introduce retry count down on loading errors
+- Compensate for the overlaid action bar on Android 3.0+
+- Fix light live traffic view loading
+- Fix refresh on app icon click handling
+- Avoid loading the view twice on activity creation.
+- Improve ads display timing and upgrade to AdMob 6.1.0

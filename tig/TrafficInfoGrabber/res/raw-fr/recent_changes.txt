@@ -1,0 +1,10 @@
+v0.4.3:
+- Nouvel éditeur de préférences
+- Correction diverses (sélection d'activité tierce, centrage de la vue basse définition sur Android 3.0+, chargement de la vue trafic allégé)
+
+v0.4.2:
+- Amélioration de l'agencement du compte à rebours
+
+v0.4.1:
+- Compte à rebours avant rechargement lors d'erreur de chargement
+- Correction diverses (barre d'action superposée sur Android 3.0+, vue trafic allégée, rafraîchissement au clic sur l'icône, affichage des publicités, etc.)
