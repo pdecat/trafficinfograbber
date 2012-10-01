@@ -58,6 +58,7 @@
     <string name="countDownClickToCancel">Cliquer pour annuler</string>
 
     <!-- Boutons -->
+    <string name="thirdPartyAppButtonDescription">Activité tierce</string>
     <string name="quitButtonDescription">Quitter</string>
     <string name="dayNightSwitchButtonDescription">Commuter le mode jour/nuit</string>
     <string name="refreshButtonDescription">Rafraîchir</string>
@@ -75,8 +76,10 @@
     <string name="FORCE_PORTRAIT_ORIENTATION_SUMMARY">Eviter les changements d\'orientation indésirables</string>
     <string name="USE_HD">Vues HD</string>
     <string name="USE_HD_SUMMARY">Afficher les vues HD quand elles sont disponibles</string>
-    <string name="OTHER_ACTIVITY">Activité tierce préférée</string>
-    <string name="OTHER_ACTIVITY_SUMMARY">Appuyer sur le bouton Recherche pour lancer cette activité</string>
+    <string name="OTHER_ACTIVITY">Application tierce préférée</string>
+    <string name="OTHER_ACTIVITY_SUMMARY">Appuyer sur le bouton Recherche pour lancer cette application</string>
+    <string name="SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY">Bouton Application tierce</string>
+    <string name="SHOW_THIRD_PARTY_APP_BUTTON_TITLE">Permet de lancer une application tierce</string>
     <string name="PREFS_CATEGORY_NOTIFICATIONS_SUMMARY">Définir les réglages de notifications</string>
     <string name="PREFS_CATEGORY_NOTIFICATIONS_TITLE">Notification</string>
     <string name="NOTIFICATION_SHORTCUT">Raccourci dans la barre de notification</string>

@@ -50,6 +50,11 @@
             android:key="USE_HD"
             android:summary="@string/USE_HD_SUMMARY"
             android:title="@string/USE_HD" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="SHOW_THIRD_PARTY_APP_BUTTON"
+            android:summary="@string/SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY"
+            android:title="@string/SHOW_THIRD_PARTY_APP_BUTTON_TITLE" />
         <Preference
             android:key="OTHER_ACTIVITY"
             android:summary="@string/OTHER_ACTIVITY_SUMMARY"

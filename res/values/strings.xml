@@ -62,6 +62,7 @@
     <string name="countDownClickToCancel">Click to cancel</string>
 
     <!-- Buttons -->
+    <string name="thirdPartyAppButtonDescription">Third Party App</string>
     <string name="quitButtonDescription">Quit</string>
     <string name="dayNightSwitchButtonDescription">Day/Night Switch</string>
     <string name="refreshButtonDescription">Refresh</string>
@@ -79,8 +80,10 @@
     <string name="FORCE_PORTRAIT_ORIENTATION_SUMMARY">Avoids unwanted orientation changes</string>
     <string name="USE_HD">HD views</string>
     <string name="USE_HD_SUMMARY">Display the traffic view in HD when available</string>
-    <string name="OTHER_ACTIVITY">Preferred third party activity</string>
-    <string name="OTHER_ACTIVITY_SUMMARY">Press Search to launch this activity</string>
+    <string name="OTHER_ACTIVITY">Preferred third party app</string>
+    <string name="OTHER_ACTIVITY_SUMMARY">Press Search to launch this app</string>
+    <string name="SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY">Third party app button</string>
+    <string name="SHOW_THIRD_PARTY_APP_BUTTON_TITLE">Allows to launch a third party application</string>
     <string name="PREFS_CATEGORY_NOTIFICATIONS_SUMMARY">Define notifications settings</string>
     <string name="PREFS_CATEGORY_NOTIFICATIONS_TITLE">Notification</string>
     <string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>

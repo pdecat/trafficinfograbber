@@ -45,7 +45,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -61,6 +63,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.AfterInject;
@@ -257,16 +260,23 @@ public class TIG extends Activity {
 	}
 
 	private void updateButtonVisibility(Context context, String buttonPreferenceName, int buttonId) {
+		updateButtonVisibility(context, buttonPreferenceName, buttonId, null);
+	}
+	
+	private void updateButtonVisibility(Context context, String buttonPreferenceName, int buttonId, Drawable drawable) {
 		Log.d(TAG, "TIG.updateButtonVisibility: buttonPreferenceName=" + buttonPreferenceName);
 
 		// Get current value
 		boolean value = getBooleanPreferenceValue(context, buttonPreferenceName);
 
-		View button = findViewById(buttonId);
+		ImageButton button = (ImageButton ) findViewById(buttonId);
 		boolean preferenceShowButton = button.getVisibility() == View.VISIBLE;
 		if (value != preferenceShowButton) {
 			if (value) {
-				// Show refresh button as set in preferences
+				if (drawable != null) {
+					button.setImageDrawable(drawable);
+				}
+				
 				button.setVisibility(View.VISIBLE);
 			} else {
 				button.setVisibility(View.INVISIBLE);
@@ -358,11 +368,32 @@ public class TIG extends Activity {
 		// Update Quit button visibility
 		updateButtonVisibility(this, PreferencesHelper.SHOW_QUIT_BUTTON, R.id.quitButton);
 
+		// Update Third Part App button visibility
+		Drawable thirdPartyAppDrawable = null;
+		if (getBooleanPreferenceValue(this, PreferencesHelper.SHOW_THIRD_PARTY_APP_BUTTON)) {
+			thirdPartyAppDrawable = getThirdPartyAppDrawable();
+		}
+		updateButtonVisibility(this, PreferencesHelper.SHOW_THIRD_PARTY_APP_BUTTON, R.id.thirdPartyAppButton, thirdPartyAppDrawable);
+		
 		// Update Ads visibility
 		updateAdsVisibility(this);
 
 		// Refresh webview
 		refreshCurrentView();
+	}
+
+	private Drawable getThirdPartyAppDrawable() {
+		Log.d(TAG, "TIG.getThirdPartyAppDrawable");
+		PackageManager pm = this.getPackageManager();
+		ComponentName thirdPartyAppComponentName = getThirdPartyAppComponentName();
+		Drawable thirdPartyAppDrawable = null;
+		try {
+			thirdPartyAppDrawable = pm.getActivityIcon(thirdPartyAppComponentName);
+			thirdPartyAppDrawable.setAlpha(100);
+		} catch (NameNotFoundException e) {
+			Log.e(TAG, "TIG.getThirdPartyAppDrawable: error while retrieving third party app icon", e);
+		}
+		return thirdPartyAppDrawable;
 	}
 
 	@Override
@@ -515,19 +546,24 @@ public class TIG extends Activity {
 
 	@Override
 	public boolean onSearchRequested() {
-		String otherActivity = getPreferences(this).getString("OTHER_ACTIVITY", null);
-		if (otherActivity != null) {
-			String[] otherActivitySplitted = otherActivity.split("/");
-			ComponentName otherComponentName = new ComponentName(otherActivitySplitted[0], otherActivitySplitted[1]);
+		return launchThirdPartyApp(null);
+	}
+
+	public boolean launchThirdPartyApp(View v) {
+		Log.d(TAG, "TIG.launchThirdPartyApp");
+
+		ComponentName thirdPartyAppComponentName = getThirdPartyAppComponentName();
+			
+		if (thirdPartyAppComponentName != null) {
 			try {
 				Intent myIntent = new Intent();
 				myIntent.setAction(Intent.ACTION_MAIN);
 				myIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-				myIntent.setComponent(otherComponentName);
+				myIntent.setComponent(thirdPartyAppComponentName);
 				myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(myIntent);
 			} catch (Exception e) {
-				String message = getString(R.string.error_while_launching_third_party_activity) + otherComponentName.getPackageName();
+				String message = getString(R.string.error_while_launching_third_party_activity) + thirdPartyAppComponentName.getPackageName();
 				Log.e(TAG, message, e);
 				showToast(message);
 			}
@@ -537,6 +573,18 @@ public class TIG extends Activity {
 			showToast(message);
 		}
 		return false;
+	}
+
+	private ComponentName getThirdPartyAppComponentName() {
+		String thirdPartyApp = getPreferences(this).getString(PreferencesHelper.OTHER_ACTIVITY + PreferencesHelper.VALUE_SUFFIX, null);
+		Log.d(TAG, "TIG.getThirdPartyAppComponentName: thirdPartyApp=" + thirdPartyApp);
+		if (thirdPartyApp != null) {
+			String[] thirdPartyAppSplitted = thirdPartyApp.split("/");
+			if (thirdPartyAppSplitted.length == 2) {
+				return new ComponentName(thirdPartyAppSplitted[0], thirdPartyAppSplitted[1]);
+			}
+		}
+		return null;
 	}
 
 	public void refreshWebview(View v) {

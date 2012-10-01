@@ -40,6 +40,8 @@ public class PreferencesHelper {
 	public static final String SHOW_DAY_NIGHT_SWITCH_BUTTON = "SHOW_DAY_NIGHT_SWITCH_BUTTON";
 
 	public static final String SHOW_QUIT_BUTTON = "SHOW_QUIT_BUTTON";
+	
+	public static final String SHOW_THIRD_PARTY_APP_BUTTON = "SHOW_THIRD_PARTY_APP_BUTTON";
 
 	public static final String FORCE_PORTRAIT_ORIENTATION = "FORCE_PORTRAIT_ORIENTATION";
 
