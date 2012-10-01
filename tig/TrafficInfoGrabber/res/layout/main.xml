@@ -85,6 +85,19 @@
     </LinearLayout>
 
     <ImageButton
+        android:id="@+id/thirdPartyAppButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#0000"
+        android:contentDescription="@string/thirdPartyAppButtonDescription"
+        android:onClick="launchThirdPartyApp"
+        android:paddingRight="5dp"
+        android:paddingTop="@dimen/power_button_padding_top"
+        android:visibility="invisible" />
+
+    <ImageButton
         android:id="@+id/quitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
