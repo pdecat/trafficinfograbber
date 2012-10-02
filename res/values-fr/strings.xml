@@ -78,8 +78,8 @@
     <string name="USE_HD_SUMMARY">Afficher les vues HD quand elles sont disponibles</string>
     <string name="OTHER_ACTIVITY">Application tierce préférée</string>
     <string name="OTHER_ACTIVITY_SUMMARY">Appuyer sur le bouton Recherche pour lancer cette application</string>
-    <string name="SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY">Bouton Application tierce</string>
-    <string name="SHOW_THIRD_PARTY_APP_BUTTON_TITLE">Permet de lancer une application tierce</string>
+    <string name="SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY">Permet de lancer une application tierce</string>
+    <string name="SHOW_THIRD_PARTY_APP_BUTTON_TITLE">Bouton Application tierce</string>
     <string name="PREFS_CATEGORY_NOTIFICATIONS_SUMMARY">Définir les réglages de notifications</string>
     <string name="PREFS_CATEGORY_NOTIFICATIONS_TITLE">Notification</string>
     <string name="NOTIFICATION_SHORTCUT">Raccourci dans la barre de notification</string>

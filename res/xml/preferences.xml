@@ -27,6 +27,16 @@
         android:title="@string/PREFS_CATEGORY_INTERFACE_TITLE" >
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="FORCE_PORTRAIT_ORIENTATION"
+            android:summary="@string/FORCE_PORTRAIT_ORIENTATION_SUMMARY"
+            android:title="@string/FORCE_PORTRAIT_ORIENTATION" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="USE_HD"
+            android:summary="@string/USE_HD_SUMMARY"
+            android:title="@string/USE_HD" />
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="SHOW_REFRESH_BUTTON"
             android:summary="@string/SHOW_REFRESH_BUTTON_SUMMARY"
             android:title="@string/SHOW_REFRESH_BUTTON" />
@@ -40,16 +50,6 @@
             android:key="SHOW_QUIT_BUTTON"
             android:summary="@string/SHOW_QUIT_BUTTON_SUMMARY"
             android:title="@string/SHOW_QUIT_BUTTON" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="FORCE_PORTRAIT_ORIENTATION"
-            android:summary="@string/FORCE_PORTRAIT_ORIENTATION_SUMMARY"
-            android:title="@string/FORCE_PORTRAIT_ORIENTATION" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="USE_HD"
-            android:summary="@string/USE_HD_SUMMARY"
-            android:title="@string/USE_HD" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="SHOW_THIRD_PARTY_APP_BUTTON"
