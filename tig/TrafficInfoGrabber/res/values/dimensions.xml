@@ -22,4 +22,5 @@
 <resources>
     <dimen name="html_body_padding_top">0px</dimen>
     <dimen name="power_button_padding_top">5dp</dimen>
+    <dimen name="third_party_app_button_padding_top">0dp</dimen>
 </resources>

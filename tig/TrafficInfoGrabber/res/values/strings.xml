@@ -82,8 +82,8 @@
     <string name="USE_HD_SUMMARY">Display the traffic view in HD when available</string>
     <string name="OTHER_ACTIVITY">Preferred third party app</string>
     <string name="OTHER_ACTIVITY_SUMMARY">Press Search to launch this app</string>
-    <string name="SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY">Third party app button</string>
-    <string name="SHOW_THIRD_PARTY_APP_BUTTON_TITLE">Allows to launch a third party application</string>
+    <string name="SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY">Allows to launch a third party application</string>
+    <string name="SHOW_THIRD_PARTY_APP_BUTTON_TITLE">Third party app button</string>
     <string name="PREFS_CATEGORY_NOTIFICATIONS_SUMMARY">Define notifications settings</string>
     <string name="PREFS_CATEGORY_NOTIFICATIONS_TITLE">Notification</string>
     <string name="NOTIFICATION_SHORTCUT">Notification shortcut</string>
