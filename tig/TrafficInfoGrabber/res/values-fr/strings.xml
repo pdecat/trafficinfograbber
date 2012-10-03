@@ -51,7 +51,8 @@
     <string name="fetching_activities">Récupération des activités…</string>
     <string name="YES">Oui</string>
     <string name="NO">Non</string>
-
+    <string name="NO_APP_SELECTED">Aucune application choisie</string>
+    
     <!-- Eléments du compte à rebours avant nouvelle tentative -->
     <string name="countDownRefreshingIn">Rafraîchissement dans&#160;</string>
     <string name="countDownUnits">s</string>

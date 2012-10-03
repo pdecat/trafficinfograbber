@@ -55,6 +55,7 @@
     <string name="fetching_activities">Fetching activities…</string>
     <string name="YES">Yes</string>
     <string name="NO">No</string>
+    <string name="NO_APP_SELECTED">No application selected</string>
 
     <!-- Retry count down items -->
     <string name="countDownRefreshingIn">Refreshing in&#160;</string>
