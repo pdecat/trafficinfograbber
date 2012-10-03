@@ -221,7 +221,7 @@ public class TIGWebViewClient extends WebViewClient {
 		}
 
 		// Set the scale and scroll
-		setScaleAndScroll(view);
+		setScaleAndScroll(view, false);
 	}
 
 	private String cacheResource(String filename, String baseUrl, boolean useCache) {
@@ -252,12 +252,7 @@ public class TIGWebViewClient extends WebViewClient {
 		setTitle(view, formattedTitle);
 
 		// Set the scale and scroll
-		setScaleAndScroll(view);
-
-		// Add padding to the top of the HTML view to compensate for the overlaid action bar on Android 3.0+
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			view.loadUrl("javascript:document.body.style.paddingTop='" + scaledTopPadding + "px'");
-		}
+		setScaleAndScroll(view, true);
 
 		// Hide ads after a short delay
 		if (showAds) {
@@ -285,9 +280,17 @@ public class TIGWebViewClient extends WebViewClient {
 	}
 
 	@UiThread(delay = 100)
-	protected void setScaleAndScroll(WebView view) {
+	protected void setScaleAndScroll(WebView view, boolean addPadding) {
 		view.setInitialScale(initialScale);
+
+		// Add padding to the top of the HTML view to compensate for the overlaid action bar on Android 3.0+
+		int yScroll = this.yScroll;
+		if (addPadding && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			view.loadUrl("javascript:document.body.style.paddingTop='" + scaledTopPadding + "px'");
+			yScroll += scaledTopPadding;
+		}
 		view.scrollTo(xScroll, yScroll);
+
 		Log.d(TIG.TAG, "TIGWebViewClient.setScaleAndScroll: initialScale=" + initialScale + ", xScroll=" + xScroll + ", yScroll=" + yScroll + ", scaledTopPadding=" + scaledTopPadding);
 	}
 
@@ -305,7 +308,6 @@ public class TIGWebViewClient extends WebViewClient {
 		// Compensate the padding at the top of the HTML view that compensates for the overlaid action bar on Android 3.0+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			scaledTopPadding = (topPaddingPx * 100) / initialScale;
-			this.yScroll += scaledTopPadding;
 		} else {
 			scaledTopPadding = 0;
 		}

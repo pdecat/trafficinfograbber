@@ -419,12 +419,14 @@ public class TIG extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		return showViewById(item.getItemId());
+		Log.d(TAG, "TIG.onOptionsItemSelected");
+		return showViewById(item.getItemId()) ? true : super.onOptionsItemSelected(item);
 	}
 
 	private boolean showViewById(int viewId) {
+		Log.d(TAG, "TIG.showViewById: viewId=" + viewId);
 		switch (viewId) {
-			case 0x102002c: // Refresh on android.R.id.home click for Android 3.0+
+			case android.R.id.home: // Refresh on android.R.id.home click for Android 3.0+
 				// Restore view ID
 				viewId = currentViewId;
 
@@ -447,11 +449,15 @@ public class TIG extends Activity {
 			case R.id.sytadinWebsite:
 				launchWebsite(URL_SYTADIN);
 				return true;
+
 			case R.id.infotraficWebsite:
 				launchWebsite(URL_INFOTRAFIC);
+				return true;
+
 			case R.id.preferences:
 				showPreferencesEditor();
 				return true;
+
 			case R.id.about:
 				showAbout();
 				return true;
@@ -460,6 +466,7 @@ public class TIG extends Activity {
 	}
 
 	public void refreshCurrentView() {
+		Log.d(TAG, "TIG.refreshCurrentView");
 		showViewById(currentViewId);
 	}
 
