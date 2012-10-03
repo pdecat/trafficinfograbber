@@ -29,7 +29,6 @@ import org.decat.tig.preferences.PreferencesHelper;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 public class BootCompletedReceiver extends android.content.BroadcastReceiver {
@@ -38,11 +37,8 @@ public class BootCompletedReceiver extends android.content.BroadcastReceiver {
 		if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
 			Log.i(TIG.TAG, "Boot completed intent received.");
 
-			// Get shared preferences
-			SharedPreferences sharedPreferences = context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
-
 			// Get current value
-			boolean value = sharedPreferences.getBoolean(PreferencesHelper.NOTIFICATION_SHORTCUT_ON_BOOT, true);
+			boolean value = TIG.getBooleanPreferenceValue(context, PreferencesHelper.NOTIFICATION_SHORTCUT_ON_BOOT);
 
 			if (value) {
 				// Update notification shortcut state
