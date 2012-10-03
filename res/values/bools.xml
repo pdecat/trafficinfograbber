@@ -23,4 +23,5 @@
 
 <resources>
     <bool name="SHOW_THIRD_PARTY_APP_BUTTON_DEFAULT">false</bool>
+    <bool name="QUIT_TIG_ON_EXIT_CAR_DOCK_DEFAULT">false</bool>
 </resources>
