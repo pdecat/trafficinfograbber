@@ -207,7 +207,7 @@ public class TIG extends Activity {
 	}
 
 	private void initializeWebviewSettings() {
-		boolean useHD = getPreferences(this).getBoolean(PreferencesHelper.USE_HD, true);
+		boolean useHD = getBooleanPreferenceValue(this, PreferencesHelper.USE_HD);
 
 		if (availableWebviews.size() == 0) {
 			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_IDF_HTML, 197, 81, 385, 298));

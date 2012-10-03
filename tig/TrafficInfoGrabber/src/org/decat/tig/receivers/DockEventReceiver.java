@@ -30,7 +30,6 @@ import android.app.UiModeManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.googlecode.androidannotations.annotations.Background;
@@ -49,14 +48,11 @@ public class DockEventReceiver extends BroadcastReceiver {
 		Log.d(TIG.TAG, "DockEventReceiver.onReceive: intentAction=" + intentAction);
 
 		if (UiModeManager.ACTION_ENTER_CAR_MODE.equals(intentAction) || UiModeManager.ACTION_EXIT_CAR_MODE.equals(intentAction)) {
-			// Get shared preferences
-			SharedPreferences sharedPreferences = context.getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
-
-			if (UiModeManager.ACTION_ENTER_CAR_MODE.equals(intentAction) && sharedPreferences.getBoolean(PreferencesHelper.LAUNCH_TIG_ON_ENTER_CAR_DOCK, false)) {
+			if (UiModeManager.ACTION_ENTER_CAR_MODE.equals(intentAction) && TIG.getBooleanPreferenceValue(context, PreferencesHelper.LAUNCH_TIG_ON_ENTER_CAR_DOCK)) {
 				Log.i(TIG.TAG, "DockEventReceiver.onReceive: launching TIG...");
 
 				startTig(context);
-			} else if (UiModeManager.ACTION_EXIT_CAR_MODE.equals(intentAction) && sharedPreferences.getBoolean(PreferencesHelper.QUIT_TIG_ON_EXIT_CAR_DOCK, false)) {
+			} else if (UiModeManager.ACTION_EXIT_CAR_MODE.equals(intentAction) && TIG.getBooleanPreferenceValue(context, PreferencesHelper.QUIT_TIG_ON_EXIT_CAR_DOCK)) {
 				Log.i(TIG.TAG, "DockEventReceiver.onReceive: quitting TIG...");
 				quitTig(context);
 			}
