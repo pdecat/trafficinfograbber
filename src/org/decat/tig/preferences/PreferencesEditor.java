@@ -59,7 +59,7 @@ public class PreferencesEditor extends PreferenceActivity {
 
 		// Update select third party activity button
 		SharedPreferences sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
-		String thirdPartyActivity = sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, "Not set");
+		String thirdPartyActivity = sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED));
 		final Preference otherActivityPref = findPreference(PreferencesHelper.OTHER_ACTIVITY);
 		otherActivityPref.setSummary(thirdPartyActivity);
 		otherActivityPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

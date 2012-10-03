@@ -237,6 +237,7 @@ public class TIG extends Activity {
 	}
 
 	public static boolean getBooleanPreferenceValue(Context context, String preferenceKey) {
+
 		boolean value = getPreferences(context).getBoolean(preferenceKey, true);
 		Log.d(TAG, "TIG.getBooleanPreferenceValue: preferenceKey=" + preferenceKey + ", value=" + value);
 		return value;
@@ -262,21 +263,21 @@ public class TIG extends Activity {
 	private void updateButtonVisibility(Context context, String buttonPreferenceName, int buttonId) {
 		updateButtonVisibility(context, buttonPreferenceName, buttonId, null);
 	}
-	
+
 	private void updateButtonVisibility(Context context, String buttonPreferenceName, int buttonId, Drawable drawable) {
 		Log.d(TAG, "TIG.updateButtonVisibility: buttonPreferenceName=" + buttonPreferenceName);
 
 		// Get current value
 		boolean value = getBooleanPreferenceValue(context, buttonPreferenceName);
 
-		ImageButton button = (ImageButton ) findViewById(buttonId);
+		ImageButton button = (ImageButton) findViewById(buttonId);
 		boolean preferenceShowButton = button.getVisibility() == View.VISIBLE;
 		if (value != preferenceShowButton) {
 			if (value) {
 				if (drawable != null) {
 					button.setImageDrawable(drawable);
 				}
-				
+
 				button.setVisibility(View.VISIBLE);
 			} else {
 				button.setVisibility(View.INVISIBLE);
@@ -374,7 +375,7 @@ public class TIG extends Activity {
 			thirdPartyAppDrawable = getThirdPartyAppDrawable();
 		}
 		updateButtonVisibility(this, PreferencesHelper.SHOW_THIRD_PARTY_APP_BUTTON, R.id.thirdPartyAppButton, thirdPartyAppDrawable);
-		
+
 		// Update Ads visibility
 		updateAdsVisibility(this);
 
@@ -387,11 +388,13 @@ public class TIG extends Activity {
 		PackageManager pm = this.getPackageManager();
 		ComponentName thirdPartyAppComponentName = getThirdPartyAppComponentName();
 		Drawable thirdPartyAppDrawable = null;
-		try {
-			thirdPartyAppDrawable = pm.getActivityIcon(thirdPartyAppComponentName);
-			thirdPartyAppDrawable.setAlpha(100);
-		} catch (NameNotFoundException e) {
-			Log.e(TAG, "TIG.getThirdPartyAppDrawable: error while retrieving third party app icon", e);
+		if (thirdPartyAppComponentName != null) {
+			try {
+				thirdPartyAppDrawable = pm.getActivityIcon(thirdPartyAppComponentName);
+				thirdPartyAppDrawable.setAlpha(100);
+			} catch (NameNotFoundException e) {
+				Log.e(TAG, "TIG.getThirdPartyAppDrawable: error while retrieving third party app icon", e);
+			}
 		}
 		return thirdPartyAppDrawable;
 	}
@@ -553,7 +556,7 @@ public class TIG extends Activity {
 		Log.d(TAG, "TIG.launchThirdPartyApp");
 
 		ComponentName thirdPartyAppComponentName = getThirdPartyAppComponentName();
-			
+
 		if (thirdPartyAppComponentName != null) {
 			try {
 				Intent myIntent = new Intent();
