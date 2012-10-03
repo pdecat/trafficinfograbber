@@ -83,7 +83,7 @@
             android:summary="@string/LAUNCH_TIG_ON_ENTER_CAR_DOCK_SUMMARY"
             android:title="@string/LAUNCH_TIG_ON_ENTER_CAR_DOCK_TITLE" />
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="@bool/QUIT_TIG_ON_EXIT_CAR_DOCK_DEFAULT"
             android:key="QUIT_TIG_ON_EXIT_CAR_DOCK"
             android:summary="@string/QUIT_TIG_ON_EXIT_CAR_DOCK_SUMMARY"
             android:title="@string/QUIT_TIG_ON_EXIT_CAR_DOCK_TITLE" />

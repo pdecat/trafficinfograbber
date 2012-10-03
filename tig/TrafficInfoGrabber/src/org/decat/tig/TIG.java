@@ -240,7 +240,6 @@ public class TIG extends Activity {
 
 	public static boolean getBooleanPreferenceValue(Context context, String preferenceKey) {
 		int defaultValueId = context.getResources().getIdentifier(preferenceKey + PREF_DEFAULT_SUFFIX, RES_BOOLS, context.getPackageName());
-		Log.d(TAG, "TIG.getBooleanPreferenceValue: preferenceKey=" + preferenceKey + ", defaultValueId=" + defaultValueId);
 
 		boolean defaultValue;
 		if (defaultValueId != 0) {
@@ -248,10 +247,9 @@ public class TIG extends Activity {
 		} else {
 			defaultValue = true;
 		}
-		Log.d(TAG, "TIG.getBooleanPreferenceValue: preferenceKey=" + preferenceKey + ", defaultValue=" + defaultValue);
 
 		boolean value = getPreferences(context).getBoolean(preferenceKey, defaultValue);
-		Log.d(TAG, "TIG.getBooleanPreferenceValue: preferenceKey=" + preferenceKey + ", value=" + value);
+		Log.d(TAG, "TIG.getBooleanPreferenceValue: preferenceKey=" + preferenceKey + ", value=" + value + ", defaultValue=" + defaultValue);
 
 		return value;
 	}
