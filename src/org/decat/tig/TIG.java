@@ -30,6 +30,7 @@ import org.decat.tig.web.TIGWebChromeClient;
 import org.decat.tig.web.TIGWebViewClient;
 import org.decat.tig.web.WebviewSettings;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -49,6 +50,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -138,6 +140,9 @@ public class TIG extends Activity {
 	public void setup() {
 		Log.d(TAG, "TIG.setup");
 
+		// Needed since API 14
+		enableActionBarIcon();
+
 		// Initialize web view
 		webview.setWebViewClient(webViewClient);
 		webview.setWebChromeClient(webChromeClient);
@@ -203,6 +208,14 @@ public class TIG extends Activity {
 			alert.show();
 		} else {
 			Log.i(TAG, "Application version: " + appVersion);
+		}
+	}
+
+	@TargetApi(14)
+	private void enableActionBarIcon() {
+		// Since API 14, we need to call this method to enable action icon interaction
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			getActionBar().setHomeButtonEnabled(true);
 		}
 	}
 
