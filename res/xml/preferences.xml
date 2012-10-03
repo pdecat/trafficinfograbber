@@ -51,7 +51,7 @@
             android:summary="@string/SHOW_QUIT_BUTTON_SUMMARY"
             android:title="@string/SHOW_QUIT_BUTTON" />
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="@bool/SHOW_THIRD_PARTY_APP_BUTTON_DEFAULT"
             android:key="SHOW_THIRD_PARTY_APP_BUTTON"
             android:summary="@string/SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY"
             android:title="@string/SHOW_THIRD_PARTY_APP_BUTTON_TITLE" />

@@ -75,6 +75,8 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
 public class TIG extends Activity {
+	private static final String RES_BOOLS = "bools";
+	private static final String PREF_DEFAULT_SUFFIX = "_DEFAULT";
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
@@ -237,9 +239,20 @@ public class TIG extends Activity {
 	}
 
 	public static boolean getBooleanPreferenceValue(Context context, String preferenceKey) {
-
-		boolean value = getPreferences(context).getBoolean(preferenceKey, true);
+		int defaultValueId = context.getResources().getIdentifier(preferenceKey + PREF_DEFAULT_SUFFIX, RES_BOOLS, context.getPackageName());
+		Log.d(TAG, "TIG.getBooleanPreferenceValue: preferenceKey=" + preferenceKey + ", defaultValueId=" + defaultValueId);
+		
+		boolean defaultValue;
+		if (defaultValueId != 0) {
+			defaultValue = context.getResources().getBoolean(defaultValueId);
+		} else {
+			defaultValue = true;
+		}
+		Log.d(TAG, "TIG.getBooleanPreferenceValue: preferenceKey=" + preferenceKey + ", defaultValue=" + defaultValue);
+		
+		boolean value = getPreferences(context).getBoolean(preferenceKey, defaultValue);
 		Log.d(TAG, "TIG.getBooleanPreferenceValue: preferenceKey=" + preferenceKey + ", value=" + value);
+		
 		return value;
 	}
 
