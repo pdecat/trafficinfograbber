@@ -61,6 +61,7 @@ public class TIGWebViewClient extends WebViewClient {
 	private static final String PATH_IDF_TRAFFIC = PATH_TO_FILES + FILENAME_IDF_TRAFFIC;
 
 	private static final int ADS_DISPLAY_DURATION = 5000;
+	private static final int PAGE_LOAD_TIMEOUT_MS = 60000;
 
 	@RootContext
 	protected Activity activity;
@@ -91,6 +92,9 @@ public class TIGWebViewClient extends WebViewClient {
 	private boolean retryCountDownCancelled;
 	private String filesDirAbsolutePath;
 	private int scaledTopPadding;
+
+	// Field to manage page load timeout
+	private boolean pageLoadTimedOut;
 
 	@AfterInject
 	protected void initialize() {
@@ -169,6 +173,27 @@ public class TIGWebViewClient extends WebViewClient {
 		retryCountDownText.setText(text);
 	}
 
+	@Background
+	protected void startPageLoadTimeout() {
+		pageLoadTimedOut = true;
+
+		try {
+			Thread.sleep(PAGE_LOAD_TIMEOUT_MS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		if (!pageLoadTimedOut) {
+			Log.d(TIG.TAG, "TIGWebViewClient.startPageLoadTimeout: page load completed in time");
+			return;
+		}
+
+		// Trigger retry countdown
+		Log.d(TIG.TAG, "TIGWebViewClient.startPageLoadTimeout: page load timed out, trigger a refresh");
+		TIG.showToast(activity, activity.getString(R.string.page_load_timed));
+		((TIG) activity).refreshCurrentView();
+	}
+
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);
@@ -196,6 +221,8 @@ public class TIGWebViewClient extends WebViewClient {
 
 			showAds();
 		}
+
+		startPageLoadTimeout();
 	}
 
 	@Override
@@ -243,6 +270,9 @@ public class TIGWebViewClient extends WebViewClient {
 	@Override
 	public void onPageFinished(WebView view, String url) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageFinished: url=" + url);
+
+		// Cancel time out
+		pageLoadTimedOut = false;
 
 		// Update title
 		String formattedTitle = title;
