@@ -1,6 +1,17 @@
+v0.5.0:
+- Car Mode events handling
+- Add a Third Party Application optional button
+- Kill the process if Quit button is long pressed
+- Ask before launching preference editor when a new version is launched
+- Tune web view padding on Android 3.0+
+- Cleanup preferences handling
+- Fix: do no launch the preference editor when back from InfoTraffic
+
 v0.4.3:
 - Redesign preferences editor
-- Fix third party activity selection, low definition view padding & centering on Android 3.0+, Light Traffic loading
+- Fix: third party activity selection
+- Fix: low definition view padding & centering on Android 3.0+
+- Fix: Light Traffic loading
 
 v0.4.2:
 - Improve retry count down layout
