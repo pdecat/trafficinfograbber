@@ -52,6 +52,7 @@
     <string name="YES">Oui</string>
     <string name="NO">Non</string>
     <string name="NO_APP_SELECTED">Aucune application choisie</string>
+    <string name="page_load_timed">Chargement de page expiré, déclenchement d\'un rafraichissement…</string>
     
     <!-- Eléments du compte à rebours avant nouvelle tentative -->
     <string name="countDownRefreshingIn">Rafraîchissement dans&#160;</string>

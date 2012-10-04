@@ -56,6 +56,7 @@
     <string name="YES">Yes</string>
     <string name="NO">No</string>
     <string name="NO_APP_SELECTED">No application selected</string>
+    <string name="page_load_timed">Page load timed out, trigger a refresh…</string>
 
     <!-- Retry count down items -->
     <string name="countDownRefreshingIn">Refreshing in&#160;</string>
