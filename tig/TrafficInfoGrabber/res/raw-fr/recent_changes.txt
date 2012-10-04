@@ -1,6 +1,17 @@
+v0.5.0:
+- Gestion des évènements du mode Voiture
+- Ajout d'un bouton "application tierce" optionnel
+- Tuer le processus lors d'un appui long sur le bouton "quitter"
+- Demander avant de lancer l'éditeur de préférences quand une nouvelle version est lancée
+- Ajustement des marges de la vue web sur Android 3.0+
+- Nettoyage de la gestion des préférences
+- Correction : ne pas lancer l'éditeur de préférencs lors que l'on revient du site InfoTraffic
+
 v0.4.3:
 - Nouvel éditeur de préférences
-- Correction diverses (sélection d'activité tierce, centrage de la vue basse définition sur Android 3.0+, chargement de la vue trafic allégé)
+- Correction : sélection d'activité tierce
+- Correction : centrage de la vue basse définition sur Android 3.0+
+- Correction : chargement de la vue trafic allégé
 
 v0.4.2:
 - Amélioration de l'agencement du compte à rebours
