@@ -181,7 +181,7 @@ public class TIG extends Activity {
 		});
 
 		// Check if first run of this version
-		String appVersion = getAppVersion();
+		String appVersion = getAppVersionCode();
 		String installedAppVersion = getInstalledAppVersion();
 		boolean newVersion = !appVersion.equals(installedAppVersion);
 
@@ -194,7 +194,7 @@ public class TIG extends Activity {
 			setInstalledAppVersion(appVersion);
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(getString(R.string.newVersionShowPreferences, appVersion)).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
+			builder.setMessage(getString(R.string.newVersionShowPreferences, getAppVersionName())).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
 					dialog.cancel();
 					showPreferencesEditor();
@@ -267,9 +267,21 @@ public class TIG extends Activity {
 		return value;
 	}
 
-	private String getAppVersion() {
-		Log.d(TAG, "TIG.getAppVersion");
+	private String getAppVersionName() {
+		Log.d(TAG, "TIG.getAppVersionName");
 		return getString(R.string.app_version);
+	}
+
+	private String getAppVersionCode() {
+		Log.d(TAG, "TIG.getAppVersionCode");
+		String appVersion = "0";
+		try {
+			appVersion = Integer.toString(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
+		} catch (NameNotFoundException e) {
+			Log.e(TAG, "Failed to fetch app version code", e);
+		}
+
+		return appVersion;
 	}
 
 	private String getInstalledAppVersion() {
