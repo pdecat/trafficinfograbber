@@ -220,23 +220,14 @@ public class TIG extends Activity {
 	}
 
 	private void initializeWebviewSettings() {
-		boolean useHD = getBooleanPreferenceValue(this, PreferencesHelper.USE_HD);
-
 		if (availableWebviews.size() == 0) {
-			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_IDF_HTML, 197, 81, 385, 298));
-			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/opencms/sites/sytadin/sys/elements/iframe-direct.jsp.html", 1, 10, 173, 276));
-			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/opencms/opencms/sys/fermetures.jsp", 0, 0, 595, 539));
+			// Broken since last sytadin.fr website
+		    // availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_IDF_HTML, 197, 81, 385, 298));
+			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/sys/barometres_de_la_circulation.jsp.html", 0, 0, 600, 600));
+			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/sys/fermetures_nocturnes.jsp.html", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/", 300, 250, 700, 600));
 		}
-
-		if (useHD) {
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster_fs.jsp.html", 361 + 34, 145 + 24, 690 + 34,
-					633 + 24));
-		} else {
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/opencms/sites/sytadin/sys/raster.jsp.html", 203 + 34, 108 + 24, 390 + 34,
-					316 + 24));
-		}
-
 	}
 
 	private void clearDatabase(String database) {
@@ -459,7 +450,8 @@ public class TIG extends Activity {
 				loadUrlInWebview(availableWebviews.get(viewId));
 				return true;
 
-			case R.id.liveTrafficLite:
+			// Broken since last sytadin.fr website
+		    // case R.id.liveTrafficLite:
 			case R.id.liveTraffic:
 			case R.id.quickStats:
 			case R.id.closedAtNight:

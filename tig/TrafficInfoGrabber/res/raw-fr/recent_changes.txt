@@ -1,5 +1,9 @@
+v0.6.0:
+- Adaptation aux derniers changements du site Sytadin
+- Ajout d'un délai d'expiration de 60s au chargement des pages pour automatiquement recharger lors des échecs 
+
 v0.5.0:
-- Gestion des évènements du mode Voiture
+- Gestion des événements du mode Voiture
 - Ajout d'un bouton "application tierce" optionnel
 - Tuer le processus lors d'un appui long sur le bouton "quitter"
 - Demander avant de lancer l'éditeur de préférences quand une nouvelle version est lancée

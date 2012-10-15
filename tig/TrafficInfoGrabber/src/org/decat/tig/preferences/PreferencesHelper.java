@@ -47,8 +47,6 @@ public class PreferencesHelper {
 
 	public static final String SHOW_ADS = "SHOW_ADS";
 
-	public static final String USE_HD = "USE_HD";
-
 	public static final String LAUNCH_TIG_ON_ENTER_CAR_DOCK = "LAUNCH_TIG_ON_ENTER_CAR_DOCK";
 
 	public static final String QUIT_TIG_ON_EXIT_CAR_DOCK = "QUIT_TIG_ON_EXIT_CAR_DOCK";
