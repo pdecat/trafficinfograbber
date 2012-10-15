@@ -32,11 +32,6 @@
             android:title="@string/FORCE_PORTRAIT_ORIENTATION" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="USE_HD"
-            android:summary="@string/USE_HD_SUMMARY"
-            android:title="@string/USE_HD" />
-        <CheckBoxPreference
-            android:defaultValue="true"
             android:key="SHOW_REFRESH_BUTTON"
             android:summary="@string/SHOW_REFRESH_BUTTON_SUMMARY"
             android:title="@string/SHOW_REFRESH_BUTTON" />

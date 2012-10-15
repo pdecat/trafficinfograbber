@@ -31,9 +31,10 @@
             <item
                 android:id="@+id/liveTraffic"
                 android:title="@string/liveTraffic"/>
-            <item
+            <!-- Broken since last sytadin.fr website -->
+            <!-- item
                 android:id="@+id/liveTrafficLite"
-                android:title="@string/liveTrafficLite"/>
+                android:title="@string/liveTrafficLite"/-->
             <item
                 android:id="@+id/closedAtNight"
                 android:title="@string/closedAtNight"/>

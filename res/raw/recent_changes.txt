@@ -1,3 +1,7 @@
+v0.6.0:
+- Adapt to last Sytadin website changes
+- Add a page load timeout of 60s to automatically reload when stalled
+
 v0.5.0:
 - Car Mode events handling
 - Add a Third Party Application optional button
