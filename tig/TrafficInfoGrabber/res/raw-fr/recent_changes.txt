@@ -1,3 +1,6 @@
+v0.6.1:
+- Nouvelle vue Trafic Allégé
+
 v0.6.0:
 - Adaptation aux derniers changements du site Sytadin
 - Ajout d'un délai d'expiration de 60s au chargement des pages pour automatiquement recharger lors des échecs 

@@ -1,3 +1,6 @@
+v0.6.1:
+- New Light Traffic view
+
 v0.6.0:
 - Adapt to last Sytadin website changes
 - Add a page load timeout of 60s to automatically reload when stalled
