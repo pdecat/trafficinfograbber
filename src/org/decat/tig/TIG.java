@@ -98,6 +98,8 @@ public class TIG extends Activity {
 
 	public static final String TAG = "TIG";
 
+	public static final String FILENAME_IDF_HTML = "file:///android_asset/tig.html";
+
 	public static final String URL_SYTADIN = "http://www.sytadin.fr";
 	private static final String URI_CARTO_FULL = "/carto/dynamique/emprises/segment_TOTALE_fs.png";
 	private static final String URI_CARTO_IDF = "/carto/dynamique/emprises/segment_IDF_fs.png";
@@ -143,6 +145,9 @@ public class TIG extends Activity {
 
 		// Needed since API 14
 		enableActionBarIcon();
+
+		// Needed since API 16
+		allowUniversalAccessFromFileURLs();
 
 		// Initialize web view
 		webview.setWebViewClient(webViewClient);
@@ -220,12 +225,21 @@ public class TIG extends Activity {
 		}
 	}
 
+	@TargetApi(16)
+	private void allowUniversalAccessFromFileURLs() {
+		// Since API 16, we need to call this method to allow universal access from file URLs in WebView
+		// Otherwise, you'd get "E/Web Console: XMLHttpRequest cannot load http://someurl Origin null is not allowed by Access-Control-Allow-Origin." errors
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			webview.getSettings().setAllowUniversalAccessFromFileURLs(true);
+		}
+	}
+
 	private void initializeWebviewSettings() {
 		if (availableWebviews.size() == 0) {
 			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/sys/barometres_de_la_circulation.jsp.html", 0, 0, 600, 600));
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/sys/fermetures_nocturnes.jsp.html", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN, 300, 250, 700, 600));
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), FILENAME_IDF_HTML, 330, 250, 650, 400));
 		}
 
 		// Setup selected map for Light Traffic view
@@ -565,9 +579,9 @@ public class TIG extends Activity {
 		int xoffset = (settings.xmin * scale) / 100;
 		int yoffset = (settings.ymin * scale) / 100;
 		if (xscale < yscale) {
-			yoffset -= (height - ((settings.ymax - settings.ymin) * scale) / 100) / 2;
+			yoffset = Math.max(yoffset - ((height - ((settings.ymax - settings.ymin) * scale) / 100) / 2), 0);
 		} else {
-			xoffset -= (width - ((settings.xmax - settings.xmin) * scale) / 100) / 2;
+			xoffset = Math.max(xoffset - ((width - ((settings.xmax - settings.xmin) * scale) / 100) / 2), 0);
 		}
 		Log.d(TAG, "Computed values: xscale=" + xscale + ", yscale=" + yscale + ", scale=" + scale + ", xoffset=" + xoffset + ", yoffset=" + yoffset);
 

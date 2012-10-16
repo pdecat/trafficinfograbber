@@ -19,7 +19,7 @@
   License along with this program.  If not, see
   <http://www.gnu.org/licenses/gpl-3.0.html>.
   #L%
-  --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1209180108" android:versionName="0.6.1-SNAPSHOT" package="org.decat.tig">
+  --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1209180117" android:versionName="0.6.1-SNAPSHOT" package="org.decat.tig">
     
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.INTERNET"/>
