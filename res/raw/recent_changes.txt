@@ -1,6 +1,7 @@
 v0.6.1:
 - Optimize Traffic view loading 
 - New Light Traffic view with selectable map
+- Display Light Traffic view on older Android versions (SVG requires at least Android 3 / Honeycomb)
 
 v0.6.0:
 - Adapt to last Sytadin website changes
