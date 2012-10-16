@@ -25,6 +25,13 @@
     <PreferenceCategory
         android:summary="@string/PREFS_CATEGORY_INTERFACE_SUMMARY"
         android:title="@string/PREFS_CATEGORY_INTERFACE_TITLE" >
+        <ListPreference
+            android:defaultValue="URI_CARTO_FULL"
+            android:entries="@array/ltCartoLabels"
+            android:entryValues="@array/ltCartoValues"
+            android:key="LT_CARTO"
+            android:summary="@string/LT_CARTO_SUMMARY"
+            android:title="@string/LT_CARTO_TITLE" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="FORCE_PORTRAIT_ORIENTATION"

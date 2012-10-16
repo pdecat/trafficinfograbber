@@ -68,6 +68,8 @@
     <!-- Labels des préférences -->
     <string name="PREFS_CATEGORY_INTERFACE_SUMMARY">Adapter l\'interface à votre goût</string>
     <string name="PREFS_CATEGORY_INTERFACE_TITLE">Interface</string>
+    <string name="LT_CARTO_SUMMARY">Cartographie de la vue Trafic Allégé</string>
+    <string name="LT_CARTO_TITLE">Cartographie</string>
     <string name="SHOW_REFRESH_BUTTON">Bouton Rafraîchir</string>
     <string name="SHOW_REFRESH_BUTTON_SUMMARY">Permet de rafraîchir la vue actuelle</string>
     <string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Bouton jour/nuit</string>

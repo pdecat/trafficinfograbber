@@ -72,6 +72,8 @@
     <!-- Preferences labels -->
     <string name="PREFS_CATEGORY_INTERFACE_SUMMARY">Adapt the interface to your taste</string>
     <string name="PREFS_CATEGORY_INTERFACE_TITLE">Interface</string>
+    <string name="LT_CARTO_SUMMARY">Light Traffic Cartography</string>
+    <string name="LT_CARTO_TITLE">Cartography</string>
     <string name="SHOW_REFRESH_BUTTON">Refresh button</string>
     <string name="SHOW_REFRESH_BUTTON_SUMMARY">Allows to refresh the current view</string>
     <string name="SHOW_DAY_NIGHT_SWITCH_BUTTON">Day Night Switch button</string>
