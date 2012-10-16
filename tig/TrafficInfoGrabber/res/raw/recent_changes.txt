@@ -1,4 +1,5 @@
 v0.6.1:
+- Optimize Traffic view loading 
 - New Light Traffic view with selectable map
 
 v0.6.0:
