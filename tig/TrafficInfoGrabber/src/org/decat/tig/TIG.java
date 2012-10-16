@@ -98,9 +98,10 @@ public class TIG extends Activity {
 
 	public static final String TAG = "TIG";
 
-	// public static final String FILENAME_IDF_HTML = "file:///android_asset/tig.html";
-
 	public static final String URL_SYTADIN = "http://www.sytadin.fr";
+	private static final String URI_CARTO_FULL = "/carto/dynamique/emprises/segment_TOTALE_fs.png";
+	private static final String URI_CARTO_IDF = "/carto/dynamique/emprises/segment_IDF_fs.png";
+
 	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
 
 	private final SparseArray<WebviewSettings> availableWebviews = new SparseArray<WebviewSettings>(5);
@@ -221,12 +222,22 @@ public class TIG extends Activity {
 
 	private void initializeWebviewSettings() {
 		if (availableWebviews.size() == 0) {
-			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), URL_SYTADIN + "/carto/dynamique/emprises/segment_TOTALE_fs.png", 388, 193, 631, 621));
 			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/sys/barometres_de_la_circulation.jsp.html", 0, 0, 600, 600));
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/sys/fermetures_nocturnes.jsp.html", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
 			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN, 300, 250, 700, 600));
 		}
+
+		// Setup selected map for Light Traffic view
+		String uriLtCarto = getPreferences(this).getString(PreferencesHelper.LT_CARTO, URI_CARTO_FULL);
+		WebviewSettings ltWebviewSettings;
+		if (URI_CARTO_IDF.equals(uriLtCarto)) {
+			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_SYTADIN + uriLtCarto, 291, 140, 683, 713);
+		} else {
+			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_SYTADIN + uriLtCarto, 388, 193, 631, 621);
+		}
+		availableWebviews.put(R.id.liveTrafficLite, ltWebviewSettings);
+
 	}
 
 	private void clearDatabase(String database) {

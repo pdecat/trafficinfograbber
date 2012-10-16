@@ -1,5 +1,5 @@
 v0.6.1:
-- New Light Traffic view
+- New Light Traffic view with selectable map
 
 v0.6.0:
 - Adapt to last Sytadin website changes

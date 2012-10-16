@@ -19,28 +19,12 @@
   License along with this program.  If not, see
   <http://www.gnu.org/licenses/gpl-3.0.html>.
   #L%
-  -->
+-->
 <resources>
 
-    <string-array name="about_authors">
-        <item>Patrick Decat</item>
-    </string-array>
-    <string-array name="about_documenters">
-        <item>Patrick Decat</item>
-    </string-array>
-    <string-array name="about_translators">
-        <item>Patrick Decat</item>
-    </string-array>
-    <string-array name="about_artists">
-        <item>Benoit Laurent</item>
-    </string-array>
     <string-array name="ltCartoLabels">
-        <item>Full</item>
+        <item>Complète</item>
         <item>Ile-de-France</item>
-    </string-array>
-    <string-array name="ltCartoValues">
-        <item>/carto/dynamique/emprises/segment_TOTALE_fs.png</item>
-        <item>/carto/dynamique/emprises/segment_IDF_fs.png</item>
     </string-array>
 
 </resources>
