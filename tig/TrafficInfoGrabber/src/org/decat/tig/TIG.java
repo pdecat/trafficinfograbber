@@ -175,7 +175,13 @@ public class TIG extends Activity {
 		Log.i(TAG, "Screen width is " + width + ", and height is " + height);
 
 		// Set default view
-		currentViewId = R.id.liveTraffic;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			// New Traffic view requires SVG which is only available since Honeycomb
+			currentViewId = R.id.liveTraffic;
+		} else {
+			// Default to Light Traffic view on Gingerbread and below
+			currentViewId = R.id.liveTrafficLite;
+		}
 
 		// Add a long click listener on the quit button to kill the process instead of finishing the activity
 		findViewById(R.id.quitButton).setOnLongClickListener(new View.OnLongClickListener() {

@@ -1,6 +1,7 @@
 v0.6.1:
 - Optimisation du chargement de la vue Trafic 
 - Nouvelle vue Trafic Allégé avec choix de la cartographie
+- Afficher la vue Trafic Allégé par défaut sur les anciennes versions d'Android (SVG nécessite au minimum Android 3.0 / Honeycomb)
 
 v0.6.0:
 - Adaptation aux derniers changements du site Sytadin
