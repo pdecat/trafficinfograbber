@@ -98,7 +98,7 @@ public class TIG extends Activity {
 
 	public static final String TAG = "TIG";
 
-	public static final String FILENAME_IDF_HTML = "file:///android_asset/tig.html";
+	// public static final String FILENAME_IDF_HTML = "file:///android_asset/tig.html";
 
 	public static final String URL_SYTADIN = "http://www.sytadin.fr";
 	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
@@ -221,12 +221,11 @@ public class TIG extends Activity {
 
 	private void initializeWebviewSettings() {
 		if (availableWebviews.size() == 0) {
-			// Broken since last sytadin.fr website
-		    // availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_IDF_HTML, 197, 81, 385, 298));
+			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), URL_SYTADIN + "/carto/dynamique/emprises/segment_TOTALE_fs.png", 388, 193, 631, 621));
 			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/sys/barometres_de_la_circulation.jsp.html", 0, 0, 600, 600));
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/sys/fermetures_nocturnes.jsp.html", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN + "/", 300, 250, 700, 600));
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_SYTADIN, 300, 250, 700, 600));
 		}
 	}
 
@@ -450,8 +449,7 @@ public class TIG extends Activity {
 				loadUrlInWebview(availableWebviews.get(viewId));
 				return true;
 
-			// Broken since last sytadin.fr website
-		    // case R.id.liveTrafficLite:
+			case R.id.liveTrafficLite:
 			case R.id.liveTraffic:
 			case R.id.quickStats:
 			case R.id.closedAtNight:

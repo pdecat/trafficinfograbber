@@ -24,16 +24,12 @@ package org.decat.tig.web;
  * #L%
  */
 
-import java.io.File;
-
 import org.decat.tig.R;
 import org.decat.tig.TIG;
-import org.decat.tig.net.ResourceDownloader;
 import org.decat.tig.preferences.PreferencesHelper;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -41,7 +37,6 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.google.ads.AdView;
-import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EBean;
@@ -51,15 +46,6 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EBean
 public class TIGWebViewClient extends WebViewClient {
-	private static final String URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE = TIG.URL_SYTADIN + "/fonds/";
-	private static final String URL_LIVE_TRAFFIC_IDF_STATE_BASE = TIG.URL_SYTADIN + "/raster/";
-
-	private static final String PATH_TO_FILES = "file:///data/data/org.decat.tig/files/";
-	private static final String FILENAME_IDF_BACKGROUND = "fond_IDF.jpg";
-	private static final String FILENAME_IDF_TRAFFIC = "segment_IDF.gif";
-	private static final String PATH_IDF_BACKGROUND = PATH_TO_FILES + FILENAME_IDF_BACKGROUND;
-	private static final String PATH_IDF_TRAFFIC = PATH_TO_FILES + FILENAME_IDF_TRAFFIC;
-
 	private static final int ADS_DISPLAY_DURATION = 5000;
 	private static final int PAGE_LOAD_TIMEOUT_MS = 60000;
 
@@ -89,16 +75,10 @@ public class TIGWebViewClient extends WebViewClient {
 	private View retryCountDown;
 	private TextView retryCountDownText;
 	private boolean retryCountDownCancelled;
-	private String filesDirAbsolutePath;
 	private int scaledTopPadding;
 
 	// Field to manage page load timeout
 	private boolean pageLoadTimedOut;
-
-	@AfterInject
-	protected void initialize() {
-		filesDirAbsolutePath = activity.getFilesDir().getAbsolutePath();
-	}
 
 	@AfterViews
 	protected void initialize2() {
@@ -236,33 +216,8 @@ public class TIGWebViewClient extends WebViewClient {
 			doOnPageStarted(view);
 		}
 
-		if (TIG.FILENAME_IDF_HTML.equals(mainURL)) {
-			if (PATH_IDF_BACKGROUND.equals(url)) {
-				// Cache resources
-				cacheResource(FILENAME_IDF_BACKGROUND, URL_LIVE_TRAFFIC_IDF_BACKGROUND_BASE, true);
-			} else if (PATH_IDF_TRAFFIC.equals(url)) {
-				lastModified = cacheResource(FILENAME_IDF_TRAFFIC, URL_LIVE_TRAFFIC_IDF_STATE_BASE, false);
-			}
-		}
-
 		// Set the scale and scroll
 		setScaleAndScroll(view, false);
-	}
-
-	private String cacheResource(String filename, String baseUrl, boolean useCache) {
-		Log.d(TIG.TAG, "TIGWebViewClient.cacheResource: filename=" + filename + ", baseUrl=" + baseUrl + ", useCache=" + useCache);
-		File file = activity.getFileStreamPath(filename);
-
-		if (file.exists()) {
-			if (useCache) {
-				Log.d(TIG.TAG, "TIGWebViewClient.cacheResource: '" + filename + "' already cached in '" + filesDirAbsolutePath + "'");
-				return null;
-			}
-			file.delete();
-			Log.d(TIG.TAG, "TIGWebViewClient.cacheResource: Deleted cached ressource '" + filename + "' from '" + filesDirAbsolutePath + "'");
-		}
-
-		return ResourceDownloader.downloadFile(activity, baseUrl + filename, filename);
 	}
 
 	@Override
@@ -280,8 +235,10 @@ public class TIGWebViewClient extends WebViewClient {
 		setTitle(view, formattedTitle);
 
 		// Hide DIVs
-		view.loadUrl("javascript:hiddenAllDiv();");
-		
+		if (mainURL.equals(TIG.URL_SYTADIN)) {
+			view.loadUrl("javascript:hiddenAllDiv();");
+		}
+
 		// Set the scale and scroll
 		setScaleAndScroll(view, true);
 
