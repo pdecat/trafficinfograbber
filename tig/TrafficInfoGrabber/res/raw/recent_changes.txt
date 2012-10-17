@@ -1,4 +1,5 @@
 v0.6.2:
+- Maquiller l'entête User-Agent sur Android 3+ pour éviter d'être redirigé vers l'ancien site web
 - Demander avant de lancer le Market pour installer OI About
 - Correction de plantages dans certains rares cas causés par la suppression des bases du cache
 
