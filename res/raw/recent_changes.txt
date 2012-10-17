@@ -1,3 +1,7 @@
+v0.6.2:
+- Demander avant de lancer le Market pour installer OI About
+- Correction de plantages dans certains rares cas causés par la suppression des bases du cache
+
 v0.6.1:
 - Optimize Traffic view loading 
 - New Light Traffic view with selectable map

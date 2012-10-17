@@ -53,6 +53,8 @@
     <string name="NO">Non</string>
     <string name="NO_APP_SELECTED">Aucune application choisie</string>
     <string name="page_load_timed">Chargement de page expiré, déclenchement d\'un rafraichissement…</string>
+    <string name="failed_to_start_activity_for_intent">Échec du lancement de l\'activité \'%1$s\'</string>
+    <string name="install_oi_about">TIG requiert \'OI About\' pour afficher l\'À Propos. Installer OI About depuis le Market ?</string>
     
     <!-- Eléments du compte à rebours avant nouvelle tentative -->
     <string name="countDownRefreshingIn">Rafraîchissement dans&#160;</string>

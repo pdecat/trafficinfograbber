@@ -1,3 +1,7 @@
+v0.6.2:
+- Ask before launching Market to install OI About
+- Fix crashes in some rare cases caused by cache databases deletion
+
 v0.6.1:
 - Optimisation du chargement de la vue Trafic 
 - Nouvelle vue Trafic Allégé avec choix de la cartographie
