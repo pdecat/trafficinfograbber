@@ -48,6 +48,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -263,7 +264,22 @@ public class TIG extends Activity {
 	private void clearDatabase(String database) {
 		Log.d(TAG, "TIG.clearDatabase");
 		if (this.deleteDatabase(database)) {
-			Log.i(TAG, "Cleared " + database + " database.");
+			// Recreate the database as it is not properly recreated in some rare cases, producing the following error:
+			// I/Database( 1500): sqlite returned: error code = 1802, msg = statement aborts at 3: [DELETE FROM cache] 
+			// E/AndroidRuntime( 1500): FATAL EXCEPTION: WebViewWorkerThread
+			// E/AndroidRuntime( 1500): android.database.sqlite.SQLiteDiskIOException: error code 10: disk I/O error
+			// E/AndroidRuntime( 1500):        at android.database.sqlite.SQLiteStatement.native_execute(Native Method)
+			// E/AndroidRuntime( 1500):        at android.database.sqlite.SQLiteStatement.execute(SQLiteStatement.java:61)
+			// E/AndroidRuntime( 1500):        at android.database.sqlite.SQLiteDatabase.delete(SQLiteDatabase.java:1640)
+			// E/AndroidRuntime( 1500):        at android.webkit.WebViewDatabase.clearCache(WebViewDatabase.java:707)
+			// E/AndroidRuntime( 1500):        at android.webkit.CacheManager.clearCache(CacheManager.java:582)
+			// E/AndroidRuntime( 1500):        at android.webkit.WebViewWorker.handleMessage(WebViewWorker.java:194)
+			// E/AndroidRuntime( 1500):        at android.os.Handler.dispatchMessage(Handler.java:99)
+			// E/AndroidRuntime( 1500):        at android.os.Looper.loop(Looper.java:130)
+			// E/AndroidRuntime( 1500):        at android.os.HandlerThread.run(HandlerThread.java:60)
+			SQLiteDatabase db = this.openOrCreateDatabase(database, 0, null);
+			db.close();
+			Log.i(TAG, "Deleted and recreated " + database + " database.");
 		}
 	}
 
