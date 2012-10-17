@@ -557,20 +557,44 @@ public class TIG extends Activity {
 
 		try {
 			PackageManager pm = getPackageManager();
+			// Check if OI About is installed otherwise request to install it
 			if (pm.queryIntentActivities(intent, 0).size() == 0) {
-				String message = "Requires 'OI About' to show about dialog. Searching Android Market for it...";
-				Log.i(TAG, message);
-				showToast(message);
-				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:org.openintents.about"));
-				activityRequest = ACTIVITY_REQUEST_OI_ABOUT_INSTALL;
+				installOIAbout();
+				return;
 			}
 
 			startActivityForResult(intent, activityRequest);
 		} catch (Exception e) {
-			String message = "Failed to start activity for intent " + intent.toString();
+			String message = getString(R.string.failed_to_start_activity_for_intent) + intent.toString();
 			Log.e(TAG, message, e);
 			showToast(message);
 		}
+	}
+
+	private void installOIAbout() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.install_oi_about).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:org.openintents.about"));
+				try {
+					int activityRequest = ACTIVITY_REQUEST_OI_ABOUT_INSTALL;;
+					Log.i(TAG, "TIG.installOIAbout: searching Android Market for 'OI About'...");
+					startActivityForResult(intent, activityRequest);
+				} catch (Exception e) {
+					String message = getString(R.string.failed_to_start_activity_for_intent, intent.toString());
+					Log.e(TAG, message, e);
+					showToast(message);
+				}
+			}
+		}).setNegativeButton(R.string.NO, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	@Override

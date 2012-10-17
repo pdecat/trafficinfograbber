@@ -57,7 +57,10 @@
     <string name="NO">No</string>
     <string name="NO_APP_SELECTED">No application selected</string>
     <string name="page_load_timed">Page load timed out, trigger a refresh…</string>
+    <string name="failed_to_start_activity_for_intent">Failed to start activity \'%1$s\'</string>
+    <string name="install_oi_about">TIG requires \'OI About\' to show About dialog. Install OI About from Market?</string>
 
+    
     <!-- Retry count down items -->
     <string name="countDownRefreshingIn">Refreshing in&#160;</string>
     <string name="countDownUnits">s</string>
@@ -115,5 +118,4 @@
     <string name="about_website_label">TrafficInfoGrabber at Google Code</string>
     <string name="about_website_url">http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber/</string>
     <string name="about_email">pdecat%2Btig@gmail.com</string>
-
 </resources>
