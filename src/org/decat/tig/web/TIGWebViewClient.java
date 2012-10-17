@@ -81,8 +81,8 @@ public class TIGWebViewClient extends WebViewClient {
 	private boolean pageLoadTimedOut;
 
 	@AfterViews
-	protected void initialize2() {
-		// I had to move those from initialize to here because findViewById triggers setContentView which then triggers the following AndroidRuntimeException:
+	protected void initialize() {
+		// HINT: findViewById triggers setContentView which then triggers the following AndroidRuntimeException if views are not instantiated:
 		// "requestFeature() must be called before adding content"
 		retryCountDown = activity.findViewById(R.id.retryCountDown);
 		retryCountDownText = (TextView) activity.findViewById(R.id.retryCountDownText);
@@ -172,6 +172,7 @@ public class TIGWebViewClient extends WebViewClient {
 		((TIG) activity).refreshCurrentView();
 	}
 
+	
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);

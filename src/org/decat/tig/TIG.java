@@ -78,6 +78,8 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
 public class TIG extends Activity {
+	private static final String USER_AGENT_SDK_11_AND_HIGHER =
+					"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4";
 	private static final String RES_BOOLS = "bool";
 	private static final String PREF_DEFAULT_SUFFIX = "_DEFAULT";
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
@@ -179,6 +181,9 @@ public class TIG extends Activity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			// New Traffic view requires SVG which is only available since Honeycomb
 			currentViewId = R.id.liveTraffic;
+			
+			// Cheat on User-Agent header to avoid being redirected 
+			webview.getSettings().setUserAgentString(USER_AGENT_SDK_11_AND_HIGHER);
 		} else {
 			// Default to Light Traffic view on Gingerbread and below
 			currentViewId = R.id.liveTrafficLite;
