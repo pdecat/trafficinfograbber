@@ -172,7 +172,6 @@ public class TIGWebViewClient extends WebViewClient {
 		((TIG) activity).refreshCurrentView();
 	}
 
-	
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);
@@ -182,10 +181,6 @@ public class TIGWebViewClient extends WebViewClient {
 
 		// Clear last modified
 		lastModified = null;
-	}
-
-	private void doOnPageStarted(WebView view) {
-		Log.d(TIG.TAG, "TIGWebViewClient.doOnPageStarted");
 
 		cancelRetryCountDown();
 
@@ -193,13 +188,7 @@ public class TIGWebViewClient extends WebViewClient {
 		setTitle(view, activity.getString(R.string.loading) + " " + title + "...");
 
 		// Show ads if checked in preferences
-		showAds = TIG.getBooleanPreferenceValue(activity, PreferencesHelper.SHOW_ADS);
-		if (showAds) {
-			// Increment loadCount
-			loadCount++;
-
-			showAds();
-		}
+		showAds();
 
 		startPageLoadTimeout();
 	}
@@ -212,9 +201,9 @@ public class TIGWebViewClient extends WebViewClient {
 		// if the URL passed to WebView.loadUrl() does not change from the previous call.
 		// On my Galaxy Nexus (Android 4.1.1), this does not happen.
 		// Check http://code.google.com/p/android/issues/detail?id=37123
-		// Workaround this issue by checking if the URL loaded matches the main URL.
-		if (mainURL.equals(url)) {
-			doOnPageStarted(view);
+		// Workaround this issue by checking if the URL is null (first load) or it matches the main URL (reload).
+		if (mainURL == null || mainURL.equals(url)) {
+			onPageStarted(view, url, null);
 		}
 
 		// Set the scale and scroll
@@ -235,32 +224,34 @@ public class TIGWebViewClient extends WebViewClient {
 		}
 		setTitle(view, formattedTitle);
 
-		// Hide DIVs
-		if (mainURL.equals(TIG.URL_SYTADIN)) {
-			view.loadUrl("javascript:hiddenAllDiv();");
-		}
-
 		// Set the scale and scroll
 		setScaleAndScroll(view, true);
 
 		// Hide ads after a short delay
-		if (showAds) {
-			hideAds(loadCount);
-		}
+		hideAds(loadCount);
 	}
 
 	@UiThread
 	protected void showAds() {
-		setAdsVisibility(true);
+		showAds = TIG.getBooleanPreferenceValue(activity, PreferencesHelper.SHOW_ADS);
+		if (showAds) {
+			// Increment loadCount
+			loadCount++;
+			Log.d(TIG.TAG, "TIGWebViewClient.showAds: loadCount=" + loadCount);
+
+			setAdsVisibility(true);
+		}
 	}
 
 	@UiThread(delay = ADS_DISPLAY_DURATION)
 	protected void hideAds(long loadCountBeforeDelay) {
-		Log.d(TIG.TAG, "TIGWebViewClient.hideAds: loadCountBeforeDelay=" + loadCountBeforeDelay + ", loadCount=" + loadCount);
+		if (showAds) {
+			Log.d(TIG.TAG, "TIGWebViewClient.hideAds: loadCountBeforeDelay=" + loadCountBeforeDelay + ", loadCount=" + loadCount);
 
-		// Hide ads only if no other loading has been triggered since this job was instantiated
-		if (loadCountBeforeDelay == TIGWebViewClient.this.loadCount) {
-			setAdsVisibility(false);
+			// Hide ads only if no other loading has been triggered since this job was instantiated
+			if (loadCountBeforeDelay == TIGWebViewClient.this.loadCount) {
+				setAdsVisibility(false);
+			}
 		}
 	}
 
