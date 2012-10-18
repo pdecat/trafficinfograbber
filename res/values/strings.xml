@@ -56,7 +56,7 @@
     <string name="page_load_timed">Page load timed out, trigger a refresh…</string>
     <string name="failed_to_start_activity_for_intent">Failed to start activity \'%1$s\'</string>
     <string name="install_oi_about">TIG requires \'OI About\' to show About dialog. Install OI About from Market?</string>
-
+    <string name="last_update">Last update…</string>
     
     <!-- Retry count down items -->
     <string name="countDownRefreshingIn">Refreshing in&#160;</string>

@@ -28,7 +28,6 @@ import org.decat.tig.R;
 import org.decat.tig.TIG;
 import org.decat.tig.preferences.PreferencesHelper;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
@@ -47,20 +46,30 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @EBean
 public class TIGWebViewClient extends WebViewClient {
 	class TIGWebViewJSI {
-		public void showToast() {
-			TIG.showToast(activity, activity.getString(R.string.page_load_timed));
+		public void showToast(String message) {
+			Log.d(TIG.TAG, "TIGWebViewJSI.showToast: message=" + message);
+			try {
+				activity.showToast(message);
+			} catch (Throwable t) {
+				Log.e(TIG.TAG, "TIGWebViewJSI.showToast", t);
+			}
 		}
-		
-		public void updateLastModified(String lastModified) {
-			TIGWebViewClient.this.lastModified.setText(lastModified);
+
+		public void updateLastModified(String lastModifiedValue) {
+			Log.d(TIG.TAG, "TIGWebViewJSI.updateLastModified: lastModifiedValue=" + lastModifiedValue);
+			try {
+				TIGWebViewClient.this.updateLastModified(lastModifiedValue);
+			} catch (Throwable t) {
+				Log.e(TIG.TAG, "TIGWebViewJSI.updateLastModified", t);
+			}
 		}
 	}
-	
+
 	private static final int ADS_DISPLAY_DURATION = 5000;
 	private static final int PAGE_LOAD_TIMEOUT_MS = 60000;
 
 	@RootContext
-	protected Activity activity;
+	protected TIG activity;
 
 	@ViewById
 	protected WebView webview;
@@ -74,7 +83,7 @@ public class TIGWebViewClient extends WebViewClient {
 	// Field to manage the last modified text
 	@ViewById
 	protected TextView lastModified;
-	
+
 	// Fields to manage zoom and scrolling display
 	private int initialScale;
 	private int xScroll;
@@ -97,6 +106,7 @@ public class TIGWebViewClient extends WebViewClient {
 
 	// Field to manage page load timeout
 	private boolean pageLoadTimedOut;
+	private long scaleAndScrollLastExecution;
 
 	@AfterViews
 	protected void initialize() {
@@ -184,8 +194,8 @@ public class TIGWebViewClient extends WebViewClient {
 
 		// Trigger retry countdown
 		Log.d(TIG.TAG, "TIGWebViewClient.startPageLoadTimeout: page load timed out, trigger a refresh");
-		TIG.showToast(activity, activity.getString(R.string.page_load_timed));
-		((TIG) activity).refreshCurrentView();
+		activity.showToast(activity.getString(R.string.page_load_timed));
+		activity.refreshCurrentView();
 	}
 
 	@Override
@@ -195,8 +205,13 @@ public class TIGWebViewClient extends WebViewClient {
 		// Store main URL
 		mainURL = url;
 
-		// Clear last modified
-		this.lastModified.setText("");
+		// Reset last modified information
+		if (TIG.FILENAME_IDF_HTML.equals(mainURL)) {
+			updateLastModified(activity.getString(R.string.last_update));
+		} else {
+			// Last modified information is currently only supported with the FILENAME_IDF_HTML file, so clear it for other URLs
+			updateLastModified("");
+		}
 
 		cancelRetryCountDown();
 
@@ -207,6 +222,11 @@ public class TIGWebViewClient extends WebViewClient {
 		showAds();
 
 		startPageLoadTimeout();
+	}
+
+	@UiThread
+	protected void updateLastModified(String lastModifiedValue) {
+		this.lastModified.setText(lastModifiedValue);
 	}
 
 	@Override
@@ -239,17 +259,11 @@ public class TIGWebViewClient extends WebViewClient {
 		// Update title
 		setTitle(title);
 
-		// Extract last modified information
-		if (mainURL.startsWith("file://")) {
-			webview.loadUrl("javascript:tigUpdateLastModified();");
-		}
+		// Clear mainUrl
+		mainURL = null;
 
 		// Hide ads after a short delay
 		hideAds(loadCount);
-	}
-
-	private void updateTitle() {
-		setTitle(title);
 	}
 
 	@UiThread
@@ -282,6 +296,14 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@UiThread(delay = 100)
 	protected void setScaleAndScroll(WebView view, boolean addPadding) {
+		// Avoid to executes too often
+		long currentTimeMillis = System.currentTimeMillis();
+		if (currentTimeMillis - scaleAndScrollLastExecution > 500) {
+			scaleAndScrollLastExecution = currentTimeMillis;
+		} else {
+			return;
+		}
+
 		view.setInitialScale(initialScale);
 
 		view.scrollTo(xScroll, yScroll);

@@ -78,8 +78,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
 public class TIG extends Activity {
-	private static final String USER_AGENT_SDK_11_AND_HIGHER =
-					"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4";
+	private static final String USER_AGENT_SDK_11_AND_HIGHER = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4";
 	private static final String RES_BOOLS = "bool";
 	private static final String PREF_DEFAULT_SUFFIX = "_DEFAULT";
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
@@ -102,10 +101,10 @@ public class TIG extends Activity {
 	public static final String TAG = "TIG";
 
 	public static final String FILENAME_IDF_HTML = "file:///android_asset/tig.html";
+	public static final String FILENAME_LLT_FULL_HTML = "file:///android_asset/tig_llt_full.html";
+	public static final String FILENAME_LLT_IDF_HTML = "file:///android_asset/tig_llt_idf.html";
 
 	public static final String URL_SYTADIN = "http://www.sytadin.fr";
-	private static final String URI_CARTO_FULL = "/carto/dynamique/emprises/segment_TOTALE_fs.png";
-	private static final String URI_CARTO_IDF = "/carto/dynamique/emprises/segment_IDF_fs.png";
 
 	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
 
@@ -181,8 +180,8 @@ public class TIG extends Activity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			// New Traffic view requires SVG which is only available since Honeycomb
 			currentViewId = R.id.liveTraffic;
-			
-			// Cheat on User-Agent header to avoid being redirected 
+
+			// Cheat on User-Agent header to avoid being redirected
 			webview.getSettings().setUserAgentString(USER_AGENT_SDK_11_AND_HIGHER);
 		} else {
 			// Default to Light Traffic view on Gingerbread and below
@@ -255,12 +254,12 @@ public class TIG extends Activity {
 		}
 
 		// Setup selected map for Light Traffic view
-		String uriLtCarto = getPreferences(this).getString(PreferencesHelper.LT_CARTO, URI_CARTO_FULL);
+		String urlLltCarto = getPreferences(this).getString(PreferencesHelper.LT_CARTO, FILENAME_LLT_IDF_HTML);
 		WebviewSettings ltWebviewSettings;
-		if (URI_CARTO_IDF.equals(uriLtCarto)) {
-			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_SYTADIN + uriLtCarto, 291, 140, 683, 713);
+		if (FILENAME_LLT_FULL_HTML.equals(urlLltCarto)) {
+			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_LLT_FULL_HTML, 388, 193, 631, 621);
 		} else {
-			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_SYTADIN + uriLtCarto, 388, 193, 631, 621);
+			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_LLT_IDF_HTML, 291, 140, 683, 713);
 		}
 		availableWebviews.put(R.id.liveTrafficLite, ltWebviewSettings);
 
@@ -270,7 +269,7 @@ public class TIG extends Activity {
 		Log.d(TAG, "TIG.clearDatabase");
 		if (this.deleteDatabase(database)) {
 			// Recreate the database as it is not properly recreated in some rare cases, producing the following error:
-			// I/Database( 1500): sqlite returned: error code = 1802, msg = statement aborts at 3: [DELETE FROM cache] 
+			// I/Database( 1500): sqlite returned: error code = 1802, msg = statement aborts at 3: [DELETE FROM cache]
 			// E/AndroidRuntime( 1500): FATAL EXCEPTION: WebViewWorkerThread
 			// E/AndroidRuntime( 1500): android.database.sqlite.SQLiteDiskIOException: error code 10: disk I/O error
 			// E/AndroidRuntime( 1500):        at android.database.sqlite.SQLiteStatement.native_execute(Native Method)
@@ -541,14 +540,11 @@ public class TIG extends Activity {
 		webViewClient.cancelRetryCountDown();
 	}
 
-	public static void showToast(Context context, String message) {
-		final Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+	@UiThread
+	public void showToast(String message) {
+		final Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 320);
 		toast.show();
-	}
-
-	private void showToast(String message) {
-		showToast(this, message);
 	}
 
 	private void showPreferencesEditor() {
@@ -584,7 +580,7 @@ public class TIG extends Activity {
 
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:org.openintents.about"));
 				try {
-					int activityRequest = ACTIVITY_REQUEST_OI_ABOUT_INSTALL;;
+					int activityRequest = ACTIVITY_REQUEST_OI_ABOUT_INSTALL;
 					Log.i(TAG, "TIG.installOIAbout: searching Android Market for 'OI About'...");
 					startActivityForResult(intent, activityRequest);
 				} catch (Exception e) {
