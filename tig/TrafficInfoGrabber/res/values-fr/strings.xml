@@ -40,9 +40,6 @@
     <string name="refresh">Rafraichir</string>
 
     <!-- Divers -->
-    <string name="loading">Chargement</string>
-    <string name="downloadingResources">Chargement des ressources</string>
-    <string name="pleaseWait">Merci de patienter…</string>
     <string name="newVersion">Nouvelle version : veuillez définir vos propres préférences</string>
     <string name="newVersionShowPreferences">C\'est la première fois que vous lancez TIG %1$s. Voulez-vous mettre à jour vos préférences ?</string>
     <string name="no_third_party_activity_set_in_preferences">Pas d\'application tierce définie dans les préférences…</string>
