@@ -84,6 +84,14 @@
                     &copy; 2012 - Toute reproduction interdite sans l'accord écrit préalable de la Direction des routes Île-de-France (DiRIF).
                 </div>
             </div>        
-        </div> 
+        </div>
+        <script type="text/javascript">
+        function tigShowAndroidToast(toast) {
+            TIGAndroid.showToast(toast);
+        }
+        function tigUpdateLastModified() {
+        	TIGAndroid.updateLastModified(jQuery("#dateReseauControl").text().substring(21).split(" à ").join("\n"));
+        }
+    	</script>
     </body>
 </html>

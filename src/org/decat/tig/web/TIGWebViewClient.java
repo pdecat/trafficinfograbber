@@ -46,6 +46,16 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EBean
 public class TIGWebViewClient extends WebViewClient {
+	class TIGWebViewJSI {
+		public void showToast() {
+			TIG.showToast(activity, activity.getString(R.string.page_load_timed));
+		}
+		
+		public void updateLastModified(String lastModified) {
+			TIGWebViewClient.this.lastModified.setText(lastModified);
+		}
+	}
+	
 	private static final int ADS_DISPLAY_DURATION = 5000;
 	private static final int PAGE_LOAD_TIMEOUT_MS = 60000;
 
@@ -53,16 +63,23 @@ public class TIGWebViewClient extends WebViewClient {
 	protected Activity activity;
 
 	@ViewById
+	protected WebView webview;
+
+	@ViewById
 	protected AdView adview;
 
-	// Fields to manage the application title
-	private String lastModified;
+	// Field to manage the application title
 	private String title;
 
+	// Field to manage the last modified text
+	@ViewById
+	protected TextView lastModified;
+	
 	// Fields to manage zoom and scrolling display
 	private int initialScale;
 	private int xScroll;
 	private int yScroll;
+	private int scaledTopPadding;
 
 	// Fields to manage ads display
 	private boolean showAds;
@@ -72,20 +89,19 @@ public class TIGWebViewClient extends WebViewClient {
 	private String mainURL;
 
 	// Fields to manage retry count down
-	private View retryCountDown;
-	private TextView retryCountDownText;
+	@ViewById
+	protected View retryCountDown;
+	@ViewById
+	protected TextView retryCountDownText;
 	private boolean retryCountDownCancelled;
-	private int scaledTopPadding;
 
 	// Field to manage page load timeout
 	private boolean pageLoadTimedOut;
 
 	@AfterViews
 	protected void initialize() {
-		// HINT: findViewById triggers setContentView which then triggers the following AndroidRuntimeException if views are not instantiated:
-		// "requestFeature() must be called before adding content"
-		retryCountDown = activity.findViewById(R.id.retryCountDown);
-		retryCountDownText = (TextView) activity.findViewById(R.id.retryCountDownText);
+		// Add a Javascript interface in order to interact with the webview
+		webview.addJavascriptInterface(new TIGWebViewJSI(), "TIGAndroid");
 	}
 
 	@Override
@@ -180,12 +196,12 @@ public class TIGWebViewClient extends WebViewClient {
 		mainURL = url;
 
 		// Clear last modified
-		lastModified = null;
+		this.lastModified.setText("");
 
 		cancelRetryCountDown();
 
 		// Update title
-		setTitle(view, activity.getString(R.string.loading) + " " + title + "...");
+		setTitle("> " + title + "…");
 
 		// Show ads if checked in preferences
 		showAds();
@@ -217,18 +233,23 @@ public class TIGWebViewClient extends WebViewClient {
 		// Cancel time out
 		pageLoadTimedOut = false;
 
-		// Update title
-		String formattedTitle = title;
-		if (lastModified != null) {
-			formattedTitle += " - " + lastModified;
-		}
-		setTitle(view, formattedTitle);
-
 		// Set the scale and scroll
 		setScaleAndScroll(view, true);
 
+		// Update title
+		setTitle(title);
+
+		// Extract last modified information
+		if (mainURL.startsWith("file://")) {
+			webview.loadUrl("javascript:tigUpdateLastModified();");
+		}
+
 		// Hide ads after a short delay
 		hideAds(loadCount);
+	}
+
+	private void updateTitle() {
+		setTitle(title);
 	}
 
 	@UiThread
@@ -269,7 +290,7 @@ public class TIGWebViewClient extends WebViewClient {
 	}
 
 	@UiThread
-	protected void setTitle(WebView view, String title) {
+	protected void setTitle(String title) {
 		activity.setTitle(title);
 	}
 

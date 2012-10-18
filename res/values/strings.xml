@@ -45,9 +45,6 @@
     <string name="refresh">Refresh</string>
 
     <!-- Miscellaneous -->
-    <string name="loading">Loading</string>
-    <string name="downloadingResources">Downloading resources</string>
-    <string name="pleaseWait">Please wait…</string>
     <string name="newVersionShowPreferences">This is the first time you launch TIG %1$s. Would you like to update your preferences?</string>
     <string name="no_third_party_activity_set_in_preferences">No third party activity set in preferences…</string>
     <string name="error_while_launching_third_party_activity">Error while launching third party activity&#160;</string>

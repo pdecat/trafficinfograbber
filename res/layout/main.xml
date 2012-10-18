@@ -136,12 +136,26 @@
         android:paddingRight="5dp"
         android:src="@drawable/ic_menu_refresh" />
 
+    <TextView
+        android:id="@+id/lastModified"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="#0000"
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:minLines="2"
+        android:textSize="20sp" />
+    
     <com.google.ads.AdView
         android:id="@+id/adview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
         ads:adSize="SMART_BANNER"
         ads:adUnitId="a14dba5ee6f0b5f"
         ads:loadAdOnCreate="true" />
