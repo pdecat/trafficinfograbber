@@ -39,8 +39,8 @@
         <item>Ile-de-France</item>
     </string-array>
     <string-array name="ltCartoValues">
-        <item>/carto/dynamique/emprises/segment_TOTALE_fs.png</item>
-        <item>/carto/dynamique/emprises/segment_IDF_fs.png</item>
+        <item>FILENAME_LLT_IDF_HTML</item>
+        <item>FILENAME_LLT_FULL_HTML</item>
     </string-array>
 
 </resources>

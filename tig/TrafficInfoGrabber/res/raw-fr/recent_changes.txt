@@ -1,12 +1,17 @@
+v0.6.3:
+- Affichage de la date et heure de dernière mise à jour pour la nouvelle vue Trafic (Android 3.0+) 
+- Correction d'un bug de masquage de la publicité
+- Conversion des alertes modales en messages furtifs
+
 v0.6.2:
-- Fake the User-Agent header on Android 3+ to avoid being redirected to old website
-- Ask before launching Market to install OI About
-- Fix crashes in some rare cases caused by cache databases deletion
+- Maquiller l'entête User-Agent sur Android 3+ pour éviter d'être redirigé vers l'ancien site web
+- Demander avant de lancer le Market pour installer OI About
+- Correction de plantages dans certains rares cas causés par la suppression des bases du cache
 
 v0.6.1:
 - Optimisation du chargement de la vue Trafic 
 - Nouvelle vue Trafic Allégé avec choix de la cartographie
-- Afficher la vue Trafic Allégé par défaut sur les anciennes versions d'Android (SVG nécessite au minimum Android 3.0 / Honeycomb)
+- Afficher la vue Trafic Allégé par défaut sur les anciennes versions d'Android (SVG nécessite Android 3.0+)
 
 v0.6.0:
 - Adaptation aux derniers changements du site Sytadin

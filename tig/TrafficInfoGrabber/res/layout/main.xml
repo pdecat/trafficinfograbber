@@ -112,10 +112,10 @@
 
     <ImageButton
         android:id="@+id/dayNightSwitchButton"
+        android:layout_above="@+id/adviewLayout"
+        android:layout_alignParentLeft="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:background="#0000"
         android:contentDescription="@string/dayNightSwitchButtonDescription"
         android:onClick="dayNightSwitch"
@@ -125,10 +125,10 @@
 
     <ImageButton
         android:id="@+id/refreshButton"
+        android:layout_above="@+id/adviewLayout"
+        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:background="#0000"
         android:contentDescription="@string/refreshButtonDescription"
         android:onClick="refreshWebview"
@@ -138,26 +138,34 @@
 
     <TextView
         android:id="@+id/lastModified"
+        android:layout_above="@+id/adviewLayout"
+        android:layout_centerHorizontal="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:background="#0000"
         android:gravity="center"
         android:minHeight="48dp"
         android:minLines="2"
+        android:textColor="#000"
         android:textSize="20sp" />
     
-    <com.google.ads.AdView
-        android:id="@+id/adview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="a14dba5ee6f0b5f"
-        ads:loadAdOnCreate="true" />
+    <LinearLayout
+        android:id="@+id/adviewLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+        >
 
+        <com.google.ads.AdView
+            android:id="@+id/adview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="a14dba5ee6f0b5f"
+            ads:loadAdOnCreate="true"
+            android:visibility="gone" />
+    </LinearLayout>
 </RelativeLayout>

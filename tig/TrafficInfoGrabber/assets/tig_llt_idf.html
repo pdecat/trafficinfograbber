@@ -1,0 +1,75 @@
+<!--
+  #%L
+  TrafficInfoGrabber
+  %%
+  Copyright (C) 2010 - 2012 Patrick Decat
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <head>
+        <title>TIG</title>
+        <style type="text/css">
+        .traffic {
+            background-image: url(http://www.sytadin.fr/carto/dynamique/emprises/segment_IDF_fs.png);
+            background-position: 0px 0px;
+            background-repeat: no-repeat;
+            height: 725px;
+            left: 0px;
+            position: absolute;
+            top: 0px;
+            width: 984px;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="traffic"></div>
+        <script type="text/javascript">
+            // Override window.alert
+            function tigShowAndroidToast(toast) {
+                try {
+                    TIGAndroid.showToast(toast);
+                    console.info("tigShowAndroidToast: lastModText=" + lastModText);
+                } catch(err) {
+                    console.error("tigShowAndroidToast: " + err);
+                }
+            }
+            
+            try {
+                (function() {
+                    window.alert = function() {
+                    TIGAndroid.showToast(arguments[0]);
+                    return false;
+                  };
+                })();
+            } catch(err) {
+                console.error(err);
+            }
+            
+            // Last modified information extraction
+            function tigUpdateLastModified() {
+                try {
+                    var lastModText = ""; 
+                    console.info("tigUpdateLastModified: lastModText=" + lastModText);
+                    TIGAndroid.updateLastModified(lastModText);
+                } catch(err) {
+                    console.error("tigUpdateLastModified: " + err);
+                }
+            }
+        </script>
+    </body>
+</html>
