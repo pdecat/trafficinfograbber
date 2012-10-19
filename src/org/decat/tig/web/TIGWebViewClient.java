@@ -24,13 +24,20 @@ package org.decat.tig.web;
  * #L%
  */
 
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.decat.tig.R;
 import org.decat.tig.TIG;
 import org.decat.tig.preferences.PreferencesHelper;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -65,6 +72,9 @@ public class TIGWebViewClient extends WebViewClient {
 		}
 	}
 
+	private static final String CONTENT_ENCODING = "Content-Encoding";
+	private static final String CONTENT_TYPE = "Content-Type";
+
 	private static final int ADS_DISPLAY_DURATION = 5000;
 	private static final int PAGE_LOAD_TIMEOUT_MS = 60000;
 
@@ -95,7 +105,7 @@ public class TIGWebViewClient extends WebViewClient {
 	private long loadCount = 0;
 
 	// Field to store main URL
-	private String mainURL;
+	private String mainUrl;
 
 	// Fields to manage retry count down
 	@ViewById
@@ -103,6 +113,8 @@ public class TIGWebViewClient extends WebViewClient {
 	@ViewById
 	protected TextView retryCountDownText;
 	private boolean retryCountDownCancelled;
+	private Object firstResourceUrl;
+	private boolean firstResourceUrlsucceeded;
 
 	// Field to manage page load timeout
 	private boolean pageLoadTimedOut;
@@ -114,6 +126,9 @@ public class TIGWebViewClient extends WebViewClient {
 		webview.addJavascriptInterface(new TIGWebViewJSI(), "TIGAndroid");
 	}
 
+	/*
+	 * Only works for the main resource, so onReceivedError never gets called for file:// URLs.
+	 */
 	@Override
 	public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 		Log.w(TIG.TAG, "TIGWebViewClient.onReceivedError: Got error " + description + " (" + errorCode + ") while loading URL " + failingUrl);
@@ -181,6 +196,7 @@ public class TIGWebViewClient extends WebViewClient {
 	protected void startPageLoadTimeout() {
 		pageLoadTimedOut = true;
 
+		Handler handler = new Handler();
 		try {
 			Thread.sleep(PAGE_LOAD_TIMEOUT_MS);
 		} catch (InterruptedException e) {
@@ -203,10 +219,14 @@ public class TIGWebViewClient extends WebViewClient {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);
 
 		// Store main URL
-		mainURL = url;
+		mainUrl = url;
+
+		// Reset first resource URL and the check status
+		firstResourceUrl = null;
+		firstResourceUrlsucceeded = true;
 
 		// Reset last modified information
-		if (TIG.FILENAME_IDF_HTML.equals(mainURL)) {
+		if (TIG.FILENAME_IDF_HTML.equals(mainUrl)) {
 			updateLastModified(activity.getString(R.string.last_update));
 		} else {
 			// Last modified information is currently only supported with the FILENAME_IDF_HTML file, so clear it for other URLs
@@ -238,12 +258,40 @@ public class TIGWebViewClient extends WebViewClient {
 		// On my Galaxy Nexus (Android 4.1.1), this does not happen.
 		// Check http://code.google.com/p/android/issues/detail?id=37123
 		// Workaround this issue by checking if the URL is null (first load) or it matches the main URL (reload).
-		if (mainURL == null || mainURL.equals(url)) {
+		if (mainUrl == null || mainUrl.equals(url)) {
 			onPageStarted(view, url, null);
 		}
 
 		// Set the scale and scroll
 		setScaleAndScroll(view, false);
+	}
+
+	@TargetApi(11)
+	@Override
+	public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+		if (mainUrl != null && firstResourceUrl == null && mainUrl.startsWith(TIG.FILE_SCHEME)) {
+			Log.d(TIG.TAG, "TIGWebViewClient.shouldInterceptRequest: url=" + url + ", mainUrl=" + mainUrl + ", firstResourceUrl=" + firstResourceUrl);
+			// onErrorReceived is never invoked for file:// URLs so download the first resource ourselves to check the result
+
+			// Store the first resource URL to only process one resource
+			firstResourceUrl = url;
+
+			// Download the resource
+			firstResourceUrlsucceeded = false;
+			try {
+				HttpResponse response = new DefaultHttpClient().execute(new HttpGet(url));
+				firstResourceUrlsucceeded = true;
+				Header[] contentTypeHeaders = response.getHeaders(CONTENT_TYPE);
+				String contentType = contentTypeHeaders.length > 0 ? contentTypeHeaders[0].getValue() : "";
+				Header[] contentEncodingHeaders = response.getHeaders(CONTENT_ENCODING);
+				String contentEncoding = contentEncodingHeaders.length > 0 ? contentEncodingHeaders[0].getValue() : "";
+				Log.d(TIG.TAG, "TIGWebViewClient.shouldInterceptRequest: successfully downloaded resource, url=" + url + ", contentType=" + contentType + ", contentEncoding=" + contentEncoding);
+				return new WebResourceResponse(contentType, contentEncoding, response.getEntity().getContent());
+			} catch (Exception e) {
+				Log.e(TIG.TAG, "TIGWebViewClient.shouldInterceptRequest: failed to download resource " + url, e);
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -260,10 +308,15 @@ public class TIGWebViewClient extends WebViewClient {
 		setTitle(title);
 
 		// Clear mainUrl
-		mainURL = null;
+		mainUrl = null;
 
 		// Hide ads after a short delay
 		hideAds(loadCount);
+
+		// Check if first resource download succeeded
+		if (!firstResourceUrlsucceeded) {
+			startRetryCountDown();
+		}
 	}
 
 	@UiThread
