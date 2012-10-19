@@ -1,5 +1,6 @@
 v0.6.3:
 - Affichage de la date et heure de dernière mise à jour pour la nouvelle vue Trafic (Android 3.0+) 
+- Correction de la détection des erreurs de connexion (Android 3.0+)
 - Correction d'un bug de masquage de la publicité
 - Conversion des alertes modales en messages furtifs
 

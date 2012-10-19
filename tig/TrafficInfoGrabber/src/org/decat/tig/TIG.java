@@ -100,9 +100,10 @@ public class TIG extends Activity {
 
 	public static final String TAG = "TIG";
 
-	public static final String FILENAME_IDF_HTML = "file:///android_asset/tig.html";
-	public static final String FILENAME_LLT_FULL_HTML = "file:///android_asset/tig_llt_full.html";
-	public static final String FILENAME_LLT_IDF_HTML = "file:///android_asset/tig_llt_idf.html";
+	public static final String FILE_SCHEME = "file://";
+	public static final String FILENAME_IDF_HTML = FILE_SCHEME + "/android_asset/tig.html";
+	public static final String FILENAME_LLT_FULL_HTML = FILE_SCHEME + "/android_asset/tig_llt_full.html";
+	public static final String FILENAME_LLT_IDF_HTML = FILE_SCHEME + "/android_asset/tig_llt_idf.html";
 
 	public static final String URL_SYTADIN = "http://www.sytadin.fr";
 
