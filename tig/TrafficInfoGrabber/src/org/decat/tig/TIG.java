@@ -100,10 +100,10 @@ public class TIG extends Activity {
 
 	public static final String TAG = "TIG";
 
-	public static final String FILE_SCHEME = "file://";
-	public static final String FILENAME_IDF_HTML = FILE_SCHEME + "/android_asset/tig.html";
-	public static final String FILENAME_LLT_FULL_HTML = FILE_SCHEME + "/android_asset/tig_llt_full.html";
-	public static final String FILENAME_LLT_IDF_HTML = FILE_SCHEME + "/android_asset/tig_llt_idf.html";
+	public static final String URL_BASE = "http://tig.decat.org";
+	public static final String URL_LT_IDF_HTML = URL_BASE + "/tig.html";
+	public static final String URL_LLT_FULL_HTML = URL_BASE + "/tig_llt_full.html";
+	public static final String URL_LLT_IDF_HTML = URL_BASE + "/tig_llt_idf.html";
 
 	public static final String URL_SYTADIN = "http://www.sytadin.fr";
 
@@ -251,16 +251,16 @@ public class TIG extends Activity {
 			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/sys/barometres_de_la_circulation.jsp.html", 0, 0, 600, 600));
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/sys/fermetures_nocturnes.jsp.html", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), FILENAME_IDF_HTML, 330, 250, 650, 400));
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_LT_IDF_HTML, 330, 250, 650, 400));
 		}
 
 		// Setup selected map for Light Traffic view
-		String urlLltCarto = getPreferences(this).getString(PreferencesHelper.LT_CARTO, FILENAME_LLT_IDF_HTML);
+		String urlLltCarto = getPreferences(this).getString(PreferencesHelper.LT_CARTO, URL_LLT_IDF_HTML);
 		WebviewSettings ltWebviewSettings;
-		if (FILENAME_LLT_FULL_HTML.equals(urlLltCarto)) {
-			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_LLT_FULL_HTML, 388, 193, 631, 621);
+		if (URL_LLT_FULL_HTML.equals(urlLltCarto)) {
+			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_LLT_FULL_HTML, 388, 193, 631, 621);
 		} else {
-			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), FILENAME_LLT_IDF_HTML, 291, 140, 683, 713);
+			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_LLT_IDF_HTML, 291, 140, 683, 713);
 		}
 		availableWebviews.put(R.id.liveTrafficLite, ltWebviewSettings);
 
