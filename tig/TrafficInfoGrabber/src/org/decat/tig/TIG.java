@@ -251,7 +251,7 @@ public class TIG extends Activity {
 			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/sys/barometres_de_la_circulation.jsp.html", 0, 0, 600, 600));
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/sys/fermetures_nocturnes.jsp.html", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_LT_IDF_HTML, 330, 250, 650, 400));
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_LT_IDF_HTML, -1, -1, -1, -1));
 		}
 
 		// Setup selected map for Light Traffic view
@@ -621,17 +621,22 @@ public class TIG extends Activity {
 	@UiThread
 	protected void loadUrlInWebview(WebviewSettings settings) {
 		Log.i(TAG, "Loading '" + settings.title + "' (URL=" + settings.url + ", xmin=" + settings.xmin + ", ymin=" + settings.ymin + ", xmax=" + settings.xmax + ", ymax=" + settings.ymax + ")");
-		int xscale = (int) ((float) width * 100 / (float) (settings.xmax - settings.xmin));
-		int yscale = (int) ((float) height * 100 / (float) (settings.ymax - settings.ymin));
-		int scale = xscale < yscale ? xscale : yscale;
-		int xoffset = (settings.xmin * scale) / 100;
-		int yoffset = (settings.ymin * scale) / 100;
-		if (xscale < yscale) {
-			yoffset = Math.max(yoffset - ((height - ((settings.ymax - settings.ymin) * scale) / 100) / 2), 0);
-		} else {
-			xoffset = Math.max(xoffset - ((width - ((settings.xmax - settings.xmin) * scale) / 100) / 2), 0);
+		int scale = -1;
+		int xoffset = -1;
+		int yoffset = -1;
+		if (settings.xmin != -1 && settings.ymin != -1 && settings.xmax != -1 && settings.ymax != -1) {
+			int xscale = (int) ((float) width * 100 / (float) (settings.xmax - settings.xmin));
+			int yscale = (int) ((float) height * 100 / (float) (settings.ymax - settings.ymin));
+			scale = xscale < yscale ? xscale : yscale;
+			xoffset = (settings.xmin * scale) / 100;
+			yoffset = (settings.ymin * scale) / 100;
+			if (xscale < yscale) {
+				yoffset = Math.max(yoffset - ((height - ((settings.ymax - settings.ymin) * scale) / 100) / 2), 0);
+			} else {
+				xoffset = Math.max(xoffset - ((width - ((settings.xmax - settings.xmin) * scale) / 100) / 2), 0);
+			}
+			Log.d(TAG, "Computed values: xscale=" + xscale + ", yscale=" + yscale + ", scale=" + scale + ", xoffset=" + xoffset + ", yoffset=" + yoffset);
 		}
-		Log.d(TAG, "Computed values: xscale=" + xscale + ", yscale=" + yscale + ", scale=" + scale + ", xoffset=" + xoffset + ", yoffset=" + yoffset);
 
 		webViewClient.setParameters(settings.title, scale, xoffset, yoffset);
 

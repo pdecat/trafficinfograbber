@@ -242,8 +242,10 @@ public class TIGWebViewClient extends WebViewClient {
 			onPageStarted(view, url, null);
 		}
 
-		// Set the scale and scroll
-		setScaleAndScroll(view, false);
+		if (initialScale != -1 && xScroll != -1 && yScroll != -1) {
+			// Set the scale and scroll
+			setScaleAndScroll(view, false);
+		}
 	}
 
 	@Override
@@ -253,8 +255,10 @@ public class TIGWebViewClient extends WebViewClient {
 		// Cancel time out
 		pageLoadTimedOut = false;
 
-		// Set the scale and scroll
-		setScaleAndScroll(view, true);
+		if (initialScale != -1 && xScroll != -1 && yScroll != -1) {
+			// Set the scale and scroll
+			setScaleAndScroll(view, false);
+		}
 
 		// Update title
 		setTitle(title);
