@@ -96,8 +96,8 @@
     <string name="NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY">Upon booting, add a notification to launch TIG</string>
     <string name="PREFS_CATEGORY_OTHER_SUMMARY">Other settings you may want to adjust</string>
     <string name="PREFS_CATEGORY_OTHER_TITLE">Other</string>
-    <string name="SHOW_ADS">Non intrusive ads</string>
-    <string name="SHOW_ADS_SUMMARY">Support this project\'s developer displaying ads while loading</string>
+    <string name="PREF_ADS_SUMMARY">Support this project\'s developer displaying ads while loading</string>
+    <string name="PREF_ADS_TITLE">Non intrusive ads</string>
     <string name="PREFS_CATEGORY_CAR_MODE_SUMMARY">Define desired behaviour on Car Mode changes</string>
     <string name="PREFS_CATEGORY_CAR_MODE_TITLE">Car Mode (Android 2.2+)</string>
     <string name="LAUNCH_TIG_ON_ENTER_CAR_DOCK_SUMMARY">TIG will be started or brought back to the foreground</string>
@@ -105,6 +105,18 @@
     <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_SUMMARY">TIG will be finished</string>
     <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_TITLE">Quit on exiting Car Mode</string>
 
+    <!-- Preferences labels & values -->
+    <string name="PREF_LLT_IDF_HTML_LABEL">Full</string>
+    <string name="PREF_LLT_FULL_HTML_LABEL">Ile-de-France</string>
+    <string name="PREF_LLT_IDF_HTML_VALUE">FILENAME_LLT_IDF_HTML</string>
+    <string name="PREF_LLT_FULL_HTML_VALUE">FILENAME_LLT_FULL_HTML</string>
+    <string name="PREF_ADS_ALWAYS_LABEL">Always display ads, the developer deserves credit!</string>
+    <string name="PREF_ADS_ATLOAD_LABEL">Display ads while loading traffic information, just my 2cts…</string>
+    <string name="PREF_ADS_NEVER_LABEL">I hate ads and don\'t give a damn about the developer\'s motivation :(</string>
+    <string name="PREF_ADS_ALWAYS_VALUE">always</string>
+    <string name="PREF_ADS_ATLOAD_VALUE">atLoad</string>
+    <string name="PREF_ADS_NEVER_VALUE">never</string>
+    
     <!-- Notifications -->
     <string name="notificationLabel">Launch TIG</string>
     <string name="notificationMessage">Shortcut to launch TIG…</string>

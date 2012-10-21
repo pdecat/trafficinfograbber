@@ -27,8 +27,8 @@
         android:title="@string/PREFS_CATEGORY_INTERFACE_TITLE" >
         <ListPreference
             android:defaultValue="/carto/dynamique/emprises/segment_IDF_fs.png"
-            android:entries="@array/ltCartoLabels"
-            android:entryValues="@array/ltCartoValues"
+            android:entries="@array/lltCartoLabels"
+            android:entryValues="@array/lltCartoValues"
             android:key="LT_CARTO"
             android:summary="@string/LT_CARTO_SUMMARY"
             android:title="@string/LT_CARTO_TITLE" />
@@ -93,11 +93,13 @@
     <PreferenceCategory
         android:summary="@string/PREFS_CATEGORY_OTHER_SUMMARY"
         android:title="@string/PREFS_CATEGORY_OTHER_TITLE" >
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="SHOW_ADS"
-            android:summary="@string/SHOW_ADS_SUMMARY"
-            android:title="@string/SHOW_ADS" />
+        <ListPreference
+            android:defaultValue="always"
+            android:entries="@array/adsDisplayLabels"
+            android:entryValues="@array/adsDisplayValues"
+            android:key="PREF_ADS"
+            android:summary="@string/PREF_ADS_SUMMARY"
+            android:title="@string/PREF_ADS_TITLE" />
     </PreferenceCategory>
 
 </PreferenceScreen>
