@@ -65,7 +65,7 @@ public class TIGWebViewClient extends WebViewClient {
 		}
 	}
 
-	private static final int ADS_DISPLAY_DURATION = 5000;
+	private static final int ADS_DISPLAY_DURATION = 10000;
 	private static final int PAGE_LOAD_TIMEOUT_MS = 60000;
 
 	@RootContext
@@ -88,10 +88,9 @@ public class TIGWebViewClient extends WebViewClient {
 	private int initialScale;
 	private int xScroll;
 	private int yScroll;
-	private int scaledTopPadding;
 
 	// Fields to manage ads display
-	private boolean showAds;
+	private String showAds;
 	private long loadCount = 0;
 
 	// Field to store main URL
@@ -179,6 +178,10 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Background
 	protected void startPageLoadTimeout() {
+		if (pageLoadTimedOut) {
+			// Avoid launching multiple countdowns
+			return;
+		}
 		pageLoadTimedOut = true;
 
 		try {
@@ -191,6 +194,9 @@ public class TIGWebViewClient extends WebViewClient {
 			Log.d(TIG.TAG, "TIGWebViewClient.startPageLoadTimeout: page load completed in time");
 			return;
 		}
+
+		// Reset page load time out
+		pageLoadTimedOut = false;
 
 		// Trigger retry countdown
 		Log.d(TIG.TAG, "TIGWebViewClient.startPageLoadTimeout: page load timed out, trigger a refresh");
@@ -242,36 +248,34 @@ public class TIGWebViewClient extends WebViewClient {
 			onPageStarted(view, url, null);
 		}
 
-		if (initialScale != -1 && xScroll != -1 && yScroll != -1) {
-			// Set the scale and scroll
-			setScaleAndScroll(view, false);
-		}
+		// Set the scale and scroll
+		setScaleAndScroll(view);
 	}
 
 	@Override
 	public void onPageFinished(WebView view, String url) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageFinished: url=" + url);
 
-		// Cancel time out
+		// Cancel page load time out
 		pageLoadTimedOut = false;
 
-		if (initialScale != -1 && xScroll != -1 && yScroll != -1) {
-			// Set the scale and scroll
-			setScaleAndScroll(view, false);
-		}
+		// Set the scale and scroll
+		setScaleAndScroll(view);
 
 		// Update title
 		setTitle(title);
 
-		// Hide ads after a short delay
-		hideAds(loadCount);
+		// Hide ads after a short delay if set in preferences
+		if (activity.getString(R.string.PREF_ADS_ATLOAD_VALUE).equals(showAds)) {
+			hideAds(loadCount);
+		}
 	}
 
 	@UiThread
 	protected void showAds() {
-		showAds = TIG.getBooleanPreferenceValue(activity, PreferencesHelper.SHOW_ADS);
-		if (showAds) {
-			// Increment loadCount
+		showAds = TIG.getStringPreferenceValue(activity, PreferencesHelper.PREF_ADS);
+		if (!activity.getString(R.string.PREF_ADS_NEVER_VALUE).equals(showAds)) {
+			// Increment loadCount if 
 			loadCount++;
 			Log.d(TIG.TAG, "TIGWebViewClient.showAds: loadCount=" + loadCount);
 
@@ -281,13 +285,11 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@UiThread(delay = ADS_DISPLAY_DURATION)
 	protected void hideAds(long loadCountBeforeDelay) {
-		if (showAds) {
-			Log.d(TIG.TAG, "TIGWebViewClient.hideAds: loadCountBeforeDelay=" + loadCountBeforeDelay + ", loadCount=" + loadCount);
+		Log.d(TIG.TAG, "TIGWebViewClient.hideAds: loadCountBeforeDelay=" + loadCountBeforeDelay + ", loadCount=" + loadCount);
 
-			// Hide ads only if no other loading has been triggered since this job was instantiated
-			if (loadCountBeforeDelay == TIGWebViewClient.this.loadCount) {
-				setAdsVisibility(false);
-			}
+		// Hide ads only if no other loading has been triggered since this job was instantiated
+		if (loadCountBeforeDelay == TIGWebViewClient.this.loadCount) {
+			setAdsVisibility(false);
 		}
 	}
 
@@ -296,7 +298,7 @@ public class TIGWebViewClient extends WebViewClient {
 	}
 
 	@UiThread(delay = 100)
-	protected void setScaleAndScroll(WebView view, boolean addPadding) {
+	protected void setScaleAndScroll(WebView view) {
 		// Avoid to executes too often
 		long currentTimeMillis = System.currentTimeMillis();
 		if (currentTimeMillis - scaleAndScrollLastExecution > 500) {
@@ -306,10 +308,9 @@ public class TIGWebViewClient extends WebViewClient {
 		}
 
 		view.setInitialScale(initialScale);
-
 		view.scrollTo(xScroll, yScroll);
 
-		Log.d(TIG.TAG, "TIGWebViewClient.setScaleAndScroll: initialScale=" + initialScale + ", xScroll=" + xScroll + ", yScroll=" + yScroll + ", scaledTopPadding=" + scaledTopPadding);
+		Log.d(TIG.TAG, "TIGWebViewClient.setScaleAndScroll: initialScale=" + initialScale + ", xScroll=" + xScroll + ", yScroll=" + yScroll);
 	}
 
 	@UiThread

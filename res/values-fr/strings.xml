@@ -92,14 +92,19 @@
     <string name="NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY">Au démarrage du téléphone, ajouter une notification pour lancer TIG</string>
     <string name="PREFS_CATEGORY_OTHER_SUMMARY">Autres réglages que vous pourriez souhaiter ajuster</string>
     <string name="PREFS_CATEGORY_OTHER_TITLE">Autres</string>
-    <string name="SHOW_ADS">Publicité non intrusive</string>
-    <string name="SHOW_ADS_SUMMARY">Supporter le développeur de ce projet en affichant de la publicité pendant le chargement</string>
+    <string name="PREF_ADS_TITLE">Publicité non intrusive</string>
+    <string name="PREF_ADS_SUMMARY">Supporter le développeur de ce projet en affichant de la publicité pendant le chargement</string>
     <string name="PREFS_CATEGORY_CAR_MODE_SUMMARY">Définir le comportement souhaité lors du changement du mode voiture</string>
     <string name="PREFS_CATEGORY_CAR_MODE_TITLE">Mode voiture (Android 2.2+)</string>
     <string name="LAUNCH_TIG_ON_ENTER_CAR_DOCK_SUMMARY">TIG se lancera ou sera ramené au premier plan</string>
     <string name="LAUNCH_TIG_ON_ENTER_CAR_DOCK_TITLE">Lancer à l\'activation du mode voiture</string>
     <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_SUMMARY">TIG se terminera</string>
     <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_TITLE">Quitter à la désactivation du mode voiture</string>
+
+    <!-- Preferences labels -->
+    <string name="PREF_ADS_ALWAYS_LABEL">Toujours afficher la publicité, le développeur mérite de la reconnaissance !</string>
+    <string name="PREF_ADS_ATLOAD_LABEL">Afficher la publicité lors du chargement des informations trafic, ma modeste contribution…</string>
+    <string name="PREF_ADS_NEVER_LABEL">Je déteste la publicité et me moque de la motivation du développeur :(</string>
     
     <!-- Notifications -->
     <string name="notificationLabel">Lancer TIG</string>

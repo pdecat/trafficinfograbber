@@ -80,6 +80,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 public class TIG extends Activity {
 	private static final String USER_AGENT_SDK_11_AND_HIGHER = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4";
 	private static final String RES_BOOLS = "bool";
+	private static final String RES_STRINGS = "string";
 	private static final String PREF_DEFAULT_SUFFIX = "_DEFAULT";
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
 	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
@@ -129,6 +130,8 @@ public class TIG extends Activity {
 
 	private static boolean preferenceLockOrientation = false;
 	private int currentViewId;
+	@ViewById
+	protected View adview;
 
 	@AfterInject
 	public void init() {
@@ -309,6 +312,22 @@ public class TIG extends Activity {
 		return value;
 	}
 
+	public static String getStringPreferenceValue(Context context, String preferenceKey) {
+		int defaultValueId = context.getResources().getIdentifier(preferenceKey + PREF_DEFAULT_SUFFIX, RES_STRINGS, context.getPackageName());
+
+		String defaultValue;
+		if (defaultValueId != 0) {
+			defaultValue = context.getResources().getString(defaultValueId);
+		} else {
+			defaultValue = "";
+		}
+
+		String value = getPreferences(context).getString(preferenceKey, defaultValue);
+		Log.d(TAG, "TIG.getStringPreferenceValue: preferenceKey=" + preferenceKey + ", value=" + value + ", defaultValue=" + defaultValue);
+
+		return value;
+	}
+
 	private String getAppVersionName() {
 		Log.d(TAG, "TIG.getAppVersionName");
 		return getString(R.string.app_version);
@@ -382,11 +401,12 @@ public class TIG extends Activity {
 
 	private void updateAdsVisibility(Context context) {
 		// Get current value
-		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.SHOW_ADS);
+		String value = getStringPreferenceValue(context, PreferencesHelper.PREF_ADS);
 
-		if (!value) {
-			View adView = findViewById(R.id.adview);
-			adView.setVisibility(View.GONE);
+		if (value != null && getString(R.string.PREF_ADS_NEVER_VALUE).equals(value)) {
+			adview.setVisibility(View.GONE);
+		} else {
+			adview.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -621,9 +641,9 @@ public class TIG extends Activity {
 	@UiThread
 	protected void loadUrlInWebview(WebviewSettings settings) {
 		Log.i(TAG, "Loading '" + settings.title + "' (URL=" + settings.url + ", xmin=" + settings.xmin + ", ymin=" + settings.ymin + ", xmax=" + settings.xmax + ", ymax=" + settings.ymax + ")");
-		int scale = -1;
-		int xoffset = -1;
-		int yoffset = -1;
+		int scale = 0;
+		int xoffset = 0;
+		int yoffset = 0;
 		if (settings.xmin != -1 && settings.ymin != -1 && settings.xmax != -1 && settings.ymax != -1) {
 			int xscale = (int) ((float) width * 100 / (float) (settings.xmax - settings.xmin));
 			int yscale = (int) ((float) height * 100 / (float) (settings.ymax - settings.ymin));

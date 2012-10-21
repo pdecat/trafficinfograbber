@@ -45,7 +45,7 @@ public class PreferencesHelper {
 
 	public static final String FORCE_PORTRAIT_ORIENTATION = "FORCE_PORTRAIT_ORIENTATION";
 
-	public static final String SHOW_ADS = "SHOW_ADS";
+	public static final String PREF_ADS = "PREF_ADS";
 
 	public static final String LAUNCH_TIG_ON_ENTER_CAR_DOCK = "LAUNCH_TIG_ON_ENTER_CAR_DOCK";
 
