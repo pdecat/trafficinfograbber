@@ -152,6 +152,9 @@ public class TIGWebViewClient extends WebViewClient {
 
 		setRetryCountDownVisibility(View.INVISIBLE);
 
+		// Cancel page load time out
+		pageLoadTimedOut = false;
+
 		// Trigger refresh
 		Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: trigger refresh");
 		((TIG) activity).refreshCurrentView();
