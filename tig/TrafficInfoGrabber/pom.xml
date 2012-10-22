@@ -36,7 +36,7 @@
     <parent>
         <groupId>org.decat</groupId>
         <artifactId>parent</artifactId>
-        <version>0.1.4</version>
+        <version>0.1.5</version>
     </parent>
 
     <scm>
@@ -54,6 +54,11 @@
         <dependency>
             <groupId>com.google.android.admob</groupId>
             <artifactId>admob</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.android.analytics</groupId>
+            <artifactId>analytics</artifactId>
         </dependency>
 
         <dependency>

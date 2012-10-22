@@ -27,6 +27,10 @@ package org.decat.tig.preferences;
 import org.decat.tig.R;
 import org.decat.tig.TIG;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +45,8 @@ import android.util.Log;
 public class PreferencesEditor extends PreferenceActivity {
 	public static final String EXTRA_RESOLVE_INFO = "value";
 
+	private SharedPreferences sharedPreferences;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,8 +63,7 @@ public class PreferencesEditor extends PreferenceActivity {
 			findPreference(PreferencesHelper.QUIT_TIG_ON_EXIT_CAR_DOCK).setEnabled(false);
 		}
 
-		// Update select third party activity button
-		SharedPreferences sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
+		sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
 		String thirdPartyActivity = sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED));
 		final Preference otherActivityPref = findPreference(PreferencesHelper.OTHER_ACTIVITY);
 		otherActivityPref.setSummary(thirdPartyActivity);
@@ -103,6 +108,16 @@ public class PreferencesEditor extends PreferenceActivity {
 		Log.d(TIG.TAG, sb.toString());
 	}
 
+    @Override
+    protected void onPause() {
+    	super.onResume();
+    	
+		GoogleAnalyticsTracker googleAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
+		googleAnalyticsTracker.setCustomVar(1, "Preference/" + PreferencesHelper.OTHER_ACTIVITY, sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED)));
+		googleAnalyticsTracker.setCustomVar(2, "Preference/" + PreferencesHelper.PREF_ADS, sharedPreferences.getString(PreferencesHelper.PREF_ADS, ""));
+		googleAnalyticsTracker.trackPageView("/tig/pe/pause");
+    }
+    
 	private void updateStringPreference(String preference, String value) {
 		SharedPreferences sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
 		SharedPreferences.Editor ed = sharedPreferences.edit();
