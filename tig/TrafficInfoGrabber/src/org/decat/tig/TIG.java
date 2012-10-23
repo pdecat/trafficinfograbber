@@ -148,8 +148,8 @@ public class TIG extends Activity {
 		clearDatabase("webview.db");
 		clearDatabase("webviewCache.db");
 		
-		// Initialize the Google Analytics tracker
-		GoogleAnalyticsTracker.getInstance().startNewSession("UA-8749317-5", this);
+		// Initialize the Google Analytics tracker with a 60s dispatch interval
+		GoogleAnalyticsTracker.getInstance().startNewSession("UA-8749317-5", 60, this);
 	}
 
 	@AfterViews
