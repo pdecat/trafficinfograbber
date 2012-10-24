@@ -46,7 +46,7 @@ public class PreferencesEditor extends PreferenceActivity {
 	public static final String EXTRA_RESOLVE_INFO = "value";
 
 	private SharedPreferences sharedPreferences;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -108,16 +108,15 @@ public class PreferencesEditor extends PreferenceActivity {
 		Log.d(TIG.TAG, sb.toString());
 	}
 
-    @Override
-    protected void onPause() {
-    	super.onResume();
-    	
-		GoogleAnalyticsTracker googleAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
-		googleAnalyticsTracker.setCustomVar(1, "Preference/" + PreferencesHelper.OTHER_ACTIVITY, sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED)));
-		googleAnalyticsTracker.setCustomVar(2, "Preference/" + PreferencesHelper.PREF_ADS, sharedPreferences.getString(PreferencesHelper.PREF_ADS, ""));
-		googleAnalyticsTracker.trackPageView("/tig/pe/pause");
-    }
-    
+	@Override
+	protected void onPause() {
+		super.onResume();
+
+		GoogleAnalyticsTracker.getInstance().trackPageView(
+				"/tig/pe/pause/" + PreferencesHelper.OTHER_ACTIVITY + "=" + sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED)) + ", "
+						+ PreferencesHelper.PREF_ADS + "=" + sharedPreferences.getString(PreferencesHelper.PREF_ADS, ""));
+	}
+
 	private void updateStringPreference(String preference, String value) {
 		SharedPreferences sharedPreferences = getSharedPreferences(TIG.class.getSimpleName(), Context.MODE_PRIVATE);
 		SharedPreferences.Editor ed = sharedPreferences.edit();
