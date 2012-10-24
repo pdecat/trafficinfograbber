@@ -74,9 +74,11 @@
                                         }
                                     };
                                 })();
-                                init();
-                                $("#saveFavoriteView").parent().remove()
-                                $("#loadFavoriteView").parent().remove()
+                                window.setTimeout(function() {
+                                    init();
+                                    $("#saveFavoriteView").parent().remove()
+                                    $("#loadFavoriteView").parent().remove()
+                                }, 100);
                             </script>
                         </div>
                     </div>
@@ -116,13 +118,15 @@
                 }
             }
 
-            try {
-                // Call tigUpdateLastModified once and register it for updates
-                tigUpdateLastModified();
-                jQuery("#dateReseauControl").bind('DOMSubtreeModified', tigUpdateLastModified);
-            } catch(err) {
-                console.error(err);
-            }
+            window.setTimeout(function() {
+                try {
+                    // Call tigUpdateLastModified once and register it for updates
+                    tigUpdateLastModified();
+                    jQuery("#dateReseauControl").bind('DOMSubtreeModified', tigUpdateLastModified);
+                } catch(err) {
+                    console.error(err);
+                }
+            }, 150);
         </script>
         <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
