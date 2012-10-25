@@ -1,0 +1,130 @@
+body {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 12px;
+	color: #AAAAAA;
+	background-color: #000000;
+	margin: 0px;
+	padding: 0px;
+}
+
+html {
+	scrollbar-face-color:#666666;
+	scrollbar-highlight-color:#000000;
+	scrollbar-3dlight-color:#000000;
+	scrollbar-darkshadow-color:#000000;
+	scrollbar-shadow-color:#000000;
+	scrollbar-arrow-color:#888888;
+	scrollbar-track-color:#000000;
+}
+
+a:link {
+	text-decoration: none;
+ 	color: #AAAAAA;
+}
+
+a:visited {
+	text-decoration: none;
+	color: #AAAAAA;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+.current {
+	font-weight: bold;
+ 	color: #AAAAAA;
+	background-color: #666666;
+}
+
+.cthumb {
+	background-color: #666666;
+	border: 1px solid #666666;
+}
+
+.thumb {
+	background-color: #333333;
+	border: 1px solid #666666;
+}
+
+.image { border: 1px solid #aaaaaa;}
+a:link .image {  border-color: #aaaaaa;}
+a:visited .image {  border-color: #aaaaaa;}
+a:hover .image { border-color: #ffffff;}
+
+.mthumb { border: 1px solid #aaaaaa;}
+a:link .mthumb {  border-color: #aaaaaa;}
+a:visited .mthumb {  border-color: #aaaaaa;}
+a:hover .mthumb { border-color: #ffffff;}
+
+.slideImage { border-width: 0px; border: 0px solid; border-color: #ffffff;}
+a:link .slideImage { border-color: #ffffff;}
+a:visited .slideImage { border-color: #ffffff;}
+
+.title {
+	font-size: 120%;
+	font-weight: bold;
+	color: #000000;
+}
+
+.title a:link {
+	text-decoration: none;
+	color: #000000;
+}
+
+.title a:visited {
+	text-decoration: none;
+	color: #000000;
+}
+
+.title a:hover {
+	text-decoration: none;
+	color: #ffffff;
+}
+
+.infotable {
+	border: 1px solid #444444;
+	border-collapse: collapse;
+}
+
+.infotable td {
+	border: 1px solid #444444;
+}
+
+.infotable table {
+	border-collapse: separate;
+}
+
+.infotable table td {
+	border: 0px;
+}
+
+.dirname {
+	font-size: 100%;
+	font-weight: bold;
+	color: #AAAAAA;
+}
+
+.comment {
+	color: #CCCCCC;
+	font-weight: bold;
+	font-size: 100%;
+}
+
+.smalltxt {
+	color: #888888;
+	font-size: 90%;
+}
+
+.xsmalltxt {
+	color: #888888;
+	font-size: 80%;
+}
+
+.newlabel {
+	font-size: 70%;
+	font-weight: bold;
+	color: #EEEEEE;
+	background-color: #558800;
+}
