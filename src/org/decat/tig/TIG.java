@@ -129,11 +129,11 @@ public class TIG extends Activity {
 
 	private static boolean preferenceNotificationShortcut = false;
 	private static boolean preferenceLockOrientation = false;
-	
+
 	// Fields to manage webview state 
 	private int previousViewId = -1;
 	private int currentViewId;
-	
+
 	@ViewById
 	protected View adview;
 
@@ -150,7 +150,7 @@ public class TIG extends Activity {
 		// Clear webview databases
 		clearDatabase("webview.db");
 		clearDatabase("webviewCache.db");
-		
+
 		// Initialize the Google Analytics tracker with a 60s dispatch interval
 		GoogleAnalyticsTracker.getInstance().startNewSession("UA-8749317-5", 60, this);
 	}
@@ -224,6 +224,9 @@ public class TIG extends Activity {
 			Log.i(TAG, "New application version: " + appVersion + " (previous: " + installedAppVersion + ")");
 			setInstalledAppVersion(appVersion);
 
+			// Reset Ads preferences
+			setDefaultStringPreferenceValue(this, PreferencesHelper.PREF_ADS);
+
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(getString(R.string.newVersionShowPreferences, getAppVersionName())).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
@@ -240,7 +243,7 @@ public class TIG extends Activity {
 		} else {
 			Log.i(TAG, "Application version: " + appVersion);
 		}
-		
+
 		GoogleAnalyticsTracker googleAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
 		googleAnalyticsTracker.setCustomVar(1, "AppVersion", appVersion);
 		googleAnalyticsTracker.setCustomVar(2, "Build/Platform", Build.VERSION.RELEASE);
@@ -330,6 +333,23 @@ public class TIG extends Activity {
 	}
 
 	public static String getStringPreferenceValue(Context context, String preferenceKey) {
+		String defaultValue = getDefaultStringPreferenceValue(context, preferenceKey);
+
+		String value = getPreferences(context).getString(preferenceKey, defaultValue);
+		Log.d(TAG, "TIG.getStringPreferenceValue: preferenceKey=" + preferenceKey + ", value=" + value + ", defaultValue=" + defaultValue);
+
+		return value;
+	}
+
+	private static void setDefaultStringPreferenceValue(Context context, String preferenceKey) {
+		String defaultValue = getDefaultStringPreferenceValue(context, preferenceKey);
+
+		getPreferences(context).edit().putString(preferenceKey, defaultValue).commit();
+		String value = getPreferences(context).getString(preferenceKey, defaultValue);
+		Log.d(TAG, "TIG.setDefaultStringPreferenceValue: preferenceKey=" + preferenceKey + ", defaultValue=" + defaultValue);
+	}
+
+	private static String getDefaultStringPreferenceValue(Context context, String preferenceKey) {
 		int defaultValueId = context.getResources().getIdentifier(preferenceKey + PREF_DEFAULT_SUFFIX, RES_STRINGS, context.getPackageName());
 
 		String defaultValue;
@@ -338,11 +358,7 @@ public class TIG extends Activity {
 		} else {
 			defaultValue = "";
 		}
-
-		String value = getPreferences(context).getString(preferenceKey, defaultValue);
-		Log.d(TAG, "TIG.getStringPreferenceValue: preferenceKey=" + preferenceKey + ", value=" + value + ", defaultValue=" + defaultValue);
-
-		return value;
+		return defaultValue;
 	}
 
 	private String getAppVersionName() {
@@ -498,7 +514,7 @@ public class TIG extends Activity {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB || previousViewId != R.id.liveTraffic) {
 			refreshCurrentView();
 		}
-		
+
 		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/resume/");
 	}
 
@@ -534,7 +550,7 @@ public class TIG extends Activity {
 	private boolean showViewById(int viewId) {
 		Log.d(TAG, "TIG.showViewById: viewId=" + viewId);
 		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/showViewById/" + viewId);
-		
+
 		// Store previous value to manage refresh
 		previousViewId = currentViewId;
 		switch (viewId) {
@@ -601,7 +617,7 @@ public class TIG extends Activity {
 
 	private void showAbout() {
 		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/showAbout/");
-		
+
 		Intent intent = new Intent(ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG);
 		int activityRequest = ACTIVITY_REQUEST_OI_ABOUT_LAUNCH;
 
@@ -860,8 +876,8 @@ public class TIG extends Activity {
 	protected void onDestroy() {
 		Log.d(TAG, "TIG.onDestroy: isFinishing=" + isFinishing());
 		super.onDestroy();
-		
-	    // Stop the Google Analytics tracker when it is no longer needed.
-	    GoogleAnalyticsTracker.getInstance().stopSession();
+
+		// Stop the Google Analytics tracker when it is no longer needed.
+		GoogleAnalyticsTracker.getInstance().stopSession();
 	}
 }
