@@ -1,4 +1,4 @@
-v0.6.3:
+v0.7.0:
 - Vue Trafic optimisée (Android 3.0+)
 - Affichage de la date et heure de dernière mise à jour pour la nouvelle vue Trafic (Android 3.0+) 
 - Correction de la détection des erreurs de connexion

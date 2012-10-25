@@ -1,4 +1,4 @@
-v0.6.3:
+v0.7.0:
 - Traffic view optimized (Android 3.0+)
 - Display last update date and time for the new Traffic view (Android 3.0+) 
 - Fix an ads hiding bug
