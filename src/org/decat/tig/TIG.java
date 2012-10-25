@@ -128,9 +128,12 @@ public class TIG extends Activity {
 	private float oldScreenBrightness = 1f;
 
 	private static boolean preferenceNotificationShortcut = false;
-
 	private static boolean preferenceLockOrientation = false;
+	
+	// Fields to manage webview state 
+	private int previousViewId = -1;
 	private int currentViewId;
+	
 	@ViewById
 	protected View adview;
 
@@ -491,8 +494,10 @@ public class TIG extends Activity {
 		// Update Ads visibility
 		updateAdsVisibility(this);
 
-		// Refresh webview
-		refreshCurrentView();
+		// Refresh webview if previously loaded view is not liveTraffic on Android 3+ (AJAX based)
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB || previousViewId != R.id.liveTraffic) {
+			refreshCurrentView();
+		}
 		
 		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/resume/");
 	}
@@ -529,7 +534,9 @@ public class TIG extends Activity {
 	private boolean showViewById(int viewId) {
 		Log.d(TAG, "TIG.showViewById: viewId=" + viewId);
 		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/showViewById/" + viewId);
-
+		
+		// Store previous value to manage refresh
+		previousViewId = currentViewId;
 		switch (viewId) {
 			case android.R.id.home: // Refresh on android.R.id.home click for Android 3.0+
 				// Restore view ID
