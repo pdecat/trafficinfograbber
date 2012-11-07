@@ -54,7 +54,7 @@
             <dependency>
                 <groupId>com.google.android.admob</groupId>
                 <artifactId>admob</artifactId>
-                <version>6.1.0-r7</version>
+                <version>6.2.1-r8</version>
             </dependency>
 
             <dependency>
