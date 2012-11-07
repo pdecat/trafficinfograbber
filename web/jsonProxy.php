@@ -20,6 +20,10 @@
  * #L%
  */ ?>
 <?php
+    ini_set('display_errors',0);
+    //ini_set('log_errors',1);
+    //ini_set('error_log','jsonProxy.log');
+
     $base = 'http://www.sytadin.fr/';
     $url = '';
     $uri = '';
@@ -38,7 +42,11 @@
         }
     }
 
-    $cachefile = 'cache/' . $uri;
+    $cachedir = 'cache/';
+    if (!file_exists($cachedir)) {
+        mkdir($cachedir);
+    }
+    $cachefile = $cachedir . basename($uri);
     $cachetime = 60;
     // Serve from the cache if it is younger than $cachetime
     if (file_exists($cachefile) && time() - $cachetime < filemtime($cachefile)) {

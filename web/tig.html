@@ -1,8 +1,8 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
 <!--
   %%Ignore-License
   -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
-<html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Sytadin : l'état du trafic en Île-de-France en temps réel</title>
         <base href="http://www.sytadin.fr">
@@ -22,7 +22,7 @@
         </style>
     </head>
 
-    <body onload="construct();">
+    <body>
         <div id="global">   
                 <div id="content">                  
                     <div class="main_block">
@@ -76,6 +76,7 @@
                                 })();
                                 window.setTimeout(function() {
                                     init();
+                                    construct();
                                     $("#saveFavoriteView").parent().remove()
                                     $("#loadFavoriteView").parent().remove()
                                 }, 100);
