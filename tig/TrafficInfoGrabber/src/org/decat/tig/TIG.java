@@ -63,7 +63,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageButton;
@@ -119,13 +118,13 @@ public class TIG extends Activity {
 	@ViewById
 	protected WebView webview;
 
+	@ViewById View nightModeLayer;
+	
 	@Bean
 	protected TIGWebViewClient webViewClient;
 
 	@Bean
 	protected TIGWebChromeClient webChromeClient;
-
-	private float oldScreenBrightness = 1f;
 
 	private static boolean preferenceNotificationShortcut = false;
 	private static boolean preferenceLockOrientation = false;
@@ -349,7 +348,6 @@ public class TIG extends Activity {
 		String defaultValue = getDefaultStringPreferenceValue(context, preferenceKey);
 
 		getPreferences(context).edit().putString(preferenceKey, defaultValue).commit();
-		String value = getPreferences(context).getString(preferenceKey, defaultValue);
 		Log.d(TAG, "TIG.setDefaultStringPreferenceValue: preferenceKey=" + preferenceKey + ", defaultValue=" + defaultValue);
 	}
 
@@ -785,17 +783,7 @@ public class TIG extends Activity {
 	public void dayNightSwitch(View v) {
 		Log.d(TAG, "TIG.dayNightSwitch");
 
-		Window win = getWindow();
-		WindowManager.LayoutParams winParams = win.getAttributes();
-
-		if (winParams.screenBrightness > 0.5f) {
-			oldScreenBrightness = winParams.screenBrightness;
-			winParams.screenBrightness = 0.5f;
-		} else {
-			winParams.screenBrightness = oldScreenBrightness;
-		}
-
-		win.setAttributes(winParams);
+		nightModeLayer.setVisibility(nightModeLayer.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
 	}
 
 	public void quit(View v) {

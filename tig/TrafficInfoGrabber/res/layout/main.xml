@@ -33,6 +33,13 @@
         android:layout_above="@+id/adview" />
 
     <LinearLayout
+        android:id="@+id/nightModeLayer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/actionbar_bg"
+        android:visibility="invisible" />
+    
+    <LinearLayout
         android:id="@+id/retryCountDown"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -115,7 +122,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/adviewLayout"
         android:layout_centerInParent="true"
-        android:background="#55000000" >
+        android:background="@drawable/actionbar_bg" >
 
         <ImageButton
             android:id="@+id/dayNightSwitchButton"
