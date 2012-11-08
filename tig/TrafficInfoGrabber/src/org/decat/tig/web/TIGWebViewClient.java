@@ -83,7 +83,9 @@ public class TIGWebViewClient extends WebViewClient {
 
 	// Field to manage the last modified text
 	@ViewById
-	protected TextView lastModified;
+	protected TextView lastModifiedDate;
+	@ViewById
+	protected TextView lastModifiedTime;
 
 	// Fields to manage zoom and scrolling display
 	private int initialScale;
@@ -233,7 +235,11 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@UiThread
 	protected void updateLastModified(String lastModifiedValue) {
-		this.lastModified.setText(lastModifiedValue);
+		if (lastModifiedValue != null) {
+			String[] lastModifiedValues = lastModifiedValue.split("\n");
+			this.lastModifiedDate.setText(lastModifiedValues.length > 0 ? lastModifiedValues[0] : "");
+			this.lastModifiedTime.setText(lastModifiedValues.length > 1 ? lastModifiedValues[1] : "");
+		}
 	}
 
 	@Override

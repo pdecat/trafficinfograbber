@@ -19,7 +19,7 @@
   License along with this program.  If not, see
   <http://www.gnu.org/licenses/gpl-3.0.html>.
   #L%
-  -->
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     xmlns:tools="http://schemas.android.com/tools"
@@ -81,7 +81,6 @@
             android:text="@string/countDownClickToCancel"
             android:textColor="#000000"
             android:textSize="15sp" />
-
     </LinearLayout>
 
     <ImageButton
@@ -110,54 +109,71 @@
         android:paddingTop="@dimen/power_button_padding_top"
         android:src="@drawable/ic_lock_power_off" />
 
-    <ImageButton
-        android:id="@+id/dayNightSwitchButton"
-        android:layout_above="@+id/adviewLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0000"
-        android:contentDescription="@string/dayNightSwitchButtonDescription"
-        android:onClick="dayNightSwitch"
-        android:paddingBottom="5dp"
-        android:paddingRight="5dp"
-        android:src="@drawable/ic_menu_view" />
+        android:layout_above="@+id/adviewLayout"
+        android:layout_centerInParent="true"
+        android:background="#55000000" >
 
-    <ImageButton
-        android:id="@+id/refreshButton"
-        android:layout_above="@+id/adviewLayout"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#0000"
-        android:contentDescription="@string/refreshButtonDescription"
-        android:onClick="refreshWebview"
-        android:paddingBottom="5dp"
-        android:paddingRight="5dp"
-        android:src="@drawable/ic_menu_refresh" />
+        <ImageButton
+            android:id="@+id/dayNightSwitchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="#0000"
+            android:contentDescription="@string/dayNightSwitchButtonDescription"
+            android:onClick="dayNightSwitch"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:src="@drawable/ic_menu_view" />
 
-    <TextView
-        android:id="@+id/lastModified"
-        android:layout_above="@+id/adviewLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:background="#0000"
-        android:gravity="center"
-        android:minHeight="48dp"
-        android:minLines="2"
-        android:textColor="#000"
-        android:textSize="20sp" />
-    
+        <TextView
+            android:id="@+id/lastModifiedDate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="#0000"
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/lastModifiedTime"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lastModifiedDate"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="#0000"
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:textSize="22dp" />
+
+        <ImageButton
+            android:id="@+id/refreshButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="#0000"
+            android:contentDescription="@string/refreshButtonDescription"
+            android:onClick="refreshWebview"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:src="@drawable/ic_menu_refresh" />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/adviewLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true" >
 
         <com.google.ads.AdView
             android:id="@+id/adview"
@@ -168,4 +184,5 @@
             ads:loadAdOnCreate="true"
             android:visibility="gone" />
     </LinearLayout>
+
 </RelativeLayout>
