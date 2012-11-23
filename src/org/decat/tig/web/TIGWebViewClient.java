@@ -170,7 +170,7 @@ public class TIGWebViewClient extends WebViewClient {
 
 		// Trigger refresh
 		Log.d(TIG.TAG, "TIGWebViewClient.startRetryCountDown: trigger refresh");
-		((TIG) activity).refreshCurrentView();
+		activity.refreshCurrentView();
 	}
 
 	private int getCurrentRetryCountDown() {
