@@ -199,7 +199,7 @@
                                     <exclude>target/**</exclude>
                                     <exclude>**/*.png</exclude>
                                     <exclude>**/.svn/**</exclude>
-                                    <exclude>res/raw*/recent_changes.txt</exclude>
+                                    <exclude>res/raw*/**</exclude>
                                 </excludes>
                                 <extraExtensions>
                                     <txt>properties</txt>
