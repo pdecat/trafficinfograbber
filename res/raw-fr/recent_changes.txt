@@ -1,5 +1,7 @@
 v0.7.1:
-- Correction de plantages
+- Correction du mode jour / nuit
+- Meilleur affichage de la date de dernière modification avec fond transparent
+- Correction de plantages aléatoires
 
 v0.7.0:
 - Vue Trafic optimisée (Android 3.0+)
