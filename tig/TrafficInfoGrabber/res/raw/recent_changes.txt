@@ -1,5 +1,7 @@
 v0.7.1:
-- Fix crashes
+- Fix day / night mode
+- Better last modification date display with a transparent background
+- Fix random crashes
 
 v0.7.0:
 - Traffic view optimized (Android 3.0+)
