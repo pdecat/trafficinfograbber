@@ -106,7 +106,7 @@ public class TIGWebViewClient extends WebViewClient {
 	@ViewById
 	protected TextView retryCountDownText;
 	private boolean retryCountDownCancelled;
-	
+
 	// Field to manage page load timeout
 	private final Runnable pageLoadTimeoutChecker = new Runnable() {
 		@Override
@@ -123,7 +123,7 @@ public class TIGWebViewClient extends WebViewClient {
 	protected void initialize() {
 		// Add a Javascript interface in order to interact with the webview
 		webview.addJavascriptInterface(new TIGWebViewJSI(), "TIGAndroid");
-		
+
 		// Bind an handler the UI thread's message queue 
 		handler = new Handler();
 	}
@@ -197,7 +197,7 @@ public class TIGWebViewClient extends WebViewClient {
 		Log.d(TIG.TAG, "TIGWebViewClient.startPageLoadTimeout");
 		// Remove previous posts
 		cancelPageLoadTimeout();
-		
+
 		// Post a page load timeout checker
 		handler.postDelayed(pageLoadTimeoutChecker, PAGE_LOAD_TIMEOUT_MS);
 	}
@@ -206,7 +206,16 @@ public class TIGWebViewClient extends WebViewClient {
 		Log.d(TIG.TAG, "TIGWebViewClient.cancelPageLoadTimeout");
 		handler.removeCallbacks(pageLoadTimeoutChecker);
 	}
-	
+
+	public void pause() {
+		cancelPageLoadTimeout();
+		webview.pauseTimers();
+	}
+
+	public void resume() {
+		webview.resumeTimers();
+	}
+
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);
