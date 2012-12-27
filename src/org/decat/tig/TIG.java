@@ -118,8 +118,9 @@ public class TIG extends Activity {
 	@ViewById
 	protected WebView webview;
 
-	@ViewById View nightModeLayer;
-	
+	@ViewById
+	View nightModeLayer;
+
 	@Bean
 	protected TIGWebViewClient webViewClient;
 
@@ -840,6 +841,9 @@ public class TIG extends Activity {
 
 		resume();
 
+		// Resume webview activity
+		webViewClient.resume();
+
 		super.onResume();
 	}
 
@@ -854,6 +858,9 @@ public class TIG extends Activity {
 
 		// Unregister the intent receiver to do nothing on Car Mode exiting if TIG is not active
 		unregisterReceiver(quitBroadcastReceiver);
+
+		// Pause webview activity
+		webViewClient.pause();
 
 		super.onPause();
 	}
