@@ -98,7 +98,7 @@
                 <plugin>
                     <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                     <artifactId>android-maven-plugin</artifactId>
-                    <version>3.4.1</version>
+                    <version>3.5.0</version>
                     <extensions>true</extensions>
                     <configuration>
                         <sdk>
@@ -113,6 +113,7 @@
                         <undeployBeforeDeploy>true</undeployBeforeDeploy>
                         <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
                         <resourceDirectory>${project.build.directory}/filtered-res</resourceDirectory>
+                        <release>${android.release}</release>
                     </configuration>
                     
                     <executions>
@@ -244,19 +245,14 @@
             <!-- using this since activeByDefault does not work well with multiple profiles -->
             <activation>
                 <property>
-                    <name>environment</name>
-                    <value>!production</value>
+                    <name>performRelease</name>
+                    <value>false</value>
                 </property>
             </activation>
+
             <properties>
                 <android.debuggable>true</android.debuggable>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>production</id>
-            <properties>
-                <android.debuggable>false</android.debuggable>
+                <android.release>false</android.release>
             </properties>
         </profile>
 
@@ -269,6 +265,11 @@
                     <value>true</value>
                 </property>
             </activation>
+
+            <properties>
+                <android.debuggable>false</android.debuggable>
+                <android.release>true</android.release>
+            </properties>
 
             <build>
                 <pluginManagement>
