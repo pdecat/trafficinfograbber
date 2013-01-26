@@ -224,7 +224,7 @@ public class TIGWebViewClient extends WebViewClient {
 		mainURL = url;
 
 		// Reset last modified information
-		if (TIG.URL_LT_IDF_HTML.equals(mainURL)) {
+		if (mainURL.endsWith(TIG.FILE_LT_IDF_HTML)) {
 			updateLastModified(activity.getString(R.string.last_update));
 		} else {
 			// Last modified information is currently only supported with the FILENAME_IDF_HTML file, so clear it for other URLs

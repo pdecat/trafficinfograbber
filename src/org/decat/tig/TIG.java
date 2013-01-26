@@ -78,6 +78,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
 public class TIG extends Activity {
+	private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT";
 	private static final String USER_AGENT_SDK_11_AND_HIGHER = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4";
 	private static final String RES_BOOLS = "bool";
 	private static final String RES_STRINGS = "string";
@@ -102,7 +103,8 @@ public class TIG extends Activity {
 	public static final String TAG = "TIG";
 
 	public static final String URL_BASE = "http://tig.decat.org";
-	public static final String URL_LT_IDF_HTML = URL_BASE + "/tig.html";
+	public static final String URI_PATH_DEV = "/dev";
+	public static final String FILE_LT_IDF_HTML = "/tig.html";
 	public static final String URL_LLT_FULL_HTML = URL_BASE + "/tig_llt_full.html";
 	public static final String URL_LLT_IDF_HTML = URL_BASE + "/tig_llt_idf.html";
 
@@ -159,11 +161,14 @@ public class TIG extends Activity {
 	public void setup() {
 		Log.d(TAG, "TIG.setup");
 
+		// Needed since API 7
+		webviewSetDomStorageEnabled();
+
 		// Needed since API 14
 		enableActionBarIcon();
 
 		// Needed since API 16
-		allowUniversalAccessFromFileURLs();
+		webviewAllowUniversalAccessFromFileURLs();
 
 		// Initialize web view
 		webview.setWebViewClient(webViewClient);
@@ -252,6 +257,14 @@ public class TIG extends Activity {
 		googleAnalyticsTracker.trackPageView("/tig/setup/");
 	}
 
+	@TargetApi(7)
+	private void webviewSetDomStorageEnabled() {
+		// Since API 7, we need to call this method to enable the DOM storage API (needed by OpenLayers?)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR_MR1) {
+			webview.getSettings().setDomStorageEnabled(true);
+		}
+	}
+
 	@TargetApi(14)
 	private void enableActionBarIcon() {
 		// Since API 14, we need to call this method to enable action icon interaction
@@ -261,7 +274,7 @@ public class TIG extends Activity {
 	}
 
 	@TargetApi(16)
-	private void allowUniversalAccessFromFileURLs() {
+	private void webviewAllowUniversalAccessFromFileURLs() {
 		// Since API 16, we need to call this method to allow universal access from file URLs in WebView
 		// Otherwise, you'd get "E/Web Console: XMLHttpRequest cannot load http://someurl Origin null is not allowed by Access-Control-Allow-Origin." errors
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -274,7 +287,14 @@ public class TIG extends Activity {
 			availableWebviews.put(R.id.quickStats, new WebviewSettings(getString(R.string.quickStats), URL_SYTADIN + "/sys/barometres_de_la_circulation.jsp.html", 0, 0, 600, 600));
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/sys/fermetures_nocturnes.jsp.html", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), URL_LT_IDF_HTML, -1, -1, -1, -1));
+
+			// Select main HTML file production or development version based on application version name  
+			String urlLtIdfHtml = URL_BASE;
+			if (getAppVersionName().endsWith(SNAPSHOT_SUFFIX)) {
+				urlLtIdfHtml += URI_PATH_DEV;
+			}
+			urlLtIdfHtml += FILE_LT_IDF_HTML;
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), urlLtIdfHtml, -1, -1, -1, -1));
 		}
 
 		// Setup selected map for Light Traffic view
