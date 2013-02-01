@@ -199,6 +199,8 @@
                         </excludes>
                         <extraExtensions>
                             <txt>properties</txt>
+                            <xslt>xml</xslt>
+                            <xmlt>xml</xmlt>
                         </extraExtensions>
                     </configuration>
                     <executions>
