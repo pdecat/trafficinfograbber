@@ -38,7 +38,8 @@
                                 (function() {
                                     var proxied = window.XMLHttpRequest.prototype.open;
                                     window.XMLHttpRequest.prototype.open = function() {
-                                        arguments[1] = jsonProxy + arguments[1].substring(1) 
+                                        arguments[1] = jsonProxy + arguments[1].substring(1);
+                                        tigOnLoadResource(arguments[1]); 
                                         return proxied.apply(this, arguments);
                                     };
                                 })();
@@ -94,6 +95,15 @@
                     console.info("tigShowAndroidToast: lastModText=" + lastModText);
                 } catch(err) {
                     console.error("tigShowAndroidToast: " + err);
+                }
+            }
+            
+            function tigOnLoadResource(url) {
+                try {
+                    TIGAndroid.onLoadResource(url);
+                    console.info("tigOnLoadResource: url=" + url);
+                } catch(err) {
+                    console.error("tigOnLoadResource: " + err);
                 }
             }
             

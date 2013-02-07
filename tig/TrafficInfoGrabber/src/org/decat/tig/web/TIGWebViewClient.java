@@ -64,6 +64,15 @@ public class TIGWebViewClient extends WebViewClient {
 				Log.e(TIG.TAG, "TIGWebViewJSI.updateLastModified", t);
 			}
 		}
+
+		public void onLoadResource(String url) {
+			Log.d(TIG.TAG, "TIGWebViewJSI.onLoadResource: url=" + url);
+			try {
+				TIGWebViewClient.this.onLoadResource(webview, url);
+			} catch (Throwable t) {
+				Log.e(TIG.TAG, "TIGWebViewJSI.onLoadResource", t);
+			}
+		}
 	}
 
 	private static final int ADS_DISPLAY_DURATION = 10000;
@@ -236,19 +245,23 @@ public class TIGWebViewClient extends WebViewClient {
 		// Update title
 		setTitle("> " + title + "…");
 
-		// Show ads if checked in preferences
-		showAds();
-
 		startPageLoadTimeout();
+
+		// Set the scale and scroll
+		setScaleAndScroll(view);
 	}
 
 	@UiThread
 	protected void updateLastModified(String lastModifiedValue) {
+		String[] lastModifiedValues = null;
 		if (lastModifiedValue != null) {
-			String[] lastModifiedValues = lastModifiedValue.split("\n");
-			this.lastModifiedDate.setText(lastModifiedValues.length > 0 ? lastModifiedValues[0] : "");
-			this.lastModifiedTime.setText(lastModifiedValues.length > 1 ? lastModifiedValues[1] : "");
+			lastModifiedValues = lastModifiedValue.split("\n");
 		}
+		this.lastModifiedDate.setText(lastModifiedValues != null && lastModifiedValues.length > 0 ? lastModifiedValues[0] : "");
+		this.lastModifiedTime.setText(lastModifiedValues != null && lastModifiedValues.length > 1 ? lastModifiedValues[1] : "");
+
+		// Show ads if checked in preferences
+		showAds();
 	}
 
 	@Override
@@ -263,9 +276,6 @@ public class TIGWebViewClient extends WebViewClient {
 		if (mainURL == null || mainURL.equals(url)) {
 			onPageStarted(view, url, null);
 		}
-
-		// Set the scale and scroll
-		setScaleAndScroll(view);
 	}
 
 	@Override
@@ -280,11 +290,6 @@ public class TIGWebViewClient extends WebViewClient {
 
 		// Update title
 		setTitle(title);
-
-		// Hide ads after a short delay if set in preferences
-		if (activity.getString(R.string.PREF_ADS_ATLOAD_VALUE).equals(showAds)) {
-			hideAds(loadCount);
-		}
 	}
 
 	@UiThread
@@ -296,6 +301,11 @@ public class TIGWebViewClient extends WebViewClient {
 			Log.d(TIG.TAG, "TIGWebViewClient.showAds: loadCount=" + loadCount);
 
 			setAdsVisibility(true);
+		}
+
+		// Hide ads after a short delay if set in preferences
+		if (activity.getString(R.string.PREF_ADS_ATLOAD_VALUE).equals(showAds)) {
+			hideAds(loadCount);
 		}
 	}
 
