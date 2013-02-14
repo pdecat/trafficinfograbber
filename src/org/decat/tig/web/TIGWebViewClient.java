@@ -225,8 +225,7 @@ public class TIGWebViewClient extends WebViewClient {
 		webview.resumeTimers();
 	}
 
-	@Override
-	public void onPageStarted(WebView view, String url, Bitmap favicon) {
+	public void doOnPageStarted(WebView view, String url, Bitmap favicon) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);
 
 		// Store main URL
@@ -274,7 +273,7 @@ public class TIGWebViewClient extends WebViewClient {
 		// Check http://code.google.com/p/android/issues/detail?id=37123
 		// Workaround this issue by checking if the URL is null (first load) or it matches the main URL (reload).
 		if (mainURL == null || mainURL.equals(url)) {
-			onPageStarted(view, url, null);
+			doOnPageStarted(view, url, null);
 		}
 	}
 
