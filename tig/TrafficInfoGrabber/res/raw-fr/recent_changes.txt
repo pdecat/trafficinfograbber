@@ -1,3 +1,7 @@
+v0.7.3:
+- Correction du compte à rebours avant rechargement lors d'erreur de chargement
+- Montée de version AdMob 6.3.0 et Android API 17 (4.2)
+
 v0.7.2:
 - Pause de l'activité de la vue web view en arrière plan, puis reprise en avant plan
 - Correction de l'affichage des publicités
