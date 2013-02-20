@@ -1,3 +1,7 @@
+v0.7.3:
+- Fix retry count down on loading errors
+- Upgrade to AdMob 6.3.0 and Android API 17 (4.2)
+
 v0.7.2:
 - Pause web view activity in the background, then resume it in the foreground
 - Fix Ads display timing
