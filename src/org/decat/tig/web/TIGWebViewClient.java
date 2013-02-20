@@ -32,6 +32,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @EBean
 public class TIGWebViewClient extends WebViewClient {
 	class TIGWebViewJSI {
+		@JavascriptInterface
 		public void showToast(String message) {
 			Log.d(TIG.TAG, "TIGWebViewJSI.showToast: message=" + message);
 			try {
@@ -56,6 +58,7 @@ public class TIGWebViewClient extends WebViewClient {
 			}
 		}
 
+		@JavascriptInterface
 		public void updateLastModified(String lastModifiedValue) {
 			Log.d(TIG.TAG, "TIGWebViewJSI.updateLastModified: lastModifiedValue=" + lastModifiedValue);
 			try {
@@ -65,6 +68,7 @@ public class TIGWebViewClient extends WebViewClient {
 			}
 		}
 
+		@JavascriptInterface
 		public void onLoadResource(String url) {
 			Log.d(TIG.TAG, "TIGWebViewJSI.onLoadResource: url=" + url);
 			try {
