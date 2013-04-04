@@ -68,7 +68,9 @@ import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GAServiceManager;
+import com.google.analytics.tracking.android.Tracker;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -139,9 +141,6 @@ public class TIG extends Activity {
 	@ViewById
 	protected View adview;
 
-	// Google Analytics tracker
-	public GoogleAnalyticsTracker tracker;
-
 	@AfterInject
 	public void init() {
 		Log.d(TAG, "TIG.init");
@@ -153,8 +152,8 @@ public class TIG extends Activity {
 		clearDatabase("webview.db");
 		clearDatabase("webviewCache.db");
 
-		// Initialize the Google Analytics tracker with a 60s dispatch interval
-		GoogleAnalyticsTracker.getInstance().startNewSession("UA-8749317-5", 60, this);
+		// Initialize the Google Analytics tracker
+		EasyTracker.getInstance().activityStart(this);
 	}
 
 	@AfterViews
@@ -249,12 +248,12 @@ public class TIG extends Activity {
 			Log.i(TAG, "Application version: " + appVersion);
 		}
 
-		GoogleAnalyticsTracker googleAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
-		googleAnalyticsTracker.setCustomVar(1, "AppVersion", appVersion);
-		googleAnalyticsTracker.setCustomVar(2, "Build/Platform", Build.VERSION.RELEASE);
-		googleAnalyticsTracker.setCustomVar(3, "Build/Brand", Build.BRAND);
-		googleAnalyticsTracker.setCustomVar(4, "Build/Device", Build.DEVICE);
-		googleAnalyticsTracker.trackPageView("/tig/setup/");
+		Tracker tracker = EasyTracker.getTracker();
+		tracker.setCustomDimension(1, appVersion);
+		tracker.setCustomDimension(2, Build.VERSION.RELEASE);
+		tracker.setCustomDimension(3, Build.BRAND);
+		tracker.setCustomDimension(4, Build.DEVICE);
+		EasyTracker.getTracker().sendView("/tig/setup/");
 	}
 
 	@TargetApi(7)
@@ -538,7 +537,7 @@ public class TIG extends Activity {
 			refreshCurrentView();
 		}
 
-		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/resume/");
+		EasyTracker.getTracker().sendView("/tig/resume/");
 	}
 
 	private Drawable getThirdPartyAppDrawable() {
@@ -572,7 +571,7 @@ public class TIG extends Activity {
 
 	private boolean showViewById(int viewId) {
 		Log.d(TAG, "TIG.showViewById: viewId=" + viewId);
-		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/showViewById/" + viewId);
+		EasyTracker.getTracker().sendView("/tig/showViewById/" + viewId);
 
 		// Store previous value to manage refresh
 		previousViewId = currentViewId;
@@ -633,13 +632,13 @@ public class TIG extends Activity {
 	}
 
 	private void showPreferencesEditor() {
-		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/showPreferencesEditor/");
+		EasyTracker.getTracker().sendView("/tig/showPreferencesEditor/");
 		Intent intent = new Intent(this, PreferencesEditor.class);
 		startActivityForResult(intent, ACTIVITY_REQUEST_PREFERENCES_EDITOR);
 	}
 
 	private void showAbout() {
-		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/showAbout/");
+		EasyTracker.getTracker().sendView("/tig/showAbout/");
 
 		Intent intent = new Intent(ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG);
 		int activityRequest = ACTIVITY_REQUEST_OI_ABOUT_LAUNCH;
@@ -661,7 +660,7 @@ public class TIG extends Activity {
 	}
 
 	private void installOIAbout() {
-		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/installOIAbout/");
+		EasyTracker.getTracker().sendView("/tig/installOIAbout/");
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.install_oi_about).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
@@ -689,7 +688,7 @@ public class TIG extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/onActivityResult/" + requestCode + "/" + resultCode);
+		EasyTracker.getTracker().sendView("/tig/onActivityResult/" + requestCode + "/" + resultCode);
 		switch (requestCode) {
 			case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
 				if (resultCode == RESULT_OK) {
@@ -736,7 +735,7 @@ public class TIG extends Activity {
 	}
 
 	private void launchWebsite(String url) {
-		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/launchWebsite/" + url);
+		EasyTracker.getTracker().sendView("/tig/launchWebsite/" + url);
 		try {
 			Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 			startActivity(myIntent);
@@ -758,7 +757,7 @@ public class TIG extends Activity {
 
 		ComponentName thirdPartyAppComponentName = getThirdPartyAppComponentName();
 
-		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/launchThirdPartyApp/" + thirdPartyAppComponentName);
+		EasyTracker.getTracker().sendView("/tig/launchThirdPartyApp/" + thirdPartyAppComponentName);
 
 		if (thirdPartyAppComponentName != null) {
 			try {
@@ -813,7 +812,7 @@ public class TIG extends Activity {
 
 	public void quit(boolean kill) {
 		Log.d(TAG, "TIG.quit: kill=" + kill);
-		GoogleAnalyticsTracker.getInstance().trackPageView("/tig/quit/" + kill);
+		EasyTracker.getTracker().sendView("/tig/quit/" + kill);
 
 		cancelNotification(this);
 		preferenceNotificationShortcut = false;
@@ -889,14 +888,13 @@ public class TIG extends Activity {
 	protected void onStop() {
 		Log.d(TAG, "TIG.onStop: isFinishing=" + isFinishing());
 		super.onStop();
+		// Stop the Google Analytics tracker when it is no longer needed.
+		EasyTracker.getInstance().activityStop(this);
 	}
 
 	@Override
 	protected void onDestroy() {
 		Log.d(TAG, "TIG.onDestroy: isFinishing=" + isFinishing());
 		super.onDestroy();
-
-		// Stop the Google Analytics tracker when it is no longer needed.
-		GoogleAnalyticsTracker.getInstance().stopSession();
 	}
 }

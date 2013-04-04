@@ -27,7 +27,7 @@ package org.decat.tig.preferences;
 import org.decat.tig.R;
 import org.decat.tig.TIG;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 
@@ -78,6 +78,9 @@ public class PreferencesEditor extends PreferenceActivity {
 				return true;
 			}
 		});
+
+		// Set Context before using EasyTracker
+		EasyTracker.getInstance().setContext(this);
 	}
 
 	@Override
@@ -111,8 +114,7 @@ public class PreferencesEditor extends PreferenceActivity {
 	@Override
 	protected void onPause() {
 		super.onResume();
-
-		GoogleAnalyticsTracker.getInstance().trackPageView(
+		EasyTracker.getTracker().sendView(
 				"/tig/pe/pause/" + PreferencesHelper.OTHER_ACTIVITY + "=" + sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED)) + ", "
 						+ PreferencesHelper.PREF_ADS + "=" + sharedPreferences.getString(PreferencesHelper.PREF_ADS, ""));
 	}
