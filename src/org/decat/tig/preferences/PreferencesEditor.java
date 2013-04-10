@@ -27,10 +27,6 @@ package org.decat.tig.preferences;
 import org.decat.tig.R;
 import org.decat.tig.TIG;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.googlecode.androidannotations.annotations.EBean;
-import com.googlecode.androidannotations.annotations.RootContext;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +37,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class PreferencesEditor extends PreferenceActivity {
 	public static final String EXTRA_RESOLVE_INFO = "value";
