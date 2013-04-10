@@ -94,7 +94,7 @@
         android:summary="@string/PREFS_CATEGORY_OTHER_SUMMARY"
         android:title="@string/PREFS_CATEGORY_OTHER_TITLE" >
         <ListPreference
-            android:defaultValue="@string/PREF_ADS_ALWAYS_VALUE"
+            android:defaultValue="@string/PREF_ADS_ATLOAD_VALUE"
             android:entries="@array/adsDisplayLabels"
             android:entryValues="@array/adsDisplayValues"
             android:key="PREF_ADS"

@@ -69,7 +69,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.GAServiceManager;
 import com.google.analytics.tracking.android.Tracker;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.AfterViews;
