@@ -178,10 +178,8 @@ public class TIG extends Activity {
 		webview.clearCache(true);
 
 		WebSettings settings = webview.getSettings();
-		settings.setBuiltInZoomControls(true);
 		settings.setJavaScriptEnabled(true);
-		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-		// settings.setAppCacheEnabled(false); // New Android SDK v7
+		settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
 		// Show progress bar
 		getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
@@ -299,7 +297,7 @@ public class TIG extends Activity {
 		String urlLltCarto = getPreferences(this).getString(PreferencesHelper.LT_CARTO, URL_LLT_IDF_HTML);
 		WebviewSettings ltWebviewSettings;
 		if (URL_LLT_FULL_HTML.equals(urlLltCarto)) {
-			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_LLT_FULL_HTML, 388, 193, 631, 621);
+			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_LLT_FULL_HTML, 388, 193, 631, 621, false, false);
 		} else {
 			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_LLT_IDF_HTML, 291, 140, 683, 713);
 		}
@@ -706,31 +704,36 @@ public class TIG extends Activity {
 	}
 
 	@UiThread
-	protected void loadUrlInWebview(WebviewSettings settings) {
-		Log.i(TAG, "Loading '" + settings.title + "' (URL=" + settings.url + ", xmin=" + settings.xmin + ", ymin=" + settings.ymin + ", xmax=" + settings.xmax + ", ymax=" + settings.ymax + ")");
+	protected void loadUrlInWebview(WebviewSettings ws) {
+		Log.i(TAG, "Loading '" + ws.title + "' (URL=" + ws.url + ", xmin=" + ws.xmin + ", ymin=" + ws.ymin + ", xmax=" + ws.xmax + ", ymax=" + ws.ymax + ")");
 		int scale = 0;
 		int xoffset = 0;
 		int yoffset = 0;
-		if (settings.xmin != -1 && settings.ymin != -1 && settings.xmax != -1 && settings.ymax != -1) {
-			int xscale = (int) ((float) width * 100 / (float) (settings.xmax - settings.xmin));
-			int yscale = (int) ((float) height * 100 / (float) (settings.ymax - settings.ymin));
+		if (ws.xmin != -1 && ws.ymin != -1 && ws.xmax != -1 && ws.ymax != -1) {
+			int xscale = (int) ((float) width * 100 / (float) (ws.xmax - ws.xmin));
+			int yscale = (int) ((float) height * 100 / (float) (ws.ymax - ws.ymin));
 			scale = xscale < yscale ? xscale : yscale;
-			xoffset = (settings.xmin * scale) / 100;
-			yoffset = (settings.ymin * scale) / 100;
+			xoffset = (ws.xmin * scale) / 100;
+			yoffset = (ws.ymin * scale) / 100;
 			if (xscale < yscale) {
-				yoffset = Math.max(yoffset - ((height - ((settings.ymax - settings.ymin) * scale) / 100) / 2), 0);
+				yoffset = Math.max(yoffset - ((height - ((ws.ymax - ws.ymin) * scale) / 100) / 2), 0);
 			} else {
-				xoffset = Math.max(xoffset - ((width - ((settings.xmax - settings.xmin) * scale) / 100) / 2), 0);
+				xoffset = Math.max(xoffset - ((width - ((ws.xmax - ws.xmin) * scale) / 100) / 2), 0);
 			}
 			Log.d(TAG, "Computed values: xscale=" + xscale + ", yscale=" + yscale + ", scale=" + scale + ", xoffset=" + xoffset + ", yoffset=" + yoffset);
 		}
 
-		webViewClient.setParameters(settings.title, scale, xoffset, yoffset);
+		webViewClient.setParameters(ws.title, scale, xoffset, yoffset);
 
 		// Interrupt previous loading
 		webview.stopLoading();
 
-		webview.loadUrl(settings.url);
+		// Enable/disable controls depending on selected view
+		WebSettings settings = webview.getSettings();
+		settings.setBuiltInZoomControls(ws.zoomControls);
+		webview.setHorizontalScrollBarEnabled(ws.scrollbar);
+
+		webview.loadUrl(ws.url);
 	}
 
 	private void launchWebsite(String url) {
