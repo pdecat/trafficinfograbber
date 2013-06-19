@@ -32,13 +32,21 @@ public class WebviewSettings {
 	public final int ymin;
 	public final int xmax;
 	public final int ymax;
+	public final boolean zoomControls;
+	public final boolean scrollbar;
 
-	public WebviewSettings(String title, String url, int xmin, int ymin, int xmax, int ymax) {
+	public WebviewSettings(String title, String url, int xmin, int ymin, int xmax, int ymax, boolean zoomControls, boolean scrollbar) {
 		this.title = title;
 		this.url = url;
 		this.xmin = xmin;
 		this.ymin = ymin;
 		this.xmax = xmax;
 		this.ymax = ymax;
+		this.zoomControls = zoomControls;
+		this.scrollbar = scrollbar;
+	}
+
+	public WebviewSettings(String title, String url, int xmin, int ymin, int xmax, int ymax) {
+		this(title, url, xmin, ymin, xmax, ymax, true, true);
 	}
 }
