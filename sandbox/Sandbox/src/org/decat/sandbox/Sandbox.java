@@ -25,6 +25,9 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.admin.DeviceAdminReceiver;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -45,9 +48,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Sandbox extends Activity {
+	public class DeviceAdminSampleReceiver extends DeviceAdminReceiver {
+		@Override
+		public void onEnabled(Context context, Intent intent) {
+			showToast("Admin priviledges granted.");
+		}
+	}
+
+	// Interaction with the DevicePolicyManager
+	private DevicePolicyManager mDPM;
+	private ComponentName mDeviceAdminSample;
+
 	private static final int REQUEST_CONTACT = 1;
 	private static final int REQUEST_CONTACT_AND_NUMBER = 2;
 	private static final int REQUEST_ACTIVITY = 3;
+	private static final int REQUEST_CODE_ENABLE_ADMIN = 4;
+
 	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 	public static final String TAG = "Sandbox";
 	private GestureDetector gestureDetector;
@@ -63,6 +79,13 @@ public class Sandbox extends Activity {
 		showToast(this, message);
 	}
 
+	/**
+	 * Helper to determine if we are an active admin
+	 */
+	private boolean isActiveAdmin() {
+		return mDPM.isAdminActive(mDeviceAdminSample);
+	}
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +94,10 @@ public class Sandbox extends Activity {
 		textview = (TextView) findViewById(R.id.textview);
 
 		gestureDetector = new GestureDetector(this, new MyGestureDetector(this));
+
+		// Prepare to work with the DPM
+		mDPM = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+		mDeviceAdminSample = new ComponentName(this, DeviceAdminSampleReceiver.class);
 	}
 
 	@Override
@@ -95,6 +122,9 @@ public class Sandbox extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.gotoSleep:
+			gotoSleep();
+			break;
 		case R.id.storeSms:
 			storeSms();
 			break;
@@ -127,6 +157,13 @@ public class Sandbox extends Activity {
 			return false;
 		}
 		return true;
+	}
+
+	private void gotoSleep() {
+		Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+		intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdminSample);
+		intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getString(R.string.add_admin_extra_app_text));
+		startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
 	}
 
 	private void storeSms() {
@@ -188,9 +225,24 @@ public class Sandbox extends Activity {
 
 	private void showContactDetails(String contactUri) {
 		String[] columns = {
-				People.CONTENT_ITEM_TYPE, People.CONTENT_TYPE, People.DISPLAY_NAME, People.PRIMARY_EMAIL_ID, People.PRIMARY_ORGANIZATION_ID, People.PRIMARY_PHONE_ID, People.CUSTOM_RINGTONE,
-				People.IM_ACCOUNT, People.LABEL, People.LAST_TIME_CONTACTED, People.NAME, People.NOTES, People.NUMBER, People.NUMBER_KEY, People.SEND_TO_VOICEMAIL, People.STARRED,
-				People.TIMES_CONTACTED, People.TYPE,
+				People.CONTENT_ITEM_TYPE,
+				People.CONTENT_TYPE,
+				People.DISPLAY_NAME,
+				People.PRIMARY_EMAIL_ID,
+				People.PRIMARY_ORGANIZATION_ID,
+				People.PRIMARY_PHONE_ID,
+				People.CUSTOM_RINGTONE,
+				People.IM_ACCOUNT,
+				People.LABEL,
+				People.LAST_TIME_CONTACTED,
+				People.NAME,
+				People.NOTES,
+				People.NUMBER,
+				People.NUMBER_KEY,
+				People.SEND_TO_VOICEMAIL,
+				People.STARRED,
+				People.TIMES_CONTACTED,
+				People.TYPE,
 		};
 
 		StringBuilder sb = new StringBuilder("Contact information for ");
@@ -266,6 +318,15 @@ public class Sandbox extends Activity {
 				sb.append(data.getLongExtra("id", -1));
 				sb.append("\n\tvalue=");
 				sb.append(data.getStringExtra("value"));
+			}
+			break;
+		case REQUEST_CODE_ENABLE_ADMIN:
+			Log.d(Sandbox.TAG, "Back from picking requesting admin priviledges with resultCode=" + resultCode);
+			if (resultCode == RESULT_OK) {
+				sb.append("Admin priviledges granted.");
+				mDPM.lockNow();
+			} else {
+				sb.append("Failed to request admin priviledges.");
 			}
 			break;
 		default:
