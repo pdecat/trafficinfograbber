@@ -28,8 +28,8 @@ import android.app.Activity;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.googlecode.androidannotations.annotations.EBean;
-import com.googlecode.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
 
 @EBean
 public class TIGWebChromeClient extends WebChromeClient {

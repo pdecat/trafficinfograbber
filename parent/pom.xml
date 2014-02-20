@@ -72,16 +72,16 @@
             </dependency>
 
             <dependency>
-                <groupId>com.googlecode.androidannotations</groupId>
+                <groupId>org.androidannotations</groupId>
                 <artifactId>androidannotations</artifactId>
-                <version>2.7.1</version>
+                <version>3.0.1</version>
                 <scope>provided</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.googlecode.androidannotations</groupId>
+                <groupId>org.androidannotations</groupId>
                 <artifactId>androidannotations-api</artifactId>
-                <version>2.7.1</version>
+                <version>3.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -170,7 +170,7 @@
                         <source>${java-version}</source>
                         <target>${java-version}</target>
                         <annotationProcessors>
-                            <annotationProcessor>com.googlecode.androidannotations.AndroidAnnotationProcessor</annotationProcessor>
+                            <annotationProcessor>org.androidannotations.AndroidAnnotationProcessor</annotationProcessor>
                         </annotationProcessors>
                     </configuration>
                 </plugin>
