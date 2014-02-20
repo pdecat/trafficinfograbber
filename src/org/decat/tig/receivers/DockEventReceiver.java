@@ -32,8 +32,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.googlecode.androidannotations.annotations.Background;
-import com.googlecode.androidannotations.annotations.EReceiver;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EReceiver;
 
 /* 
  * This receiver uses Android SDK level 8 APIs but will never get reached on older platforms. 

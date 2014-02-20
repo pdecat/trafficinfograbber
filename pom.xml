@@ -36,7 +36,7 @@
     <parent>
         <groupId>org.decat</groupId>
         <artifactId>parent</artifactId>
-        <version>0.2.6</version>
+        <version>0.2.8-SNAPSHOT</version>
     </parent>
 
     <scm>
@@ -62,12 +62,12 @@
         </dependency>
 
         <dependency>
-            <groupId>com.googlecode.androidannotations</groupId>
+            <groupId>org.androidannotations</groupId>
             <artifactId>androidannotations</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.googlecode.androidannotations</groupId>
+            <groupId>org.androidannotations</groupId>
             <artifactId>androidannotations-api</artifactId>
         </dependency>
     </dependencies>
