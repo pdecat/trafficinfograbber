@@ -290,7 +290,7 @@ public class TIG extends Activity {
 				urlLtIdfHtml += URI_PATH_DEV;
 			}
 			urlLtIdfHtml += FILE_LT_IDF_HTML;
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), urlLtIdfHtml, -1, -1, -1, -1));
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), urlLtIdfHtml, -1, -1, -1, -1, false, false));
 		}
 
 		// Setup selected map for Light Traffic view
