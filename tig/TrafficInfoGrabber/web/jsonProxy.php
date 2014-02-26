@@ -54,7 +54,10 @@
         exit;
     }
 
-    /* The code to dynamically generate the page goes here */
+    // Add CORS header
+    header("Access-Control-Allow-Origin: *");
+
+    // The code to dynamically generate the page goes here
     $json = file_get_contents($url . $qsa);
     echo sprintf($json);
 
@@ -63,3 +66,4 @@
     fwrite($fp, $json);
     fclose($fp);
 ?>
+
