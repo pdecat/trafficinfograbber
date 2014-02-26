@@ -7,7 +7,7 @@
         <title>Sytadin : l'état du trafic en Île-de-France en temps réel</title>
         <base href="http://www.sytadin.fr">
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <meta name="viewport" content="initial-scale=2.0, target-densitydpi=device-dpi, width=device-width" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         
         <link type="text/css" rel="stylesheet" href="/resources/css/sytadin2.css">
         <link type="text/css" rel="stylesheet" href="/resources/css/sytadin-gp.css">
@@ -18,6 +18,9 @@
                 padding: 0;
                 background: rgba(0, 0, 0, 0);
                 border: none;
+            }
+            #global{
+                width: 1024px;
             }
         </style>
     </head>
@@ -69,9 +72,12 @@
                                     updateMap = function() {
                                         if(typeof(map) != undefined) {
                                             map.updateSize();
-                                            // position bar zoom
-                                            px = new OpenLayers.Pixel(map.div.clientWidth - 50, map.div.clientHeight / 2 - 100);
+                                            // position zoom bar
+                                            px = new OpenLayers.Pixel(map.div.clientWidth - 40, map.div.clientHeight / 2 - 100);
                                             zoomBarControl.moveTo(px);
+                                            // position tool bar
+                                            px = new OpenLayers.Pixel(0, map.div.clientHeight / 2 - 100);
+                                            toolsBar.moveTo(px);
                                         }
                                     };
                                 })();
