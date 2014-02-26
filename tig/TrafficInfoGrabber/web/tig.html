@@ -73,10 +73,10 @@
                                         if(typeof(map) != undefined) {
                                             map.updateSize();
                                             // position zoom bar
-                                            px = new OpenLayers.Pixel(map.div.clientWidth - 40, map.div.clientHeight / 2 - 100);
+                                            px = new OpenLayers.Pixel(map.div.clientWidth - 40, map.div.clientHeight - 195);
                                             zoomBarControl.moveTo(px);
                                             // position tool bar
-                                            px = new OpenLayers.Pixel(0, map.div.clientHeight / 2 - 100);
+                                            px = new OpenLayers.Pixel(0, map.div.clientHeight - 235);
                                             toolsBar.moveTo(px);
                                         }
                                     };
