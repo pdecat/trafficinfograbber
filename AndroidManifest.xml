@@ -19,13 +19,13 @@
   License along with this program.  If not, see
   <http://www.gnu.org/licenses/gpl-3.0.html>.
   #L%
-  --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1209180305" android:versionName="0.7.4-SNAPSHOT" package="org.decat.tig">
+  --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1209180306" android:versionName="0.7.4-SNAPSHOT" package="org.decat.tig">
     
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="17"/>
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="19"/>
 
     <supports-screens android:xlargeScreens="true"/>
     
@@ -47,7 +47,7 @@
 
         <activity android:label="@string/activitySelector" android:launchMode="singleTop" android:name=".preferences.ActivitySelector_"/>
 
-        <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:name="com.google.ads.AdActivity"/>
+        <activity android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:name="com.google.ads.AdActivity"/>
 
         <receiver android:name=".receivers.BootCompletedReceiver">
             <intent-filter>
