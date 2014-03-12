@@ -69,6 +69,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -153,7 +155,7 @@ public class TIG extends Activity {
 		clearDatabase("webviewCache.db");
 
 		// Initialize the Google Analytics tracker
-		EasyTracker.getInstance().activityStart(this);
+		EasyTracker.getInstance(this).activityStart(this);
 	}
 
 	@AfterViews
@@ -246,12 +248,14 @@ public class TIG extends Activity {
 			Log.i(TAG, "Application version: " + appVersion);
 		}
 
-		Tracker tracker = EasyTracker.getTracker();
-		tracker.setCustomDimension(1, appVersion);
-		tracker.setCustomDimension(2, Build.VERSION.RELEASE);
-		tracker.setCustomDimension(3, Build.BRAND);
-		tracker.setCustomDimension(4, Build.DEVICE);
-		EasyTracker.getTracker().sendView("/tig/setup/");
+		Tracker tracker = EasyTracker.getInstance(this);
+		tracker.set(Fields.customDimension(1), appVersion);
+		tracker.set(Fields.customDimension(2), Build.VERSION.RELEASE);
+		tracker.set(Fields.customDimension(3), Build.BRAND);
+		tracker.set(Fields.customDimension(4), Build.DEVICE);
+
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/setup/");
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 	}
 
 	@TargetApi(7)
@@ -530,7 +534,8 @@ public class TIG extends Activity {
 			refreshCurrentView();
 		}
 
-		EasyTracker.getTracker().sendView("/tig/resume/");
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/resume/");
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 	}
 
 	private Drawable getThirdPartyAppDrawable() {
@@ -564,7 +569,8 @@ public class TIG extends Activity {
 
 	private boolean showViewById(int viewId) {
 		Log.d(TAG, "TIG.showViewById: viewId=" + viewId);
-		EasyTracker.getTracker().sendView("/tig/showViewById/" + viewId);
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/showViewById/" + viewId);
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 
 		// Store previous value to manage refresh
 		previousViewId = currentViewId;
@@ -625,13 +631,15 @@ public class TIG extends Activity {
 	}
 
 	private void showPreferencesEditor() {
-		EasyTracker.getTracker().sendView("/tig/showPreferencesEditor/");
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/showPreferencesEditor/");
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 		Intent intent = new Intent(this, PreferencesEditor.class);
 		startActivityForResult(intent, ACTIVITY_REQUEST_PREFERENCES_EDITOR);
 	}
 
 	private void showAbout() {
-		EasyTracker.getTracker().sendView("/tig/showAbout/");
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/showAbout/");
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 
 		Intent intent = new Intent(ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG);
 		int activityRequest = ACTIVITY_REQUEST_OI_ABOUT_LAUNCH;
@@ -653,7 +661,8 @@ public class TIG extends Activity {
 	}
 
 	private void installOIAbout() {
-		EasyTracker.getTracker().sendView("/tig/installOIAbout/");
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/installOIAbout/");
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.install_oi_about).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
@@ -681,7 +690,8 @@ public class TIG extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		EasyTracker.getTracker().sendView("/tig/onActivityResult/" + requestCode + "/" + resultCode);
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/onActivityResult/" + requestCode + "/" + resultCode);
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 		switch (requestCode) {
 			case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
 				if (resultCode == RESULT_OK) {
@@ -733,7 +743,8 @@ public class TIG extends Activity {
 	}
 
 	private void launchWebsite(String url) {
-		EasyTracker.getTracker().sendView("/tig/launchWebsite/" + url);
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/launchWebsite/" + url);
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 		try {
 			Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 			startActivity(myIntent);
@@ -755,7 +766,8 @@ public class TIG extends Activity {
 
 		ComponentName thirdPartyAppComponentName = getThirdPartyAppComponentName();
 
-		EasyTracker.getTracker().sendView("/tig/launchThirdPartyApp/" + thirdPartyAppComponentName);
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/launchThirdPartyApp/" + thirdPartyAppComponentName);
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 
 		if (thirdPartyAppComponentName != null) {
 			try {
@@ -810,7 +822,8 @@ public class TIG extends Activity {
 
 	public void quit(boolean kill) {
 		Log.d(TAG, "TIG.quit: kill=" + kill);
-		EasyTracker.getTracker().sendView("/tig/quit/" + kill);
+		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/quit/" + kill);
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 
 		cancelNotification(this);
 		preferenceNotificationShortcut = false;
@@ -887,7 +900,7 @@ public class TIG extends Activity {
 		Log.d(TAG, "TIG.onStop: isFinishing=" + isFinishing());
 		super.onStop();
 		// Stop the Google Analytics tracker when it is no longer needed.
-		EasyTracker.getInstance().activityStop(this);
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override

@@ -39,6 +39,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 
 public class PreferencesEditor extends PreferenceActivity {
 	public static final String EXTRA_RESOLVE_INFO = "value";
@@ -78,7 +80,7 @@ public class PreferencesEditor extends PreferenceActivity {
 		});
 
 		// Set Context before using EasyTracker
-		EasyTracker.getInstance().setContext(this);
+		EasyTracker.getInstance(this);
 	}
 
 	@Override
@@ -112,9 +114,11 @@ public class PreferencesEditor extends PreferenceActivity {
 	@Override
 	protected void onPause() {
 		super.onResume();
-		EasyTracker.getTracker().sendView(
+		EasyTracker.getInstance(this).set(
+				Fields.SCREEN_NAME,
 				"/tig/pe/pause/" + PreferencesHelper.OTHER_ACTIVITY + "=" + sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED)) + ", "
 						+ PreferencesHelper.PREF_ADS + "=" + sharedPreferences.getString(PreferencesHelper.PREF_ADS, ""));
+		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 	}
 
 	private void updateStringPreference(String preference, String value) {
