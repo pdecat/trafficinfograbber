@@ -68,7 +68,7 @@
             <dependency>
                 <groupId>com.google.android.analytics</groupId>
                 <artifactId>analytics</artifactId>
-                <version>3</version>
+                <version>3.01_r1</version>
             </dependency>
 
             <dependency>
