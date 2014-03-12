@@ -20,18 +20,19 @@
   <http://www.gnu.org/licenses/gpl-3.0.html>.
   #L%
   -->
-
-
 <resources>
-    <!--Tracking ID-->
-    <string name="ga_trackingId">UA-8749317-5</string>
+    <!-- Tracking ID -->
+    <string name="ga_trackingId">UA-8749317-6</string>
 
-    <!--Enable automatic activity tracking-->
+    <!-- Log level -->
+    <string name="ga_logLevel">warning</string>
+    
+    <!-- Enable automatic activity tracking -->
     <bool name="ga_autoActivityTracking">true</bool>
 
-    <!--Enable automatic exception tracking-->
+    <!-- Enable automatic exception tracking -->
     <bool name="ga_reportUncaughtExceptions">true</bool>
-  
-    <!--Set dispatch period to 60 seconds-->
+
+    <!-- Set dispatch period to 60 seconds -->
     <integer name="ga_dispatchPeriod">60</integer>
 </resources>

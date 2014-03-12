@@ -137,7 +137,7 @@ public class TIGWebViewClient extends WebViewClient {
 		// Add a Javascript interface in order to interact with the webview
 		webview.addJavascriptInterface(new TIGWebViewJSI(), "TIGAndroid");
 
-		// Bind an handler the UI thread's message queue 
+		// Bind an handler to the UI thread's message queue 
 		handler = new Handler();
 	}
 
@@ -207,7 +207,7 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@Background
 	protected void startPageLoadTimeout() {
-		Log.d(TIG.TAG, "TIGWebViewClient.startPageLoadTimeout");
+		Log.d(TIG.TAG, "TIGWebViewClient.startPageLoadTimeout (handler=" + handler + ", pageLoadTimeoutChecker=" + pageLoadTimeoutChecker + ")");
 		// Remove previous posts
 		cancelPageLoadTimeout();
 
@@ -216,8 +216,8 @@ public class TIGWebViewClient extends WebViewClient {
 	}
 
 	private void cancelPageLoadTimeout() {
-		Log.d(TIG.TAG, "TIGWebViewClient.cancelPageLoadTimeout");
-		handler.removeCallbacks(pageLoadTimeoutChecker);
+		Log.d(TIG.TAG, "TIGWebViewClient.cancelPageLoadTimeout (handler=" + handler + ", pageLoadTimeoutChecker=" + pageLoadTimeoutChecker + ")");
+		handler.removeCallbacksAndMessages(null);
 	}
 
 	public void pause() {
