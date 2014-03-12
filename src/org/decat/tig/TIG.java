@@ -103,6 +103,7 @@ public class TIG extends Activity {
 
 	public static final String TAG = "TIG";
 
+	public static final String FILE_BASE = "file:///android_asset";
 	public static final String URL_BASE = "http://tig.decat.org";
 	public static final String URI_PATH_DEV = "/dev";
 	public static final String FILE_LT_IDF_HTML = "/tig.html";
@@ -284,13 +285,8 @@ public class TIG extends Activity {
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/sys/fermetures_nocturnes.jsp.html", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
 
-			// Select main HTML file production or development version based on application version name  
-			String urlLtIdfHtml = URL_BASE;
-			if (getAppVersionName().endsWith(SNAPSHOT_SUFFIX)) {
-				urlLtIdfHtml += URI_PATH_DEV;
-			}
-			urlLtIdfHtml += FILE_LT_IDF_HTML;
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), urlLtIdfHtml, -1, -1, -1, -1, false, false));
+			// TODO: refresh the local file from time to time
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), FILE_BASE + FILE_LT_IDF_HTML, -1, -1, -1, -1, false, false));
 		}
 
 		// Setup selected map for Light Traffic view
