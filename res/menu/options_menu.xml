@@ -28,6 +28,9 @@
     <item 
         android:id="@+id/liveTrafficLite"
         android:title="@string/liveTrafficLite"/>
+    <item 
+        android:id="@+id/liveTrafficMobile"
+        android:title="@string/liveTrafficMobile"/>
     <item
         android:id="@+id/closedAtNight"
         android:title="@string/closedAtNight"/>

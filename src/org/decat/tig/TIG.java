@@ -24,6 +24,12 @@ package org.decat.tig;
  * #L%
  */
 
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.decat.tig.preferences.PreferencesEditor;
 import org.decat.tig.preferences.PreferencesHelper;
 import org.decat.tig.web.TIGWebChromeClient;
@@ -72,16 +78,9 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.main)
 public class TIG extends Activity {
-	private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT";
 	private static final String USER_AGENT_SDK_11_AND_HIGHER = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4";
 	private static final String RES_BOOLS = "bool";
 	private static final String RES_STRINGS = "string";
@@ -106,13 +105,11 @@ public class TIG extends Activity {
 	public static final String TAG = "TIG";
 
 	public static final String FILE_BASE = "file:///android_asset";
-	public static final String URL_BASE = "http://tig.decat.org";
-	public static final String URI_PATH_DEV = "/dev";
-	public static final String FILE_LT_IDF_HTML = "/tig.html";
-	public static final String URL_LLT_FULL_HTML = URL_BASE + "/tig_llt_full.html";
-	public static final String URL_LLT_IDF_HTML = URL_BASE + "/tig_llt_idf.html";
+	public static final String FILE_LT_IDF_HTML = FILE_BASE + "/tig.html";
+	public static final String FILE_LLT_HTML = FILE_BASE + "/tig_llt.html";
 
 	public static final String URL_SYTADIN = "http://www.sytadin.fr";
+	public static final String URL_SYTADIN_MOBILE = "http://m.sytadin.fr";
 
 	private static final String URL_INFOTRAFIC = "http://www.infotrafic.com";
 
@@ -289,20 +286,13 @@ public class TIG extends Activity {
 			availableWebviews.put(R.id.closedAtNight, new WebviewSettings(getString(R.string.closedAtNight), URL_SYTADIN + "/sys/fermetures_nocturnes.jsp.html", 0, 0, 595, 539));
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
 
-			// TODO: refresh the local file from time to time
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), FILE_BASE + FILE_LT_IDF_HTML, -1, -1, -1, -1, false, false));
-		}
+			// TODO: refresh the local files from time to time
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), FILE_LT_IDF_HTML, -1, -1, -1, -1, false, false));
+			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILE_LLT_HTML, 291, 140, 683, 713));
 
-		// Setup selected map for Light Traffic view
-		String urlLltCarto = getPreferences(this).getString(PreferencesHelper.LT_CARTO, URL_LLT_IDF_HTML);
-		WebviewSettings ltWebviewSettings;
-		if (URL_LLT_FULL_HTML.equals(urlLltCarto)) {
-			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_LLT_FULL_HTML, 388, 193, 631, 621, false, false);
-		} else {
-			ltWebviewSettings = new WebviewSettings(getString(R.string.liveTrafficLite), URL_LLT_IDF_HTML, 291, 140, 683, 713);
+			// TODO: create a local file
+			availableWebviews.put(R.id.liveTrafficMobile, new WebviewSettings(getString(R.string.liveTrafficMobile), URL_SYTADIN_MOBILE, -1, -1, -1, -1, false, false));
 		}
-		availableWebviews.put(R.id.liveTrafficLite, ltWebviewSettings);
-
 	}
 
 	private void clearDatabase(String database) {
@@ -583,8 +573,9 @@ public class TIG extends Activity {
 				loadUrlInWebview(availableWebviews.get(viewId));
 				return true;
 
-			case R.id.liveTrafficLite:
 			case R.id.liveTraffic:
+			case R.id.liveTrafficLite:
+			case R.id.liveTrafficMobile:
 			case R.id.quickStats:
 			case R.id.closedAtNight:
 			case R.id.trafficCollisions:

@@ -25,13 +25,6 @@
     <PreferenceCategory
         android:summary="@string/PREFS_CATEGORY_INTERFACE_SUMMARY"
         android:title="@string/PREFS_CATEGORY_INTERFACE_TITLE" >
-        <ListPreference
-            android:defaultValue="/carto/dynamique/emprises/segment_IDF_fs.png"
-            android:entries="@array/lltCartoLabels"
-            android:entryValues="@array/lltCartoValues"
-            android:key="LT_CARTO"
-            android:summary="@string/LT_CARTO_SUMMARY"
-            android:title="@string/LT_CARTO_TITLE" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="FORCE_PORTRAIT_ORIENTATION"
