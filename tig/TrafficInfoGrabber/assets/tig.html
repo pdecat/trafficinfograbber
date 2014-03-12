@@ -37,11 +37,8 @@
                             <script src="/resources/js/toolsBarTpsReel.js" type="text/javascript"></script>
                             <script src="/resources/js/cartesTempsReel-gp.js" type="text/javascript"></script>                      
                             <script type="text/javascript">
-                                var jsonProxy = 'http://tig.decat.org/jsonProxy.php?uri=';
                                 (function() {
-                                    var proxied = window.XMLHttpRequest.prototype.open;
                                     window.XMLHttpRequest.prototype.open = function() {
-                                        arguments[1] = jsonProxy + arguments[1].substring(1);
                                         tigOnLoadResource(arguments[1]); 
                                         return proxied.apply(this, arguments);
                                     };
