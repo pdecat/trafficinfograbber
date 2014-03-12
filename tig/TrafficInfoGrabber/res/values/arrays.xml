@@ -34,14 +34,6 @@
     <string-array name="about_artists">
         <item>Benoit Laurent</item>
     </string-array>
-    <string-array name="lltCartoLabels">
-        <item>@string/PREF_LLT_IDF_HTML_LABEL</item>
-        <item>@string/PREF_LLT_FULL_HTML_LABEL</item>
-    </string-array>
-    <string-array name="lltCartoValues">
-        <item>@string/PREF_LLT_IDF_HTML_VALUE</item>
-        <item>@string/PREF_LLT_FULL_HTML_VALUE</item>
-    </string-array>
     <string-array name="adsDisplayLabels">
         <item>@string/PREF_ADS_ALWAYS_LABEL</item>
         <item>@string/PREF_ADS_ATLOAD_LABEL</item>

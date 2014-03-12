@@ -22,9 +22,4 @@
 -->
 <resources>
 
-    <string-array name="ltCartoLabels">
-        <item>Complète</item>
-        <item>Ile-de-France</item>
-    </string-array>
-
 </resources>
