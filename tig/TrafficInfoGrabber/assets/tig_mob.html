@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+<!--
+  %%Ignore-License
+  -->
+	<head>
+		<title>Sytadin Mobile</title>
+		<base href="http://m.sytadin.fr">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<link href="/resources/css/mobile.css" rel="stylesheet" type="text/css" />
+		<link href="/resources/js/theme/default/style.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/resources/js/mobile.js"></script>
+	</head>
+	
+	<body>
+		<div id="global">
+			<div id="menu">
+				<a href="javascript:showHide('cartographie',false);" title="sytadin"> <img
+					src="/resources/images/SytadinMobileLogo1.png" id="logo" alt="sytadin" />
+				</a>
+				<ul>
+					<li id="menu_navigation"><a href="javascript:showHide('navigation',false);"> <img
+							src="/resources/images/navigation.png" alt="menu" style="vertical-align: middle;" />
+					</a></li>
+					<li id="menu_plus"><a href="javascript:showHide('plus',false);"> <img src="/resources/images/plus.png"
+							alt="menu" style="vertical-align: middle;" />
+					</a></li>
+					<li id="menu_cartographie"><a id="lien_cartographie" href="javascript:showHide('couche',false);"> <img
+							id="image_menu_cartographie" src="/resources/images/couche.png" style="vertical-align: middle;" alt="menu" />
+					</a></li>
+				</ul>
+			</div>
+	
+			<div id="navigation" class="block_contenu">
+				<h3 class="title_red">
+					<img src="resources/images/red_arrow_left.gif" alt="" style="float: left;" /> <img
+						src="resources/images/red_arrow_right.gif" alt="" style="float: right;" /> <span>Se déplacer maintenant</span>
+				</h3>
+				<div class="contenu">
+					<ul class="navigation_link">
+						<li><a href="/sys/temps_de_parcours.jsp.html">Temps de parcours par secteur</a></li>
+					</ul>
+				</div>
+				<h3 class="title_green">
+					<img src="resources/images/green_arrow_left.gif" alt="" style="float: left;" /> <img
+						src="resources/images/green_arrow_right.gif" alt="" style="float: right;" /> <span>Pour votre sécurité</span>
+				</h3>
+				<div class="contenu">
+					<ul class="navigation_link">
+						<li><a href="securite/securite_routiere.html" title="Sécurité routière">Sécurité routière</a></li>
+					</ul>
+				</div>
+				<h3 class="title_grey">
+					<img src="resources/images/grey_arrow_left.gif" alt="" style="float: left;" /> <img
+						src="resources/images/grey_arrow_right.gif" alt="" style="float: right;" /> <span>Sytadin pratique</span>
+				</h3>
+				<div class="contenu">
+					<ul class="navigation_link">
+						<li><a href="pratique/info_editeur.html" title="Info éditeur">Info éditeur</a></li>
+					</ul>
+				</div>
+				<h3 class="title_violet">
+					<img src="resources/images/violet_arrow_left.gif" alt="" style="float: left;" /> <img
+						src="resources/images/violet_arrow_right.gif" alt="" style="float: right;" /> <span>Plus sur Sytadin</span>
+				</h3>
+				<div class="contenu">
+					<ul class="navigation_link">
+						<li><a href="plus/partenariats.html" title="Partenariats">Partenariats</a></li>
+						<li><a href="plus/qui_sommes_nous.html" title="Qui sommes-nous ?">Qui sommes-nous ?</a></li>
+					</ul>
+				</div>
+			</div>
+			<div id="plus" class="block_contenu">
+				<h3 class="title_black">
+					<img src="resources/images/black_arrow_left.gif" alt="" style="float: left;" /> <img
+						src="resources/images/black_arrow_right.gif" alt="" style="float: right;" /> <span>Alerte(s) Réseau</span>
+				</h3>
+				<div class="contenu" id="flash" style="position: relative;"></div>
+	
+				<h3 class="title_grey" id="titre_cumul">
+					<img src="resources/images/grey_arrow_left.gif" alt="" style="float: left;" /> <img
+						src="resources/images/grey_arrow_right.gif" alt="" style="float: right;" /> <span>Plus sur le trafic</span>
+				</h3>
+				<div class="contenu" style="padding: 5px;" id="contenu_cumul">
+					<div id="cumul"></div>
+					<hr />
+					<img id="courbe" src="#" style="width: 100%;" alt="Courbe du cumul de bouchon" />
+					<p>
+						<em class="center">Courbe générée toutes les 6 mn</em>
+					</p>
+				</div>
+			</div>
+			<div id="couche" class="block_contenu">
+				<h3 class="title_red" onclick="$('#couche').hide();" style="cursor: hand;">
+					<img src="resources/images/red_arrow_left.gif" alt="" style="float: left;" /> <img
+						src="resources/images/red_cross_right.gif" alt="" style="float: right;" /> <span>Données à afficher</span>
+				</h3>
+				<div class="contenu" style="margin: 0; padding: 0;">
+					<ul class="couche">
+						<li><a href="javascript:callSwitchLayer('bouchons',0);">Bouchons</a></li>
+						<li class="masked"><a href="javascript:callSwitchLayer('vitesses',0);">Vitesses</a></li>
+						<li><a href="javascript:callSwitchLayer('fermetures',0);">Fermeture nocturne</a></li>
+						<li><a href="javascript:callSwitchLayer('fermetures',1);">Fermeture nocturne J+1</a></li>
+						<li><a href="javascript:callSwitchLayer('fermetures',2);">Fermeture nocturne J+2</a></li>
+						<li><a href="javascript:callSwitchLayer('fermetures',3);">Fermeture nocturne J+3</a></li>
+						<li><a href="javascript:callSwitchLayer('fermetures',4);">Fermeture nocturne J+4</a></li>
+						<li><a href="javascript:callSwitchLayer('fermetures',5);">Fermeture nocturne J+5</a></li>
+						<li><a href="javascript:callSwitchLayer('fermetures',6);">Fermeture nocturne J+6</a></li>
+					</ul>
+				</div>
+			</div>
+	
+			<div id="degraded">En raison d'une trop grande affluence sur le site, ses fonctionnalités ont été temporairement
+				réduites. Veuillez nous en excuser.</div>
+	
+			<div id="cartographie">
+				<div id="map" class="map center"></div>
+				<script type="text/javascript" src="resources/js/OpenLayers-mobile.js"></script>
+				<script type="text/javascript" src="resources/js/cartesTempsReel-mobile.js"></script>
+	
+				<script type="text/javascript">	
+					OpenLayers.ImgPath = "/resources/js/theme/default/img/";
+					$(document).ready(function() {	
+						if($("#cartographie").is(":visible")){
+							init();
+						}				
+								
+					});					
+					
+					function callXiti() {					
+					}
+				</script>
+	
+				<script type="text/javascript">
+	                (function() {
+	                    getPageHeight = function() {
+	                        return window.innerHeight;
+	                    };
+	                })();
+	                (function() {
+	                    getPageWidth = function() {
+	                        return window.innerWidth;
+	                    };
+	                })();
+	
+	                (function() {
+	                    construct = function() {
+	                        var divMap = document.getElementById('map');
+	                        if(divMap) {
+	                            divMap.style.height = getPageHeight() + "px";
+	                            divMap.style.width = getPageWidth() + "px";
+	                        }
+	                        updateMap();
+	                    };
+	                })();
+	
+	                (function() {
+	                    updateMap = function() {
+	                        if(typeof(map) != undefined) {
+	                            map.updateSize();
+	                            // position zoom bar
+	                            px = new OpenLayers.Pixel(map.div.clientWidth - 40, map.div.clientHeight - 195);
+	                            zoomBarControl.moveTo(px);
+	                            // position tool bar
+	                            px = new OpenLayers.Pixel(0, map.div.clientHeight - 235);
+	                            toolsBar.moveTo(px);
+	                        }
+	                    };
+	                })();
+	                window.setTimeout(function() {
+	                    init();
+	                    construct();
+	                    $("#saveFavoriteView").parent().remove()
+	                    $("#loadFavoriteView").parent().remove()
+	                }, 100);
+	            </script>
+				<noscript>
+					<p>
+						<img src="/carto/dynamique/emprises/segment_TOTALE.png" style="width: 100%;" alt="" />
+					</p>
+				</noscript>
+			</div>
+		</div>
+	
+		<script type="text/javascript">
+            // Override window.alert
+            function tigShowAndroidToast(toast) {
+                try {
+                    TIGAndroid.showToast(toast);
+                    console.info("tigShowAndroidToast: lastModText=" + lastModText);
+                } catch(err) {
+                    console.error("tigShowAndroidToast: " + err);
+                }
+            }
+
+            function tigOnLoadResource(url) {
+                try {
+                    TIGAndroid.onLoadResource(url);
+                    console.info("tigOnLoadResource: url=" + url);
+                } catch(err) {
+                    console.error("tigOnLoadResource: " + err);
+                }
+            }
+
+            try {
+                (function() {
+                    window.alert = function() {
+                    TIGAndroid.showToast(arguments[0]);
+                    return false;
+                  };
+                })();
+            } catch(err) {
+                console.error(err);
+            }
+
+            // Last modified information extraction
+            function tigUpdateLastModified() {
+                try {
+                	// Bouchons le 14/03/2014 à 08:17
+                    var lastModText = jQuery("#dateReseauControl").text().substring(12).split(" à ").join("\n");
+                    console.info("tigUpdateLastModified: lastModText=" + lastModText);
+                    TIGAndroid.updateLastModified(lastModText);
+                } catch(err) {
+                    console.error("tigUpdateLastModified: " + err);
+                }
+            }
+
+            window.setTimeout(function() {
+                try {
+                    // Call tigUpdateLastModified once and register it for updates
+                    tigUpdateLastModified();
+                    jQuery("#dateReseauControl").bind('DOMSubtreeModified', tigUpdateLastModified);
+                } catch(err) {
+                    console.error(err);
+                }
+            }, 150);
+        </script>
+		<script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+		<script type="text/javascript">
+	            try {
+	                var pageTracker = _gat._getTracker("UA-8749317-5");
+	                pageTracker._trackPageview();
+	            } catch(err) {}
+	    </script>
+	</body>
+</html>
