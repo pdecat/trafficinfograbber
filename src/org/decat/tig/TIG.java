@@ -105,7 +105,8 @@ public class TIG extends Activity {
 	public static final String TAG = "TIG";
 
 	public static final String FILE_BASE = "file:///android_asset";
-	public static final String FILE_LT_IDF_HTML = FILE_BASE + "/tig.html";
+	public static final String FILE_LT_HTML = FILE_BASE + "/tig.html";
+	public static final String FILE_LTM_HTML = FILE_BASE + "/tig_mob.html";
 	public static final String FILE_LLT_HTML = FILE_BASE + "/tig_llt.html";
 
 	public static final String URL_SYTADIN = "http://www.sytadin.fr";
@@ -287,11 +288,9 @@ public class TIG extends Activity {
 			availableWebviews.put(R.id.trafficCollisions, new WebviewSettings(getString(R.string.trafficCollisions), URL_INFOTRAFIC + "/route.php?region=IDF&link=accidents.php", 136, 135, 697, 548));
 
 			// TODO: refresh the local files from time to time
-			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), FILE_LT_IDF_HTML, -1, -1, -1, -1, false, false));
+			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), FILE_LT_HTML, -1, -1, -1, -1, false, false));
 			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILE_LLT_HTML, 291, 140, 683, 713));
-
-			// TODO: create a local file
-			availableWebviews.put(R.id.liveTrafficMobile, new WebviewSettings(getString(R.string.liveTrafficMobile), URL_SYTADIN_MOBILE, -1, -1, -1, -1, false, false));
+			availableWebviews.put(R.id.liveTrafficMobile, new WebviewSettings(getString(R.string.liveTrafficMobile), FILE_LTM_HTML, -1, -1, -1, -1, false, false));
 		}
 	}
 
