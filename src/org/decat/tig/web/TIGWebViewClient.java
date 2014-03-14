@@ -256,12 +256,14 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@UiThread
 	protected void updateLastModified(String lastModifiedValue) {
-		String[] lastModifiedValues = null;
-		if (lastModifiedValue != null) {
-			lastModifiedValues = lastModifiedValue.split("\n");
+		if (lastModifiedValue != null && !lastModifiedValue.startsWith("Données")) {
+			String[] lastModifiedValues = lastModifiedValue.split("\n");
+			this.lastModifiedDate.setText(lastModifiedValues != null && lastModifiedValues.length > 0 ? lastModifiedValues[0] : "");
+			this.lastModifiedTime.setText(lastModifiedValues != null && lastModifiedValues.length > 1 ? lastModifiedValues[1] : "");
+		} else {
+			this.lastModifiedDate.setText("Données");
+			this.lastModifiedTime.setText("indisponibles");
 		}
-		this.lastModifiedDate.setText(lastModifiedValues != null && lastModifiedValues.length > 0 ? lastModifiedValues[0] : "");
-		this.lastModifiedTime.setText(lastModifiedValues != null && lastModifiedValues.length > 1 ? lastModifiedValues[1] : "");
 
 		// Show ads if checked in preferences
 		showAds();
