@@ -1,3 +1,8 @@
+v0.7.4:
+- Fix connectivity issues with the Live Traffic view
+- Fix control buttons positioning
+- Upgrade to AdMob 6.4.1, Analytics 3.01, AndroidAnnotations 3.0.1 and Android API 19 (4.4)
+
 v0.7.3:
 - Fix retry count down on loading errors
 - Upgrade to AdMob 6.3.0 and Android API 17 (4.2)
