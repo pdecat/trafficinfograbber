@@ -290,7 +290,7 @@ public class TIG extends Activity {
 			// TODO: refresh the local files from time to time
 			availableWebviews.put(R.id.liveTraffic, new WebviewSettings(getString(R.string.liveTraffic), FILE_LT_HTML, -1, -1, -1, -1, false, false));
 			availableWebviews.put(R.id.liveTrafficLite, new WebviewSettings(getString(R.string.liveTrafficLite), FILE_LLT_HTML, 291, 140, 683, 713));
-			availableWebviews.put(R.id.liveTrafficMobile, new WebviewSettings(getString(R.string.liveTrafficMobile), FILE_LTM_HTML, -1, -1, -1, -1, false, false));
+			// availableWebviews.put(R.id.liveTrafficMobile, new WebviewSettings(getString(R.string.liveTrafficMobile), FILE_LTM_HTML, -1, -1, -1, -1, false, false));
 		}
 	}
 
@@ -574,7 +574,7 @@ public class TIG extends Activity {
 
 			case R.id.liveTraffic:
 			case R.id.liveTrafficLite:
-			case R.id.liveTrafficMobile:
+				// case R.id.liveTrafficMobile:
 			case R.id.quickStats:
 			case R.id.closedAtNight:
 			case R.id.trafficCollisions:
