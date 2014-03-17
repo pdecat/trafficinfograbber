@@ -1,0 +1,111 @@
+<!--
+  #%L
+  TrafficInfoGrabber
+  %%
+  Copyright (C) 2010 - 2014 Patrick Decat
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TIG Leaflet</title>
+		<meta charset="utf-8" />
+	
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+	</head>
+	<body>
+		<div id="map" style="width: 1024px; height: 800px"></div>
+		
+		<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+		<script>
+		function createXHR(method, url) {
+			var xhr = new XMLHttpRequest();
+
+			xhr.open(method, url, true);
+			
+			return xhr;
+		}
+
+		var sytadinSubdomains = ["www1","www2","www3","www4"];
+		
+		var map = L.map('map', {
+			crs: L.CRS.Simple,
+			center: [830, 668],
+			maxBounds: [
+			    [0,0],
+			    [1260, 1570]
+			],
+			minZoom: 0,
+			maxZoom: 3,
+			zoom: 0,
+			bounceAtZoomLimits: false
+		});
+		
+		L.tileLayer('http://{s}.sytadin.fr/carto/statique/tms/1.0.0/fond/{z}/{x}/{y}.png', {
+			attribution: 'www.sytadin.fr',
+			tms: true,
+			continuousWorld: true,
+			subdomains: sytadinSubdomains,
+			bounds: [
+			    [0,0],
+			    [1260, 1570]
+			]
+		}).addTo(map);
+			
+			var popup = L.popup();
+			
+			function onMapClick(e) {
+				popup
+					.setLatLng(e.latlng)
+					.setContent(e.latlng.toString())
+					.openOn(map);
+			}
+			
+		map.on('click', onMapClick);
+		
+		var url = 'http://tig.decat.org/jsonProxy.php?uri=carto/dynamique/cartoTempsReel.json?_=' + new Date().getTime();
+		
+		var xhr = createXHR('GET', url);
+				
+		// Response handlers.
+		xhr.onload = function() {
+			var synchronisation = eval('(' + xhr.responseText + ')');
+		
+			L.tileLayer('http://{s}.sytadin.fr/carto/dynamique/{dossier}/tms/1.0.0/bouchons/{z}/{x}/{y}.png', {
+				tms: true,
+				continuousWorld: true,
+				subdomains: sytadinSubdomains,
+				dossier: synchronisation.dossier,
+				bounds: [
+				    [0,0],
+				    [1260, 1570]
+				]
+			}).addTo(map);
+			
+		};
+		
+		xhr.onerror = function() {
+			console.log('Woops, there was an error making the request.');
+		};
+		
+		xhr.send();
+		
+		</script>
+	</body>
+</html>
