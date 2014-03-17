@@ -1,3 +1,8 @@
+v0.7.4:
+- Correction de problèmes de connectivité avec la vue Trafic en direct
+- Correction du positionnement des boutons de contrôles
+- Montée de version AdMob 6.4.1, Analytics 3.01, AndroidAnnotations 3.0.1 et Android API 19 (4.4)
+
 v0.7.3:
 - Correction du compte à rebours avant rechargement lors d'erreur de chargement
 - Montée de version AdMob 6.3.0 et Android API 17 (4.2)
