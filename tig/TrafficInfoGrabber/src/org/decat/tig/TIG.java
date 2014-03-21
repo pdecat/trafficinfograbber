@@ -132,7 +132,6 @@ public class TIG extends Activity {
 	protected TIGWebChromeClient webChromeClient;
 
 	private static boolean preferenceNotificationShortcut = false;
-	private static boolean preferenceLockOrientation = false;
 
 	// Fields to manage webview state 
 	private int previousViewId = -1;
@@ -427,17 +426,12 @@ public class TIG extends Activity {
 		// Get current value
 		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.FORCE_PORTRAIT_ORIENTATION);
 
-		if (value != preferenceLockOrientation) {
-			if (value) {
-				// Lock orientation as set in preferences
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			} else {
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-			}
+		if (value) {
+			// Lock orientation as set in preferences
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		} else {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 		}
-
-		// Store new value
-		preferenceLockOrientation = value;
 	}
 
 	private void updateAdsVisibility(Context context) {
