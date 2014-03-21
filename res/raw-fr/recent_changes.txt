@@ -1,3 +1,7 @@
+v0.7.5:
+- Correction du forçage de l'orientation portrait au lancement
+- Correction de la gestion de l'indisponibilité des informations trafic
+
 v0.7.4:
 - Correction de problèmes de connectivité avec la vue Trafic en direct
 - Correction du positionnement des boutons de contrôles
