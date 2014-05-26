@@ -51,6 +51,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
@@ -159,6 +160,9 @@ public class TIG extends Activity {
 	public void setup() {
 		Log.d(TAG, "TIG.setup");
 
+		// Enable web view debugging
+		enableWebContentsDebugging();
+		 
 		// Needed since API 7
 		webviewSetDomStorageEnabled();
 
@@ -279,6 +283,16 @@ public class TIG extends Activity {
 			webview.getSettings().setAllowUniversalAccessFromFileURLs(true);
 		}
 	}
+
+    @TargetApi(19)
+    private void enableWebContentsDebugging() {
+        // Since API 19, we can call this method to allow WebView remote debugging
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if ( 0 != ( getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE ) ) {
+                WebView.setWebContentsDebuggingEnabled(true);
+            }
+        }
+    }
 
 	private void initializeWebviewSettings() {
 		if (availableWebviews.size() == 0) {
