@@ -1,3 +1,7 @@
+v0.7.6:
+- Workaround wrong encoding from www.sytadin.fr
+- Use the new Closed At Night page
+
 v0.7.5:
 - Fix portrait orientation forcing at startup
 - Fix live traffic data unavailability handling
