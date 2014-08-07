@@ -1,3 +1,6 @@
+v0.7.7:
+- Correction du chargement des ressources depuis www.sytadin.fr
+
 v0.7.6:
 - Contournement d'un mauvais encodage de www.sytadin.fr
 - Utilisation de la nouvelle page Fermetures Nocturnes
