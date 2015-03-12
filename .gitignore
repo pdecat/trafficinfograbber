@@ -1,0 +1,14 @@
+AndroidManifest.xml
+.apt_generated
+bin
+.classpath
+.externalToolBuilders
+.factorypath
+gen
+libs
+local.properties
+maven-eclipse.xml
+.pmd
+.project
+.settings
+target
