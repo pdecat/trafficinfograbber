@@ -3,7 +3,7 @@
   #%L
   Parent
   %%
-  Copyright (C) 2012 - 2014 Patrick Decat
+  Copyright (C) 2012 - 2016 Patrick Decat
   %%
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as
@@ -45,9 +45,10 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/parent</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/parent</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Fparent</url>
+        <connection>scm:git:https://github.com/pdecat/dear2dear</connection>
+        <developerConnection>scm:git:git@github.com:pdecat/dear2dear</developerConnection>
+        <url>https://github.com/pdecat/dear2dear/tree/master/parent</url>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencyManagement>
@@ -211,7 +212,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>license-maven-plugin</artifactId>
-                    <version>1.6</version>
+                    <version>1.9</version>
                     <configuration>
                         <verbose>false</verbose>
                         <licenseName>gpl_v3</licenseName>
@@ -231,7 +232,7 @@
                             <exclude>target/**</exclude>
                             <exclude>**/*.png</exclude>
                             <exclude>**/.svn/**</exclude>
-                            <exclude>res/raw*/**</exclude>
+                            <exclude>src/main/res/raw*/**</exclude>
                         </excludes>
                         <extraExtensions>
                             <txt>properties</txt>
