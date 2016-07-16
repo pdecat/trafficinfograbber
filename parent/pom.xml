@@ -152,6 +152,7 @@
                                 <goal>manifest-update</goal>
                             </goals>
                             <configuration>
+                                <destinationManifestFile>${project.basedir}/AndroidManifest.xml</destinationManifestFile>
                                 <manifest>
                                     <versionName>${project.version}</versionName>
                                     <versionCodeAutoIncrement>true</versionCodeAutoIncrement>
