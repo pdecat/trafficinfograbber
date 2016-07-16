@@ -36,7 +36,7 @@
     <parent>
         <groupId>org.decat</groupId>
         <artifactId>parent</artifactId>
-        <version>0.2.11</version>
+        <version>0.3.1</version>
     </parent>
 
     <scm>
@@ -79,7 +79,7 @@
         <resources>
             <!-- a pair definition for resource filtering of xml files only (not binary files since they get mangled -->
             <resource>
-                <directory>${project.basedir}/res</directory>
+                <directory>${project.basedir}/src/main/res</directory>
                 <filtering>true</filtering>
                 <targetPath>${project.build.directory}/filtered-res</targetPath>
                 <includes>
@@ -87,7 +87,7 @@
                 </includes>
             </resource>
             <resource>
-                <directory>${project.basedir}/res</directory>
+                <directory>${project.basedir}/src/main/res</directory>
                 <filtering>false</filtering>
                 <targetPath>${project.build.directory}/filtered-res</targetPath>
                 <excludes>
@@ -103,7 +103,7 @@
             </plugin>
 
             <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
             </plugin>
 
@@ -144,7 +144,7 @@
                     </plugin>
 
                     <plugin>
-                        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                        <groupId>com.simpligility.maven.plugins</groupId>
                         <artifactId>android-maven-plugin</artifactId>
                     </plugin>
 
