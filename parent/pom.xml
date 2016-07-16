@@ -74,14 +74,14 @@
             <dependency>
                 <groupId>org.androidannotations</groupId>
                 <artifactId>androidannotations</artifactId>
-                <version>3.0.1</version>
+                <version>3.1</version>
                 <scope>provided</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.androidannotations</groupId>
                 <artifactId>androidannotations-api</artifactId>
-                <version>3.0.1</version>
+                <version>3.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
