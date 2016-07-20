@@ -21,7 +21,7 @@
   #L%
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
@@ -182,13 +182,12 @@
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true" >
 
-        <com.google.ads.AdView
+        <com.google.android.gms.ads.AdView
             android:id="@+id/adview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="a14dba5ee6f0b5f"
-            ads:loadAdOnCreate="true"
+            ads:adUnitId="@string/banner_ad_unit_id"
             android:visibility="gone" />
     </LinearLayout>
 

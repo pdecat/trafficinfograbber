@@ -37,7 +37,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-import com.google.ads.AdView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
@@ -306,6 +307,8 @@ public class TIGWebViewClient extends WebViewClient {
 			Log.d(TIG.TAG, "TIGWebViewClient.showAds: loadCount=" + loadCount);
 
 			setAdsVisibility(true);
+
+			adview.loadAd(new AdRequest.Builder().build());
 		}
 
 		// Hide ads after a short delay if set in preferences
