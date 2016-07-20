@@ -40,9 +40,10 @@
     </parent>
 
     <scm>
-        <connection>scm:svn:http://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber</connection>
-        <developerConnection>scm:svn:https://dear2dear.googlecode.com/svn/trunk/tig/TrafficInfoGrabber</developerConnection>
-        <url>http://code.google.com/p/dear2dear/source/browse/#svn%2Ftrunk%2Ftig%2FTrafficInfoGrabber</url>
+        <connection>scm:git:https://github.com/pdecat/dear2dear</connection>
+        <developerConnection>scm:git:git@github.com:pdecat/dear2dear</developerConnection>
+        <url>https://github.com/pdecat/dear2dear/tree/master/tig/TrafficInfoGrabber</url>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencies>
