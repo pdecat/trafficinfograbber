@@ -1,3 +1,7 @@
+v0.8.0:
+- Migration de AdMob 6.4.1 vers Google Play Services Ads 8.4.0
+- Montée de version AndroidAnnotations 3.1 vers 4.0.0
+
 v0.7.9:
 - Forçage de l'affichage de la date sur une seule ligne
 
