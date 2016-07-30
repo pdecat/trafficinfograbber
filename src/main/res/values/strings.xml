@@ -24,7 +24,6 @@
     <string name="banner_ad_unit_id">ca-app-pub-1324379391256193/1758837263</string>
 
     <string name="app_name">TrafficInfoGrabber</string>
-    <string name="app_version">${project.version}</string>
 
     <!-- Activities -->
     <string name="preferencesEditor">TIG - Preferences Editor</string>

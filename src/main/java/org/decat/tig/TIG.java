@@ -162,7 +162,7 @@ public class TIG extends Activity {
 
 		// Enable web view debugging
 		enableWebContentsDebugging();
-		 
+
 		// Needed since API 7
 		webviewSetDomStorageEnabled();
 
@@ -284,15 +284,15 @@ public class TIG extends Activity {
 		}
 	}
 
-    @TargetApi(19)
-    private void enableWebContentsDebugging() {
-        // Since API 19, we can call this method to allow WebView remote debugging
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if ( 0 != ( getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE ) ) {
-                WebView.setWebContentsDebuggingEnabled(true);
-            }
-        }
-    }
+	@TargetApi(19)
+	private void enableWebContentsDebugging() {
+		// Since API 19, we can call this method to allow WebView remote debugging
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			if (0 != (getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
+				WebView.setWebContentsDebuggingEnabled(true);
+			}
+		}
+	}
 
 	private void initializeWebviewSettings() {
 		if (availableWebviews.size() == 0) {
@@ -382,9 +382,10 @@ public class TIG extends Activity {
 		return defaultValue;
 	}
 
-	private String getAppVersionName() {
+	private static String getAppVersionName() {
 		Log.d(TAG, "TIG.getAppVersionName");
-		return getString(R.string.app_version);
+
+		return BuildConfig.VERSION_NAME;
 	}
 
 	private String getAppVersionCode() {
@@ -481,7 +482,7 @@ public class TIG extends Activity {
 		Intent intent = new Intent(context, TIG_.class);
 		intent.setAction("android.intent.action.MAIN");
 		intent.addCategory("android.intent.category.LAUNCHER");
-		notification.setLatestEventInfo(context, context.getString(R.string.app_name) + " " + context.getString(R.string.app_version), context.getString(R.string.notificationLabel),
+		notification.setLatestEventInfo(context, context.getString(R.string.app_name) + " " + getAppVersionName(), context.getString(R.string.notificationLabel),
 				PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
 		notification.flags |= Notification.FLAG_ONGOING_EVENT;
 		notification.flags |= Notification.FLAG_NO_CLEAR;
