@@ -1,3 +1,6 @@
+v0.8.1:
+- Correction de l'affichage de la version dans l'À propos
+
 v0.8.0:
 - Migration de AdMob 6.4.1 vers Google Play Services Ads 8.4.0
 - Montée de version AndroidAnnotations 3.1 vers 4.0.0
