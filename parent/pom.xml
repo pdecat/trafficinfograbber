@@ -62,22 +62,23 @@
 
             <dependency>
                 <groupId>com.google.android.gms</groupId>
-                <artifactId>play-services</artifactId>
-                <version>8.4.0</version>
+                <artifactId>play-services-base</artifactId>
+                <version>9.4.0</version>
                 <type>aar</type>
             </dependency>
 
             <dependency>
                 <groupId>com.google.android.gms</groupId>
                 <artifactId>play-services-ads</artifactId>
-                <version>8.4.0</version>
+                <version>9.4.0</version>
                 <type>aar</type>
             </dependency>
 
             <dependency>
-                <groupId>com.google.android.analytics</groupId>
-                <artifactId>analytics</artifactId>
-                <version>3.01_r1</version>
+                <groupId>com.google.android.gms</groupId>
+                <artifactId>play-services-analytics</artifactId>
+                <version>9.4.0</version>
+                <type>aar</type>
             </dependency>
 
             <dependency>
@@ -163,6 +164,7 @@
                             <!-- platform or api level (api level 4 = platform 1.6) -->
                             <platform>19</platform>
                         </sdk>
+                        <failOnDuplicatePackages>false</failOnDuplicatePackages>
                         <undeployBeforeDeploy>true</undeployBeforeDeploy>
                         <release>${android.release}</release>
                     </configuration>
