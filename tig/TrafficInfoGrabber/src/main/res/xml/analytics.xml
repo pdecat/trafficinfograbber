@@ -24,15 +24,9 @@
     <!-- Tracking ID -->
     <string name="ga_trackingId">UA-8749317-6</string>
 
-    <!-- Log level -->
-    <string name="ga_logLevel">warning</string>
-    
     <!-- Enable automatic activity tracking -->
     <bool name="ga_autoActivityTracking">true</bool>
 
     <!-- Enable automatic exception tracking -->
     <bool name="ga_reportUncaughtExceptions">true</bool>
-
-    <!-- Set dispatch period to 60 seconds -->
-    <integer name="ga_dispatchPeriod">60</integer>
 </resources>
