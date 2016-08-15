@@ -38,9 +38,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.Fields;
-import com.google.analytics.tracking.android.MapBuilder;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class PreferencesEditor extends PreferenceActivity {
 	public static final String EXTRA_RESOLVE_INFO = "value";
@@ -78,9 +78,6 @@ public class PreferencesEditor extends PreferenceActivity {
 				return true;
 			}
 		});
-
-		// Set Context before using EasyTracker
-		EasyTracker.getInstance(this);
 	}
 
 	@Override
@@ -114,11 +111,10 @@ public class PreferencesEditor extends PreferenceActivity {
 	@Override
 	protected void onPause() {
 		super.onResume();
-		EasyTracker.getInstance(this).set(
-				Fields.SCREEN_NAME,
-				"/tig/pe/pause/" + PreferencesHelper.OTHER_ACTIVITY + "=" + sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED)) + ", "
-						+ PreferencesHelper.PREF_ADS + "=" + sharedPreferences.getString(PreferencesHelper.PREF_ADS, ""));
-		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
+		Tracker tracker = GoogleAnalytics.getInstance(this).newTracker(R.xml.analytics);
+		tracker.setScreenName("/tig/pe/pause/" + PreferencesHelper.OTHER_ACTIVITY + "=" + sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED)) + ", "
+				+ PreferencesHelper.PREF_ADS + "=" + sharedPreferences.getString(PreferencesHelper.PREF_ADS, ""));
+		tracker.send(new HitBuilders.ScreenViewBuilder().build());
 	}
 
 	private void updateStringPreference(String preference, String value) {

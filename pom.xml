@@ -36,7 +36,7 @@
     <parent>
         <groupId>org.decat</groupId>
         <artifactId>parent</artifactId>
-        <version>0.4.0</version>
+        <version>0.4.1-SNAPSHOT</version>
     </parent>
 
     <scm>
@@ -59,13 +59,20 @@
 
         <dependency>
             <groupId>com.google.android.gms</groupId>
+            <artifactId>play-services-base</artifactId>
+            <type>aar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.android.gms</groupId>
             <artifactId>play-services-ads</artifactId>
             <type>aar</type>
         </dependency>
 
         <dependency>
-            <groupId>com.google.android.analytics</groupId>
-            <artifactId>analytics</artifactId>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>play-services-analytics</artifactId>
+            <type>aar</type>
         </dependency>
 
         <dependency>
