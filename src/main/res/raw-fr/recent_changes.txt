@@ -1,3 +1,6 @@
+v0.8.3:
+- Mode HTML5 pour la vue principale
+
 v0.8.2:
 - Suppression de la dépendance sur OI About pour l'À propos
 

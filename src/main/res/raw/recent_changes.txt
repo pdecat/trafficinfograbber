@@ -1,3 +1,6 @@
+v0.8.3:
+- HTML5 mode for main view
+
 v0.8.2:
 - Removed OI About dependency for About dialog
 
