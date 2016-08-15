@@ -21,19 +21,6 @@
   #L%
   -->
 <resources>
-
-    <string-array name="about_authors">
-        <item>Patrick Decat</item>
-    </string-array>
-    <string-array name="about_documenters">
-        <item>Patrick Decat</item>
-    </string-array>
-    <string-array name="about_translators">
-        <item>Patrick Decat</item>
-    </string-array>
-    <string-array name="about_artists">
-        <item>Benoit Laurent</item>
-    </string-array>
     <string-array name="adsDisplayLabels">
         <item>@string/PREF_ADS_ALWAYS_LABEL</item>
         <item>@string/PREF_ADS_ATLOAD_LABEL</item>
