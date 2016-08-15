@@ -56,11 +56,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
@@ -73,6 +76,7 @@ import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -86,8 +90,6 @@ public class TIG extends Activity {
 	private static final String RES_BOOLS = "bool";
 	private static final String RES_STRINGS = "string";
 	private static final String PREF_DEFAULT_SUFFIX = "_DEFAULT";
-	private static final int ACTIVITY_REQUEST_OI_ABOUT_INSTALL = 1;
-	private static final int ACTIVITY_REQUEST_OI_ABOUT_LAUNCH = 2;
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
 
 	public static final String QUIT = "org.decat.tig.QUIT_ORDER";
@@ -100,8 +102,6 @@ public class TIG extends Activity {
 			quit(false);
 		}
 	};
-
-	private static final String ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG = "org.openintents.action.SHOW_ABOUT_DIALOG";
 
 	public static final String TAG = "TIG";
 
@@ -640,72 +640,29 @@ public class TIG extends Activity {
 		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/showAbout/");
 		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
 
-		Intent intent = new Intent(ORG_OPENINTENTS_ACTION_SHOW_ABOUT_DIALOG);
-		int activityRequest = ACTIVITY_REQUEST_OI_ABOUT_LAUNCH;
+		AlertDialog.Builder aboutWindow = new AlertDialog.Builder(this);
+		TextView tx = new TextView(this);
+		tx.setAutoLinkMask(Linkify.ALL);
+		tx.setLinksClickable(true);
+		tx.setMovementMethod(LinkMovementMethod.getInstance());
+		tx.setGravity(Gravity.CENTER);
+		tx.setTextSize(16);
+		tx.setText(getString(R.string.app_name).concat(" ").concat(getAppVersionName()).concat("\n\n").concat(getString(R.string.about_description)).concat("\n\n")
+				.concat(getString(R.string.about_copyright)).concat("\n\n").concat(getString(R.string.about_contribution)).concat("\n\n").concat(getString(R.string.about_website)));
 
-		try {
-			PackageManager pm = getPackageManager();
-			// Check if OI About is installed otherwise request to install it
-			if (pm.queryIntentActivities(intent, 0).size() == 0) {
-				installOIAbout();
-				return;
-			}
+		// TODO: display @raw/license_short and @raw/recent_changes
 
-			startActivityForResult(intent, activityRequest);
-		} catch (Exception e) {
-			String message = getString(R.string.failed_to_start_activity_for_intent) + intent.toString();
-			Log.e(TAG, message, e);
-			showToast(message);
-		}
-	}
+		aboutWindow.setIcon(R.drawable.icon);
+		aboutWindow.setTitle(R.string.about);
+		aboutWindow.setView(tx);
 
-	private void installOIAbout() {
-		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/installOIAbout/");
-		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.install_oi_about).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.cancel();
-
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:org.openintents.about"));
-				try {
-					int activityRequest = ACTIVITY_REQUEST_OI_ABOUT_INSTALL;
-					Log.i(TAG, "TIG.installOIAbout: searching Android Market for 'OI About'...");
-					startActivityForResult(intent, activityRequest);
-				} catch (Exception e) {
-					String message = getString(R.string.failed_to_start_activity_for_intent, intent.toString());
-					Log.e(TAG, message, e);
-					showToast(message);
-				}
-			}
-		}).setNegativeButton(R.string.NO, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.cancel();
+		aboutWindow.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
 			}
 		});
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		EasyTracker.getInstance(this).set(Fields.SCREEN_NAME, "/tig/onActivityResult/" + requestCode + "/" + resultCode);
-		EasyTracker.getInstance(this).send(MapBuilder.createAppView().build());
-		switch (requestCode) {
-			case ACTIVITY_REQUEST_OI_ABOUT_LAUNCH:
-				if (resultCode == RESULT_OK) {
-					Log.d(TAG, "Back from OI About");
-				}
-				break;
-			case ACTIVITY_REQUEST_OI_ABOUT_INSTALL:
-				if (resultCode == RESULT_CANCELED) {
-					Log.d(TAG, "Back from Android Market");
-					showAbout();
-				}
-				break;
-			default:
-				Log.w(TAG, "Unknown activity request code " + requestCode);
-		}
+		aboutWindow.show();
 	}
 
 	@UiThread

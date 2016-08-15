@@ -1,3 +1,6 @@
+v0.8.2:
+- Removed OI About dependency for About dialog
+
 v0.8.1:
 - Fix version display in About dialog
 

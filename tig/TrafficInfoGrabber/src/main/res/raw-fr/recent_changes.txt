@@ -1,3 +1,6 @@
+v0.8.2:
+- Suppression de la dépendance sur OI About pour l'À propos
+
 v0.8.1:
 - Correction de l'affichage de la version dans l'À propos
 
