@@ -90,14 +90,14 @@
             <dependency>
                 <groupId>org.androidannotations</groupId>
                 <artifactId>androidannotations</artifactId>
-                <version>4.0.0</version>
+                <version>4.1.0</version>
                 <scope>provided</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.androidannotations</groupId>
                 <artifactId>androidannotations-api</artifactId>
-                <version>4.0.0</version>
+                <version>4.1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
