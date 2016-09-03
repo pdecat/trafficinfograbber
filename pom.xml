@@ -40,9 +40,9 @@
     </parent>
 
     <scm>
-        <connection>scm:git:https://github.com/pdecat/dear2dear</connection>
-        <developerConnection>scm:git:git@github.com:pdecat/dear2dear</developerConnection>
-        <url>https://github.com/pdecat/dear2dear/tree/master/tig/TrafficInfoGrabber</url>
+        <connection>scm:git:https://github.com/pdecat/trafficinfograbber</connection>
+        <developerConnection>scm:git:git@github.com:pdecat/trafficinfograbber</developerConnection>
+        <url>https://github.com/pdecat/trafficinfograbber</url>
         <tag>HEAD</tag>
     </scm>
 

@@ -120,5 +120,5 @@
     <string name="about_description">A simple traffic information grabber</string>
     <string name="about_copyright">Copyright © 2010–2016 Patrick Decat\npdecat+tig@gmail.com</string>
     <string name="about_contribution">Logo contributed by Benoit Laurent</string>
-    <string name="about_website">https://github.com/pdecat/dear2dear/tree/master/tig/TrafficInfoGrabber/</string>
+    <string name="about_website">https://github.com/pdecat/trafficinfograbber</string>
 </resources>
