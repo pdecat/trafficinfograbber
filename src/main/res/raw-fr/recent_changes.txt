@@ -1,3 +1,6 @@
+v0.8.4:
+- Déplacement des boutons de contrôle du zoom et des options de la carte pour être toujours accessibles.
+
 v0.8.3:
 - Mode HTML5 pour la vue principale
 

@@ -1,3 +1,6 @@
+v0.8.4:
+- Move zoom and map options control buttons so they are always reachable.
+
 v0.8.3:
 - HTML5 mode for main view
 
