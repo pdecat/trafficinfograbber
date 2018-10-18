@@ -108,7 +108,6 @@
     
     <!-- Notifications -->
     <string name="notificationLabel">Launch TIG</string>
-    <string name="notificationMessage">Shortcut to launch TIG…</string>
 
     <!-- Strings for About dialog -->
     <string name="about_description">A simple traffic information grabber</string>

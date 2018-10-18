@@ -56,7 +56,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <uses-sdk android:minSdkVersion="4"/>
-    <uses-sdk android:targetSdkVersion="19"/>
+    <uses-sdk android:targetSdkVersion="28"/>
 
     <supports-screens android:xlargeScreens="true"/>
 </manifest>

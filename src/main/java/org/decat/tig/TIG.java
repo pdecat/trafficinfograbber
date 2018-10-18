@@ -37,6 +37,8 @@ package org.decat.tig;
  * #L%
  */
 
+import android.app.NotificationChannel;
+import android.support.v4.app.NotificationCompat;
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -105,6 +107,9 @@ public class TIG extends Activity {
 	private static final int ACTIVITY_REQUEST_PREFERENCES_EDITOR = 3;
 
 	public static final String QUIT = "org.decat.tig.QUIT_ORDER";
+
+	private static final String DEFAULT_NOTIFICATION_CHANNEL_ID = "DEFAULT";
+
 	// Set up an intent filter to quit TIG on Car Mode exiting
 	private IntentFilter quitIntentFilter = new IntentFilter(QUIT);
 	// Set up broadcast receiver to quit TIG on Car Mode exiting
@@ -180,6 +185,9 @@ public class TIG extends Activity {
 	@AfterViews
 	public void setup() {
 		Log.d(TAG, "TIG.setup");
+
+		// Create notification channel
+		createNotificationChannel();
 
 		// Enable web view debugging
 		enableWebContentsDebugging();
@@ -273,6 +281,14 @@ public class TIG extends Activity {
 		getDefaultTracker().setScreenName("/tig/setup/");
 		getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().setCustomDimension(1, appVersion).setCustomDimension(2, Build.VERSION.RELEASE).setCustomDimension(3, Build.BRAND)
 				.setCustomDimension(4, Build.DEVICE).build());
+	}
+
+	@TargetApi(26)
+	private void createNotificationChannel() {
+		// Since API 26+, importance level replace individual priority level and is set on a notification channel
+		NotificationChannel channel = new NotificationChannel(DEFAULT_NOTIFICATION_CHANNEL_ID, DEFAULT_NOTIFICATION_CHANNEL_ID, NotificationManager.IMPORTANCE_MIN);
+		NotificationManager notificationManager = getSystemService(NotificationManager.class);
+		notificationManager.createNotificationChannel(channel);
 	}
 
 	@TargetApi(7)
@@ -493,15 +509,24 @@ public class TIG extends Activity {
 	}
 
 	private static void triggerNotification(Context context) {
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.icon, context.getString(R.string.notificationMessage), System.currentTimeMillis());
 		Intent intent = new Intent(context, TIG_.class);
 		intent.setAction("android.intent.action.MAIN");
 		intent.addCategory("android.intent.category.LAUNCHER");
-		notification.setLatestEventInfo(context, context.getString(R.string.app_name) + " " + getAppVersionName(), context.getString(R.string.notificationLabel),
-				PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-		notification.flags |= Notification.FLAG_ONGOING_EVENT;
-		notification.flags |= Notification.FLAG_NO_CLEAR;
+
+		Notification notification = new NotificationCompat.Builder(context, DEFAULT_NOTIFICATION_CHANNEL_ID)
+				.setPriority(NotificationCompat.PRIORITY_MIN)
+				.setVisibility(NotificationCompat.VISIBILITY_SECRET)
+				.setCategory(NotificationCompat.CATEGORY_SERVICE)
+				.setVibrate(null)
+				.setSmallIcon(R.drawable.icon)
+				.setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.notificationLabel)))
+				.setContentTitle(context.getString(R.string.app_name) + " " + getAppVersionName())
+				.setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT))
+				.setOngoing(true)
+				.setShowWhen(false)
+				.build();
+
+		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.notify(0, notification);
 	}
 

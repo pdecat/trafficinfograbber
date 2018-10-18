@@ -30,7 +30,7 @@
     <parent>
         <groupId>org.decat</groupId>
         <artifactId>parent</artifactId>
-        <version>0.4.1</version>
+        <version>0.6.0</version>
     </parent>
 
     <scm>
@@ -47,13 +47,14 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>support-v4</artifactId>
+            <groupId>com.android.support</groupId>
+            <artifactId>support-compat</artifactId>
+            <type>aar</type>
         </dependency>
 
         <dependency>
-            <groupId>com.google.android.gms</groupId>
-            <artifactId>play-services-base</artifactId>
+            <groupId>com.android.support</groupId>
+            <artifactId>support-v4</artifactId>
             <type>aar</type>
         </dependency>
 

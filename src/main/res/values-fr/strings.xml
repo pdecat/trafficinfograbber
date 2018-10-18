@@ -100,7 +100,6 @@
     
     <!-- Notifications -->
     <string name="notificationLabel">Lancer TIG</string>
-    <string name="notificationMessage">Raccourci pour lancer TIG…</string>
 
     <!-- Chaines pour 'A propos' -->
     <string name="about_description">Un simple attrapeur d\'information trafic</string>

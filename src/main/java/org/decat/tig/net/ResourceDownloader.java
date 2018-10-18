@@ -37,18 +37,17 @@ package org.decat.tig.net;
  * #L%
  */
 
+import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.decat.tig.TIG;
 
 import android.app.Activity;
@@ -63,18 +62,19 @@ public class ResourceDownloader {
 		try {
 			Log.i(TIG.TAG, "Trying to download '" + url + "' to '" + context.getFilesDir().getAbsolutePath() + "'");
 
-			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet(url);
-			get.setHeader("Pragma", "no-cache");
-			get.setHeader("Cache-Control", "no-cache");
-			HttpResponse response = client.execute(get);
-			lastModified = extractLastModifiedHeader(response);
-			HttpEntity responseEntity = response.getEntity();
-			byte[] bytes = new byte[(int) responseEntity.getContentLength()];
+			HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
+			urlConnection.setRequestProperty("Pragma", "no-cache");
+			urlConnection.setUseCaches(false);
+			try {
+				lastModified = ZonedDateTime.ofInstant(Instant.ofEpochMilli(urlConnection.getLastModified()), ZoneId.of("GMT")).toString();
 
-			readResponse(responseEntity, bytes);
+				InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+				storeResource(context, filename, in);
+			} finally {
+				urlConnection.disconnect();
+			}
 
-			storeResource(context, filename, bytes);
+
 			Log.i(TIG.TAG, "Successfully downloaded resource");
 		} catch (Exception e) {
 			Log.e(TIG.TAG, "Could not download and save resources", e);
@@ -82,64 +82,18 @@ public class ResourceDownloader {
 		return lastModified;
 	}
 
-	private static void storeResource(ContextWrapper context, String filename, byte[] bytes) throws FileNotFoundException, IOException {
-		FileOutputStream fos = null;
+	private static void storeResource(ContextWrapper context, String filename, InputStream in) throws FileNotFoundException, IOException {
+		FileOutputStream fout = null;
 		try {
-			fos = context.openFileOutput(filename, Activity.MODE_WORLD_WRITEABLE);
-			fos.write(bytes);
-			fos.flush();
+			fout = context.openFileOutput(filename, Activity.MODE_WORLD_WRITEABLE);
+			int i;
+			do {
+				i = in.read();
+				if (i != -1)
+					fout.write(i);
+			} while (i != -1);
 		} finally {
-			if (fos != null) {
-				fos.close();
-			}
+			fout.close();
 		}
-	}
-
-	private static void readResponse(HttpEntity responseEntity, byte[] bytes) throws IOException {
-		InputStream content = null;
-		try {
-			content = responseEntity.getContent();
-			int read = 0;
-			while (read < bytes.length) {
-				read = read + content.read(bytes, read, bytes.length);
-			}
-		} finally {
-			if (content != null) {
-				content.close();
-			}
-		}
-	}
-
-	public static final SimpleDateFormat rfc822DateFormats[] = new SimpleDateFormat[] {
-			new SimpleDateFormat("EEE, d MMM yy HH:mm:ss z"),
-			new SimpleDateFormat("EEE, d MMM yy HH:mm z"),
-			new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z"),
-			new SimpleDateFormat("EEE, d MMM yyyy HH:mm z"),
-			new SimpleDateFormat("d MMM yy HH:mm z"),
-			new SimpleDateFormat("d MMM yy HH:mm:ss z"),
-			new SimpleDateFormat("d MMM yyyy HH:mm z"),
-			new SimpleDateFormat("d MMM yyyy HH:mm:ss z"),
-	};
-
-	private static String extractLastModifiedHeader(HttpResponse response) {
-		String lastModified = null;
-		if (response.containsHeader(ResourceDownloader.HTTP_HEADER_LAST_MODIFIED)) {
-			lastModified = response.getHeaders(ResourceDownloader.HTTP_HEADER_LAST_MODIFIED)[0].getValue();
-			// lastModified = parseRfc822Date(value);
-		}
-		return lastModified;
-	}
-
-	private static Date parseRfc822Date(Date lastModified, String value) {
-		Date date = null;
-		for (SimpleDateFormat sdt : rfc822DateFormats) {
-			try {
-				date = sdt.parse(value);
-				break;
-			} catch (Exception e) {
-				Log.e(TIG.TAG, "Failed to retrieve and convert 'Last-Modified' header", e);
-			}
-		}
-		return date;
 	}
 }
