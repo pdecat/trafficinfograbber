@@ -285,10 +285,12 @@ public class TIG extends Activity {
 
 	@TargetApi(26)
 	private void createNotificationChannel() {
-		// Since API 26+, importance level replace individual priority level and is set on a notification channel
-		NotificationChannel channel = new NotificationChannel(DEFAULT_NOTIFICATION_CHANNEL_ID, DEFAULT_NOTIFICATION_CHANNEL_ID, NotificationManager.IMPORTANCE_MIN);
-		NotificationManager notificationManager = getSystemService(NotificationManager.class);
-		notificationManager.createNotificationChannel(channel);
+		// Since API 26+, importance level replaces individual priority level and is set on a notification channel
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			NotificationChannel channel = new NotificationChannel(DEFAULT_NOTIFICATION_CHANNEL_ID, DEFAULT_NOTIFICATION_CHANNEL_ID, NotificationManager.IMPORTANCE_MIN);
+			NotificationManager notificationManager = getSystemService(NotificationManager.class);
+			notificationManager.createNotificationChannel(channel);
+		}
 	}
 
 	@TargetApi(7)
