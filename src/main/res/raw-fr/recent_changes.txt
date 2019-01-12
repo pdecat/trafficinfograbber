@@ -1,3 +1,6 @@
+v0.9.3:
+- Correction du chargement de la vue web sur les versions d'Android plus anciennes que 9.0
+
 v0.9.2:
 - Correction du plantage sur les versions d'Android plus anciennes que 8.0
 
