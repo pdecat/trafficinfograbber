@@ -243,7 +243,7 @@ public class TIGWebViewClient extends WebViewClient {
 		webview.resumeTimers();
 	}
 
-	public void doOnPageStarted(WebView view, String url, Bitmap favicon) {
+	public void onPageStarted(WebView view, String url, Bitmap favicon) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onPageStarted: url=" + url);
 
 		// Store main URL
@@ -286,15 +286,6 @@ public class TIGWebViewClient extends WebViewClient {
 	@Override
 	public void onLoadResource(WebView view, String url) {
 		Log.d(TIG.TAG, "TIGWebViewClient.onLoadResource: url=" + url + ", mainURL=" + mainURL);
-
-		// I've got an issue on my Nexus One (Android 2.3.6) where WebViewClient.onPageStarted() is not called
-		// if the URL passed to WebView.loadUrl() does not change from the previous call.
-		// On my Galaxy Nexus (Android 4.1.1), this does not happen.
-		// Check http://code.google.com/p/android/issues/detail?id=37123
-		// Workaround this issue by checking if the URL is null (first load) or it matches the main URL (reload).
-		if (mainURL == null || mainURL.equals(url)) {
-			doOnPageStarted(view, url, null);
-		}
 	}
 
 	@Override
