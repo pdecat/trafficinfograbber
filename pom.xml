@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.decat.tig</groupId>
     <artifactId>tig</artifactId>
-    <version>0.9.3-SNAPSHOT</version>
+    <version>0.9.3</version>
     <packaging>apk</packaging>
     <name>TrafficInfoGrabber</name>
 
@@ -37,7 +37,7 @@
         <connection>scm:git:https://github.com/pdecat/trafficinfograbber</connection>
         <developerConnection>scm:git:git@github.com:pdecat/trafficinfograbber</developerConnection>
         <url>https://github.com/pdecat/trafficinfograbber</url>
-        <tag>HEAD</tag>
+        <tag>tig-0.9.3</tag>
     </scm>
 
     <dependencies>
