@@ -1,4 +1,4 @@
-v0.9.4:
+v1.0.0:
 - Suppression de tout suivi et publicité car cela dépendait de librairies au code source fermé et non libre
 - Une application bien plus légère :)
 

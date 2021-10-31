@@ -1,4 +1,4 @@
-v0.9.4:
+v1.0.0:
 - Remove all tracking and ads as those dependended on non free and closed source libraries
 - Way lighter app :)
 
