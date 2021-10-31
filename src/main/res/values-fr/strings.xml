@@ -3,7 +3,7 @@
 
     TrafficInfoGrabber
 
-    Copyright (C) 2010 - 2018 Patrick Decat
+    Copyright (C) 2010 - 2021 Patrick Decat
 
     This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
@@ -11,7 +11,7 @@
     This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
+    You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/gpl-3.0.html>.
 
 -->
 <resources>
@@ -47,7 +47,7 @@
     <string name="page_load_timed">Chargement de page expiré, déclenchement d\'un rafraichissement…</string>
     <string name="failed_to_start_activity_for_intent">Échec du lancement de l\'activité \'%1$s\'</string>
     <string name="last_update">Dernière mise à jour…</string>
-    
+
     <!-- Eléments du compte à rebours avant nouvelle tentative -->
     <string name="countDownRefreshingIn">Rafraîchissement dans&#160;</string>
     <string name="countDownUnits">s</string>
@@ -82,10 +82,6 @@
     <string name="NOTIFICATION_SHORTCUT_SUMMARY">Ajout d\'une notification pour accéder rapidement à TIG</string>
     <string name="NOTIFICATION_SHORTCUT_ON_BOOT">Déclencher au démarrage du téléphone</string>
     <string name="NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY">Au démarrage du téléphone, ajouter une notification pour lancer TIG</string>
-    <string name="PREFS_CATEGORY_OTHER_SUMMARY">Autres réglages que vous pourriez souhaiter ajuster</string>
-    <string name="PREFS_CATEGORY_OTHER_TITLE">Autres</string>
-    <string name="PREF_ADS_TITLE">Publicité non intrusive</string>
-    <string name="PREF_ADS_SUMMARY">Supporter le développeur de ce projet en affichant de la publicité pendant le chargement</string>
     <string name="PREFS_CATEGORY_CAR_MODE_SUMMARY">Définir le comportement souhaité lors du changement du mode voiture</string>
     <string name="PREFS_CATEGORY_CAR_MODE_TITLE">Mode voiture (Android 2.2+)</string>
     <string name="LAUNCH_TIG_ON_ENTER_CAR_DOCK_SUMMARY">TIG se lancera ou sera ramené au premier plan</string>
@@ -93,11 +89,6 @@
     <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_SUMMARY">TIG se terminera</string>
     <string name="QUIT_TIG_ON_EXIT_CAR_DOCK_TITLE">Quitter à la désactivation du mode voiture</string>
 
-    <!-- Preferences labels -->
-    <string name="PREF_ADS_ALWAYS_LABEL">Toujours afficher la publicité, le développeur mérite de la reconnaissance !</string>
-    <string name="PREF_ADS_ATLOAD_LABEL">Afficher la publicité lors du chargement des informations trafic, ma modeste contribution…</string>
-    <string name="PREF_ADS_NEVER_LABEL">Je déteste la publicité et me moque de la motivation du développeur :(</string>
-    
     <!-- Notifications -->
     <string name="notificationLabel">Lancer TIG</string>
 

@@ -1,3 +1,7 @@
+v0.9.4:
+- Suppression de tout suivi et publicité car cela dépendait de librairies au code source fermé et non libre
+- Une application bien plus légère :)
+
 v0.9.3:
 - Correction du chargement de la vue web sur les versions d'Android plus anciennes que 9.0
 
