@@ -27,10 +27,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 public class PreferencesEditor extends PreferenceActivity {
 	public static final String EXTRA_RESOLVE_INFO = "value";
 
@@ -95,15 +91,6 @@ public class PreferencesEditor extends PreferenceActivity {
 			findPreference(PreferencesHelper.OTHER_ACTIVITY).setSummary(label);
 		}
 		Log.d(TIG.TAG, sb.toString());
-	}
-
-	@Override
-	protected void onPause() {
-		super.onResume();
-		Tracker tracker = GoogleAnalytics.getInstance(this).newTracker(R.xml.analytics);
-		tracker.setScreenName("/tig/pe/pause/" + PreferencesHelper.OTHER_ACTIVITY + "=" + sharedPreferences.getString(PreferencesHelper.OTHER_ACTIVITY, getString(R.string.NO_APP_SELECTED)) + ", "
-				+ PreferencesHelper.PREF_ADS + "=" + sharedPreferences.getString(PreferencesHelper.PREF_ADS, ""));
-		tracker.send(new HitBuilders.ScreenViewBuilder().build());
 	}
 
 	private void updateStringPreference(String preference, String value) {

@@ -14,79 +14,21 @@
     You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/gpl-3.0.html>.
 
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <PreferenceCategory
-        android:summary="@string/PREFS_CATEGORY_INTERFACE_SUMMARY"
-        android:title="@string/PREFS_CATEGORY_INTERFACE_TITLE" >
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="FORCE_PORTRAIT_ORIENTATION"
-            android:summary="@string/FORCE_PORTRAIT_ORIENTATION_SUMMARY"
-            android:title="@string/FORCE_PORTRAIT_ORIENTATION" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="SHOW_REFRESH_BUTTON"
-            android:summary="@string/SHOW_REFRESH_BUTTON_SUMMARY"
-            android:title="@string/SHOW_REFRESH_BUTTON" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="SHOW_DAY_NIGHT_SWITCH_BUTTON"
-            android:summary="@string/SHOW_DAY_NIGHT_SWITCH_BUTTON_SUMMARY"
-            android:title="@string/SHOW_DAY_NIGHT_SWITCH_BUTTON" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="SHOW_QUIT_BUTTON"
-            android:summary="@string/SHOW_QUIT_BUTTON_SUMMARY"
-            android:title="@string/SHOW_QUIT_BUTTON" />
-        <CheckBoxPreference
-            android:defaultValue="@bool/SHOW_THIRD_PARTY_APP_BUTTON_DEFAULT"
-            android:key="SHOW_THIRD_PARTY_APP_BUTTON"
-            android:summary="@string/SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY"
-            android:title="@string/SHOW_THIRD_PARTY_APP_BUTTON_TITLE" />
-        <Preference
-            android:key="OTHER_ACTIVITY"
-            android:summary="@string/OTHER_ACTIVITY_SUMMARY"
-            android:title="@string/OTHER_ACTIVITY" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:summary="@string/PREFS_CATEGORY_INTERFACE_SUMMARY" android:title="@string/PREFS_CATEGORY_INTERFACE_TITLE">
+        <CheckBoxPreference android:defaultValue="true" android:key="FORCE_PORTRAIT_ORIENTATION" android:summary="@string/FORCE_PORTRAIT_ORIENTATION_SUMMARY" android:title="@string/FORCE_PORTRAIT_ORIENTATION" />
+        <CheckBoxPreference android:defaultValue="true" android:key="SHOW_REFRESH_BUTTON" android:summary="@string/SHOW_REFRESH_BUTTON_SUMMARY" android:title="@string/SHOW_REFRESH_BUTTON" />
+        <CheckBoxPreference android:defaultValue="true" android:key="SHOW_DAY_NIGHT_SWITCH_BUTTON" android:summary="@string/SHOW_DAY_NIGHT_SWITCH_BUTTON_SUMMARY" android:title="@string/SHOW_DAY_NIGHT_SWITCH_BUTTON" />
+        <CheckBoxPreference android:defaultValue="true" android:key="SHOW_QUIT_BUTTON" android:summary="@string/SHOW_QUIT_BUTTON_SUMMARY" android:title="@string/SHOW_QUIT_BUTTON" />
+        <CheckBoxPreference android:defaultValue="@bool/SHOW_THIRD_PARTY_APP_BUTTON_DEFAULT" android:key="SHOW_THIRD_PARTY_APP_BUTTON" android:summary="@string/SHOW_THIRD_PARTY_APP_BUTTON_SUMMARY" android:title="@string/SHOW_THIRD_PARTY_APP_BUTTON_TITLE" />
+        <Preference android:key="OTHER_ACTIVITY" android:summary="@string/OTHER_ACTIVITY_SUMMARY" android:title="@string/OTHER_ACTIVITY" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:summary="@string/PREFS_CATEGORY_NOTIFICATIONS_SUMMARY"
-        android:title="@string/PREFS_CATEGORY_NOTIFICATIONS_TITLE" >
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="NOTIFICATION_SHORTCUT"
-            android:summary="@string/NOTIFICATION_SHORTCUT_SUMMARY"
-            android:title="@string/NOTIFICATION_SHORTCUT" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="NOTIFICATION_SHORTCUT_ON_BOOT"
-            android:summary="@string/NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY"
-            android:title="@string/NOTIFICATION_SHORTCUT_ON_BOOT" />
+    <PreferenceCategory android:summary="@string/PREFS_CATEGORY_NOTIFICATIONS_SUMMARY" android:title="@string/PREFS_CATEGORY_NOTIFICATIONS_TITLE">
+        <CheckBoxPreference android:defaultValue="true" android:key="NOTIFICATION_SHORTCUT" android:summary="@string/NOTIFICATION_SHORTCUT_SUMMARY" android:title="@string/NOTIFICATION_SHORTCUT" />
+        <CheckBoxPreference android:defaultValue="true" android:key="NOTIFICATION_SHORTCUT_ON_BOOT" android:summary="@string/NOTIFICATION_SHORTCUT_ON_BOOT_SUMMARY" android:title="@string/NOTIFICATION_SHORTCUT_ON_BOOT" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:summary="@string/PREFS_CATEGORY_CAR_MODE_SUMMARY"
-        android:title="@string/PREFS_CATEGORY_CAR_MODE_TITLE" >
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="LAUNCH_TIG_ON_ENTER_CAR_DOCK"
-            android:summary="@string/LAUNCH_TIG_ON_ENTER_CAR_DOCK_SUMMARY"
-            android:title="@string/LAUNCH_TIG_ON_ENTER_CAR_DOCK_TITLE" />
-        <CheckBoxPreference
-            android:defaultValue="@bool/QUIT_TIG_ON_EXIT_CAR_DOCK_DEFAULT"
-            android:key="QUIT_TIG_ON_EXIT_CAR_DOCK"
-            android:summary="@string/QUIT_TIG_ON_EXIT_CAR_DOCK_SUMMARY"
-            android:title="@string/QUIT_TIG_ON_EXIT_CAR_DOCK_TITLE" />
+    <PreferenceCategory android:summary="@string/PREFS_CATEGORY_CAR_MODE_SUMMARY" android:title="@string/PREFS_CATEGORY_CAR_MODE_TITLE">
+        <CheckBoxPreference android:defaultValue="true" android:key="LAUNCH_TIG_ON_ENTER_CAR_DOCK" android:summary="@string/LAUNCH_TIG_ON_ENTER_CAR_DOCK_SUMMARY" android:title="@string/LAUNCH_TIG_ON_ENTER_CAR_DOCK_TITLE" />
+        <CheckBoxPreference android:defaultValue="@bool/QUIT_TIG_ON_EXIT_CAR_DOCK_DEFAULT" android:key="QUIT_TIG_ON_EXIT_CAR_DOCK" android:summary="@string/QUIT_TIG_ON_EXIT_CAR_DOCK_SUMMARY" android:title="@string/QUIT_TIG_ON_EXIT_CAR_DOCK_TITLE" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:summary="@string/PREFS_CATEGORY_OTHER_SUMMARY"
-        android:title="@string/PREFS_CATEGORY_OTHER_TITLE" >
-        <ListPreference
-            android:defaultValue="@string/PREF_ADS_ATLOAD_VALUE"
-            android:entries="@array/adsDisplayLabels"
-            android:entryValues="@array/adsDisplayValues"
-            android:key="PREF_ADS"
-            android:summary="@string/PREF_ADS_SUMMARY"
-            android:title="@string/PREF_ADS_TITLE" />
-    </PreferenceCategory>
-
 </PreferenceScreen>

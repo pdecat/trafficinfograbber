@@ -1,3 +1,7 @@
+v0.9.4:
+- Remove all tracking and ads as those dependended on non free and closed source libraries
+- Way lighter app :)
+
 v0.9.3:
 - Fix web view loading on Android versions older than 9.0
 

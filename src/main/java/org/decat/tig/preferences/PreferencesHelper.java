@@ -34,8 +34,6 @@ public class PreferencesHelper {
 
 	public static final String FORCE_PORTRAIT_ORIENTATION = "FORCE_PORTRAIT_ORIENTATION";
 
-	public static final String PREF_ADS = "PREF_ADS";
-
 	public static final String LAUNCH_TIG_ON_ENTER_CAR_DOCK = "LAUNCH_TIG_ON_ENTER_CAR_DOCK";
 
 	public static final String QUIT_TIG_ON_EXIT_CAR_DOCK = "QUIT_TIG_ON_EXIT_CAR_DOCK";

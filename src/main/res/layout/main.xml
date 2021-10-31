@@ -15,174 +15,38 @@
 
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/adview" />
+    <WebView android:id="@+id/webview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@+id/adview" />
 
-    <LinearLayout
-        android:id="@+id/nightModeLayer"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/actionbar_bg"
-        android:visibility="invisible" />
-    
-    <LinearLayout
-        android:id="@+id/retryCountDown"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="50"
-        android:background="#bbeeeeee"
-        android:gravity="center"
-        android:onClick="cancelRetryCountDown"
-        android:orientation="vertical"
-        android:padding="15dp"
-        android:visibility="invisible" >
+    <LinearLayout android:id="@+id/nightModeLayer" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/actionbar_bg" android:visibility="invisible" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/countDownRefreshingIn"
-            android:textColor="#000000"
-            android:textSize="25sp" />
+    <LinearLayout android:id="@+id/retryCountDown" android:layout_width="match_parent" android:layout_height="match_parent" android:alpha="50" android:background="#bbeeeeee" android:gravity="center" android:onClick="cancelRetryCountDown" android:orientation="vertical" android:padding="15dp" android:visibility="invisible">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/countDownRefreshingIn" android:textColor="#000000" android:textSize="25sp" />
 
-            <TextView
-                android:id="@+id/retryCountDownText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textColor="#000000"
-                android:textSize="60sp"
-                tools:ignore="HardcodedText" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/countDownUnits"
-                android:textColor="#000000"
-                android:textSize="60sp" />
+            <TextView android:id="@+id/retryCountDownText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="#000000" android:textSize="60sp" tools:ignore="HardcodedText" />
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/countDownUnits" android:textColor="#000000" android:textSize="60sp" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:text="@string/countDownClickToCancel"
-            android:textColor="#000000"
-            android:textSize="15sp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:layout_marginTop="40dp" android:text="@string/countDownClickToCancel" android:textColor="#000000" android:textSize="15sp" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/thirdPartyAppButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="#0000"
-        android:contentDescription="@string/thirdPartyAppButtonDescription"
-        android:onClick="launchThirdPartyApp"
-        android:paddingLeft="5dp"
-        android:paddingTop="@dimen/third_party_app_button_padding_top"
-        android:visibility="invisible" />
+    <ImageButton android:id="@+id/thirdPartyAppButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:background="#0000" android:contentDescription="@string/thirdPartyAppButtonDescription" android:onClick="launchThirdPartyApp" android:paddingLeft="5dp" android:paddingTop="@dimen/third_party_app_button_padding_top" android:visibility="invisible" />
 
-    <ImageButton
-        android:id="@+id/quitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="#0000"
-        android:contentDescription="@string/quitButtonDescription"
-        android:onClick="quit"
-        android:paddingRight="5dp"
-        android:paddingTop="@dimen/power_button_padding_top"
-        android:src="@drawable/ic_lock_power_off" />
+    <ImageButton android:id="@+id/quitButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_alignParentTop="true" android:background="#0000" android:contentDescription="@string/quitButtonDescription" android:onClick="quit" android:paddingRight="5dp" android:paddingTop="@dimen/power_button_padding_top" android:src="@drawable/ic_lock_power_off" />
 
-    <RelativeLayout
-        android:id="@+id/bottomLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/adviewLayout"
-        android:layout_centerInParent="true"
-        android:background="@drawable/actionbar_bg" >
+    <RelativeLayout android:id="@+id/bottomLayout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerInParent="true" android:background="@drawable/actionbar_bg">
 
-        <ImageButton
-            android:id="@+id/dayNightSwitchButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:background="#0000"
-            android:contentDescription="@string/dayNightSwitchButtonDescription"
-            android:onClick="dayNightSwitch"
-            android:paddingLeft="5dp"
-            android:src="@drawable/ic_menu_view" />
+        <ImageButton android:id="@+id/dayNightSwitchButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:background="#0000" android:contentDescription="@string/dayNightSwitchButtonDescription" android:onClick="dayNightSwitch" android:paddingLeft="5dp" android:src="@drawable/ic_menu_view" />
 
-        <TextView
-            android:id="@+id/lastModifiedDate"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:background="#0000"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="#FFF"
-            android:textSize="18sp" />
+        <TextView android:id="@+id/lastModifiedDate" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_marginLeft="48dp" android:layout_marginRight="48dp" android:background="#0000" android:gravity="center" android:maxLines="1" android:textColor="#FFF" android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/lastModifiedTime"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lastModifiedDate"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:background="#0000"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="#FFF"
-            android:textSize="20sp" />
+        <TextView android:id="@+id/lastModifiedTime" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@+id/lastModifiedDate" android:layout_marginLeft="48dp" android:layout_marginRight="48dp" android:background="#0000" android:gravity="center" android:maxLines="1" android:textColor="#FFF" android:textSize="20sp" />
 
-        <ImageButton
-            android:id="@+id/refreshButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="#0000"
-            android:contentDescription="@string/refreshButtonDescription"
-            android:onClick="refreshWebview"
-            android:paddingRight="5dp"
-            android:src="@drawable/ic_menu_refresh" />
+        <ImageButton android:id="@+id/refreshButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_alignParentTop="true" android:background="#0000" android:contentDescription="@string/refreshButtonDescription" android:onClick="refreshWebview" android:paddingRight="5dp" android:src="@drawable/ic_menu_refresh" />
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/adviewLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true" >
-
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id"
-            android:visibility="gone" />
-    </LinearLayout>
-
 </RelativeLayout>

@@ -70,10 +70,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 @EActivity(R.layout.main)
 public class TIG extends Activity {
 	private static final String USER_AGENT_SDK_11_AND_HIGHER = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4";
@@ -131,11 +127,6 @@ public class TIG extends Activity {
 	private int previousViewId = -1;
 	private int currentViewId;
 
-	@ViewById
-	protected View adview;
-
-	private Tracker tracker;
-
 	@AfterInject
 	public void init() {
 		Log.d(TAG, "TIG.init");
@@ -146,16 +137,6 @@ public class TIG extends Activity {
 		// Clear webview databases
 		clearDatabase("webview.db");
 		clearDatabase("webviewCache.db");
-
-		// Initialize the Google Analytics tracker
-		GoogleAnalytics.getInstance(this).enableAutoActivityReports(this.getApplication());
-	}
-
-	synchronized public Tracker getDefaultTracker() {
-		if (tracker == null) {
-			tracker = GoogleAnalytics.getInstance(this).newTracker(R.xml.analytics);
-		}
-		return tracker;
 	}
 
 	@AfterViews
@@ -234,9 +215,6 @@ public class TIG extends Activity {
 			Log.i(TAG, "New application version: " + appVersion + " (previous: " + installedAppVersion + ")");
 			setInstalledAppVersion(appVersion);
 
-			// Reset Ads preferences
-			setDefaultStringPreferenceValue(this, PreferencesHelper.PREF_ADS);
-
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(getString(R.string.newVersionShowPreferences, getAppVersionName())).setCancelable(false).setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
@@ -253,10 +231,6 @@ public class TIG extends Activity {
 		} else {
 			Log.i(TAG, "Application version: " + appVersion);
 		}
-
-		getDefaultTracker().setScreenName("/tig/setup/");
-		getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().setCustomDimension(1, appVersion).setCustomDimension(2, Build.VERSION.RELEASE).setCustomDimension(3, Build.BRAND)
-				.setCustomDimension(4, Build.DEVICE).build());
 	}
 
 	@TargetApi(26)
@@ -459,17 +433,6 @@ public class TIG extends Activity {
 		}
 	}
 
-	private void updateAdsVisibility(Context context) {
-		// Get current value
-		String value = getStringPreferenceValue(context, PreferencesHelper.PREF_ADS);
-
-		if (value != null && getString(R.string.PREF_ADS_NEVER_VALUE).equals(value)) {
-			adview.setVisibility(View.GONE);
-		} else {
-			adview.setVisibility(View.VISIBLE);
-		}
-	}
-
 	public static void updateNotificationShortcutVisibility(Context context) {
 		// Get current value
 		boolean value = getBooleanPreferenceValue(context, PreferencesHelper.NOTIFICATION_SHORTCUT);
@@ -543,16 +506,10 @@ public class TIG extends Activity {
 		}
 		updateButtonVisibility(this, PreferencesHelper.SHOW_THIRD_PARTY_APP_BUTTON, R.id.thirdPartyAppButton, thirdPartyAppDrawable);
 
-		// Update Ads visibility
-		updateAdsVisibility(this);
-
 		// Refresh webview if previously loaded view is not liveTraffic on Android 3+ (AJAX based)
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB || previousViewId != R.id.liveTraffic) {
 			refreshCurrentView();
 		}
-
-		getDefaultTracker().setScreenName("/tig/resume/");
-		getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().build());
 	}
 
 	private Drawable getThirdPartyAppDrawable() {
@@ -586,8 +543,6 @@ public class TIG extends Activity {
 
 	private boolean showViewById(int viewId) {
 		Log.d(TAG, "TIG.showViewById: viewId=" + viewId);
-		getDefaultTracker().setScreenName("/tig/showViewById/" + viewId);
-		getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().build());
 
 		// Store previous value to manage refresh
 		previousViewId = currentViewId;
@@ -649,16 +604,11 @@ public class TIG extends Activity {
 	}
 
 	private void showPreferencesEditor() {
-		getDefaultTracker().setScreenName("/tig/showPreferencesEditor/");
-		getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().build());
 		Intent intent = new Intent(this, PreferencesEditor.class);
 		startActivityForResult(intent, ACTIVITY_REQUEST_PREFERENCES_EDITOR);
 	}
 
 	private void showAbout() {
-		getDefaultTracker().setScreenName("/tig/showAbout/");
-		getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().build());
-
 		AlertDialog.Builder aboutWindow = new AlertDialog.Builder(this);
 		TextView tx = new TextView(this);
 		tx.setAutoLinkMask(Linkify.ALL);
@@ -718,8 +668,6 @@ public class TIG extends Activity {
 	}
 
 	private void launchWebsite(String url) {
-		getDefaultTracker().setScreenName("/tig/launchWebsite/" + url);
-		getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().build());
 		try {
 			Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 			startActivity(myIntent);
@@ -740,9 +688,6 @@ public class TIG extends Activity {
 		Log.d(TAG, "TIG.launchThirdPartyApp");
 
 		ComponentName thirdPartyAppComponentName = getThirdPartyAppComponentName();
-
-		getDefaultTracker().setScreenName("/tig/launchThirdPartyApp/" + thirdPartyAppComponentName);
-		getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().build());
 
 		if (thirdPartyAppComponentName != null) {
 			try {
@@ -797,8 +742,6 @@ public class TIG extends Activity {
 
 	public void quit(boolean kill) {
 		Log.d(TAG, "TIG.quit: kill=" + kill);
-		getDefaultTracker().setScreenName("/tig/quit/" + kill);
-		getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().build());
 
 		cancelNotification(this);
 		preferenceNotificationShortcut = false;

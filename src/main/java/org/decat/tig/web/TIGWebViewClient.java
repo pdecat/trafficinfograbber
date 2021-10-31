@@ -26,8 +26,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
@@ -69,7 +67,6 @@ public class TIGWebViewClient extends WebViewClient {
 		}
 	}
 
-	private static final int ADS_DISPLAY_DURATION = 10000;
 	private static final int PAGE_LOAD_TIMEOUT_MS = 60000;
 
 	@RootContext
@@ -77,9 +74,6 @@ public class TIGWebViewClient extends WebViewClient {
 
 	@ViewById
 	protected WebView webview;
-
-	@ViewById
-	protected AdView adview;
 
 	// Field to manage the application title
 	private String title;
@@ -95,10 +89,6 @@ public class TIGWebViewClient extends WebViewClient {
 	private int xScroll;
 	private int yScroll;
 	private long scaleAndScrollLastExecution;
-
-	// Fields to manage ads display
-	private String showAds;
-	private long loadCount = 0;
 
 	// Field to store main URL
 	private String mainURL;
@@ -254,9 +244,6 @@ public class TIGWebViewClient extends WebViewClient {
 			this.lastModifiedDate.setText("Données");
 			this.lastModifiedTime.setText("indisponibles");
 		}
-
-		// Show ads if checked in preferences
-		showAds();
 	}
 
 	@Override
@@ -276,39 +263,6 @@ public class TIGWebViewClient extends WebViewClient {
 
 		// Update title
 		setTitle(title);
-	}
-
-	@UiThread
-	protected void showAds() {
-		showAds = TIG.getStringPreferenceValue(activity, PreferencesHelper.PREF_ADS);
-		if (!activity.getString(R.string.PREF_ADS_NEVER_VALUE).equals(showAds)) {
-			// Increment loadCount if 
-			loadCount++;
-			Log.d(TIG.TAG, "TIGWebViewClient.showAds: loadCount=" + loadCount);
-
-			setAdsVisibility(true);
-
-			adview.loadAd(new AdRequest.Builder().build());
-		}
-
-		// Hide ads after a short delay if set in preferences
-		if (activity.getString(R.string.PREF_ADS_ATLOAD_VALUE).equals(showAds)) {
-			hideAds(loadCount);
-		}
-	}
-
-	@UiThread(delay = ADS_DISPLAY_DURATION)
-	protected void hideAds(long loadCountBeforeDelay) {
-		Log.d(TIG.TAG, "TIGWebViewClient.hideAds: loadCountBeforeDelay=" + loadCountBeforeDelay + ", loadCount=" + loadCount);
-
-		// Hide ads only if no other loading has been triggered since this job was instantiated
-		if (loadCountBeforeDelay == TIGWebViewClient.this.loadCount) {
-			setAdsVisibility(false);
-		}
-	}
-
-	private void setAdsVisibility(boolean visibility) {
-		adview.setVisibility(visibility ? View.VISIBLE : View.GONE);
 	}
 
 	@UiThread(delay = 100)
