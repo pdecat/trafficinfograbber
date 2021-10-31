@@ -237,7 +237,11 @@ public class TIG extends Activity {
 	private void createNotificationChannel() {
 		// Since API 26+, importance level replaces individual priority level and is set on a notification channel
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			NotificationChannel channel = new NotificationChannel(DEFAULT_NOTIFICATION_CHANNEL_ID, DEFAULT_NOTIFICATION_CHANNEL_ID, NotificationManager.IMPORTANCE_MIN);
+			// Use standard notification folding on Android Pie and newer
+			Log.i(TAG, "Build.VERSION.SDK_INT (" + Build.VERSION.SDK_INT + ") > Build.VERSION_CODES.O (" + Build.VERSION_CODES.O + ") ? " + String.valueOf(Build.VERSION.SDK_INT > Build.VERSION_CODES.O));
+			int importance = Build.VERSION.SDK_INT > Build.VERSION_CODES.O ? NotificationManager.IMPORTANCE_HIGH: NotificationManager.IMPORTANCE_MIN;
+
+			NotificationChannel channel = new NotificationChannel(DEFAULT_NOTIFICATION_CHANNEL_ID, DEFAULT_NOTIFICATION_CHANNEL_ID, importance);
 			NotificationManager notificationManager = getSystemService(NotificationManager.class);
 			notificationManager.createNotificationChannel(channel);
 		}
