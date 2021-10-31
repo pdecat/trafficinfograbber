@@ -1,6 +1,7 @@
-v1.0.0:
+v1.0.1:
 - Suppression de tout suivi et publicité car cela dépendait de librairies au code source fermé et non libre
 - Une application bien plus légère :)
+- Ciblage de Android 10 (niveau d'API 29)
 - Utilisation du repli standard des notifications sur Android 9.0+
 
 v0.9.3:
