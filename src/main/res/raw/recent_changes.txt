@@ -1,6 +1,7 @@
 v1.0.0:
 - Remove all tracking and ads as those dependended on non free and closed source libraries
 - Way lighter app :)
+- Use standard notification folding on Android 9.0+
 
 v0.9.3:
 - Fix web view loading on Android versions older than 9.0
