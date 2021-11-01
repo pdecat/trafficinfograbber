@@ -15,5 +15,6 @@
 
 -->
 <lint>
-    <issue id="SetJavaScriptEnabled" severity="ignore" />
+    <!-- We need JavaScript -->
+    <issue id="SetJavaScriptEnabled" severity="informational" />
 </lint>
