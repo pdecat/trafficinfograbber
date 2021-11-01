@@ -9,6 +9,7 @@ buildscript {
 
 plugins {
     id 'com.android.application'
+    id "com.github.hierynomus.license" version "0.16.1"
 }
 
 apply plugin: 'me.moallemi.advanced-build-version'
@@ -88,3 +89,11 @@ android {
 
 advancedVersioning.renameOutputApk()
 
+license {
+    header = file('LICENSE.txt')
+    header project.file('src/main/res/raw/license_short.txt')
+    excludes([
+            "**/recent_changes.txt",
+    ])
+    strictCheck true
+}

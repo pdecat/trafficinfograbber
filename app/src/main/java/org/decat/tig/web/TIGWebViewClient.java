@@ -1,4 +1,4 @@
-/*
+/**
  * TrafficInfoGrabber
  *
  * Copyright (C) 2010 - 2021 Patrick Decat
