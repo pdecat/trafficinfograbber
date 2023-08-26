@@ -95,8 +95,8 @@ public class TIG extends Activity {
     public static final String FILE_LTM_HTML = FILE_BASE + "/tig_mob.html";
     public static final String FILE_LLT_HTML = FILE_BASE + "/tig_llt.html";
 
-    public static final String URL_SYTADIN = "http://www.sytadin.fr";
-    public static final String URL_SYTADIN_MOBILE = "http://m.sytadin.fr";
+    public static final String URL_SYTADIN = "https://www.sytadin.fr";
+    public static final String URL_SYTADIN_MOBILE = "https://m.sytadin.fr";
 
     private static final String URL_INFOTRAFIC = "https://www.infotrafic.com";
 
