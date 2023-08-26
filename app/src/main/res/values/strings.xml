@@ -15,9 +15,7 @@
 
 -->
 <resources>
-    <string name="banner_ad_unit_id">ca-app-pub-1324379391256193/1758837263</string>
-
-    <string name="app_name">TrafficInfoGrabber</string>
+    <string name="app_name" translatable="false">TrafficInfoGrabber</string>
 
     <!-- Activities -->
     <string name="preferencesEditor">TIG - Preferences Editor</string>
@@ -31,8 +29,8 @@
     <string name="closedAtNight">Closed At Night</string>
     <string name="quickStats">Quick statistics</string>
     <string name="trafficCollisions">Traffic Collisions</string>
-    <string name="sytadinWebsite">www.sytadin.fr</string>
-    <string name="infotraficWebsite">www.infotrafic.com</string>
+    <string name="sytadinWebsite" translatable="false">www.sytadin.fr</string>
+    <string name="infotraficWebsite" translatable="false">www.infotrafic.com</string>
     <string name="preferences">Preferences</string>
     <string name="about">About</string>
 
@@ -99,7 +97,7 @@
 
     <!-- Strings for About dialog -->
     <string name="about_description">A simple traffic information grabber</string>
-    <string name="about_copyright">Copyright © 2010–2021 Patrick Decat\npdecat+tig@gmail.com</string>
+    <string name="about_copyright" translatable="false">Copyright © 2010–2023 Patrick Decat\npdecat+tig@gmail.com</string>
     <string name="about_contribution">Logo contributed by Benoit Laurent</string>
-    <string name="about_website">https://github.com/pdecat/trafficinfograbber</string>
+    <string name="about_website" translatable="false">https://github.com/pdecat/trafficinfograbber</string>
 </resources>
