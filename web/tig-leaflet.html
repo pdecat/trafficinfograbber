@@ -21,12 +21,12 @@
 	
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.2/distleaflet.css" />
 	</head>
 	<body>
 		<div id="map" style="width: 1024px; height: 800px"></div>
 		
-		<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet@0.7.2/distleaflet.js"></script>
 		<script>
 		function createXHR(method, url) {
 			var xhr = new XMLHttpRequest();
@@ -51,7 +51,7 @@
 			bounceAtZoomLimits: false
 		});
 		
-		L.tileLayer('http://{s}.sytadin.fr/carto/statique/tms/1.0.0/fond/{z}/{x}/{y}.png', {
+		L.tileLayer('https://{s}.sytadin.fr/carto/statique/tms/1.0.0/fond/{z}/{x}/{y}.png', {
 			attribution: 'www.sytadin.fr',
 			tms: true,
 			continuousWorld: true,
@@ -73,7 +73,7 @@
 			
 		map.on('click', onMapClick);
 		
-		var url = 'http://tig.decat.org/jsonProxy.php?uri=carto/dynamique/cartoTempsReel.json?_=' + new Date().getTime();
+		var url = 'https://tig.decat.org/jsonProxy.php?uri=carto/dynamique/cartoTempsReel.json?_=' + new Date().getTime();
 		
 		var xhr = createXHR('GET', url);
 				
@@ -81,7 +81,7 @@
 		xhr.onload = function() {
 			var synchronisation = eval('(' + xhr.responseText + ')');
 		
-			L.tileLayer('http://{s}.sytadin.fr/carto/dynamique/{dossier}/tms/1.0.0/bouchons/{z}/{x}/{y}.png', {
+			L.tileLayer('https://{s}.sytadin.fr/carto/dynamique/{dossier}/tms/1.0.0/bouchons/{z}/{x}/{y}.png', {
 				tms: true,
 				continuousWorld: true,
 				subdomains: sytadinSubdomains,
