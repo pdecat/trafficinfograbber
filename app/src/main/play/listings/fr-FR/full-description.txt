@@ -1,0 +1,14 @@
+TrafficInfoGrabber (TIG) est un collecteur d'information trafic pour Paris, France.
+Information recueillie depuis Sytadin.fr et InfoTrafic.com.
+
+Allez dans "Menu -> Préférences" pour personnaliser l'application à votre goût (boutons quitter/rafraîchir/etc., notifications, etc.).
+
+FONCTIONNALITÉS:
+- Vue trafic optimisée pour les téléphones mobiles
+- Gestion des événements du mode Voiture
+- Bouton "application tierce" optionnel
+- Tuer le processus lors d'un appui long sur le bouton "Quitter"
+- Logiciel libre (GPL v3+)
+- et bien plus (jetez un œil aux préférences)
+
+N'hésitez pas à envoyer vos suggestions par email (pdecat+tig@gmail.com).

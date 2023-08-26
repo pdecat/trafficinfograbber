@@ -1,0 +1,14 @@
+TrafficInfoGrabber (TIG) is a simple traffic information grabber for Paris, France.
+Information gathered from Sytadin.fr and InfoTrafic.com.
+
+Go to "Menu -> Preferences" to customize the application to your taste (quit/refresh/etc. buttons, notifications, etc.).
+
+FEATURES:
+- Optimized Traffic view for mobile phones
+- Car Mode events handling
+- Third party app optional button
+- Long press quit button to kill the app's process
+- Free software (GPL v3+)
+- and lots more (check the preferences)
+
+Feel free to send suggestions by email (pdecat+tig@gmail.com).
