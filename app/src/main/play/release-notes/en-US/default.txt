@@ -1,2 +1,1 @@
-- Target Android API level 34 (Android 14) to meet Play Store requirements (33+)
-- Update dependencies
+- Fix crash on Android 14

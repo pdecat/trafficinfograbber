@@ -1,2 +1,1 @@
-- Ciblage du niveau d'API Android 33 (Android 14) pour répondre aux exigences du Play Store (33+)
-- Mise à jour des dépendances
+- Correction d'un plantage sur Android 14

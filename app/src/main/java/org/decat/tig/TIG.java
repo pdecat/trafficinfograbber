@@ -798,7 +798,11 @@ public class TIG extends Activity {
         Log.d(TAG, "TIG.onResume: isFinishing=" + isFinishing());
 
         // Register an intent receiver to quit TIG on Car Mode exiting
-        registerReceiver(quitBroadcastReceiver, quitIntentFilter);
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+           registerReceiver(quitBroadcastReceiver, quitIntentFilter, RECEIVER_NOT_EXPORTED);
+       } else {
+           registerReceiver(quitBroadcastReceiver, quitIntentFilter);
+       }
 
         resume();
 
