@@ -1,0 +1,14 @@
+[env]
+ANDROID_SDK_ROOT = "{{env.HOME}}/local/android-sdk"
+ANDROID_NDK_ROOT = "{{env.HOME}}/local/android-sdk/ndk/current"
+KEYSTORE_PATH = "{{env.HOME}}/.android/my-android-release-key.keystore"
+KEYSTORE_PASSWORD = { value = "{{exec(command='gopass show -o dev/android/keystore', cache_duration='10m')}}", tools = true }
+#KEYSTORE_ALIAS = """{{exec(command='gopass show -n dev/android/keystore|grep ^alias|cut -d: -f2|tr -d "[:space:]"', cache_duration='10m')}}"""
+KEYSTORE_ALIAS = "pdecat"
+KEYSTORE_ALIAS_PASSWORD = { value = "{{exec(command='gopass show -o dev/android/keystore', cache_duration='10m')}}", tools = true }
+#KEYSTORE_ALIAS_PASSWORD = "{{env.KEYSTORE_PASSWORD}}"
+
+
+[tools]
+java = "openjdk-24"
+# android = "user"
