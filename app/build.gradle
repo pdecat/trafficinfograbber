@@ -53,12 +53,12 @@ advancedVersioning {
 android {
     namespace = "org.decat.tig"
 
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "org.decat.tig"
-        minSdk 14
-        targetSdk 34
+        minSdk 16
+        targetSdk 36
         versionCode advancedVersioning.versionCode
         versionName advancedVersioning.versionName
 
